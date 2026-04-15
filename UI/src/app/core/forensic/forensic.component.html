@@ -68,7 +68,7 @@
                     </ng-container>
 
                     <ng-container *ngIf="showNextOtherCard(game)">
-                      <tg-info>Select a card</tg-info>
+                      <tg-info>{{ toReplace(game) ? 'Select a card and choose one to replace' : 'Select a card' }}</tg-info>
                       <div class="cards-container">
                         <app-forensic-card
                           [(selectedOptionName)]="selectedOtherCardOption"
@@ -77,7 +77,9 @@
                         ></app-forensic-card>
                       </div>
                       <div>
-                        <button mat-raised-button color="accent" (click)="selectNextOtherCard()">Select next card</button>
+                        <button mat-raised-button color="accent" (click)="selectNextOtherCard()" [disabled]="!canSelectNextOtherCard(game)">
+                          Select next card
+                        </button>
                       </div>
                     </ng-container>
                     <tg-info *ngIf="waitingToEnd(game)"

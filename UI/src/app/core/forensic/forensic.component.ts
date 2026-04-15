@@ -9,6 +9,7 @@ import { CardApiService } from './../../shared/api/card/card-api.service';
 import { take } from 'rxjs/operators';
 import { AuthService } from './../../shared/api/auth/auth.service';
 import { Subscription } from 'rxjs';
+import { SnackBarService } from './../../shared/api/snack-bar/snack-bar.service';
 
 @Component({
   selector: 'app-forensic',
@@ -33,8 +34,9 @@ export class ForensicComponent implements OnInit {
     public gameApi: GameApiService,
     public router: Router,
     public auth: AuthService,
-    public chatApi: ChatApiService
-  ) { }
+    public chatApi: ChatApiService,
+    private snack: SnackBarService
+  ) {}
 
   ngOnInit() {
     setTimeout(() => {
@@ -54,7 +56,7 @@ export class ForensicComponent implements OnInit {
             }
           }
         });
-      })
+      });
     });
   }
 
@@ -64,11 +66,11 @@ export class ForensicComponent implements OnInit {
   }
 
   getChosenMeansCard(privateObj: TgForensicPrivateData) {
-    return privateObj.murderer.clueCards.find((card: TgCard) => card.name === privateObj.murdererClueCardName)
+    return privateObj.murderer.clueCards.find((card: TgCard) => card.name === privateObj.murdererClueCardName);
   }
 
   getChosenClueCard(privateObj: TgForensicPrivateData) {
-    return privateObj.murderer.meansCards.find((card: TgCard) => card.name === privateObj.murdererMeansCardName)
+    return privateObj.murderer.meansCards.find((card: TgCard) => card.name === privateObj.murdererMeansCardName);
   }
 
   startGame() {
@@ -80,7 +82,6 @@ export class ForensicComponent implements OnInit {
   }
 
   locationCardClick(card: TgForensicCard) {
-
     if (this.selectedLocationCardName !== card.cardName) {
       this.selectedLocationCardName = card.cardName;
       this.selectedLocationCardOption = card.choices[0];
@@ -92,9 +93,7 @@ export class ForensicComponent implements OnInit {
   }
 
   async selectCauseCard() {
-    this.gameApi.selectForensicCauseCard(
-      await this.cardApi.getCauseCard(this.selectedCauseCardName, this.selectedCauseCardOption)
-    );
+    this.gameApi.selectForensicCauseCard(await this.cardApi.getCauseCard(this.selectedCauseCardName, this.selectedCauseCardOption));
     this.selectedCauseCardName = null;
     this.selectedCauseCardOption = null;
   }
@@ -102,30 +101,40 @@ export class ForensicComponent implements OnInit {
   async selectLocationCard() {
     this.gameApi.selectForensicLocationCard(
       await this.cardApi.getLocationCard(this.selectedLocationCardName, this.selectedLocationCardOption)
-    )
+    );
     this.selectedLocationCardName = null;
     this.selectedLocationCardOption = null;
   }
 
   async selectNextOtherCard() {
     this.gameApi.game$.pipe(take(1)).subscribe(game => {
+      if (this.toReplace(game) && !this.replaceCardName) {
+        this.snack.error('Please select a card to replace first!');
+        return;
+      }
       const nextCard = this.nextCard(game);
-      this.gameApi.selectNextForensicOtherCard({
-        ...nextCard,
-        selectedChoice: this.selectedOtherCardOption
-      }, this.replaceCardName)
+      this.gameApi.selectNextForensicOtherCard(
+        {
+          ...nextCard,
+          selectedChoice: this.selectedOtherCardOption
+        },
+        this.replaceCardName
+      );
       this.selectedOtherCardOption = null;
       this.replaceCardName = null;
-    })
-
+    });
   }
 
   selectReplaceCard = (card: TgForensicCard) => {
     this.replaceCardName = card.cardName;
-  }
+  };
 
   toReplace(game: TgGame) {
     return game.otherCards.filter(card => card.selectedChoice).length >= 4 && game.otherCards.filter(card => card.replaced).length < 2;
+  }
+
+  canSelectNextOtherCard(game: TgGame) {
+    return !!this.selectedOtherCardOption && (!this.toReplace(game) || !!this.replaceCardName);
   }
 
   showNextOtherCard(game: TgGame) {

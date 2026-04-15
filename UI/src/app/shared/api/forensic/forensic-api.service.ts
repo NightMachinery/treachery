@@ -23,7 +23,7 @@ export class ForensicApiService {
     private snack: SnackBarService
   ) {
     this.forensicPrivateData$ = this.gameApi.snapshot$.pipe(
-      map(snapshot => snapshot ? snapshot.forensicPrivateData : null),
+      map(snapshot => (snapshot ? snapshot.forensicPrivateData : null)),
       shareReplay(1)
     );
   }
@@ -41,13 +41,13 @@ export class ForensicApiService {
   }
 
   async createGame() {
-    const gameId = randomReadableId();
-    this.updateGameId(gameId);
-    const response = await this.http.post<{ success: boolean }>(`/api/games`, { gameId }).toPromise();
+    const requestedGameId = randomReadableId();
+    const response = await this.http
+      .post<{ success: boolean; gameId: string }>(`/api/games`, { gameId: requestedGameId })
+      .toPromise();
 
     if (response.success) {
-      await this.gameApi.refreshSnapshot();
-      this.router.navigateByUrl(`/forensic/${gameId}`);
+      this.router.navigateByUrl(`/forensic/${response.gameId || requestedGameId}`);
     }
   }
 

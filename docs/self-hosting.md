@@ -101,10 +101,11 @@ TMUX= tmux ls | grep treachery-self-host
 Then verify in a browser:
 
 - home page loads on HTTP and HTTPS
-- creating a game works
+- creating a game works without a transient `/api/games/{id}/snapshot` 404 in the browser console
 - joining from another browser/device works
 - chat live-updates work
 - forensic / murderer private views stay isolated per browser session
+- selecting the 5th or 6th forensic other card requires choosing a replacement card first
 - copy-link works on **HTTP**
 
 ## Troubleshooting

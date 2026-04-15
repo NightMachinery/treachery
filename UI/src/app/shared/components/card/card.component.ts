@@ -1,6 +1,4 @@
-
-
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TgCard } from '../../api/models/models';
 
 @Component({
@@ -12,9 +10,8 @@ export class CardComponent implements OnInit {
   @Input() card: TgCard;
   @Input() active = false;
   @Input() means: boolean;
+
   constructor() {}
 
-  ngOnInit() {
-    console.log(this.card.imgUrl);
-  }
+  ngOnInit() {}
 }

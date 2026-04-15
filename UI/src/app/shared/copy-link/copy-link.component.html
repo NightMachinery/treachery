@@ -1,11 +1,9 @@
-<div matRipple class="copy-container" [cdkCopyToClipboard]="text">
+<div matRipple class="copy-container" (click)="copyText()">
   <div class="copy-input">
     <mat-form-field class="example-full-width">
       <mat-label>Invite friends with this url</mat-label>
-      <input matInput [value]="text" />
+      <input #copyInput matInput [value]="text" readonly />
     </mat-form-field>
   </div>
-  <button mat-icon-button [cdkCopyToClipboard]="text">
-    <mat-icon class="icon" aria-hidden="false" aria-label="Copy Join link">file_copy</mat-icon>
-  </button>
+  <button mat-button type="button" (click)="$event.stopPropagation(); copyText()">Copy</button>
 </div>

@@ -66,3 +66,6 @@ node_modules/
 
 #IntelliJ
 .idea/
+# Local self-host artifacts
+.self_host/
+

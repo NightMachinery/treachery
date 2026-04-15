@@ -1,8 +1,5 @@
-import { AuthService } from './shared/api/auth/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { auth } from 'firebase/app';
+import { AuthService } from './shared/api/auth/auth.service';
 import { AvatarService } from './shared/api/avatar/avatar.service';
 
 @Component({
@@ -12,10 +9,10 @@ import { AvatarService } from './shared/api/avatar/avatar.service';
 })
 export class AppComponent implements OnInit {
   title = 'deceptiongame';
-  constructor(public authService: AuthService, public avatar: AvatarService ) { }
+
+  constructor(public authService: AuthService, public avatar: AvatarService) {}
 
   ngOnInit() {
     this.authService.anonymousLogin();
   }
-  
 }

@@ -1,42 +1,21 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 import { GameApiService } from '../game/game-api.service';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { TgGame, TgGuess, TgMessage, TgMessageType } from '../models/models';
-import { classToPlain } from 'class-transformer';
-import { PlayerApiService } from '../player/player-api.service';
-import { firestore } from 'firebase';
-import Timestamp = firestore.Timestamp;
-import { Observable, of } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
-import { AuthService } from './../auth/auth.service';
-import { auth } from 'firebase/app';
+import { TgMessage, TgMessageType } from '../models/models';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatApiService {
   messages$: Observable<TgMessage[]>;
-  messagesCollection$: Observable<AngularFirestoreCollection<TgMessage>>;
   collapsed = false;
 
-  constructor(private db: AngularFirestore, private gameApi: GameApiService, private auth: AuthService) {
-    this.messagesCollection$ = this.gameApi.gameDoc$.pipe(
-      map(gameDoc => {
-        if (gameDoc) {
-          return gameDoc.collection<TgMessage>('messages', ref => ref.orderBy('timestamp'));
-        } else {
-          return null;
-        }
-      })
-    );
-    this.messages$ = this.messagesCollection$.pipe(
-      switchMap(messagesCollection => {
-        if (messagesCollection) {
-          return messagesCollection.valueChanges();
-        } else {
-          return of(null);
-        }
-      })
+  constructor(private http: HttpClient, private gameApi: GameApiService) {
+    this.messages$ = this.gameApi.snapshot$.pipe(
+      map(snapshot => snapshot ? snapshot.messages : []),
+      shareReplay(1)
     );
   }
 
@@ -48,14 +27,9 @@ export class ChatApiService {
     }
   }
 
-  sendMessage(message: string, type: TgMessageType = TgMessageType.CHAT) {
-    this.messagesCollection$.pipe(take(1)).subscribe(messagesCollection => {
-      messagesCollection.add({
-        playerUid: this.auth.user.uid,
-        message,
-        timestamp: Timestamp.now(),
-        type
-      });
-    });
+  async sendMessage(message: string, type: TgMessageType = TgMessageType.CHAT) {
+    const gameId = this.gameApi.gameId$.value;
+    await this.http.post(`/api/games/${gameId}/messages`, { message }).toPromise();
+    await this.gameApi.refreshSnapshot();
   }
 }

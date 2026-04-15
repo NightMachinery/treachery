@@ -9,8 +9,7 @@
 }
 
 /* You can add global styles to this file, and also import other style files */
-@import url('https://fonts.googleapis.com/css?family=Roboto:400,700|Material+Icons');
-@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300&display=swap');
+@import './fonts';
 
 html,
 body {
@@ -40,7 +39,6 @@ body {
 // have to load a single css file for Angular Material in your app.
 
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
 
 $fontConfig: (display-4: mat-typography-level(112px, 112px, 300, 'Roboto', -0.0134em),
   display-3: mat-typography-level(56px, 56px, 400, 'Roboto', -0.0089em),
@@ -281,10 +279,8 @@ body {
   margin: 0;
   background-color: var(--tg-dark-3-color);
   color: white;
-  height: 100vh;
-  /* If you need to support browser without CSS var support (<= IE11) */
-  height: calc(100vh - var(--vh-offset, 0px));
-  /* enable vh fix */
+  min-height: 100vh;
+  min-height: calc(var(--tg-vh, 1vh) * 100);
 }
 
 .heading-container {

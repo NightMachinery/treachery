@@ -4,9 +4,7 @@
       <div class="title-bar">
         <div class="chat-title">Chat</div>
         <div class="vertical-centered">
-          <button mat-icon-button (click)="chatApi.toggleCollapse(true)">
-            <mat-icon>close</mat-icon>
-          </button>
+          <button mat-icon-button (click)="chatApi.toggleCollapse(true)" aria-label="Close chat">×</button>
         </div>
       </div>
       <div class="messages" #messages>
@@ -51,7 +49,7 @@
       </div>
     </div>
     <ng-template #collapsed>
-      <button mat-icon-button (click)="chatApi.toggleCollapse(false)" class="collapsed-chat-button"><mat-icon>chat</mat-icon></button>
+      <button mat-icon-button (click)="chatApi.toggleCollapse(false)" class="collapsed-chat-button" aria-label="Open chat">💬</button>
     </ng-template>
   </ng-container>
 </ng-container>

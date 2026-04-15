@@ -83,10 +83,7 @@
 
 .chat-collapsed :host {
   position: fixed;
-  top: 100vh;
-  /* If you need to support browser without CSS var support (<= IE11) */
-  top: calc(100vh - var(--vh-offset, 0px) - 50px - (2 * var(--space-4)));
-  /* enable vh fix */
+  top: calc((var(--tg-vh, 1vh) * 100) - 50px - (2 * var(--space-4)));
   right: 0;
 }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'tg-copy-link',
@@ -7,9 +7,32 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class CopyLinkComponent implements OnInit {
   @Input() text: string;
-  constructor() { }
+  @ViewChild('copyInput') copyInput: ElementRef<HTMLInputElement>;
 
-  ngOnInit(): void {
+  constructor() {}
+
+  ngOnInit(): void {}
+
+  async copyText() {
+    const text = this.text || '';
+    if (!text) {
+      return;
+    }
+
+    if (navigator.clipboard && window.isSecureContext) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return;
+      } catch (error) {
+        console.warn('navigator.clipboard failed, falling back to execCommand', error);
+      }
+    }
+
+    const input = this.copyInput.nativeElement;
+    input.focus();
+    input.select();
+    input.setSelectionRange(0, text.length);
+    document.execCommand('copy');
+    input.blur();
   }
-
 }

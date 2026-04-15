@@ -4,7 +4,6 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PlayerApiService } from '../../../shared/api/player/player-api.service';
 import { AuthService } from './../../../shared/api/auth/auth.service';
-import { auth } from 'firebase/app';
 
 @Component({
   selector: 'app-player-deck-pager',

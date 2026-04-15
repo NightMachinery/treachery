@@ -1,121 +1,83 @@
-import { TgPlayerPrivateData, TgGuess, TgPartialGuess } from './../models/models';
-import { Router } from '@angular/router';
-import { TgPlayer, TgGame, TgForensicCard } from '../models/models';
-import { AuthService } from './../auth/auth.service';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, Subject, BehaviorSubject } from 'rxjs';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { take, switchMap, map, shareReplay } from 'rxjs/operators';
-import { AngularFireFunctions } from '@angular/fire/functions';
+import { Router } from '@angular/router';
+import { BehaviorSubject, Observable, of, timer } from 'rxjs';
+import { catchError, map, shareReplay, switchMap } from 'rxjs/operators';
+import { AuthService } from './../auth/auth.service';
+import { TgGame, TgGameSnapshot, TgGuess, TgPartialGuess, TgPlayer, TgPlayerPrivateData, TgForensicCard } from '../models/models';
 import { SnackBarService } from '../snack-bar/snack-bar.service';
-
-const GAME_COMPLETE_EXPIRE_TIME = 10 * 60 * 1000;
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameApiService {
+  public snapshot$: Observable<TgGameSnapshot>;
   public game$: Observable<TgGame>;
   public players$: Observable<TgPlayer[]>;
   public me$: Observable<TgPlayer>;
   public gameId$: BehaviorSubject<string>;
   public guesses$: Observable<TgGuess[]>;
   public playerPrivateData$: Observable<TgPlayerPrivateData>;
-  public gameDoc$: Observable<AngularFirestoreDocument<TgGame>>;
   public playersDict$: Observable<Map<string, TgPlayer>>;
   public joinLink$: Observable<string>;
+  public activeGames$: Observable<TgGame[]>;
+
+  private readonly snapshotSubject = new BehaviorSubject<TgGameSnapshot>(null);
+  private eventSource: EventSource;
 
   constructor(
-    private db: AngularFirestore,
+    private http: HttpClient,
     private auth: AuthService,
-    private fns: AngularFireFunctions,
     private router: Router,
     private snack: SnackBarService
   ) {
     this.gameId$ = new BehaviorSubject<string>(null);
+    this.snapshot$ = this.snapshotSubject.asObservable().pipe(shareReplay(1));
 
-    this.gameId$.next(null);
-
-    this.game$ = this.gameId$.pipe(switchMap(gameId => {
-      if (gameId) {
-        return this.getDocForGame(gameId).valueChanges();
-      } else {
-        return of(null);
-      }
-    }
-    )).pipe(shareReplay(1));
-
-    this.players$ = this.gameId$.pipe(switchMap(gameId => {
-      if (gameId) {
-        return this.getDocForGame(gameId).collection('players').valueChanges();
-      } else {
-        return of(null);
-      }
-    })).pipe(shareReplay(1));
-
+    this.game$ = this.snapshot$.pipe(map(snapshot => snapshot ? snapshot.game : null), shareReplay(1));
+    this.players$ = this.snapshot$.pipe(map(snapshot => snapshot ? snapshot.players : null), shareReplay(1));
     this.me$ = this.players$.pipe(map(players => {
-      if (players) {
+      if (players && this.auth.user) {
         return players.find(player => player.uid === this.auth.user.uid);
-      } else {
-        return null;
       }
-    })).pipe(shareReplay(1));
-
-    this.guesses$ = this.gameId$.pipe(switchMap(gameId => {
-      if (gameId) {
-        return this.getDocForGame(gameId).collection('guesses').valueChanges();
-      } else {
-        return of(null);
-      }
-    })).pipe(shareReplay(1));
-
-    this.playerPrivateData$ = this.gameId$.pipe(switchMap(gameId => {
-      if (gameId) {
-        return this.getDocForGame(gameId).collection('users').doc(this.auth.user.uid).valueChanges();
-      }
-      else {
-        return of(null);
-      }
-    })).pipe(map(value => value ? value : {})).pipe(shareReplay(1));
-
-    this.gameDoc$ = this.gameId$.pipe(map(gameId => {
-      if (gameId) {
-        return this.getDocForGame(gameId);
-      } else {
-        return null;
-      }
-    }
-    )).pipe(shareReplay(1));
-
+      return null;
+    }), shareReplay(1));
+    this.guesses$ = this.snapshot$.pipe(map(snapshot => snapshot ? snapshot.guesses : []), shareReplay(1));
+    this.playerPrivateData$ = this.snapshot$.pipe(map(snapshot => snapshot ? snapshot.playerPrivateData || {} as TgPlayerPrivateData : {} as TgPlayerPrivateData), shareReplay(1));
     this.playersDict$ = this.players$.pipe(map(players => {
-      if (players) {
-        const result = new Map();
-        players.forEach(player => {
-          result.set(player.uid, player);
-        })
-        return result;
-      } else {
+      if (!players) {
         return null;
       }
-    })).pipe(shareReplay(1));
+      const result = new Map<string, TgPlayer>();
+      players.forEach(player => result.set(player.uid, player));
+      return result;
+    }), shareReplay(1));
+    this.joinLink$ = this.gameId$.pipe(map(value => value ? `${window.location.origin}/join/${value}` : `${window.location.origin}`), shareReplay(1));
+    this.activeGames$ = timer(0, 5000).pipe(
+      switchMap(() => this.http.get<TgGame[]>('/api/games').pipe(catchError(() => of([])))),
+      shareReplay(1)
+    );
 
-    this.gameId$.next(null);
-
-    this.joinLink$ = this.gameId$.pipe(map(value => {
-      if (value) {
-        return `${window.location.origin}/join/${value}`
-      } else {
-        return `${window.location.origin}`;
+    this.auth.user$.subscribe(user => {
+      if (user && this.gameId$.value) {
+        this.connectEvents();
+        this.refreshSnapshot();
       }
-    })).pipe(shareReplay(1));
-  }
-
-  getDocForGame(gameId: string): AngularFirestoreDocument<TgGame> {
-    return this.db.collection('games').doc(gameId);
+    });
   }
 
   setGameId(gameId: string) {
-    this.gameId$.next(gameId);
+    const normalizedGameId = gameId ? gameId.toUpperCase() : null;
+    if (normalizedGameId === this.gameId$.value) {
+      return;
+    }
+    this.closeEvents();
+    this.snapshotSubject.next(null);
+    this.gameId$.next(normalizedGameId);
+    if (normalizedGameId && this.auth.user) {
+      this.connectEvents();
+      this.refreshSnapshot();
+    }
   }
 
   getGameGuesses(): Observable<TgGuess[]> {
@@ -134,8 +96,8 @@ export class GameApiService {
     return this.game$;
   }
 
-  getJoinedPlayers(gameId: string): Observable<TgPlayer[]> {
-    return this.getDocForGame(gameId).collection('players').valueChanges() as Observable<TgPlayer[]>
+  getCurrentSnapshot(): TgGameSnapshot {
+    return this.snapshotSubject.value;
   }
 
   getCurrentGamePlayers(): Observable<TgPlayer[]> {
@@ -143,40 +105,28 @@ export class GameApiService {
   }
 
   async joinGame(gameId: string, playerName: string) {
-    this.gameId$.next(gameId);
-    const addPlayer = this.fns.httpsCallable('addPlayer');
-    const response = await addPlayer({ gameId, playerName }).toPromise();
-    console.log(response);
+    this.setGameId(gameId);
+    const response = await this.http.post<{ success: boolean }>(`/api/games/${gameId.toUpperCase()}/join`, { playerName }).toPromise();
     if (response.success) {
-      this.router.navigateByUrl(`/play/${gameId}`)
+      await this.refreshSnapshot();
+      this.router.navigateByUrl(`/play/${gameId.toUpperCase()}`);
     }
   }
 
-  activeGamesQuery() {
-    const currTime = new Date().getTime(); // current Time in seconds
-    const expiredCreation = new Date(currTime - GAME_COMPLETE_EXPIRE_TIME);
-    console.log(`Expired creation: ${expiredCreation} ${expiredCreation.getTime()}`);
-    return this.db.collection('games');
-  }
-
-  async selectMurdererCards(clueCardName, meansCardName) {
-    this.gameId$.pipe(take(1)).subscribe(async (gameId) => {
-      const _selectMurdererCards = this.fns.httpsCallable('selectMurdererCards');
-
-      const response = await _selectMurdererCards({ gameId, clueCardName, meansCardName }).toPromise();
-      console.log(response);
-      if (response.success) {
-        console.log("Yaay cards selected");
-      }
-    });
+  async selectMurdererCards(clueCardName: string, meansCardName: string) {
+    const gameId = this.gameId$.value;
+    const response = await this.http.post<{ success: boolean }>(`/api/games/${gameId}/murderer-selection`, { clueCardName, meansCardName }).toPromise();
+    if (response.success) {
+      await this.refreshSnapshot();
+    }
   }
 
   async makeGuess(guess: TgPartialGuess) {
-    this.gameId$.pipe(take(1)).subscribe(async (gameId) => {
-      const _makeGuess = this.fns.httpsCallable('makeGuess');
-      const response = await _makeGuess({ ...guess, gameId }).toPromise();
-      console.log(response);
-    });
+    const gameId = this.gameId$.value;
+    const response = await this.http.post<{ success: boolean }>(`/api/games/${gameId}/guess`, guess).toPromise();
+    if (response.success) {
+      await this.refreshSnapshot();
+    }
   }
 
   async selectForensicCauseCard(card: TgForensicCard) {
@@ -184,9 +134,9 @@ export class GameApiService {
       this.snack.error('Please select an option from the cards!');
       return;
     }
-    this.gameId$.pipe(take(1)).subscribe(gameId => {
-      this.getDocForGame(gameId).set({ causeCard: card } as any, { merge: true })
-    })
+    const gameId = this.gameId$.value;
+    await this.http.post(`/api/games/${gameId}/forensic/cause`, { card }).toPromise();
+    await this.refreshSnapshot();
   }
 
   async selectForensicLocationCard(card: TgForensicCard) {
@@ -194,9 +144,9 @@ export class GameApiService {
       this.snack.error('Please select an option from the cards!');
       return;
     }
-    this.gameId$.pipe(take(1)).subscribe(gameId => {
-      this.getDocForGame(gameId).set({ locationCard: card } as any, { merge: true })
-    })
+    const gameId = this.gameId$.value;
+    await this.http.post(`/api/games/${gameId}/forensic/location`, { card }).toPromise();
+    await this.refreshSnapshot();
   }
 
   countSelectedOtherCards(game: TgGame): number {
@@ -208,35 +158,54 @@ export class GameApiService {
       this.snack.error('Please select an option from the card!');
       return;
     }
-    this.getCurrentGame().pipe(take(1)).subscribe((game: TgGame) => {
-      const count = this.countSelectedOtherCards(game)
-      const otherCards = game.otherCards;
-      const newCardIndex = otherCards.findIndex(value => value.cardName === card.cardName);
-      if (count >= 4) {
-        console.log('Should replace');
-        if (replaceCardName) {
-          console.log('Should replace', replaceCardName)
-          const replaceIndex = otherCards.findIndex(value => value.cardName === replaceCardName);
-          otherCards[replaceIndex].replaced = true;
-        } else {
-          this.snack.error('Select a card to replace!');
-          return;
-        }
-      }
-      otherCards[newCardIndex] = card;
-      this.gameId$.pipe(take(1)).subscribe(gameId => {
-        console.log('Setting doc', { otherCards })
-        this.getDocForGame(gameId).set({ otherCards } as any, { merge: true })
-      });
-    })
+    const gameId = this.gameId$.value;
+    await this.http.post(`/api/games/${gameId}/forensic/other`, { card, replaceCardName }).toPromise();
+    await this.refreshSnapshot();
   }
 
   findPlayer(players: TgPlayer[], uid: string): TgPlayer {
     return players.find(player => player.uid === uid);
   }
 
-  async gameExists(gameId: string): Promise<string> {
-    const game = (await this.db.doc(`games/${gameId}`).get().toPromise()).data() as TgGame;
-    return game && game.creatorUid;
+  async gameExists(gameId: string): Promise<boolean> {
+    try {
+      await this.http.get<TgGameSnapshot>(`/api/games/${gameId.toUpperCase()}/snapshot`).toPromise();
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async refreshSnapshot(): Promise<TgGameSnapshot> {
+    const gameId = this.gameId$.value;
+    if (!gameId || !this.auth.user) {
+      return null;
+    }
+    const snapshot = await this.http.get<TgGameSnapshot>(`/api/games/${gameId}/snapshot`).toPromise();
+    this.snapshotSubject.next(snapshot);
+    return snapshot;
+  }
+
+  private connectEvents() {
+    if (!this.gameId$.value || !this.auth.user || this.eventSource) {
+      return;
+    }
+    this.eventSource = new EventSource(`/api/games/${this.gameId$.value}/events`);
+    this.eventSource.addEventListener('update', () => {
+      this.refreshSnapshot();
+    });
+    this.eventSource.onmessage = () => {
+      this.refreshSnapshot();
+    };
+    this.eventSource.onerror = () => {
+      console.warn('Game event stream disconnected; waiting for automatic retry.');
+    };
+  }
+
+  private closeEvents() {
+    if (this.eventSource) {
+      this.eventSource.close();
+      this.eventSource = null;
+    }
   }
 }

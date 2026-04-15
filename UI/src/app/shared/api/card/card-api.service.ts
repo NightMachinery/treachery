@@ -1,7 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { map } from 'rxjs/operators';
+import { shareReplay } from 'rxjs/operators';
 import { TgCardResources, TgForensicCard } from './../models/models';
 
 @Injectable({
@@ -10,8 +10,8 @@ import { TgCardResources, TgForensicCard } from './../models/models';
 export class CardApiService {
   public cards$: Observable<TgCardResources>;
 
-  constructor(private db: AngularFirestore) {
-    this.cards$ = db.collection('resources').doc('cards').get().pipe(map(value => value.data())) as Observable<TgCardResources>;
+  constructor(private http: HttpClient) {
+    this.cards$ = this.http.get<TgCardResources>('assets/cards.json').pipe(shareReplay(1));
   }
 
   async getCardsSnapshot(): Promise<TgCardResources> {
@@ -24,7 +24,7 @@ export class CardApiService {
     return {
       ...cards.forensicCards.causeCards.find(card => card.cardName === cardName),
       selectedChoice
-    } as TgForensicCard
+    } as TgForensicCard;
   }
 
   async getLocationCard(cardName: string, selectedChoice: string): Promise<TgForensicCard> {
@@ -33,7 +33,6 @@ export class CardApiService {
     return {
       ...cards.forensicCards.locationCards.find(card => card.cardName === cardName),
       selectedChoice
-    }
+    };
   }
-
 }

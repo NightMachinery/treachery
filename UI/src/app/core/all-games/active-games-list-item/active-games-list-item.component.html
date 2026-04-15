@@ -5,7 +5,7 @@
     <div><b>Game ID:</b> {{ game.gameId }}</div>
     <div>
       <b>Created Time:</b>
-      {{ (game ? game.createdTimestamp.toDate() : '') | date: 'yyyy-mm-dd hh:mm a' }}
+      {{ game?.createdTimestamp | date: 'yyyy-MM-dd hh:mm a' }}
     </div>
   </mat-card-content>
 </mat-card>

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -7,7 +8,6 @@ import { randomReadableId } from './../util';
 import { GameApiService } from './../game/game-api.service';
 import { TgForensicPrivateData, TgGame } from '../models/models';
 import { SnackBarService } from '../snack-bar/snack-bar.service';
-import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +28,8 @@ export class ForensicApiService {
     );
   }
 
-  updateGameId(gameId: string) {
-    this.gameApi.setGameId(gameId);
+  updateGameId(gameId: string, roomAuth?: string) {
+    this.gameApi.setGameContext(gameId, roomAuth);
   }
 
   getGame(): Observable<TgGame> {
@@ -41,24 +41,29 @@ export class ForensicApiService {
   }
 
   async createGame() {
+    if (!(await this.authService.ensureDisplayName())) {
+      return;
+    }
     const requestedGameId = randomReadableId();
     const response = await this.http
       .post<{ success: boolean; gameId: string }>(`/api/games`, { gameId: requestedGameId })
       .toPromise();
 
     if (response.success) {
-      this.router.navigateByUrl(`/forensic/${response.gameId || requestedGameId}`);
+      this.gameApi.setGameContext(response.gameId || requestedGameId, null);
+      await this.gameApi.navigateTo('join', response.gameId || requestedGameId);
     }
   }
 
   async startGame() {
-    const players = this.gameApi.getCurrentSnapshot() ? this.gameApi.getCurrentSnapshot().players : [];
+    const participants = this.gameApi.getCurrentSnapshot() ? this.gameApi.getCurrentSnapshot().participants : [];
+    const players = participants ? participants.filter(participant => participant.role === 'player') : [];
     const gameId = this.gameApi.gameId$.value;
-    if (!players || players.length < 3) {
-      this.snack.error('Need at least 3 players to start!');
+    if (!players || players.length < 4) {
+      this.snack.error('Need at least 4 players to start!');
       return;
     }
-    const response = await this.http.post<{ success: boolean }>(`/api/games/${gameId}/start`, {}).toPromise();
+    const response = await this.http.post<{ success: boolean }>(`/api/games/${gameId}/start`, {}, this.getRoomRequestOptions()).toPromise();
     if (response.success) {
       await this.gameApi.refreshSnapshot();
     }
@@ -66,9 +71,17 @@ export class ForensicApiService {
 
   async endGame() {
     const gameId = this.gameApi.gameId$.value;
-    const response = await this.http.post<{ success: boolean }>(`/api/games/${gameId}/end`, {}).toPromise();
+    const response = await this.http.post<{ success: boolean }>(`/api/games/${gameId}/end`, {}, this.getRoomRequestOptions()).toPromise();
     if (response.success) {
       await this.gameApi.refreshSnapshot();
     }
+  }
+
+  private getRoomRequestOptions() {
+    let headers = new HttpHeaders();
+    if (this.gameApi.roomAuth$.value) {
+      headers = headers.set('X-Treachery-Room-Auth', this.gameApi.roomAuth$.value);
+    }
+    return { headers };
   }
 }

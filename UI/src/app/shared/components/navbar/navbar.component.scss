@@ -1,21 +1,29 @@
 .app-navbar {
-    height: var(--tg-navbar-height);
-    display: flex;
-    justify-content: space-between;
-    padding: var(--space-4) var(--space-8);
-    background-color: var(--primary-color);
-    box-sizing: border-box;
-}
-
-.avatar-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
 }
 
 .title {
-    font-size: var(--tg-font-size-16);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.name {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.avatar-container {
+  display: flex;
+  align-items: center;
 }

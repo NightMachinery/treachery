@@ -1,28 +1,55 @@
-<div *ngIf="gameApi.game$ | async; else notAGame" class="root-container">
+<div *ngIf="!loading && !missingGame && (gameApi.game$ | async) as game; else fallback" class="root-container">
   <div class="join-container">
     <div class="heading-container">
       <h2>Game ID: {{ gameApi.gameId$ | async }}</h2>
       <tg-copy-link [text]="gameApi.joinLink$ | async"></tg-copy-link>
+      <button mat-stroked-button type="button" *ngIf="(gameApi.viewer$ | async)?.isParticipant" (click)="copyMigrateLink()">
+        Migrate device
+      </button>
     </div>
-    <div class="flex-horizontal">
-      <mat-form-field color="accent" class="fill-remaining-space">
-        <input matInput placeholder="Gamer Tag" #playerInput />
-      </mat-form-field>
-      <div class="button-container">
-        <div>
-          <button mat-raised-button color="accent" (click)="joinGame(playerInput.value)">
-            Join Game
-          </button>
+
+    <ng-container *ngIf="gameApi.viewer$ | async as viewer">
+      <ng-container *ngIf="!game.startedOn; else startedBlock">
+        <div class="flex-horizontal" *ngIf="!viewer.isParticipant; else joinedInfo">
+          <div class="button-container">
+            <button mat-raised-button color="accent" (click)="joinAsPlayer()">Join lobby</button>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-  <div class="joined-list-container">
-    <app-joined-players-list [gameId]="gameId"></app-joined-players-list>
+        <ng-template #joinedInfo>
+          <tg-info>
+            {{ viewer.isCreator ? 'You are the room moderator and a lobby player.' : 'You are in the lobby.' }}
+          </tg-info>
+        </ng-template>
+
+        <div class="joined-list-container">
+          <app-joined-players-list [showModControls]="viewer.isCreator"></app-joined-players-list>
+        </div>
+
+        <div class="start-button-container" *ngIf="viewer.isCreator">
+          <button mat-raised-button color="accent" (click)="startGame()">Start Game</button>
+        </div>
+      </ng-container>
+
+      <ng-template #startedBlock>
+        <tg-info *ngIf="!viewer.isParticipant">This game already started. Observe it in read-only mode.</tg-info>
+        <div class="button-container" *ngIf="!viewer.isParticipant">
+          <button mat-raised-button color="accent" (click)="observeStartedGame()">Observe game</button>
+        </div>
+      </ng-template>
+    </ng-container>
   </div>
 </div>
-<ng-template #notAGame>
+
+<ng-template #fallback>
+  <ng-container *ngIf="loading; else missing">
+    <div class="flex-vertical">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-container>
+</ng-template>
+
+<ng-template #missing>
   <tg-info class="no-such-game">
-    No such game, <a mat-raised-button color="accent" [routerLink]="['/']">Go back home</a> to create one?</tg-info
-  ></ng-template
->
+    No such game, <a mat-raised-button color="accent" [routerLink]="['/']">Go back home</a> to create one?
+  </tg-info>
+</ng-template>

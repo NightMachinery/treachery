@@ -1,19 +1,25 @@
-.container {
-  padding: var(--space-8);
-  border: var(--tg-border-size) solid var(--tg-card-background-color);
-  border-radius: var(--tg-border-radius);
-  flex: 1 1 auto;
-  height: 100%;
-  overflow: auto;
-  min-height: 80px;
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
 }
 
-:host {
+.container {
   display: flex;
   flex-direction: column;
 }
 
-.title {
-  padding-top: var(--space-4);
-  padding-bottom: var(--space-8);
+.participant-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 0 8px 8px 68px;
 }

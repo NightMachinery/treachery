@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -42,6 +42,7 @@ import { InfoComponent } from './shared/components/info/info.component';
 import { MurdererInfoComponent } from './core/forensic/murderer-info/murderer-info.component';
 import { ConfirmationButtonComponent } from './shared/components/confirmation-button/confirmation-button.component';
 import { GameApiService } from './shared/api/game/game-api.service';
+import { AuthTokenInterceptor } from './shared/api/auth/auth-token.interceptor';
 
 @NgModule({
   declarations: [
@@ -89,7 +90,11 @@ import { GameApiService } from './shared/api/game/game-api.service';
     LazyLoadImageModule,
     MatSnackBarModule
   ],
-  providers: [GameApiService, { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }],
+  providers: [
+    GameApiService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true },
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }
+  ],
   bootstrap: [AppComponent],
   entryComponents: [MurdererSelectDialogComponent]
 })

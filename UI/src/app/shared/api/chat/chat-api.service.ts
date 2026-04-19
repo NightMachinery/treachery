@@ -1,9 +1,9 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { GameApiService } from '../game/game-api.service';
 import { TgMessage, TgMessageType } from '../models/models';
-import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class ChatApiService {
 
   constructor(private http: HttpClient, private gameApi: GameApiService) {
     this.messages$ = this.gameApi.snapshot$.pipe(
-      map(snapshot => snapshot ? snapshot.messages : []),
+      map(snapshot => (snapshot ? snapshot.messages : [])),
       shareReplay(1)
     );
   }
@@ -29,7 +29,15 @@ export class ChatApiService {
 
   async sendMessage(message: string, type: TgMessageType = TgMessageType.CHAT) {
     const gameId = this.gameApi.gameId$.value;
-    await this.http.post(`/api/games/${gameId}/messages`, { message }).toPromise();
+    await this.http.post(`/api/games/${gameId}/messages`, { message }, this.getRoomRequestOptions()).toPromise();
     await this.gameApi.refreshSnapshot();
+  }
+
+  private getRoomRequestOptions() {
+    let headers = new HttpHeaders();
+    if (this.gameApi.roomAuth$.value) {
+      headers = headers.set('X-Treachery-Room-Auth', this.gameApi.roomAuth$.value);
+    }
+    return { headers };
   }
 }

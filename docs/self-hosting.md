@@ -7,7 +7,7 @@ This repo now self-hosts without Firebase or Docker.
 - **Caddy** terminates HTTP / self-signed HTTPS for `treachery.pinky.lilf.ir`.
 - **One Go server** runs in tmux and serves:
   - the built Angular SPA
-  - local anonymous session auth
+  - local anonymous session auth stored in browser localStorage and attached to API requests
   - REST APIs
   - live game updates over SSE
   - SQLite-backed game state in `.self_host/data/treachery.sqlite`
@@ -103,8 +103,11 @@ Then verify in a browser:
 - home page loads on HTTP and HTTPS
 - creating a game works without a transient `/api/games/{id}/snapshot` 404 in the browser console
 - joining from another browser/device works
+- started-game links place new arrivals into observer mode instead of rejecting them
+- pre-start role toggles and scientist mark toggles work from the creator account
 - chat live-updates work
 - forensic / murderer private views stay isolated per browser session
+- migrate-device links preserve the imported room identity across refresh without affecting other rooms
 - selecting the 5th or 6th forensic other card requires choosing a replacement card first
 - copy-link works on **HTTP**
 

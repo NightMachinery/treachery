@@ -1,9 +1,15 @@
 <div class="app-navbar">
-    <div class="title">Treachery</div>
+  <div class="title">Treachery</div>
+  <div class="identity" *ngIf="identity$ | async as identity; else showLoading">
+    <div class="name">{{ identity.name }}</div>
+    <button mat-button type="button" (click)="rename()">Rename</button>
     <div class="avatar-container">
-      <tg-avatar [diameter]="50" *ngIf="authService.user$ | async as user; else showLoading" [uid]="user.uid"></tg-avatar>
-      <ng-template #showLoading>
-        <mat-spinner [diameter]="50" color="accent"></mat-spinner>
-      </ng-template>
+      <tg-avatar [diameter]="50" [uid]="identity.uid"></tg-avatar>
     </div>
+  </div>
+  <ng-template #showLoading>
+    <div class="avatar-container">
+      <mat-spinner [diameter]="50" color="accent"></mat-spinner>
+    </div>
+  </ng-template>
 </div>

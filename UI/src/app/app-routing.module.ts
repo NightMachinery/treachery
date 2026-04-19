@@ -10,8 +10,9 @@ const routes: Routes = [
   { path: 'games/:gameId', component: GameComponent },
   { path: 'forensic/:gameId', component: ForensicComponent },
   { path: 'join/:gameId', component: JoinGameComponent },
-  { path: '', component: AllGamesComponent },
   { path: 'play/:gameId', component: GameComponent },
+  { path: 'observe/:gameId', component: GameComponent },
+  { path: '', component: AllGamesComponent },
   { path: 'test', component: TestComponent }
 ];
 

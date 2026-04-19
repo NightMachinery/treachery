@@ -1,7 +1,6 @@
-import { Observable } from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
 import { GameApiService } from '../../../shared/api/game/game-api.service';
-import { TgPlayer, TgGame } from '../../../shared/api/models/models';
-import { Component, OnInit, Input } from '@angular/core';
+import { TgParticipant } from '../../../shared/api/models/models';
 
 @Component({
   selector: 'app-joined-players-list',
@@ -9,12 +8,18 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./joined-players-list.component.scss']
 })
 export class JoinedPlayersListComponent implements OnInit {
-  @Input() gameId: string;
+  @Input() showModControls = false;
 
-  
-  constructor(public gameApi: GameApiService) { }
+  constructor(public gameApi: GameApiService) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  async toggleRole(participant: TgParticipant) {
+    const nextRole = participant.role === 'player' ? 'observer' : 'player';
+    await this.gameApi.setParticipantRole(participant.uid, nextRole);
   }
 
+  async toggleScientist(participant: TgParticipant) {
+    await this.gameApi.toggleScientist(participant.uid);
+  }
 }

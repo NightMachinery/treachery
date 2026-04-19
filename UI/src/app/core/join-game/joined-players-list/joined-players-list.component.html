@@ -1,9 +1,17 @@
-<div class="title">Joined Players</div>
-<div *ngIf="gameApi.players$ | async as players" class="container">
-  <div *ngFor="let player of players" class="card">
-    <app-joined-player-list-item [player]="player"></app-joined-player-list-item>
+<div class="title">Room Participants</div>
+<div *ngIf="gameApi.participants$ | async as participants" class="container">
+  <div *ngFor="let participant of participants" class="participant-card">
+    <app-joined-player-list-item [participant]="participant"></app-joined-player-list-item>
+    <div class="controls" *ngIf="showModControls && (gameApi.viewer$ | async)?.isCreator && !(gameApi.game$ | async)?.startedOn">
+      <button mat-button type="button" (click)="toggleRole(participant)">
+        {{ participant.role === 'player' ? 'Make observer' : 'Make player' }}
+      </button>
+      <button mat-button type="button" *ngIf="participant.role === 'player'" (click)="toggleScientist(participant)">
+        {{ participant.isMarkedScientist ? 'Unmark scientist' : 'Mark scientist' }}
+      </button>
+    </div>
   </div>
-  <div *ngIf="players.length === 0">
-    No players yet!
+  <div *ngIf="participants.length === 0">
+    No participants yet!
   </div>
 </div>

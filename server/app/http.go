@@ -17,12 +17,16 @@ const sessionCookieName = "treachery_session"
 func (a *App) Handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("POST /api/session", a.handleCreateSession)
+	mux.HandleFunc("PUT /api/me", a.handleUpdateProfile)
 	mux.HandleFunc("GET /api/healthz", a.handleHealthz)
 	mux.HandleFunc("GET /api/games", a.handleListGames)
 	mux.HandleFunc("POST /api/games", a.handleCreateGame)
 	mux.HandleFunc("GET /api/games/{gameId}/snapshot", a.handleGameSnapshot)
 	mux.HandleFunc("GET /api/games/{gameId}/events", a.handleGameEvents)
 	mux.HandleFunc("POST /api/games/{gameId}/join", a.handleJoinGame)
+	mux.HandleFunc("POST /api/games/{gameId}/participants/{uid}/role", a.handleSetParticipantRole)
+	mux.HandleFunc("POST /api/games/{gameId}/scientist/toggle", a.handleToggleScientist)
+	mux.HandleFunc("POST /api/games/{gameId}/migrate-device", a.handleCreateRoomAuth)
 	mux.HandleFunc("POST /api/games/{gameId}/start", a.handleStartGame)
 	mux.HandleFunc("POST /api/games/{gameId}/murderer-selection", a.handleSelectMurdererCards)
 	mux.HandleFunc("POST /api/games/{gameId}/forensic/cause", a.handleSelectCauseCard)
@@ -43,10 +47,7 @@ func withCORSAndLogging(next http.Handler) http.Handler {
 }
 
 func (a *App) handleCreateSession(w http.ResponseWriter, r *http.Request) {
-	var existingToken string
-	if cookie, err := r.Cookie(sessionCookieName); err == nil {
-		existingToken = cookie.Value
-	}
+	existingToken := sessionTokenFromRequest(r)
 	session, err := a.EnsureSession(existingToken)
 	if err != nil {
 		writeError(w, err)
@@ -61,6 +62,37 @@ func (a *App) handleCreateSession(w http.ResponseWriter, r *http.Request) {
 		MaxAge:   60 * 60 * 24 * 365,
 	})
 	writeJSON(w, http.StatusOK, session)
+}
+
+func (a *App) handleUpdateProfile(w http.ResponseWriter, r *http.Request) {
+	session, err := a.requireSession(r)
+	if err != nil {
+		writeError(w, err)
+		return
+	}
+	var body struct {
+		DisplayName string `json:"displayName"`
+		GameID      string `json:"gameId"`
+	}
+	if err := decodeBody(r, &body); err != nil {
+		writeError(w, fmt.Errorf("%w: %s", ErrBadInput, err.Error()))
+		return
+	}
+	effectiveUID, err := a.resolveEffectiveUID(r, strings.ToUpper(strings.TrimSpace(body.GameID)), session.UID)
+	if err != nil {
+		writeError(w, err)
+		return
+	}
+	if err := a.UpdateProfile(effectiveUID, body.DisplayName); err != nil {
+		writeError(w, err)
+		return
+	}
+	updatedSession, err := a.GetSession(session.Token)
+	if err != nil {
+		writeError(w, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, updatedSession)
 }
 
 func (a *App) handleHealthz(w http.ResponseWriter, r *http.Request) {
@@ -102,7 +134,13 @@ func (a *App) handleGameSnapshot(w http.ResponseWriter, r *http.Request) {
 		writeError(w, err)
 		return
 	}
-	snapshot, err := a.GetSnapshot(r.PathValue("gameId"), session.UID)
+	gameID := strings.ToUpper(strings.TrimSpace(r.PathValue("gameId")))
+	viewerUID, err := a.resolveEffectiveUID(r, gameID, session.UID)
+	if err != nil {
+		writeError(w, err)
+		return
+	}
+	snapshot, err := a.GetSnapshot(gameID, viewerUID)
 	if err != nil {
 		writeError(w, err)
 		return
@@ -156,29 +194,87 @@ func (a *App) handleJoinGame(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var body struct {
-		PlayerName string `json:"playerName"`
+		Role ParticipantRole `json:"role"`
 	}
 	if err := decodeBody(r, &body); err != nil {
 		writeError(w, fmt.Errorf("%w: %s", ErrBadInput, err.Error()))
 		return
 	}
-	gameID := r.PathValue("gameId")
-	if err := a.AddPlayer(gameID, session.UID, body.PlayerName); err != nil {
+	gameID := strings.ToUpper(strings.TrimSpace(r.PathValue("gameId")))
+	viewerUID, err := a.resolveEffectiveUID(r, gameID, session.UID)
+	if err != nil {
 		writeError(w, err)
 		return
 	}
-	a.hub.Publish(strings.ToUpper(strings.TrimSpace(gameID)))
+	if err := a.UpsertParticipant(gameID, viewerUID, body.Role); err != nil {
+		writeError(w, err)
+		return
+	}
+	a.hub.Publish(gameID)
 	writeJSON(w, http.StatusOK, map[string]any{"success": true})
 }
 
+func (a *App) handleSetParticipantRole(w http.ResponseWriter, r *http.Request) {
+	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
+		var body struct {
+			Role ParticipantRole `json:"role"`
+		}
+		if err := decodeBody(r, &body); err != nil {
+			return fmt.Errorf("%w: %s", ErrBadInput, err.Error())
+		}
+		return a.SetParticipantRole(gameID, viewerUID, r.PathValue("uid"), body.Role)
+	})
+}
+
+func (a *App) handleToggleScientist(w http.ResponseWriter, r *http.Request) {
+	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
+		var body struct {
+			UID string `json:"uid"`
+		}
+		if err := decodeBody(r, &body); err != nil {
+			return fmt.Errorf("%w: %s", ErrBadInput, err.Error())
+		}
+		return a.ToggleScientistMark(gameID, viewerUID, body.UID)
+	})
+}
+
+func (a *App) handleCreateRoomAuth(w http.ResponseWriter, r *http.Request) {
+	session, err := a.requireSession(r)
+	if err != nil {
+		writeError(w, err)
+		return
+	}
+	gameID := strings.ToUpper(strings.TrimSpace(r.PathValue("gameId")))
+	viewerUID, err := a.resolveEffectiveUID(r, gameID, session.UID)
+	if err != nil {
+		writeError(w, err)
+		return
+	}
+	snapshot, err := a.GetSnapshot(gameID, viewerUID)
+	if err != nil {
+		writeError(w, err)
+		return
+	}
+	if !snapshot.Viewer.IsParticipant {
+		writeError(w, fmt.Errorf("%w: only room participants can migrate this identity", ErrForbidden))
+		return
+	}
+	token, err := a.CreateOrGetRoomAuthToken(gameID, viewerUID)
+	if err != nil {
+		writeError(w, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, map[string]any{"token": token.Token, "gameId": gameID, "success": true})
+}
+
 func (a *App) handleStartGame(w http.ResponseWriter, r *http.Request) {
-	a.withGameMutation(w, r, func(session *Session, gameID string) error {
-		return a.StartGame(gameID, session.UID)
+	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
+		return a.StartGame(gameID, viewerUID)
 	})
 }
 
 func (a *App) handleSelectMurdererCards(w http.ResponseWriter, r *http.Request) {
-	a.withGameMutation(w, r, func(session *Session, gameID string) error {
+	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
 		var body struct {
 			ClueCardName  string `json:"clueCardName"`
 			MeansCardName string `json:"meansCardName"`
@@ -186,36 +282,36 @@ func (a *App) handleSelectMurdererCards(w http.ResponseWriter, r *http.Request) 
 		if err := decodeBody(r, &body); err != nil {
 			return fmt.Errorf("%w: %s", ErrBadInput, err.Error())
 		}
-		return a.SelectMurdererCards(gameID, session.UID, body.ClueCardName, body.MeansCardName)
+		return a.SelectMurdererCards(gameID, viewerUID, body.ClueCardName, body.MeansCardName)
 	})
 }
 
 func (a *App) handleSelectCauseCard(w http.ResponseWriter, r *http.Request) {
-	a.withGameMutation(w, r, func(session *Session, gameID string) error {
+	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
 		var body struct {
 			Card ForensicCard `json:"card"`
 		}
 		if err := decodeBody(r, &body); err != nil {
 			return fmt.Errorf("%w: %s", ErrBadInput, err.Error())
 		}
-		return a.SelectForensicCauseCard(gameID, session.UID, body.Card)
+		return a.SelectForensicCauseCard(gameID, viewerUID, body.Card)
 	})
 }
 
 func (a *App) handleSelectLocationCard(w http.ResponseWriter, r *http.Request) {
-	a.withGameMutation(w, r, func(session *Session, gameID string) error {
+	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
 		var body struct {
 			Card ForensicCard `json:"card"`
 		}
 		if err := decodeBody(r, &body); err != nil {
 			return fmt.Errorf("%w: %s", ErrBadInput, err.Error())
 		}
-		return a.SelectForensicLocationCard(gameID, session.UID, body.Card)
+		return a.SelectForensicLocationCard(gameID, viewerUID, body.Card)
 	})
 }
 
 func (a *App) handleSelectOtherCard(w http.ResponseWriter, r *http.Request) {
-	a.withGameMutation(w, r, func(session *Session, gameID string) error {
+	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
 		var body struct {
 			Card            ForensicCard `json:"card"`
 			ReplaceCardName string       `json:"replaceCardName"`
@@ -223,12 +319,12 @@ func (a *App) handleSelectOtherCard(w http.ResponseWriter, r *http.Request) {
 		if err := decodeBody(r, &body); err != nil {
 			return fmt.Errorf("%w: %s", ErrBadInput, err.Error())
 		}
-		return a.SelectForensicOtherCard(gameID, session.UID, body.Card, body.ReplaceCardName)
+		return a.SelectForensicOtherCard(gameID, viewerUID, body.Card, body.ReplaceCardName)
 	})
 }
 
 func (a *App) handleMakeGuess(w http.ResponseWriter, r *http.Request) {
-	a.withGameMutation(w, r, func(session *Session, gameID string) error {
+	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
 		var body struct {
 			MurdererUID   string `json:"murdererUid"`
 			ClueCardName  string `json:"clueCardName"`
@@ -237,36 +333,41 @@ func (a *App) handleMakeGuess(w http.ResponseWriter, r *http.Request) {
 		if err := decodeBody(r, &body); err != nil {
 			return fmt.Errorf("%w: %s", ErrBadInput, err.Error())
 		}
-		return a.MakeGuess(gameID, session.UID, body.MurdererUID, body.ClueCardName, body.MeansCardName)
+		return a.MakeGuess(gameID, viewerUID, body.MurdererUID, body.ClueCardName, body.MeansCardName)
 	})
 }
 
 func (a *App) handleSendMessage(w http.ResponseWriter, r *http.Request) {
-	a.withGameMutation(w, r, func(session *Session, gameID string) error {
+	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
 		var body struct {
 			Message string `json:"message"`
 		}
 		if err := decodeBody(r, &body); err != nil {
 			return fmt.Errorf("%w: %s", ErrBadInput, err.Error())
 		}
-		return a.SendChatMessage(gameID, session.UID, body.Message)
+		return a.SendChatMessage(gameID, viewerUID, body.Message)
 	})
 }
 
 func (a *App) handleEndGame(w http.ResponseWriter, r *http.Request) {
-	a.withGameMutation(w, r, func(session *Session, gameID string) error {
-		return a.EndGame(gameID, session.UID)
+	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
+		return a.EndGame(gameID, viewerUID)
 	})
 }
 
-func (a *App) withGameMutation(w http.ResponseWriter, r *http.Request, fn func(*Session, string) error) {
+func (a *App) withGameMutation(w http.ResponseWriter, r *http.Request, fn func(string, string) error) {
 	session, err := a.requireSession(r)
 	if err != nil {
 		writeError(w, err)
 		return
 	}
 	gameID := strings.ToUpper(strings.TrimSpace(r.PathValue("gameId")))
-	if err := fn(session, gameID); err != nil {
+	viewerUID, err := a.resolveEffectiveUID(r, gameID, session.UID)
+	if err != nil {
+		writeError(w, err)
+		return
+	}
+	if err := fn(viewerUID, gameID); err != nil {
 		writeError(w, err)
 		return
 	}
@@ -299,11 +400,54 @@ func (a *App) handleSPA(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) requireSession(r *http.Request) (*Session, error) {
-	cookie, err := r.Cookie(sessionCookieName)
-	if err != nil {
+	token := sessionTokenFromRequest(r)
+	if token == "" {
 		return nil, fmt.Errorf("%w: missing session", ErrForbidden)
 	}
-	return a.GetSession(cookie.Value)
+	return a.GetSession(token)
+}
+
+func (a *App) resolveEffectiveUID(r *http.Request, gameID, sessionUID string) (string, error) {
+	gameID = strings.ToUpper(strings.TrimSpace(gameID))
+	if gameID == "" {
+		return sessionUID, nil
+	}
+	roomAuth := roomAuthFromRequest(r)
+	if roomAuth == "" {
+		return sessionUID, nil
+	}
+	uid, err := a.ResolveRoomAuthToken(gameID, roomAuth)
+	if err != nil {
+		if errors.Is(err, ErrNotFound) {
+			return sessionUID, nil
+		}
+		return "", err
+	}
+	return uid, nil
+}
+
+func sessionTokenFromRequest(r *http.Request) string {
+	authHeader := strings.TrimSpace(r.Header.Get("Authorization"))
+	if strings.HasPrefix(strings.ToLower(authHeader), "bearer ") {
+		return strings.TrimSpace(authHeader[7:])
+	}
+	if headerToken := strings.TrimSpace(r.Header.Get("X-Treachery-Session")); headerToken != "" {
+		return headerToken
+	}
+	if queryToken := strings.TrimSpace(r.URL.Query().Get("sessionToken")); queryToken != "" {
+		return queryToken
+	}
+	if cookie, err := r.Cookie(sessionCookieName); err == nil {
+		return cookie.Value
+	}
+	return ""
+}
+
+func roomAuthFromRequest(r *http.Request) string {
+	if headerToken := strings.TrimSpace(r.Header.Get("X-Treachery-Room-Auth")); headerToken != "" {
+		return headerToken
+	}
+	return strings.TrimSpace(r.URL.Query().Get("roomAuth"))
 }
 
 func decodeBody(r *http.Request, target any) error {

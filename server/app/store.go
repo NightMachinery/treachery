@@ -100,6 +100,11 @@ func (a *App) migrate() error {
 			uid TEXT NOT NULL,
 			created_timestamp TEXT NOT NULL
 		);`,
+		`CREATE TABLE IF NOT EXISTS profiles (
+			uid TEXT PRIMARY KEY,
+			display_name TEXT NOT NULL,
+			updated_timestamp TEXT NOT NULL
+		);`,
 		`CREATE TABLE IF NOT EXISTS games (
 			game_id TEXT PRIMARY KEY,
 			creator_uid TEXT NOT NULL,
@@ -109,10 +114,21 @@ func (a *App) migrate() error {
 			murderer_uid TEXT,
 			murderer_clue_card_name TEXT,
 			murderer_means_card_name TEXT,
+			scientist_uid TEXT,
+			marked_scientist_uid TEXT,
 			cause_card_json TEXT,
 			location_card_json TEXT,
 			other_cards_json TEXT NOT NULL DEFAULT '[]',
 			finished INTEGER NOT NULL DEFAULT 0
+		);`,
+		`CREATE TABLE IF NOT EXISTS participants (
+			game_id TEXT NOT NULL,
+			uid TEXT NOT NULL,
+			name TEXT NOT NULL,
+			role TEXT NOT NULL,
+			joined_timestamp TEXT NOT NULL,
+			PRIMARY KEY (game_id, uid),
+			FOREIGN KEY (game_id) REFERENCES games(game_id) ON DELETE CASCADE
 		);`,
 		`CREATE TABLE IF NOT EXISTS players (
 			game_id TEXT NOT NULL,
@@ -143,9 +159,19 @@ func (a *App) migrate() error {
 			timestamp TEXT NOT NULL,
 			FOREIGN KEY (game_id) REFERENCES games(game_id) ON DELETE CASCADE
 		);`,
+		`CREATE TABLE IF NOT EXISTS room_auth_tokens (
+			token TEXT PRIMARY KEY,
+			game_id TEXT NOT NULL,
+			uid TEXT NOT NULL,
+			created_timestamp TEXT NOT NULL,
+			UNIQUE(game_id, uid),
+			FOREIGN KEY (game_id) REFERENCES games(game_id) ON DELETE CASCADE
+		);`,
+		`CREATE INDEX IF NOT EXISTS idx_participants_game_id ON participants(game_id);`,
 		`CREATE INDEX IF NOT EXISTS idx_players_game_id ON players(game_id);`,
 		`CREATE INDEX IF NOT EXISTS idx_guesses_game_id ON guesses(game_id);`,
 		`CREATE INDEX IF NOT EXISTS idx_messages_game_id ON messages(game_id, id);`,
+		`CREATE INDEX IF NOT EXISTS idx_room_auth_game_id ON room_auth_tokens(game_id);`,
 	}
 
 	for _, stmt := range stmts {
@@ -153,6 +179,21 @@ func (a *App) migrate() error {
 			return err
 		}
 	}
+
+	legacyAlterStatements := []string{
+		`ALTER TABLE games ADD COLUMN scientist_uid TEXT;`,
+		`ALTER TABLE games ADD COLUMN marked_scientist_uid TEXT;`,
+	}
+	for _, stmt := range legacyAlterStatements {
+		_, _ = a.db.Exec(stmt)
+	}
+
+	// Backfill any pre-existing player rows into participants for older databases.
+	_, _ = a.db.Exec(`INSERT OR IGNORE INTO participants(game_id, uid, name, role, joined_timestamp)
+		SELECT p.game_id, p.uid, p.name, 'player', COALESCE(g.created_timestamp, '')
+		FROM players p
+		JOIN games g ON g.game_id = p.game_id`)
+
 	return nil
 }
 
@@ -193,10 +234,24 @@ func newUID() (string, error) {
 	return fmt.Sprintf("u-%s", token), nil
 }
 
+func normalizeParticipantRole(role ParticipantRole) (ParticipantRole, error) {
+	switch role {
+	case ParticipantRolePlayer, ParticipantRoleObserver:
+		return role, nil
+	case "":
+		return ParticipantRolePlayer, nil
+	default:
+		return "", fmt.Errorf("%w: invalid participant role", ErrBadInput)
+	}
+}
+
 func (a *App) EnsureSession(existingToken string) (*Session, error) {
 	if existingToken != "" {
 		session, err := a.GetSession(existingToken)
 		if err == nil {
+			if profile, profileErr := a.GetProfile(session.UID); profileErr == nil {
+				session.DisplayName = profile
+			}
 			return session, nil
 		}
 		if !errors.Is(err, ErrNotFound) {
@@ -229,7 +284,43 @@ func (a *App) GetSession(token string) (*Session, error) {
 		}
 		return nil, err
 	}
+	if profile, err := a.GetProfile(session.UID); err == nil {
+		session.DisplayName = profile
+	}
 	return &session, nil
+}
+
+func (a *App) GetProfile(uid string) (string, error) {
+	row := a.db.QueryRow(`SELECT display_name FROM profiles WHERE uid = ?`, uid)
+	var displayName string
+	if err := row.Scan(&displayName); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return "", ErrNotFound
+		}
+		return "", err
+	}
+	return displayName, nil
+}
+
+func (a *App) UpdateProfile(uid, displayName string) error {
+	displayName = strings.TrimSpace(displayName)
+	if displayName == "" {
+		return fmt.Errorf("%w: display name is required", ErrBadInput)
+	}
+	updatedAt := nowTimestamp(a.timeNow())
+	return a.withTx(context.Background(), func(tx *sql.Tx) error {
+		if _, err := tx.Exec(`INSERT INTO profiles(uid, display_name, updated_timestamp) VALUES (?, ?, ?)
+			ON CONFLICT(uid) DO UPDATE SET display_name = excluded.display_name, updated_timestamp = excluded.updated_timestamp`, uid, displayName, updatedAt); err != nil {
+			return err
+		}
+		if _, err := tx.Exec(`UPDATE participants SET name = ? WHERE uid = ?`, displayName, uid); err != nil {
+			return err
+		}
+		if _, err := tx.Exec(`UPDATE players SET name = ? WHERE uid = ?`, displayName, uid); err != nil {
+			return err
+		}
+		return nil
+	})
 }
 
 func (a *App) CreateGame(creatorUID, gameID string) error {
@@ -237,50 +328,179 @@ func (a *App) CreateGame(creatorUID, gameID string) error {
 	if gameID == "" {
 		return fmt.Errorf("%w: game ID is required", ErrBadInput)
 	}
-	createdAt := nowTimestamp(a.timeNow())
-	_, err := a.db.Exec(`INSERT INTO games(game_id, creator_uid, created_timestamp, other_cards_json, finished, murderer_cards_selected) VALUES (?, ?, ?, '[]', 0, 0)`, gameID, creatorUID, createdAt)
+	displayName, err := a.GetProfile(creatorUID)
 	if err != nil {
-		if strings.Contains(err.Error(), "UNIQUE") {
-			return fmt.Errorf("%w: game already exists", ErrBadInput)
+		if errors.Is(err, ErrNotFound) {
+			return fmt.Errorf("%w: display name is required", ErrBadInput)
 		}
 		return err
 	}
-	return nil
+	createdAt := nowTimestamp(a.timeNow())
+	return a.withTx(context.Background(), func(tx *sql.Tx) error {
+		_, err := tx.Exec(`INSERT INTO games(game_id, creator_uid, created_timestamp, other_cards_json, finished, murderer_cards_selected) VALUES (?, ?, ?, '[]', 0, 0)`, gameID, creatorUID, createdAt)
+		if err != nil {
+			if strings.Contains(err.Error(), "UNIQUE") {
+				return fmt.Errorf("%w: game already exists", ErrBadInput)
+			}
+			return err
+		}
+		_, err = tx.Exec(`INSERT INTO participants(game_id, uid, name, role, joined_timestamp) VALUES (?, ?, ?, ?, ?)`, gameID, creatorUID, displayName, string(ParticipantRolePlayer), createdAt)
+		return err
+	})
 }
 
-func (a *App) AddPlayer(gameID, uid, playerName string) error {
+func (a *App) UpsertParticipant(gameID, uid string, requestedRole ParticipantRole) error {
 	gameID = strings.ToUpper(strings.TrimSpace(gameID))
-	playerName = strings.TrimSpace(playerName)
-	if playerName == "" {
-		return fmt.Errorf("%w: player name is required", ErrBadInput)
+	role, err := normalizeParticipantRole(requestedRole)
+	if err != nil {
+		return err
+	}
+	displayName, err := a.GetProfile(uid)
+	if err != nil {
+		if errors.Is(err, ErrNotFound) {
+			return fmt.Errorf("%w: display name is required", ErrBadInput)
+		}
+		return err
 	}
 	return a.withTx(context.Background(), func(tx *sql.Tx) error {
 		game, err := a.getGameTx(tx, gameID)
 		if err != nil {
 			return err
 		}
-		if game.CreatorUID == uid {
-			return fmt.Errorf("%w: creator cannot join as player", ErrForbidden)
-		}
-
-		existing, err := a.getPlayerTx(tx, gameID, uid)
+		existing, err := a.getParticipantTx(tx, gameID, uid)
 		if err != nil && !errors.Is(err, ErrNotFound) {
 			return err
 		}
-		if game.StartedOn != "" && errors.Is(err, ErrNotFound) {
-			return fmt.Errorf("%w: game already started", ErrBadInput)
+		if game.StartedOn != "" {
+			switch {
+			case existing == nil && role == ParticipantRoleObserver:
+				_, err = tx.Exec(`INSERT INTO participants(game_id, uid, name, role, joined_timestamp) VALUES (?, ?, ?, ?, ?)`, gameID, uid, displayName, string(ParticipantRoleObserver), nowTimestamp(a.timeNow()))
+				return err
+			case existing == nil:
+				return fmt.Errorf("%w: game already started", ErrBadInput)
+			case existing.Role == ParticipantRolePlayer:
+				_, err = tx.Exec(`UPDATE participants SET name = ? WHERE game_id = ? AND uid = ?`, displayName, gameID, uid)
+				return err
+			default:
+				_, err = tx.Exec(`UPDATE participants SET name = ?, role = ? WHERE game_id = ? AND uid = ?`, displayName, string(ParticipantRoleObserver), gameID, uid)
+				return err
+			}
 		}
 		if existing != nil {
-			_, err = tx.Exec(`UPDATE players SET name = ? WHERE game_id = ? AND uid = ?`, playerName, gameID, uid)
+			_, err = tx.Exec(`UPDATE participants SET name = ?, role = ? WHERE game_id = ? AND uid = ?`, displayName, string(role), gameID, uid)
 			return err
 		}
-		_, err = tx.Exec(`INSERT INTO players(game_id, uid, name, clue_cards_json, means_cards_json) VALUES (?, ?, ?, '[]', '[]')`, gameID, uid, playerName)
+		_, err = tx.Exec(`INSERT INTO participants(game_id, uid, name, role, joined_timestamp) VALUES (?, ?, ?, ?, ?)`, gameID, uid, displayName, string(role), nowTimestamp(a.timeNow()))
 		return err
 	})
 }
 
+func (a *App) SetParticipantRole(gameID, actorUID, targetUID string, requestedRole ParticipantRole) error {
+	gameID = strings.ToUpper(strings.TrimSpace(gameID))
+	role, err := normalizeParticipantRole(requestedRole)
+	if err != nil {
+		return err
+	}
+	return a.withTx(context.Background(), func(tx *sql.Tx) error {
+		game, err := a.getGameTx(tx, gameID)
+		if err != nil {
+			return err
+		}
+		if game.CreatorUID != actorUID {
+			return fmt.Errorf("%w: only the creator can update participant roles", ErrForbidden)
+		}
+		if game.StartedOn != "" {
+			return fmt.Errorf("%w: game already started", ErrBadInput)
+		}
+		participant, err := a.getParticipantTx(tx, gameID, targetUID)
+		if err != nil {
+			return err
+		}
+		if _, err := tx.Exec(`UPDATE participants SET role = ? WHERE game_id = ? AND uid = ?`, string(role), gameID, targetUID); err != nil {
+			return err
+		}
+		if role == ParticipantRoleObserver && game.MarkedScientistUID == targetUID {
+			game.MarkedScientistUID = ""
+			if err := a.saveGameTx(tx, game); err != nil {
+				return err
+			}
+		}
+		if role == ParticipantRoleObserver && participant.UID == game.CreatorUID {
+			return nil
+		}
+		return nil
+	})
+}
+
+func (a *App) ToggleScientistMark(gameID, actorUID, targetUID string) error {
+	gameID = strings.ToUpper(strings.TrimSpace(gameID))
+	return a.withTx(context.Background(), func(tx *sql.Tx) error {
+		game, err := a.getGameTx(tx, gameID)
+		if err != nil {
+			return err
+		}
+		if game.CreatorUID != actorUID {
+			return fmt.Errorf("%w: only the creator can mark the forensic scientist", ErrForbidden)
+		}
+		if game.StartedOn != "" {
+			return fmt.Errorf("%w: game already started", ErrBadInput)
+		}
+		participant, err := a.getParticipantTx(tx, gameID, targetUID)
+		if err != nil {
+			return err
+		}
+		if participant.Role != ParticipantRolePlayer {
+			return fmt.Errorf("%w: only players can be marked as scientist", ErrBadInput)
+		}
+		if game.MarkedScientistUID == targetUID {
+			game.MarkedScientistUID = ""
+		} else {
+			game.MarkedScientistUID = targetUID
+		}
+		return a.saveGameTx(tx, game)
+	})
+}
+
+func (a *App) CreateOrGetRoomAuthToken(gameID, uid string) (*RoomAuthToken, error) {
+	gameID = strings.ToUpper(strings.TrimSpace(gameID))
+	row := a.db.QueryRow(`SELECT token, game_id, uid, created_timestamp FROM room_auth_tokens WHERE game_id = ? AND uid = ?`, gameID, uid)
+	var token RoomAuthToken
+	if err := row.Scan(&token.Token, &token.GameID, &token.UID, &token.CreatedTimestamp); err == nil {
+		return &token, nil
+	} else if !errors.Is(err, sql.ErrNoRows) {
+		return nil, err
+	}
+
+	generated, err := randomToken(24)
+	if err != nil {
+		return nil, err
+	}
+	createdAt := nowTimestamp(a.timeNow())
+	_, err = a.db.Exec(`INSERT INTO room_auth_tokens(token, game_id, uid, created_timestamp) VALUES (?, ?, ?, ?)`, generated, gameID, uid, createdAt)
+	if err != nil {
+		if strings.Contains(err.Error(), "UNIQUE") {
+			return a.CreateOrGetRoomAuthToken(gameID, uid)
+		}
+		return nil, err
+	}
+	return &RoomAuthToken{Token: generated, GameID: gameID, UID: uid, CreatedTimestamp: createdAt}, nil
+}
+
+func (a *App) ResolveRoomAuthToken(gameID, token string) (string, error) {
+	gameID = strings.ToUpper(strings.TrimSpace(gameID))
+	row := a.db.QueryRow(`SELECT uid FROM room_auth_tokens WHERE game_id = ? AND token = ?`, gameID, token)
+	var uid string
+	if err := row.Scan(&uid); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return "", ErrNotFound
+		}
+		return "", err
+	}
+	return uid, nil
+}
+
 func (a *App) ListGames() ([]Game, error) {
-	rows, err := a.db.Query(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, cause_card_json, location_card_json, other_cards_json, finished FROM games ORDER BY created_timestamp DESC`)
+	rows, err := a.db.Query(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished FROM games ORDER BY created_timestamp DESC`)
 	if err != nil {
 		return nil, err
 	}
@@ -303,6 +523,10 @@ func (a *App) GetSnapshot(gameID, viewerUID string) (*GameSnapshot, error) {
 	if err != nil {
 		return nil, err
 	}
+	participants, err := a.getParticipants(gameID)
+	if err != nil {
+		return nil, err
+	}
 	players, err := a.getPlayers(gameID)
 	if err != nil {
 		return nil, err
@@ -316,11 +540,24 @@ func (a *App) GetSnapshot(gameID, viewerUID string) (*GameSnapshot, error) {
 		return nil, err
 	}
 
+	viewer := Viewer{UID: viewerUID}
+	if game.CreatorUID == viewerUID {
+		viewer.IsCreator = true
+	}
+	if participant := findParticipant(participants, viewerUID); participant != nil {
+		viewer.IsParticipant = true
+		viewer.Role = participant.Role
+		viewer.Name = participant.Name
+		viewer.IsScientist = participant.IsScientist
+	}
+
 	snapshot := &GameSnapshot{
 		Game:              game,
+		Participants:      participants,
 		Players:           players,
 		Guesses:           guesses,
 		Messages:          messages,
+		Viewer:            viewer,
 		PlayerPrivateData: PlayerPrivateData{},
 	}
 
@@ -336,7 +573,7 @@ func (a *App) GetSnapshot(gameID, viewerUID string) (*GameSnapshot, error) {
 		}
 	}
 
-	if game.CreatorUID == viewerUID {
+	if game.ScientistUID == viewerUID {
 		privateData := &ForensicPrivateData{
 			MurdererClueCardName:  game.MurdererClueCardName,
 			MurdererMeansCardName: game.MurdererMeansCardName,
@@ -359,38 +596,47 @@ func (a *App) StartGame(gameID, creatorUID string) error {
 			return err
 		}
 		if game.CreatorUID != creatorUID {
-			return fmt.Errorf("%w: only the forensic scientist can start the game", ErrForbidden)
+			return fmt.Errorf("%w: only the creator can start the game", ErrForbidden)
 		}
 		if game.StartedOn != "" {
 			return fmt.Errorf("%w: game already started", ErrBadInput)
 		}
-		players, err := a.getPlayersTx(tx, gameID)
+		participants, err := a.getParticipantsTx(tx, gameID)
 		if err != nil {
 			return err
 		}
-		if len(players) < 3 {
-			return fmt.Errorf("%w: need at least 3 players to start", ErrBadInput)
+		playerParticipants := filterParticipantsByRole(participants, ParticipantRolePlayer)
+		if len(playerParticipants) < 4 {
+			return fmt.Errorf("%w: need at least 4 players to start", ErrBadInput)
 		}
 		if len(a.cards.ForensicCards.OtherCards) < 6 {
 			return fmt.Errorf("%w: missing forensic cards", ErrBadInput)
 		}
 
-		otherCards := cloneForensicCards(sampleRandom(a.rand, a.cards.ForensicCards.OtherCards, 6))
-		clueCards := cloneCards(sampleRandom(a.rand, a.cards.ClueCards, len(players)*4))
-		meansCards := cloneCards(sampleRandom(a.rand, a.cards.MeansCards, len(players)*4))
-
-		for i := range players {
-			players[i].ClueCards = cloneCards(clueCards[i*4 : (i+1)*4])
-			players[i].MeansCards = cloneCards(meansCards[i*4 : (i+1)*4])
-			if err := a.savePlayerCardsTx(tx, gameID, players[i]); err != nil {
-				return err
+		scientist := a.selectScientist(game, playerParticipants)
+		suspects := make([]Participant, 0, len(playerParticipants)-1)
+		for _, participant := range playerParticipants {
+			if participant.UID == scientist.UID {
+				continue
 			}
+			suspects = append(suspects, participant)
+		}
+		if len(suspects) < 3 {
+			return fmt.Errorf("%w: need at least 3 suspects after choosing a scientist", ErrBadInput)
 		}
 
-		murderer := players[a.rand.Intn(len(players))]
+		otherCards := cloneForensicCards(sampleRandom(a.rand, a.cards.ForensicCards.OtherCards, 6))
+		clueCards := cloneCards(sampleRandom(a.rand, a.cards.ClueCards, len(suspects)*4))
+		meansCards := cloneCards(sampleRandom(a.rand, a.cards.MeansCards, len(suspects)*4))
+		if err := a.replaceGamePlayersTx(tx, gameID, suspects, clueCards, meansCards); err != nil {
+			return err
+		}
+
+		murderer := suspects[a.rand.Intn(len(suspects))]
 		startedOn := nowTimestamp(a.timeNow())
 		game.StartedOn = startedOn
 		game.StartedTimestamp = startedOn
+		game.ScientistUID = scientist.UID
 		game.MurdererUID = murderer.UID
 		game.MurdererSelected = true
 		game.MurdererCardsSelected = false
@@ -398,11 +644,48 @@ func (a *App) StartGame(gameID, creatorUID string) error {
 		if err := a.saveGameTx(tx, game); err != nil {
 			return err
 		}
-		if err := a.sendForensicMessageTx(tx, gameID, "Game started! Murderer, select your cards. Don't let anyone else find out!"); err != nil {
+		if err := a.sendForensicMessageTx(tx, gameID, "Game started! The forensic scientist has been chosen. Murderer, select your cards without revealing them."); err != nil {
 			return err
 		}
 		return nil
 	})
+}
+
+func (a *App) selectScientist(game *Game, playerParticipants []Participant) Participant {
+	if game.MarkedScientistUID != "" {
+		for _, participant := range playerParticipants {
+			if participant.UID == game.MarkedScientistUID {
+				return participant
+			}
+		}
+	}
+	return playerParticipants[a.rand.Intn(len(playerParticipants))]
+}
+
+func (a *App) replaceGamePlayersTx(tx *sql.Tx, gameID string, suspects []Participant, clueCards, meansCards []Card) error {
+	if _, err := tx.Exec(`DELETE FROM players WHERE game_id = ?`, gameID); err != nil {
+		return err
+	}
+	for i, participant := range suspects {
+		player := Player{
+			UID:        participant.UID,
+			Name:       participant.Name,
+			ClueCards:  cloneCards(clueCards[i*4 : (i+1)*4]),
+			MeansCards: cloneCards(meansCards[i*4 : (i+1)*4]),
+		}
+		clueJSON, err := json.Marshal(player.ClueCards)
+		if err != nil {
+			return err
+		}
+		meansJSON, err := json.Marshal(player.MeansCards)
+		if err != nil {
+			return err
+		}
+		if _, err := tx.Exec(`INSERT INTO players(game_id, uid, name, clue_cards_json, means_cards_json) VALUES (?, ?, ?, ?, ?)`, gameID, player.UID, player.Name, string(clueJSON), string(meansJSON)); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (a *App) SelectMurdererCards(gameID, uid, clueCardName, meansCardName string) error {
@@ -454,7 +737,7 @@ func (a *App) SelectForensicOtherCard(gameID, uid string, card ForensicCard, rep
 		if err != nil {
 			return err
 		}
-		if game.CreatorUID != uid {
+		if game.ScientistUID != uid {
 			return fmt.Errorf("%w: only the forensic scientist can update clue cards", ErrForbidden)
 		}
 
@@ -499,7 +782,7 @@ func (a *App) MakeGuess(gameID, uid, murdererUID, clueCardName, meansCardName st
 		if err != nil {
 			return err
 		}
-		if game.CreatorUID == uid {
+		if game.ScientistUID == uid {
 			return fmt.Errorf("%w: forensic scientist cannot guess", ErrForbidden)
 		}
 		if game.Finished {
@@ -557,10 +840,15 @@ func (a *App) SendChatMessage(gameID, uid, message string) error {
 		if err != nil {
 			return err
 		}
-		if game.CreatorUID != uid {
-			if _, err := a.getPlayerTx(tx, gameID, uid); err != nil {
-				return fmt.Errorf("%w: only game participants can send messages", ErrForbidden)
-			}
+		participant, err := a.getParticipantTx(tx, gameID, uid)
+		if err != nil {
+			return fmt.Errorf("%w: only game participants can send messages", ErrForbidden)
+		}
+		if participant.Role != ParticipantRolePlayer {
+			return fmt.Errorf("%w: observers cannot send messages", ErrForbidden)
+		}
+		if game.StartedOn != "" && game.ScientistUID == uid {
+			return fmt.Errorf("%w: forensic scientist cannot send chat after the game starts", ErrForbidden)
 		}
 		return a.sendMessageTx(tx, gameID, uid, message, MessageTypeChat)
 	})
@@ -574,7 +862,7 @@ func (a *App) EndGame(gameID, uid string) error {
 			return err
 		}
 		if game.CreatorUID != uid {
-			return fmt.Errorf("%w: only the forensic scientist can end the game", ErrForbidden)
+			return fmt.Errorf("%w: only the creator can end the game", ErrForbidden)
 		}
 		game.Finished = true
 		return a.saveGameTx(tx, game)
@@ -588,7 +876,7 @@ func (a *App) updateForensicCard(gameID, uid string, mutator func(*Game) error) 
 		if err != nil {
 			return err
 		}
-		if game.CreatorUID != uid {
+		if game.ScientistUID != uid {
 			return fmt.Errorf("%w: only the forensic scientist can update clue cards", ErrForbidden)
 		}
 		if err := mutator(game); err != nil {
@@ -634,7 +922,7 @@ func (a *App) checkAndEndGameTx(tx *sql.Tx, game *Game) error {
 }
 
 func (a *App) getGame(gameID string) (*Game, error) {
-	row := a.db.QueryRow(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, cause_card_json, location_card_json, other_cards_json, finished FROM games WHERE game_id = ?`, gameID)
+	row := a.db.QueryRow(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished FROM games WHERE game_id = ?`, gameID)
 	game, err := scanGame(row)
 	if err != nil {
 		return nil, err
@@ -643,7 +931,7 @@ func (a *App) getGame(gameID string) (*Game, error) {
 }
 
 func (a *App) getGameTx(tx *sql.Tx, gameID string) (*Game, error) {
-	row := tx.QueryRow(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, cause_card_json, location_card_json, other_cards_json, finished FROM games WHERE game_id = ?`, gameID)
+	row := tx.QueryRow(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished FROM games WHERE game_id = ?`, gameID)
 	game, err := scanGame(row)
 	if err != nil {
 		return nil, err
@@ -659,12 +947,12 @@ func scanGame(scanner rowScanner) (*Game, error) {
 	var (
 		gameID, creatorUID, createdTimestamp                                string
 		startedOn, murdererUID, murdererClueCardName, murdererMeansCardName sql.NullString
+		scientistUID, markedScientistUID                                    sql.NullString
 		causeCardJSON, locationCardJSON                                     sql.NullString
 		otherCardsJSON                                                      string
-		murdererCardsSelected                                               int
-		finished                                                            int
+		murdererCardsSelected, finished                                     int
 	)
-	if err := scanner.Scan(&gameID, &creatorUID, &createdTimestamp, &startedOn, &murdererCardsSelected, &murdererUID, &murdererClueCardName, &murdererMeansCardName, &causeCardJSON, &locationCardJSON, &otherCardsJSON, &finished); err != nil {
+	if err := scanner.Scan(&gameID, &creatorUID, &createdTimestamp, &startedOn, &murdererCardsSelected, &murdererUID, &murdererClueCardName, &murdererMeansCardName, &scientistUID, &markedScientistUID, &causeCardJSON, &locationCardJSON, &otherCardsJSON, &finished); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, ErrNotFound
 		}
@@ -681,6 +969,8 @@ func scanGame(scanner rowScanner) (*Game, error) {
 		MurdererUID:           murdererUID.String,
 		MurdererClueCardName:  murdererClueCardName.String,
 		MurdererMeansCardName: murdererMeansCardName.String,
+		ScientistUID:          scientistUID.String,
+		MarkedScientistUID:    markedScientistUID.String,
 		Finished:              finished == 1,
 	}
 	if otherCardsJSON != "" {
@@ -703,6 +993,84 @@ func scanGame(scanner rowScanner) (*Game, error) {
 		game.LocationCard = &card
 	}
 	return game, nil
+}
+
+func (a *App) getParticipants(gameID string) ([]Participant, error) {
+	rows, err := a.db.Query(`SELECT p.uid, p.name, p.role, g.creator_uid, g.scientist_uid, g.marked_scientist_uid
+		FROM participants p
+		JOIN games g ON g.game_id = p.game_id
+		WHERE p.game_id = ?
+		ORDER BY p.joined_timestamp ASC, p.rowid ASC`, gameID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	return scanParticipants(rows)
+}
+
+func (a *App) getParticipantsTx(tx *sql.Tx, gameID string) ([]Participant, error) {
+	rows, err := tx.Query(`SELECT p.uid, p.name, p.role, g.creator_uid, g.scientist_uid, g.marked_scientist_uid
+		FROM participants p
+		JOIN games g ON g.game_id = p.game_id
+		WHERE p.game_id = ?
+		ORDER BY p.joined_timestamp ASC, p.rowid ASC`, gameID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	return scanParticipants(rows)
+}
+
+func scanParticipants(rows *sql.Rows) ([]Participant, error) {
+	participants := []Participant{}
+	for rows.Next() {
+		var uid, name, role, creatorUID string
+		var scientistUID, markedScientistUID sql.NullString
+		if err := rows.Scan(&uid, &name, &role, &creatorUID, &scientistUID, &markedScientistUID); err != nil {
+			return nil, err
+		}
+		participants = append(participants, Participant{
+			UID:               uid,
+			Name:              name,
+			Role:              ParticipantRole(role),
+			IsCreator:         uid == creatorUID,
+			IsScientist:       scientistUID.Valid && scientistUID.String == uid,
+			IsMarkedScientist: markedScientistUID.Valid && markedScientistUID.String == uid,
+		})
+	}
+	return participants, rows.Err()
+}
+
+func (a *App) getParticipantTx(tx *sql.Tx, gameID, uid string) (*Participant, error) {
+	row := tx.QueryRow(`SELECT p.uid, p.name, p.role, g.creator_uid, g.scientist_uid, g.marked_scientist_uid
+		FROM participants p
+		JOIN games g ON g.game_id = p.game_id
+		WHERE p.game_id = ? AND p.uid = ?`, gameID, uid)
+
+	var participant Participant
+	var role, creatorUID string
+	var scientistUID, markedScientistUID sql.NullString
+	if err := row.Scan(&participant.UID, &participant.Name, &role, &creatorUID, &scientistUID, &markedScientistUID); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, ErrNotFound
+		}
+		return nil, err
+	}
+	participant.Role = ParticipantRole(role)
+	participant.IsCreator = participant.UID == creatorUID
+	participant.IsScientist = scientistUID.Valid && scientistUID.String == participant.UID
+	participant.IsMarkedScientist = markedScientistUID.Valid && markedScientistUID.String == participant.UID
+	return &participant, nil
+}
+
+func filterParticipantsByRole(participants []Participant, role ParticipantRole) []Participant {
+	result := make([]Participant, 0, len(participants))
+	for _, participant := range participants {
+		if participant.Role == role {
+			result = append(result, participant)
+		}
+	}
+	return result
 }
 
 func (a *App) getPlayers(gameID string) ([]Player, error) {
@@ -828,31 +1196,20 @@ func (a *App) saveGameTx(tx *sql.Tx, game *Game) error {
 		}
 		locationCardJSON = string(data)
 	}
-	_, err = tx.Exec(`UPDATE games SET started_on = ?, murderer_cards_selected = ?, murderer_uid = ?, murderer_clue_card_name = ?, murderer_means_card_name = ?, cause_card_json = ?, location_card_json = ?, other_cards_json = ?, finished = ? WHERE game_id = ?`,
+	_, err = tx.Exec(`UPDATE games SET started_on = ?, murderer_cards_selected = ?, murderer_uid = ?, murderer_clue_card_name = ?, murderer_means_card_name = ?, scientist_uid = ?, marked_scientist_uid = ?, cause_card_json = ?, location_card_json = ?, other_cards_json = ?, finished = ? WHERE game_id = ?`,
 		nullableString(game.StartedOn),
 		boolToInt(game.MurdererCardsSelected),
 		nullableString(game.MurdererUID),
 		nullableString(game.MurdererClueCardName),
 		nullableString(game.MurdererMeansCardName),
+		nullableString(game.ScientistUID),
+		nullableString(game.MarkedScientistUID),
 		causeCardJSON,
 		locationCardJSON,
 		string(otherCardsJSON),
 		boolToInt(game.Finished),
 		game.GameID,
 	)
-	return err
-}
-
-func (a *App) savePlayerCardsTx(tx *sql.Tx, gameID string, player Player) error {
-	clueJSON, err := json.Marshal(player.ClueCards)
-	if err != nil {
-		return err
-	}
-	meansJSON, err := json.Marshal(player.MeansCards)
-	if err != nil {
-		return err
-	}
-	_, err = tx.Exec(`UPDATE players SET clue_cards_json = ?, means_cards_json = ? WHERE game_id = ? AND uid = ?`, string(clueJSON), string(meansJSON), gameID, player.UID)
 	return err
 }
 
@@ -863,6 +1220,15 @@ func (a *App) sendMessageTx(tx *sql.Tx, gameID, playerUID, message string, messa
 
 func (a *App) sendForensicMessageTx(tx *sql.Tx, gameID, message string) error {
 	return a.sendMessageTx(tx, gameID, "", message, MessageTypeForensic)
+}
+
+func findParticipant(participants []Participant, uid string) *Participant {
+	for i := range participants {
+		if participants[i].UID == uid {
+			return &participants[i]
+		}
+	}
+	return nil
 }
 
 func findPlayer(players []Player, uid string) *Player {

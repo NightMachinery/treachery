@@ -1,9 +1,7 @@
-import { GameApiService } from './../../../shared/api/game/game-api.service';
-import { TgCard, TgGuess, TgPlayer, TgPartialGuess } from '../../../shared/api/models/models';
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PlayerApiService } from '../../../shared/api/player/player-api.service';
-import { AuthService } from './../../../shared/api/auth/auth.service';
+import { GameApiService } from './../../../shared/api/game/game-api.service';
+import { TgPartialGuess, TgPlayer, TgViewer } from '../../../shared/api/models/models';
 
 @Component({
   selector: 'app-player-deck-pager',
@@ -12,20 +10,20 @@ import { AuthService } from './../../../shared/api/auth/auth.service';
 })
 export class PlayerDeckPagerComponent implements OnInit {
   players$: Observable<TgPlayer[]>;
+  viewer$: Observable<TgViewer>;
   @Input() guess: TgPartialGuess = {} as TgPartialGuess;
   @Input() disableSelection: boolean;
   selectedClue: string;
   selectedMeans: string;
   player$: Observable<TgPlayer>;
 
-  constructor(gameApi: GameApiService, private auth: AuthService) {
+  constructor(gameApi: GameApiService) {
     this.players$ = gameApi.getCurrentGamePlayers();
     this.player$ = gameApi.getCurrentGamePlayer();
+    this.viewer$ = gameApi.getCurrentViewer();
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 
   handleClueChange(player: TgPlayer) {
     this.guess.murdererUid = player.uid;
@@ -45,7 +43,7 @@ export class PlayerDeckPagerComponent implements OnInit {
     this.guess.clueCardName = this.selectedClue;
   }
 
-  otherPlayers(players: TgPlayer[]) {
-    return players ? players.filter(player => player.uid !== this.auth.user.uid) : null;
+  otherPlayers(players: TgPlayer[], viewer: TgViewer) {
+    return players ? players.filter(player => !viewer || player.uid !== viewer.uid) : [];
   }
 }

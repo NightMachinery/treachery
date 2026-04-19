@@ -1,22 +1,21 @@
-import { ChatApiService } from 'src/app/shared/api/chat/chat-api.service';
-import { TgGame, TgForensicPrivateData, TgForensicCard, TgCard } from './../../shared/api/models/models';
-import { ForensicApiService } from './../../shared/api/forensic/forensic-api.service';
-import { GameApiService } from '../../shared/api/game/game-api.service';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs/internal/Observable';
-import { CardApiService } from './../../shared/api/card/card-api.service';
-import { take } from 'rxjs/operators';
-import { AuthService } from './../../shared/api/auth/auth.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { ChatApiService } from 'src/app/shared/api/chat/chat-api.service';
+import { CardApiService } from './../../shared/api/card/card-api.service';
+import { AuthService } from './../../shared/api/auth/auth.service';
+import { GameApiService } from '../../shared/api/game/game-api.service';
+import { ForensicApiService } from './../../shared/api/forensic/forensic-api.service';
 import { SnackBarService } from './../../shared/api/snack-bar/snack-bar.service';
+import { TgCard, TgForensicCard, TgForensicPrivateData, TgGame } from './../../shared/api/models/models';
 
 @Component({
   selector: 'app-forensic',
   templateUrl: './forensic.component.html',
   styleUrls: ['./forensic.component.scss']
 })
-export class ForensicComponent implements OnInit {
+export class ForensicComponent implements OnInit, OnDestroy {
   selectedCauseCardName: string;
   selectedLocationCardName: string;
   selectedCauseCardOption: string;
@@ -24,15 +23,13 @@ export class ForensicComponent implements OnInit {
   selectedOtherCardOption: string;
   replaceCardName: string;
   loading = true;
-  subscription: Subscription;
-  subscription2: Subscription;
+  private subscription = new Subscription();
 
   constructor(
     private route: ActivatedRoute,
     public cardApi: CardApiService,
     public forensicApi: ForensicApiService,
     public gameApi: GameApiService,
-    public router: Router,
     public auth: AuthService,
     public chatApi: ChatApiService,
     private snack: SnackBarService
@@ -42,27 +39,33 @@ export class ForensicComponent implements OnInit {
     setTimeout(() => {
       this.loading = false;
     }, 10000);
-    this.route.params.subscribe(async ({ gameId }) => {
-      this.gameApi.setGameId(gameId);
-      this.subscription = this.gameApi.players$.subscribe(players => {
-        this.subscription2 = this.gameApi.game$.subscribe(game => {
-          if (players && game) {
-            if (players.find(player => player.uid === this.auth.user.uid)) {
-              this.router.navigateByUrl(`/play/${gameId}`);
-            } else if (game.creatorUid === this.auth.user.uid) {
-              // correct page
-            } else {
-              this.router.navigateByUrl(`/join/${gameId}`);
-            }
-          }
-        });
-      });
-    });
+    this.subscription.add(
+      this.route.params.subscribe(async ({ gameId }) => {
+        const roomAuth = this.route.snapshot.queryParamMap.get('roomAuth') || null;
+        this.gameApi.setGameContext(gameId, roomAuth);
+        await this.gameApi.refreshSnapshot();
+      })
+    );
+    this.subscription.add(
+      this.route.queryParams.subscribe(params => {
+        const roomAuth = params.roomAuth || null;
+        if (this.gameApi.gameId$.value) {
+          this.gameApi.setGameContext(this.gameApi.gameId$.value, roomAuth);
+        }
+      })
+    );
+    this.subscription.add(
+      this.gameApi.snapshot$.subscribe(snapshot => {
+        if (!snapshot || !snapshot.game) {
+          return;
+        }
+        this.syncRoute(snapshot).catch(error => console.warn('Failed to sync forensic route', error));
+      })
+    );
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
-    this.subscription2.unsubscribe();
   }
 
   getChosenMeansCard(privateObj: TgForensicPrivateData) {
@@ -147,5 +150,32 @@ export class ForensicComponent implements OnInit {
 
   endGame() {
     this.forensicApi.endGame();
+  }
+
+  async copyMigrateLink() {
+    const link = await this.gameApi.createMigrateLink();
+    if (!link) {
+      this.snack.error('Could not create a migrate-device link.');
+      return;
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(link);
+    } else {
+      window.prompt('Copy this migrate-device link', link);
+    }
+  }
+
+  private async syncRoute(snapshot) {
+    if (!snapshot.game.startedOn) {
+      await this.gameApi.navigateTo('join', snapshot.game.gameId);
+      return;
+    }
+    if (!snapshot.viewer.isScientist) {
+      if (snapshot.viewer.isParticipant && snapshot.viewer.role === 'player') {
+        await this.gameApi.navigateTo('play', snapshot.game.gameId);
+      } else {
+        await this.gameApi.navigateTo('observe', snapshot.game.gameId);
+      }
+    }
   }
 }

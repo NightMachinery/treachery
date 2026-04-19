@@ -1,9 +1,8 @@
-
-![Deployment](https://github.com/kindeep/treachery-angular/workflows/Firebase%20Deployment/badge.svg?branch=master) 
+![Deployment](https://github.com/kindeep/treachery-angular/workflows/Firebase%20Deployment/badge.svg?branch=master)
 
 # Treachery Web App
 
-https://treacheryonline.web.app 
+https://treacheryonline.web.app
 
 A web app for a board game based on Deception: Murder in Hong Kong
 
@@ -15,43 +14,45 @@ A web app for a board game based on Deception: Murder in Hong Kong
 
 ![1](screenshots/forensic/0.png)
 
-2. **Invite your friends to join the game**: Either copy the link on the start screen, or share the game code which your friends can enter on the home page to join.
+2. **Invite your friends to join the game**: Either copy the room link on the start screen, or share the game code which friends can enter on the home page. Anyone opening a started-game link now joins as a read-only observer unless they are already in the room.
 
 ![1](screenshots/forensic/1.png)
 
-3. **Start the game**: You will need at least three people (excluding you, the Forensic Scientist) to start the game. When ready, click "Start Game"
+3. **Set up the lobby**: The creator is a normal player and moderator. Before the game starts, the creator can toggle any participant between **player** and **observer**, and can toggle-mark one player as the forensic scientist. If nobody is marked, the app picks a forensic scientist randomly from the current players.
 
 ![1](screenshots/forensic/2.png)
 
-4. **Wait for murderer to select their cards**: The game distributes cards among all players randomly. Each player gets 4 means cards and 4 clue cards. One person out of the players is selected to be the murderer. Only you know his identity, and you are not allowed to reveal it. (Note that chat is disabled). The murderer is prompted to select one clue card and one means card from the cards that he is dealt out.
+4. **Start the game**: You now need at least four lobby players total so one can become the forensic scientist and three suspects remain. When the game starts, the selected forensic scientist stays visible in the room roster but does not receive cards, cannot guess, and cannot chat during the active game.
+
+5. **Wait for murderer to select their cards**: The game distributes cards among the remaining suspect players randomly. Each suspect gets 4 means cards and 4 clue cards. One suspect is selected to be the murderer. Only the forensic scientist knows that identity, and they are not allowed to reveal it. The murderer is prompted to select one clue card and one means card from the cards they were dealt.
 
 ![1](screenshots/forensic/3.png)
 
-5. **Round 1 of clues**: You will be presented with cards that you can use to give clues to the Investigators to figure out who the murderer is. For each card, select one of the options and click "Select ___ card" to finalize your selection. The first card, the Cause of death card is fixed. For the second card, you get a choice among different Location cards. Choose whichever one you think would fit best. For the rest of the cards, they're selected randomly. In the first round, you should select a total of 6 cards. After selection is complete, start a timer for Investigators to discuss among themselves. Ideally, Investigators should be on a voice call, but you may also use the text chat function provided by the app. (You're not allowed to reveal who the murderer is, or any clues other than the cards you selected.). The discussion timer can be anything you decide, for instance 2:00 minutes. After the 2:00 minutes for discussion is over, each Investigator gets 30 secs uninterrupted to speak their case for who they think it is and why. After this is over, we move on to round 2.
+6. **Round 1 of clues**: You will be presented with cards that you can use to give clues to the Investigators to figure out who the murderer is. For each card, select one of the options and click "Select \_\_\_ card" to finalize your selection. The first card, the Cause of death card is fixed. For the second card, you get a choice among different Location cards. Choose whichever one you think would fit best. For the rest of the cards, they're selected randomly. In the first round, you should select a total of 6 cards. After selection is complete, start a timer for Investigators to discuss among themselves. Ideally, Investigators should be on a voice call, but you may also use the text chat function provided by the app. (You're not allowed to reveal who the murderer is, or any clues other than the cards you selected.). The discussion timer can be anything you decide, for instance 2:00 minutes. After the 2:00 minutes for discussion is over, each Investigator gets 30 secs uninterrupted to speak their case for who they think it is and why. After this is over, we move on to round 2.
 
 ![1](screenshots/forensic/4.png)
 
-6. **Round 2 & 3 of clues**: You will now randomly be dealt another card, which you can use to replace one of the existing cards. After making this replacement, start a timer again for investigators to discuss, say 2:00 min, followed by each Investigator getting 30 seconds interrupted to present their case. Repeat this for round 3.
+7. **Round 2 & 3 of clues**: You will now randomly be dealt another card, which you can use to replace one of the existing cards. After making this replacement, start a timer again for investigators to discuss, say 2:00 min, followed by each Investigator getting 30 seconds interrupted to present their case. Repeat this for round 3.
 
 ![1](screenshots/forensic/5.png)
 
-7. **Ending the game**: If no one correctly guesses who the murderer is before the end of round 3, you must end the game. The murderer wins. At any point, if an investigator submits the correct guess, the game also ends and the Investigators win.
+8. **Ending the game**: If no one correctly guesses who the murderer is before the end of round 3, you must end the game. The murderer wins. At any point, if an investigator submits the correct guess, the game also ends and the Investigators win.
 
 ![1](screenshots/forensic/6.png)
 
 ## Player
 
-1. **Joining the game**: Either use the link shared by your investigator or enter the game code shared by the investigator on the home page https://treacheryonline.web.app to join the game. This should take you to a screen to join the game. Enter your Nickname, and click "Join Game" to join. This takes you to the lobby.
+1. **Joining the game**: Either use the shared room link or enter the room code on the home page. The first time you join, create, or observe a room, the app asks for a display name and then saves it to your local auth session so you are not prompted again. Future joins reuse that saved identity automatically.
 
 ![1](screenshots/investigator/0.png)
 
-2. **Lobby**: You can see the players that have joined the lobby, you may use the chat function to talk to people in the lobby now. You will have to wait for your Forensic Scientist to start the game. The lobby needs at least 3 people for the Forensic Scientist to do so. After the forensic scientist starts the game, you will find out if you're an Investigator or a Murderer.
+2. **Lobby**: You can see every room participant in the lobby, including observers. Players can use chat in the lobby. The creator can switch participants between player and observer, and can mark one player as the forensic scientist. The lobby needs at least 4 players before the game can start. After the game starts, the chosen forensic scientist is either the marked player or a random player if nobody was marked.
 
 ![1](screenshots/investigator/1.png)
 
 ## Investigator
 
-1. **Start screen**: After the Forensic Scientist starts the game, you will see that "Murderer is selection their cards". You can see all the players and what cards they have here. One of the other players is the Murderer and is selecting one Means Card and one Clue card right now. Your objective along with the other investigators is to find out who the murderer is along with correctly guessing both their cards. Your forensic scientist will give out clues for you to figure this out.
+1. **Start screen**: After the forensic scientist starts the game, you will see that the murderer is selecting their cards. You can see the suspect players and their cards here. One of the other suspects is the murderer and is selecting one Means card and one Clue card right now. Your objective along with the other investigators is to find out who the murderer is along with correctly guessing both their cards. Your forensic scientist will give out clues for you to figure this out.
 
 ![1](screenshots/investigator/2.png)
 
@@ -63,7 +64,7 @@ A web app for a board game based on Deception: Murder in Hong Kong
 
 ![1](screenshots/investigator/4.png)
 
-4. **Round 1**: Your forensic scientist will initially select 6 cards, here Round 1 begins and the Forensic Scientist gives you a set time to discuss amongst yourselves to who you think the murderer is. Use this time wisely. At the end of the discussion time, you will all get 30 seconds uninterrupted to present your case for who you think the murderer is, or why you're not the murderer. Round 1 ends here. 
+4. **Round 1**: Your forensic scientist will initially select 6 cards, here Round 1 begins and the Forensic Scientist gives you a set time to discuss amongst yourselves to who you think the murderer is. Use this time wisely. At the end of the discussion time, you will all get 30 seconds uninterrupted to present your case for who you think the murderer is, or why you're not the murderer. Round 1 ends here.
 
 ![1](screenshots/investigator/5.png)
 
@@ -73,7 +74,7 @@ A web app for a board game based on Deception: Murder in Hong Kong
 
 ## Murderer
 
-1. **You are the murderer**: You will be prompted to select a clue card and a means card. The forensic scientist will give out clues based on these selections, so select wisely. The game can only begin after you have made this selection.
+1. **You are the murderer**: You will be prompted to select a clue card and a means card. The forensic scientist will give out clues based on these selections, so select wisely. Once the room starts, the forensic scientist does not get cards; only the suspect players do.
 
 ![1](screenshots/murderer/0.png)
 
@@ -81,8 +82,14 @@ A web app for a board game based on Deception: Murder in Hong Kong
 
 ![1](screenshots/murderer/1.png)
 
-
 ## Workflow
-* Pushes to `master` go to production at https://treacheryonline.web.app 
 
+- Pushes to `master` go to production at https://treacheryonline.web.app
 
+## Identity and device migration
+
+- Each browser keeps a local auth token in local storage.
+- Your saved display name is attached to that auth identity, so you only need to enter it once.
+- Any room participant can use **Migrate device** to copy a room-specific link that reuses that room identity on another device without exposing the real auth token.
+- The migration link is room-scoped and stays in the URL so refresh keeps the imported identity for that room.
+- Opening a started-game room link as someone who is not already in the room joins as an observer automatically or via the observe prompt.

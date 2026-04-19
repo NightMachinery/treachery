@@ -12,6 +12,26 @@ export interface TgCard {
   name: string;
 }
 
+export type TgParticipantRole = 'player' | 'observer';
+
+export interface TgParticipant {
+  name: string;
+  uid: string;
+  role: TgParticipantRole;
+  isCreator: boolean;
+  isScientist: boolean;
+  isMarkedScientist: boolean;
+}
+
+export interface TgViewer {
+  uid: string;
+  name: string;
+  role: TgParticipantRole;
+  isParticipant: boolean;
+  isCreator: boolean;
+  isScientist: boolean;
+}
+
 export interface TgGuess {
   guessedByUid: string;
   murdererUid: string;
@@ -50,6 +70,8 @@ export interface TgMessage {
 
 export interface TgGame {
   creatorUid: string;
+  scientistUid: string;
+  markedScientistUid: string;
   causeCard: TgForensicCard;
   locationCard: TgForensicCard;
   otherCards: TgForensicCard[];
@@ -97,13 +119,17 @@ export interface TgMurdererInfo {
 
 export interface TgGameSnapshot {
   game: TgGame;
+  participants: TgParticipant[];
   players: TgPlayer[];
   guesses: TgGuess[];
   messages: TgMessage[];
+  viewer: TgViewer;
   playerPrivateData: TgPlayerPrivateData;
   forensicPrivateData: TgForensicPrivateData;
 }
 
 export interface TgAuthUser {
   uid: string;
+  token: string;
+  displayName: string;
 }

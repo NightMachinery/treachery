@@ -5,16 +5,10 @@
         <div class="game-info-container">
           <div class="heading-container">
             <h2>Game ID: {{ gameId }}</h2>
-            <tg-copy-link *ngIf="!game.startedOn && gameApi.joinLink$ | async as joinLink" [text]="joinLink"></tg-copy-link>
+            <button mat-stroked-button type="button" (click)="copyMigrateLink()">Migrate device</button>
             <tg-confirmation-button *ngIf="!game.finished && game.startedOn" (whenClicked)="endGame()">
               End game
             </tg-confirmation-button>
-          </div>
-          <div *ngIf="!game.startedOn" class="joined-players-container">
-            <app-joined-players-list [gameId]="gameId"></app-joined-players-list>
-            <div class="start-button-container">
-              <button mat-raised-button color="accent" (click)="startGame()">Start Game</button>
-            </div>
           </div>
           <ng-container *ngIf="!game.finished">
             <ng-container *ngIf="forensicApi.forensicPrivateData$ | async as privateData">

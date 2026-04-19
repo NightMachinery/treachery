@@ -28,6 +28,31 @@ type ForensicCard struct {
 	Replaced       bool     `json:"replaced"`
 }
 
+type ParticipantRole string
+
+const (
+	ParticipantRolePlayer   ParticipantRole = "player"
+	ParticipantRoleObserver ParticipantRole = "observer"
+)
+
+type Participant struct {
+	Name              string          `json:"name"`
+	UID               string          `json:"uid"`
+	Role              ParticipantRole `json:"role"`
+	IsCreator         bool            `json:"isCreator,omitempty"`
+	IsScientist       bool            `json:"isScientist,omitempty"`
+	IsMarkedScientist bool            `json:"isMarkedScientist,omitempty"`
+}
+
+type Viewer struct {
+	UID           string          `json:"uid"`
+	Name          string          `json:"name,omitempty"`
+	Role          ParticipantRole `json:"role,omitempty"`
+	IsParticipant bool            `json:"isParticipant"`
+	IsCreator     bool            `json:"isCreator"`
+	IsScientist   bool            `json:"isScientist"`
+}
+
 type Player struct {
 	Name       string `json:"name"`
 	UID        string `json:"uid"`
@@ -62,6 +87,8 @@ type Message struct {
 
 type Game struct {
 	CreatorUID            string         `json:"creatorUid"`
+	ScientistUID          string         `json:"scientistUid,omitempty"`
+	MarkedScientistUID    string         `json:"markedScientistUid,omitempty"`
 	CauseCard             *ForensicCard  `json:"causeCard,omitempty"`
 	LocationCard          *ForensicCard  `json:"locationCard,omitempty"`
 	OtherCards            []ForensicCard `json:"otherCards"`
@@ -91,9 +118,11 @@ type ForensicPrivateData struct {
 
 type GameSnapshot struct {
 	Game                *Game                `json:"game"`
+	Participants        []Participant        `json:"participants"`
 	Players             []Player             `json:"players"`
 	Guesses             []Guess              `json:"guesses"`
 	Messages            []Message            `json:"messages"`
+	Viewer              Viewer               `json:"viewer"`
 	PlayerPrivateData   PlayerPrivateData    `json:"playerPrivateData"`
 	ForensicPrivateData *ForensicPrivateData `json:"forensicPrivateData,omitempty"`
 }
@@ -101,6 +130,14 @@ type GameSnapshot struct {
 type Session struct {
 	Token            string `json:"token,omitempty"`
 	UID              string `json:"uid"`
+	DisplayName      string `json:"displayName,omitempty"`
+	CreatedTimestamp string `json:"createdTimestamp,omitempty"`
+}
+
+type RoomAuthToken struct {
+	Token            string `json:"token"`
+	GameID           string `json:"gameId"`
+	UID              string `json:"uid,omitempty"`
 	CreatedTimestamp string `json:"createdTimestamp,omitempty"`
 }
 

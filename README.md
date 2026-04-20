@@ -36,7 +36,7 @@ A web app for a board game based on Deception: Murder in Hong Kong
 
 ![1](screenshots/forensic/5.png)
 
-8. **Ending the game**: If no one correctly guesses who the murderer is before the end of round 3, the murderer team wins. If the investigators guess correctly and there are no witnesses in the lobby settings, the investigator team wins immediately. If witnesses are enabled, the game enters a final witness-selection step for the murderer team instead. The creator can manually show that prompt to the murderer or any accomplice, and those creator-issued prompts can be dismissed. The first submitted witness selection ends the game immediately, and the finished screen now reveals every hidden role.
+8. **Ending the game**: If no one correctly guesses who the murderer is before the end of round 3, the murderer team wins. If the investigators guess correctly and there are no witnesses in the lobby settings, the investigator team wins immediately. If witnesses are enabled, the game enters a final witness-selection step for the murderer team instead. The creator gets a blind suspect list they can use to quietly re-show the prompt without learning the murderer team, and any creator-issued accomplice prompt can be dismissed. The first submitted witness selection ends the game immediately, and the finished screen now reveals every hidden role.
 
 ![1](screenshots/forensic/6.png)
 

@@ -86,7 +86,7 @@ export class GameApiService {
       shareReplay(1)
     );
     this.moderatorPrivateData$ = this.snapshot$.pipe(
-      map(snapshot => (snapshot ? snapshot.moderatorPrivateData || ({ witnessPromptTargets: [] } as TgModeratorPrivateData) : ({ witnessPromptTargets: [] } as TgModeratorPrivateData))),
+      map(snapshot => (snapshot ? snapshot.moderatorPrivateData || ({ witnessPromptCandidates: [] } as TgModeratorPrivateData) : ({ witnessPromptCandidates: [] } as TgModeratorPrivateData))),
       shareReplay(1)
     );
     this.roleReveal$ = this.snapshot$.pipe(

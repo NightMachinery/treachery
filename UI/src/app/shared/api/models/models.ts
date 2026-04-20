@@ -155,17 +155,13 @@ export interface TgMurdererInfo {
   meansCard: TgCard;
 }
 
-export interface TgWitnessPromptTarget {
+export interface TgWitnessPromptCandidate {
   uid: string;
   name: string;
-  role: TgSecretRole;
-  hasActivePrompt: boolean;
-  dismissible: boolean;
-  creatorInitiated: boolean;
 }
 
 export interface TgModeratorPrivateData {
-  witnessPromptTargets: TgWitnessPromptTarget[];
+  witnessPromptCandidates: TgWitnessPromptCandidate[];
 }
 
 export interface TgRoleRevealEntry {

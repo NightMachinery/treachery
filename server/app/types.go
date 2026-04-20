@@ -170,17 +170,13 @@ type ForensicPrivateData struct {
 	MurdererMeansCardName string  `json:"murdererMeansCardName,omitempty"`
 }
 
-type WitnessPromptTarget struct {
-	UID              string     `json:"uid"`
-	Name             string     `json:"name"`
-	Role             SecretRole `json:"role"`
-	HasActivePrompt  bool       `json:"hasActivePrompt"`
-	Dismissible      bool       `json:"dismissible"`
-	CreatorInitiated bool       `json:"creatorInitiated"`
+type WitnessPromptCandidate struct {
+	UID  string `json:"uid"`
+	Name string `json:"name"`
 }
 
 type ModeratorPrivateData struct {
-	WitnessPromptTargets []WitnessPromptTarget `json:"witnessPromptTargets"`
+	WitnessPromptCandidates []WitnessPromptCandidate `json:"witnessPromptCandidates"`
 }
 
 type RoleRevealEntry struct {

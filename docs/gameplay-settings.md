@@ -61,8 +61,9 @@ If witnesses are disabled, a correct accusation ends the game immediately in fav
 If witnesses are enabled, a correct accusation opens a final witness-selection phase instead:
 
 - the murderer automatically gets a non-dismissible witness-selection prompt
-- the creator can also show the same prompt to any accomplice on the murderer team
-- creator-issued prompts are dismissible
+- the creator gets a blind suspect list so they can re-show the same prompt without learning who is on the murderer team
+- only accomplices receive creator-issued prompts; selecting any other suspect quietly does nothing
+- creator-issued accomplice prompts are dismissible
 - all prompts are minimizable
 - the first submitted witness selection ends the game immediately
 

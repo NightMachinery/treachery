@@ -725,7 +725,7 @@ func (a *App) GetSnapshot(gameID, viewerUID string) (*GameSnapshot, error) {
 
 	if viewer.IsCreator && game.PendingWitnessSelection {
 		snapshot.ModeratorPrivateData = &ModeratorPrivateData{
-			WitnessPromptTargets: buildWitnessPromptTargets(players, playerRoles, witnessPrompts),
+			WitnessPromptCandidates: buildWitnessPromptCandidates(players),
 		}
 	}
 
@@ -1152,17 +1152,27 @@ func (a *App) ShowWitnessSelectionPrompt(gameID, actorUID, targetUID string) err
 		if !game.PendingWitnessSelection || game.Finished {
 			return fmt.Errorf("%w: witness selection is not active", ErrBadInput)
 		}
+		players, err := a.getPlayersTx(tx, gameID)
+		if err != nil {
+			return err
+		}
+		if findPlayer(players, targetUID) == nil {
+			return fmt.Errorf("%w: target must be a current suspect", ErrBadInput)
+		}
 		playerRoles, err := a.getPlayerRolesTx(tx, gameID)
 		if err != nil {
 			return err
 		}
 		role, ok := playerRoles[targetUID]
-		if !ok || (role != SecretRoleMurderer && role != SecretRoleAccomplice) {
-			return fmt.Errorf("%w: target must be on the murderer team", ErrBadInput)
+		if !ok {
+			return fmt.Errorf("%w: target must be a current suspect", ErrBadInput)
 		}
 		prompts, err := a.getWitnessSelectionPromptsTx(tx, gameID)
 		if err != nil {
 			return err
+		}
+		if role != SecretRoleAccomplice {
+			return nil
 		}
 		if existing, ok := prompts[targetUID]; ok && existing.Active && !existing.Dismissible {
 			return nil
@@ -1959,30 +1969,15 @@ func buildKnownMurdererTeam(players []Player, playerRoles map[string]SecretRole)
 	return known
 }
 
-func buildWitnessPromptTargets(players []Player, playerRoles map[string]SecretRole, prompts map[string]WitnessSelectionPromptState) []WitnessPromptTarget {
-	targets := []WitnessPromptTarget{}
+func buildWitnessPromptCandidates(players []Player) []WitnessPromptCandidate {
+	candidates := make([]WitnessPromptCandidate, 0, len(players))
 	for _, player := range players {
-		role := playerRoles[player.UID]
-		if role != SecretRoleMurderer && role != SecretRoleAccomplice {
-			continue
-		}
-		prompt, hasPrompt := prompts[player.UID]
-		targets = append(targets, WitnessPromptTarget{
-			UID:              player.UID,
-			Name:             player.Name,
-			Role:             role,
-			HasActivePrompt:  hasPrompt && prompt.Active,
-			Dismissible:      hasPrompt && prompt.Dismissible,
-			CreatorInitiated: hasPrompt && prompt.CreatorInitiated,
+		candidates = append(candidates, WitnessPromptCandidate{
+			UID:  player.UID,
+			Name: player.Name,
 		})
 	}
-	sort.Slice(targets, func(i, j int) bool {
-		if targets[i].Role != targets[j].Role {
-			return secretRoleSortOrder(targets[i].Role) < secretRoleSortOrder(targets[j].Role)
-		}
-		return targets[i].Name < targets[j].Name
-	})
-	return targets
+	return candidates
 }
 
 func buildRoleReveal(participants []Participant, playerRoles map[string]SecretRole, scientistUID string) []RoleRevealEntry {

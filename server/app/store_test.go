@@ -404,8 +404,57 @@ func TestWitnessSelectionFlowAndAccompliceKnowledge(t *testing.T) {
 	if updatedCreator.Game.Finished || !updatedCreator.Game.PendingWitnessSelection {
 		t.Fatalf("expected pending witness selection after correct guess, got %+v", updatedCreator.Game)
 	}
-	if len(updatedCreator.ModeratorPrivateData.WitnessPromptTargets) != 3 {
-		t.Fatalf("expected moderator prompt targets for murderer team, got %+v", updatedCreator.ModeratorPrivateData)
+	if updatedCreator.ModeratorPrivateData == nil {
+		t.Fatalf("expected moderator private data during witness selection")
+	}
+	if len(updatedCreator.ModeratorPrivateData.WitnessPromptCandidates) != len(updatedCreator.Players) {
+		t.Fatalf("expected blind moderator witness prompt candidates for every suspect, got %+v with players %+v", updatedCreator.ModeratorPrivateData, updatedCreator.Players)
+	}
+	candidateByUID := map[string]string{}
+	for _, candidate := range updatedCreator.ModeratorPrivateData.WitnessPromptCandidates {
+		candidateByUID[candidate.UID] = candidate.Name
+	}
+	creatorIsSuspect := false
+	for _, player := range updatedCreator.Players {
+		if candidateByUID[player.UID] != player.Name {
+			t.Fatalf("expected blind candidate for player %+v, got %+v", player, updatedCreator.ModeratorPrivateData.WitnessPromptCandidates)
+		}
+		if player.UID == creator {
+			creatorIsSuspect = true
+		}
+	}
+	if creatorIsSuspect {
+		if _, ok := candidateByUID[creator]; !ok {
+			t.Fatalf("expected creator to appear in blind witness prompt candidates when they are a suspect, got %+v", updatedCreator.ModeratorPrivateData.WitnessPromptCandidates)
+		}
+	}
+
+	murdererSnapshot, err := app.GetSnapshot("ROLE2", murdererUID)
+	if err != nil {
+		t.Fatalf("murderer snapshot before blind prompt: %v", err)
+	}
+	if murdererSnapshot.PlayerPrivateData.ActiveWitnessSelectionPrompt == nil || murdererSnapshot.PlayerPrivateData.ActiveWitnessSelectionPrompt.Dismissible {
+		t.Fatalf("expected murderer to keep the built-in non-dismissible prompt, got %+v", murdererSnapshot.PlayerPrivateData.ActiveWitnessSelectionPrompt)
+	}
+	if err := app.ShowWitnessSelectionPrompt("ROLE2", creator, murdererUID); err != nil {
+		t.Fatalf("show witness selection prompt for murderer should quietly succeed: %v", err)
+	}
+	murdererSnapshot, err = app.GetSnapshot("ROLE2", murdererUID)
+	if err != nil {
+		t.Fatalf("murderer snapshot after blind prompt: %v", err)
+	}
+	if murdererSnapshot.PlayerPrivateData.ActiveWitnessSelectionPrompt == nil || murdererSnapshot.PlayerPrivateData.ActiveWitnessSelectionPrompt.Dismissible {
+		t.Fatalf("expected murderer prompt to remain non-dismissible after blind creator click, got %+v", murdererSnapshot.PlayerPrivateData.ActiveWitnessSelectionPrompt)
+	}
+	if err := app.ShowWitnessSelectionPrompt("ROLE2", creator, witnessUID); err != nil {
+		t.Fatalf("show witness selection prompt for witness should quietly succeed: %v", err)
+	}
+	witnessSnapshot, err := app.GetSnapshot("ROLE2", witnessUID)
+	if err != nil {
+		t.Fatalf("witness snapshot after blind prompt: %v", err)
+	}
+	if witnessSnapshot.PlayerPrivateData.ActiveWitnessSelectionPrompt != nil {
+		t.Fatalf("expected witness blind prompt click to remain a no-op, got %+v", witnessSnapshot.PlayerPrivateData.ActiveWitnessSelectionPrompt)
 	}
 
 	accompliceUID := accompliceUIDs[0]
@@ -606,4 +655,101 @@ func TestRoomTimerClearsWhenGameEnds(t *testing.T) {
 
 func intPtr(value int) *int {
 	return &value
+}
+
+func TestCreatorWitnessPromptCandidatesIncludeCreatorWhenTheyAreASuspect(t *testing.T) {
+	app := newTestApp(t)
+	defer app.Close()
+
+	creator := "creator"
+	setProfile(t, app, creator, "Creator")
+	if err := app.CreateGame(creator, "BLND"); err != nil {
+		t.Fatalf("create game: %v", err)
+	}
+	joinPlayers(t, app, "BLND", "p1", "p2", "p3", "p4")
+	if err := app.ToggleScientistMark("BLND", creator, "p1"); err != nil {
+		t.Fatalf("mark scientist: %v", err)
+	}
+	if err := app.UpdateGameSettings("BLND", creator, GameSettingsInput{
+		MeansCardsPerPlayer:  4,
+		ClueCardsPerPlayer:   4,
+		LinkClueCountToMeans: true,
+		AccompliceCount:      1,
+		WitnessCount:         1,
+		WitnessesToFind:      1,
+	}); err != nil {
+		t.Fatalf("update settings: %v", err)
+	}
+	if err := app.StartGame("BLND", creator); err != nil {
+		t.Fatalf("start game: %v", err)
+	}
+
+	creatorSnapshot, err := app.GetSnapshot("BLND", creator)
+	if err != nil {
+		t.Fatalf("creator snapshot after start: %v", err)
+	}
+	if creatorSnapshot.Game.ScientistUID != "p1" {
+		t.Fatalf("expected marked scientist p1, got %s", creatorSnapshot.Game.ScientistUID)
+	}
+	if len(creatorSnapshot.Players) != 4 {
+		t.Fatalf("expected 4 suspects, got %d", len(creatorSnapshot.Players))
+	}
+
+	roleByUID := map[string]SecretRole{}
+	var murdererUID, witnessUID, investigatorUID string
+	for _, player := range creatorSnapshot.Players {
+		snapshot, err := app.GetSnapshot("BLND", player.UID)
+		if err != nil {
+			t.Fatalf("player snapshot for %s: %v", player.UID, err)
+		}
+		roleByUID[player.UID] = snapshot.PlayerPrivateData.Role
+		switch snapshot.PlayerPrivateData.Role {
+		case SecretRoleMurderer:
+			murdererUID = player.UID
+		case SecretRoleWitness:
+			witnessUID = player.UID
+		case SecretRoleInvestigator:
+			if investigatorUID == "" {
+				investigatorUID = player.UID
+			}
+		}
+	}
+	if roleByUID[creator] == "" {
+		t.Fatalf("expected creator to remain a suspect, roles=%+v", roleByUID)
+	}
+	if murdererUID == "" || witnessUID == "" || investigatorUID == "" {
+		t.Fatalf("unexpected role breakdown murderer=%s witness=%s investigator=%s roles=%+v", murdererUID, witnessUID, investigatorUID, roleByUID)
+	}
+
+	scientistSnapshot, err := app.GetSnapshot("BLND", "p1")
+	if err != nil {
+		t.Fatalf("scientist snapshot: %v", err)
+	}
+	murderer := scientistSnapshot.ForensicPrivateData.Murderer
+	clue := murderer.ClueCards[0].Name
+	means := murderer.MeansCards[0].Name
+	if err := app.SelectMurdererCards("BLND", murdererUID, clue, means); err != nil {
+		t.Fatalf("select murderer cards: %v", err)
+	}
+	if err := app.MakeGuess("BLND", investigatorUID, murdererUID, clue, means); err != nil {
+		t.Fatalf("make guess: %v", err)
+	}
+
+	updatedCreator, err := app.GetSnapshot("BLND", creator)
+	if err != nil {
+		t.Fatalf("creator snapshot after correct guess: %v", err)
+	}
+	if !updatedCreator.Game.PendingWitnessSelection {
+		t.Fatalf("expected pending witness selection, got %+v", updatedCreator.Game)
+	}
+	if updatedCreator.ModeratorPrivateData == nil {
+		t.Fatalf("expected moderator private data")
+	}
+	candidateByUID := map[string]bool{}
+	for _, candidate := range updatedCreator.ModeratorPrivateData.WitnessPromptCandidates {
+		candidateByUID[candidate.UID] = true
+	}
+	if !candidateByUID[creator] {
+		t.Fatalf("expected creator to appear in blind witness prompt candidates, got %+v", updatedCreator.ModeratorPrivateData.WitnessPromptCandidates)
+	}
 }

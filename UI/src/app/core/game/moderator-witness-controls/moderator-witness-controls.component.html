@@ -1,19 +1,13 @@
 <ng-container *ngIf="(gameApi.game$ | async) as game">
   <ng-container *ngIf="(gameApi.viewer$ | async) as viewer">
     <ng-container *ngIf="viewer.isCreator && game.pendingWitnessSelection && (gameApi.moderatorPrivateData$ | async) as moderatorData">
-      <div class="moderator-panel" *ngIf="moderatorData.witnessPromptTargets.length > 0">
-        <h3>Murderer team witness prompts</h3>
-        <p>If the murderer is offline, you can show the prompt to an accomplice instead.</p>
+      <div class="moderator-panel" *ngIf="moderatorData.witnessPromptCandidates.length > 0">
+        <h3>Witness prompt controls</h3>
+        <p>Choose any suspect to quietly re-send the witness-selection prompt without revealing hidden roles.</p>
         <div class="target-list">
-          <div class="target-row" *ngFor="let target of moderatorData.witnessPromptTargets">
-            <div>
-              <strong>{{ target.name }}</strong>
-              <span class="role">{{ target.role }}</span>
-              <span class="status" *ngIf="target.hasActivePrompt">prompt active</span>
-            </div>
-            <button mat-stroked-button type="button" (click)="showPrompt(target.uid)">
-              {{ target.hasActivePrompt ? 'Re-show prompt' : 'Show prompt' }}
-            </button>
+          <div class="target-row" *ngFor="let candidate of moderatorData.witnessPromptCandidates">
+            <strong>{{ candidate.name }}</strong>
+            <button mat-stroked-button type="button" (click)="showPrompt(candidate.uid)">Show prompt</button>
           </div>
         </div>
       </div>

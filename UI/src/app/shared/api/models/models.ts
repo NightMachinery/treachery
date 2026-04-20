@@ -97,6 +97,7 @@ export interface TgGame {
   meansCardsPerPlayer: number;
   clueCardsPerPlayer: number;
   linkClueCountToMeans: boolean;
+  meansCluesTextOnly: boolean;
   accompliceCount: number;
   witnessCount: number;
   witnessesToFind: number;
@@ -194,7 +195,12 @@ export interface TgGameSettingsInput {
   meansCardsPerPlayer: number;
   clueCardsPerPlayer: number;
   linkClueCountToMeans: boolean;
+  meansCluesTextOnly: boolean;
   accompliceCount: number;
   witnessCount: number;
   witnessesToFind: number;
+}
+
+export interface TgGameRoomModsInput {
+  meansCluesTextOnly: boolean;
 }

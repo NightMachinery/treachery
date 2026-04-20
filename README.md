@@ -18,13 +18,13 @@ A web app for a board game based on Deception: Murder in Hong Kong
 
 ![1](screenshots/forensic/1.png)
 
-3. **Set up the lobby**: The creator is a normal player and moderator. Before the game starts, the creator can toggle any participant between **player** and **observer**, toggle-mark one player as the forensic scientist, configure how many **means** and **evidence/clue** cards each suspect receives, and optionally add **accomplices** and **witnesses**. Evidence can follow the means count automatically, or be set separately. Witnesses and accomplices default to `0`.
+3. **Set up the lobby**: The creator is a normal player and moderator. Before the game starts, the creator can toggle any participant between **player** and **observer**, toggle-mark one player as the forensic scientist, configure how many **means** and **evidence/clue** cards each suspect receives, choose whether means/clues should render as **text-only** cards without images, and optionally add **accomplices** and **witnesses**. Evidence can follow the means count automatically, or be set separately. Witnesses and accomplices default to `0`.
 
 ![1](screenshots/forensic/2.png)
 
 4. **Start the game**: You now need at least four lobby players total so one can become the forensic scientist and three suspects remain. When the game starts, the selected forensic scientist stays visible in the room roster but does not receive cards, cannot guess, and cannot chat during the active game.
 
-5. **Wait for murderer to select their cards**: The game distributes cards among the remaining suspect players randomly using the configured lobby counts. One suspect is selected to be the murderer. Optional accomplices and witnesses are also assigned randomly. The murderer is prompted to select one clue card and one means card from the cards they were dealt. These prompts can now be minimized while the player looks at the board.
+5. **Wait for murderer to select their cards**: The game distributes cards among the remaining suspect players randomly using the configured lobby counts. One suspect is selected to be the murderer. Optional accomplices and witnesses are also assigned randomly. The murderer is prompted to select one clue card and one means card from the cards they were dealt. These prompts can now be minimized while the player looks at the board. Means/clue cards also support RTL text labels and can be switched room-wide to text-only mode by the moderator.
 
 ![1](screenshots/forensic/3.png)
 

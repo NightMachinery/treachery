@@ -9,6 +9,7 @@ Before the game starts, the creator can configure:
 - means cards per suspect
 - evidence/clue cards per suspect
 - a checked-by-default toggle that makes evidence count follow means count
+- a saved toggle that makes means/clue cards text-only and hides their images
 - accomplice count (`0-10`)
 - witness count (`0-10`)
 - how many witnesses the murderer team must identify to win the witness reversal
@@ -18,9 +19,22 @@ Defaults:
 - means cards per suspect: `4`
 - evidence/clue cards per suspect: `4`
 - evidence follows means: `true`
+- means/clues text only: `false`
 - accomplices: `0`
 - witnesses: `0`
 - witnesses to find: `0`
+
+The lobby uses the existing **Save settings** flow, so pre-start changes to this toggle do not apply until saved.
+
+## Means/clues display mode
+
+- Means/clue cards support two room-wide display modes:
+  - default image cards
+  - text-only cards that hide the means/clue images
+- After the game starts, the creator gets a live **Room mods** toggle for this setting on room screens.
+- Mid-game room-mod changes apply immediately to everyone in the room, including observers and the forensic scientist.
+- Only means/clue cards are affected; forensic clue cards stay unchanged.
+- Means/clue card labels now use browser auto-direction (`dir="auto"`) so RTL text renders correctly in both image and text-only modes.
 
 ## Shared room timer
 

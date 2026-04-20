@@ -1,6 +1,9 @@
 .horizontal {
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
 }
 
 .title {
@@ -15,7 +18,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0 var(--space-8) 0 0;
 }
 
 .container {

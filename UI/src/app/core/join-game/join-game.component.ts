@@ -143,6 +143,10 @@ export class JoinGameComponent implements OnInit, OnDestroy {
     }
   }
 
+  handleMeansCluesTextOnlyChange() {
+    this.settingsDirty = true;
+  }
+
   handleRoleCountChange() {
     this.settingsDirty = true;
     this.settings.accompliceCount = this.normalizeBoundedNumber(this.settings.accompliceCount, 0, 10, 0);
@@ -201,6 +205,7 @@ export class JoinGameComponent implements OnInit, OnDestroy {
       meansCardsPerPlayer: 4,
       clueCardsPerPlayer: 4,
       linkClueCountToMeans: true,
+      meansCluesTextOnly: false,
       accompliceCount: 0,
       witnessCount: 0,
       witnessesToFind: 0
@@ -212,6 +217,7 @@ export class JoinGameComponent implements OnInit, OnDestroy {
       meansCardsPerPlayer: game.meansCardsPerPlayer,
       clueCardsPerPlayer: game.clueCardsPerPlayer,
       linkClueCountToMeans: game.linkClueCountToMeans,
+      meansCluesTextOnly: game.meansCluesTextOnly,
       accompliceCount: game.accompliceCount,
       witnessCount: game.witnessCount,
       witnessesToFind: game.witnessesToFind

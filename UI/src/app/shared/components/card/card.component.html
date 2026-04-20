@@ -1,10 +1,24 @@
-<div matRipple [ngClass]="[active ? 'selected' : 'not-selected', means ? 'means' : 'clue']" class="card" [class.mat-elevation-z2]="true">
-  <div class="card-name">{{ card.name }}</div>
-  <img
-    class="main-img"
-    [defaultImage]="means ? 'assets/means-bg.jpg' : 'assets/clue-bg.jpg'"
-    [lazyLoad]="card.imgUrl"
-    [errorImage]="card.altImgUrl"
-  />
-  <div class="type-text">{{ means ? 'means' : 'clue' }}</div>
+<div
+  matRipple
+  [ngClass]="[active ? 'selected' : 'not-selected', means ? 'means' : 'clue', (textOnlyMode$ | async) ? 'text-only' : 'image-card']"
+  class="card"
+  [class.mat-elevation-z2]="true"
+>
+  <ng-container *ngIf="textOnlyMode$ | async; else imageMode">
+    <div class="text-only-body" dir="auto">
+      <div class="card-name" dir="auto">{{ card.name }}</div>
+      <div class="type-text">{{ means ? 'means' : 'clue' }}</div>
+    </div>
+  </ng-container>
+
+  <ng-template #imageMode>
+    <div class="card-name" dir="auto">{{ card.name }}</div>
+    <img
+      class="main-img"
+      [defaultImage]="means ? 'assets/means-bg.jpg' : 'assets/clue-bg.jpg'"
+      [lazyLoad]="card.imgUrl"
+      [errorImage]="card.altImgUrl"
+    />
+    <div class="type-text">{{ means ? 'means' : 'clue' }}</div>
+  </ng-template>
 </div>

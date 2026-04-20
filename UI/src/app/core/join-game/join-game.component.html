@@ -42,6 +42,10 @@
               <input type="checkbox" [(ngModel)]="settings.linkClueCountToMeans" (ngModelChange)="handleLinkClueCountChange()" />
               <span>Evidence count just follows means count</span>
             </label>
+            <label class="checkbox-row wide">
+              <input type="checkbox" [(ngModel)]="settings.meansCluesTextOnly" (ngModelChange)="handleMeansCluesTextOnlyChange()" />
+              <span>Means/clues text only (hide images)</span>
+            </label>
             <label>
               <span>Accomplices</span>
               <input type="number" min="0" max="10" [(ngModel)]="settings.accompliceCount" (ngModelChange)="handleRoleCountChange()" />

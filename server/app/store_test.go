@@ -289,6 +289,7 @@ func TestUpdateGameSettingsAndDealConfiguredCounts(t *testing.T) {
 		MeansCardsPerPlayer:  5,
 		ClueCardsPerPlayer:   3,
 		LinkClueCountToMeans: false,
+		MeansCluesTextOnly:   true,
 		AccompliceCount:      1,
 		WitnessCount:         0,
 		WitnessesToFind:      0,
@@ -303,13 +304,48 @@ func TestUpdateGameSettingsAndDealConfiguredCounts(t *testing.T) {
 	if err != nil {
 		t.Fatalf("snapshot: %v", err)
 	}
-	if snapshot.Game.MeansCardsPerPlayer != 5 || snapshot.Game.ClueCardsPerPlayer != 3 {
+	if snapshot.Game.MeansCardsPerPlayer != 5 || snapshot.Game.ClueCardsPerPlayer != 3 || !snapshot.Game.MeansCluesTextOnly {
 		t.Fatalf("unexpected settings on game: %+v", snapshot.Game)
 	}
 	for _, player := range snapshot.Players {
 		if len(player.MeansCards) != 5 || len(player.ClueCards) != 3 {
 			t.Fatalf("unexpected dealt counts for %s: %d means, %d clue", player.UID, len(player.MeansCards), len(player.ClueCards))
 		}
+	}
+}
+
+func TestRoomModsDefaultOffAndCanBeUpdatedMidGame(t *testing.T) {
+	app := newTestApp(t)
+	defer app.Close()
+
+	startTestGame(t, app, "MODS", "creator", "p1", "p2", "p3")
+
+	beforeSnapshot, err := app.GetSnapshot("MODS", "creator")
+	if err != nil {
+		t.Fatalf("snapshot before room mod update: %v", err)
+	}
+	if beforeSnapshot.Game.MeansCluesTextOnly {
+		t.Fatalf("expected means/clues text-only room mod to default off")
+	}
+
+	if err := app.UpdateRoomMods("MODS", "creator", GameRoomModsInput{MeansCluesTextOnly: true}); err != nil {
+		t.Fatalf("update room mods: %v", err)
+	}
+
+	creatorSnapshot, err := app.GetSnapshot("MODS", "creator")
+	if err != nil {
+		t.Fatalf("creator snapshot after room mod update: %v", err)
+	}
+	if !creatorSnapshot.Game.MeansCluesTextOnly {
+		t.Fatalf("expected creator snapshot to include updated room mod")
+	}
+
+	otherSnapshot, err := app.GetSnapshot("MODS", "p1")
+	if err != nil {
+		t.Fatalf("other snapshot after room mod update: %v", err)
+	}
+	if !otherSnapshot.Game.MeansCluesTextOnly {
+		t.Fatalf("expected all players to see updated room mod")
 	}
 }
 
@@ -610,12 +646,18 @@ func TestRoomTimerRejectsInvalidStatesAndActors(t *testing.T) {
 	if err := app.StartRoomTimer("LOCK", "creator", nil); !errors.Is(err, ErrBadInput) {
 		t.Fatalf("expected bad input before game start, got %v", err)
 	}
+	if err := app.UpdateRoomMods("LOCK", "creator", GameRoomModsInput{MeansCluesTextOnly: true}); !errors.Is(err, ErrBadInput) {
+		t.Fatalf("expected bad input for room mods before game start, got %v", err)
+	}
 	if err := app.StartRoomTimer("LOCK", "creator", intPtr(0)); !errors.Is(err, ErrBadInput) {
 		t.Fatalf("expected bad input for zero-second timer, got %v", err)
 	}
 
 	if err := app.StartGame("LOCK", "creator"); err != nil {
 		t.Fatalf("start game: %v", err)
+	}
+	if err := app.UpdateRoomMods("LOCK", "p1", GameRoomModsInput{MeansCluesTextOnly: true}); !errors.Is(err, ErrForbidden) {
+		t.Fatalf("expected forbidden for non-creator room mod control, got %v", err)
 	}
 	if err := app.StartRoomTimer("LOCK", "p1", nil); !errors.Is(err, ErrForbidden) {
 		t.Fatalf("expected forbidden for non-creator timer control, got %v", err)

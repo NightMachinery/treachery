@@ -1,5 +1,18 @@
 <ng-container *ngIf="(gameApi.game$ | async) as game">
   <ng-container *ngIf="(gameApi.viewer$ | async) as viewer">
+    <div class="moderator-panel" *ngIf="viewer.isCreator && game.startedOn">
+      <h3>Room mods</h3>
+      <label class="toggle-row">
+        <input
+          type="checkbox"
+          [checked]="game.meansCluesTextOnly"
+          [disabled]="roomModsBusy"
+          (change)="setMeansCluesTextOnly($any($event.target).checked, game.meansCluesTextOnly)"
+        />
+        <span>Means/clues text only (hide images)</span>
+      </label>
+      <p class="panel-copy">Applies immediately to everyone in the room.</p>
+    </div>
     <ng-container *ngIf="viewer.isCreator && game.pendingWitnessSelection && (gameApi.moderatorPrivateData$ | async) as moderatorData">
       <div class="moderator-panel" *ngIf="moderatorData.witnessPromptCandidates.length > 0">
         <h3>Witness prompt controls</h3>

@@ -1,14 +1,25 @@
 .moderator-panel {
   background: var(--tg-card-background-color);
   border-radius: var(--tg-border-radius);
-  padding: var(--space-6);
+  padding: var(--space-8);
   margin: var(--space-4) 0;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.panel-copy {
+  margin: var(--space-4) 0 0;
+  opacity: 0.8;
 }
 
 .target-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-4);
 }
 
 .target-row {
@@ -17,4 +28,3 @@
   justify-content: space-between;
   gap: var(--space-4);
 }
-

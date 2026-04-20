@@ -27,6 +27,7 @@ func (a *App) Handler() http.Handler {
 	mux.HandleFunc("POST /api/games/{gameId}/participants/{uid}/role", a.handleSetParticipantRole)
 	mux.HandleFunc("POST /api/games/{gameId}/scientist/toggle", a.handleToggleScientist)
 	mux.HandleFunc("POST /api/games/{gameId}/settings", a.handleUpdateGameSettings)
+	mux.HandleFunc("POST /api/games/{gameId}/room-mods", a.handleUpdateRoomMods)
 	mux.HandleFunc("POST /api/games/{gameId}/migrate-device", a.handleCreateRoomAuth)
 	mux.HandleFunc("POST /api/games/{gameId}/start", a.handleStartGame)
 	mux.HandleFunc("POST /api/games/{gameId}/room-timer/start", a.handleStartRoomTimer)
@@ -254,6 +255,16 @@ func (a *App) handleUpdateGameSettings(w http.ResponseWriter, r *http.Request) {
 			return fmt.Errorf("%w: %s", ErrBadInput, err.Error())
 		}
 		return a.UpdateGameSettings(gameID, viewerUID, body)
+	})
+}
+
+func (a *App) handleUpdateRoomMods(w http.ResponseWriter, r *http.Request) {
+	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
+		var body GameRoomModsInput
+		if err := decodeBody(r, &body); err != nil {
+			return fmt.Errorf("%w: %s", ErrBadInput, err.Error())
+		}
+		return a.UpdateRoomMods(gameID, viewerUID, body)
 	})
 }
 

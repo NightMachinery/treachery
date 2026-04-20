@@ -6,6 +6,7 @@ import { catchError, map, shareReplay, switchMap } from 'rxjs/operators';
 import { AuthService } from './../auth/auth.service';
 import {
   TgGame,
+  TgGameRoomModsInput,
   TgGameSnapshot,
   TgGameSettingsInput,
   TgGuess,
@@ -222,6 +223,16 @@ export class GameApiService {
     const gameId = this.gameId$.value;
     const response = await this.http
       .post<{ success: boolean }>(`/api/games/${gameId}/settings`, settings, this.getRoomRequestOptions())
+      .toPromise();
+    if (response.success) {
+      await this.refreshSnapshot();
+    }
+  }
+
+  async updateRoomMods(roomMods: TgGameRoomModsInput) {
+    const gameId = this.gameId$.value;
+    const response = await this.http
+      .post<{ success: boolean }>(`/api/games/${gameId}/room-mods`, roomMods, this.getRoomRequestOptions())
       .toPromise();
     if (response.success) {
       await this.refreshSnapshot();

@@ -125,6 +125,7 @@ func (a *App) migrate() error {
 			means_cards_per_player INTEGER NOT NULL DEFAULT 4,
 			clue_cards_per_player INTEGER NOT NULL DEFAULT 4,
 			link_clue_count_to_means INTEGER NOT NULL DEFAULT 1,
+			means_clues_text_only INTEGER NOT NULL DEFAULT 0,
 			accomplice_count INTEGER NOT NULL DEFAULT 0,
 			witness_count INTEGER NOT NULL DEFAULT 0,
 			witnesses_to_find INTEGER NOT NULL DEFAULT 0,
@@ -221,6 +222,7 @@ func (a *App) migrate() error {
 		`ALTER TABLE games ADD COLUMN means_cards_per_player INTEGER NOT NULL DEFAULT 4;`,
 		`ALTER TABLE games ADD COLUMN clue_cards_per_player INTEGER NOT NULL DEFAULT 4;`,
 		`ALTER TABLE games ADD COLUMN link_clue_count_to_means INTEGER NOT NULL DEFAULT 1;`,
+		`ALTER TABLE games ADD COLUMN means_clues_text_only INTEGER NOT NULL DEFAULT 0;`,
 		`ALTER TABLE games ADD COLUMN accomplice_count INTEGER NOT NULL DEFAULT 0;`,
 		`ALTER TABLE games ADD COLUMN witness_count INTEGER NOT NULL DEFAULT 0;`,
 		`ALTER TABLE games ADD COLUMN witnesses_to_find INTEGER NOT NULL DEFAULT 0;`,
@@ -306,9 +308,14 @@ type GameSettingsInput struct {
 	MeansCardsPerPlayer  int  `json:"meansCardsPerPlayer"`
 	ClueCardsPerPlayer   int  `json:"clueCardsPerPlayer"`
 	LinkClueCountToMeans bool `json:"linkClueCountToMeans"`
+	MeansCluesTextOnly   bool `json:"meansCluesTextOnly"`
 	AccompliceCount      int  `json:"accompliceCount"`
 	WitnessCount         int  `json:"witnessCount"`
 	WitnessesToFind      int  `json:"witnessesToFind"`
+}
+
+type GameRoomModsInput struct {
+	MeansCluesTextOnly bool `json:"meansCluesTextOnly"`
 }
 
 func normalizeSettings(input GameSettingsInput) (GameSettingsInput, error) {
@@ -459,9 +466,28 @@ func (a *App) UpdateGameSettings(gameID, actorUID string, input GameSettingsInpu
 		game.MeansCardsPerPlayer = settings.MeansCardsPerPlayer
 		game.ClueCardsPerPlayer = settings.ClueCardsPerPlayer
 		game.LinkClueCountToMeans = settings.LinkClueCountToMeans
+		game.MeansCluesTextOnly = settings.MeansCluesTextOnly
 		game.AccompliceCount = settings.AccompliceCount
 		game.WitnessCount = settings.WitnessCount
 		game.WitnessesToFind = settings.WitnessesToFind
+		return a.saveGameTx(tx, game)
+	})
+}
+
+func (a *App) UpdateRoomMods(gameID, actorUID string, input GameRoomModsInput) error {
+	gameID = strings.ToUpper(strings.TrimSpace(gameID))
+	return a.withTx(context.Background(), func(tx *sql.Tx) error {
+		game, err := a.getGameTx(tx, gameID)
+		if err != nil {
+			return err
+		}
+		if game.CreatorUID != actorUID {
+			return fmt.Errorf("%w: only the creator can update room mods", ErrForbidden)
+		}
+		if game.StartedOn == "" {
+			return fmt.Errorf("%w: room mods are only available after the game starts", ErrBadInput)
+		}
+		game.MeansCluesTextOnly = input.MeansCluesTextOnly
 		return a.saveGameTx(tx, game)
 	})
 }
@@ -617,7 +643,7 @@ func (a *App) ResolveRoomAuthToken(gameID, token string) (string, error) {
 }
 
 func (a *App) ListGames() ([]Game, error) {
-	rows, err := a.db.Query(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished, means_cards_per_player, clue_cards_per_player, link_clue_count_to_means, accomplice_count, witness_count, witnesses_to_find, pending_witness_selection, winner, finished_reason, result_message, room_timer_duration_seconds, room_timer_expires_at, room_timer_paused_remaining_seconds, room_timer_run_id FROM games ORDER BY created_timestamp DESC`)
+	rows, err := a.db.Query(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished, means_cards_per_player, clue_cards_per_player, link_clue_count_to_means, means_clues_text_only, accomplice_count, witness_count, witnesses_to_find, pending_witness_selection, winner, finished_reason, result_message, room_timer_duration_seconds, room_timer_expires_at, room_timer_paused_remaining_seconds, room_timer_run_id FROM games ORDER BY created_timestamp DESC`)
 	if err != nil {
 		return nil, err
 	}
@@ -1437,7 +1463,7 @@ func (a *App) checkAndEndGameTx(tx *sql.Tx, game *Game) error {
 }
 
 func (a *App) getGame(gameID string) (*Game, error) {
-	row := a.db.QueryRow(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished, means_cards_per_player, clue_cards_per_player, link_clue_count_to_means, accomplice_count, witness_count, witnesses_to_find, pending_witness_selection, winner, finished_reason, result_message, room_timer_duration_seconds, room_timer_expires_at, room_timer_paused_remaining_seconds, room_timer_run_id FROM games WHERE game_id = ?`, gameID)
+	row := a.db.QueryRow(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished, means_cards_per_player, clue_cards_per_player, link_clue_count_to_means, means_clues_text_only, accomplice_count, witness_count, witnesses_to_find, pending_witness_selection, winner, finished_reason, result_message, room_timer_duration_seconds, room_timer_expires_at, room_timer_paused_remaining_seconds, room_timer_run_id FROM games WHERE game_id = ?`, gameID)
 	game, err := scanGame(row)
 	if err != nil {
 		return nil, err
@@ -1446,7 +1472,7 @@ func (a *App) getGame(gameID string) (*Game, error) {
 }
 
 func (a *App) getGameTx(tx *sql.Tx, gameID string) (*Game, error) {
-	row := tx.QueryRow(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished, means_cards_per_player, clue_cards_per_player, link_clue_count_to_means, accomplice_count, witness_count, witnesses_to_find, pending_witness_selection, winner, finished_reason, result_message, room_timer_duration_seconds, room_timer_expires_at, room_timer_paused_remaining_seconds, room_timer_run_id FROM games WHERE game_id = ?`, gameID)
+	row := tx.QueryRow(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished, means_cards_per_player, clue_cards_per_player, link_clue_count_to_means, means_clues_text_only, accomplice_count, witness_count, witnesses_to_find, pending_witness_selection, winner, finished_reason, result_message, room_timer_duration_seconds, room_timer_expires_at, room_timer_paused_remaining_seconds, room_timer_run_id FROM games WHERE game_id = ?`, gameID)
 	game, err := scanGame(row)
 	if err != nil {
 		return nil, err
@@ -1468,7 +1494,7 @@ func scanGame(scanner rowScanner) (*Game, error) {
 		otherCardsJSON, winner                                              string
 		murdererCardsSelected, finished                                     int
 		meansCardsPerPlayer, clueCardsPerPlayer                             int
-		linkClueCountToMeans                                                int
+		linkClueCountToMeans, meansCluesTextOnly                            int
 		accompliceCount, witnessCount, witnessesToFind                      int
 		pendingWitnessSelection                                             int
 		roomTimerDurationSeconds, roomTimerPausedRemainingSeconds           int
@@ -1492,6 +1518,7 @@ func scanGame(scanner rowScanner) (*Game, error) {
 		&meansCardsPerPlayer,
 		&clueCardsPerPlayer,
 		&linkClueCountToMeans,
+		&meansCluesTextOnly,
 		&accompliceCount,
 		&witnessCount,
 		&witnessesToFind,
@@ -1526,6 +1553,7 @@ func scanGame(scanner rowScanner) (*Game, error) {
 		MeansCardsPerPlayer:     meansCardsPerPlayer,
 		ClueCardsPerPlayer:      clueCardsPerPlayer,
 		LinkClueCountToMeans:    linkClueCountToMeans == 1,
+		MeansCluesTextOnly:      meansCluesTextOnly == 1,
 		AccompliceCount:         accompliceCount,
 		WitnessCount:            witnessCount,
 		WitnessesToFind:         witnessesToFind,
@@ -1889,7 +1917,7 @@ func (a *App) saveGameTx(tx *sql.Tx, game *Game) error {
 		game.RoomTimerRunID = roomTimerRunID
 		roomTimerExpiresAt = nullableString(game.RoomTimer.ExpiresAt)
 	}
-	_, err = tx.Exec(`UPDATE games SET started_on = ?, murderer_cards_selected = ?, murderer_uid = ?, murderer_clue_card_name = ?, murderer_means_card_name = ?, scientist_uid = ?, marked_scientist_uid = ?, cause_card_json = ?, location_card_json = ?, other_cards_json = ?, finished = ?, means_cards_per_player = ?, clue_cards_per_player = ?, link_clue_count_to_means = ?, accomplice_count = ?, witness_count = ?, witnesses_to_find = ?, pending_witness_selection = ?, winner = ?, finished_reason = ?, result_message = ?, room_timer_duration_seconds = ?, room_timer_expires_at = ?, room_timer_paused_remaining_seconds = ?, room_timer_run_id = ? WHERE game_id = ?`,
+	_, err = tx.Exec(`UPDATE games SET started_on = ?, murderer_cards_selected = ?, murderer_uid = ?, murderer_clue_card_name = ?, murderer_means_card_name = ?, scientist_uid = ?, marked_scientist_uid = ?, cause_card_json = ?, location_card_json = ?, other_cards_json = ?, finished = ?, means_cards_per_player = ?, clue_cards_per_player = ?, link_clue_count_to_means = ?, means_clues_text_only = ?, accomplice_count = ?, witness_count = ?, witnesses_to_find = ?, pending_witness_selection = ?, winner = ?, finished_reason = ?, result_message = ?, room_timer_duration_seconds = ?, room_timer_expires_at = ?, room_timer_paused_remaining_seconds = ?, room_timer_run_id = ? WHERE game_id = ?`,
 		nullableString(game.StartedOn),
 		boolToInt(game.MurdererCardsSelected),
 		nullableString(game.MurdererUID),
@@ -1904,6 +1932,7 @@ func (a *App) saveGameTx(tx *sql.Tx, game *Game) error {
 		game.MeansCardsPerPlayer,
 		game.ClueCardsPerPlayer,
 		boolToInt(game.LinkClueCountToMeans),
+		boolToInt(game.MeansCluesTextOnly),
 		game.AccompliceCount,
 		game.WitnessCount,
 		game.WitnessesToFind,

@@ -129,6 +129,7 @@ type Game struct {
 	MeansCardsPerPlayer     int            `json:"meansCardsPerPlayer"`
 	ClueCardsPerPlayer      int            `json:"clueCardsPerPlayer"`
 	LinkClueCountToMeans    bool           `json:"linkClueCountToMeans"`
+	MeansCluesTextOnly      bool           `json:"meansCluesTextOnly"`
 	AccompliceCount         int            `json:"accompliceCount"`
 	WitnessCount            int            `json:"witnessCount"`
 	WitnessesToFind         int            `json:"witnessesToFind"`

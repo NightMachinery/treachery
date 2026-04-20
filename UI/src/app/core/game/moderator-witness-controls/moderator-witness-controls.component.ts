@@ -7,9 +7,23 @@ import { GameApiService } from '../../../shared/api/game/game-api.service';
   styleUrls: ['./moderator-witness-controls.component.scss']
 })
 export class ModeratorWitnessControlsComponent {
+  roomModsBusy = false;
+
   constructor(public gameApi: GameApiService) {}
 
   async showPrompt(targetUid: string) {
     await this.gameApi.showWitnessSelectionPrompt(targetUid);
+  }
+
+  async setMeansCluesTextOnly(enabled: boolean, currentValue: boolean) {
+    if (this.roomModsBusy || enabled === currentValue) {
+      return;
+    }
+    this.roomModsBusy = true;
+    try {
+      await this.gameApi.updateRoomMods({ meansCluesTextOnly: enabled });
+    } finally {
+      this.roomModsBusy = false;
+    }
   }
 }

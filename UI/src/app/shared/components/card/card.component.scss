@@ -5,6 +5,8 @@
   margin: var(--space-2);
   border: 2px solid;
   position: relative;
+  overflow: hidden;
+  background: var(--tg-dark-bg-lighter-5);
   .main-img {
     position: absolute;
     height: 100%;
@@ -28,12 +30,15 @@
   position: absolute;
   z-index: 2;
   top: 0;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   max-width: 100%;
   font-weight: 500;
   padding: var(--space-2);
   word-wrap: break-word;
+  word-break: break-word;
+  text-align: start;
+  unicode-bidi: plaintext;
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 75%, rgba(0, 0, 0, 0));
 }
 
@@ -80,8 +85,40 @@
   justify-content: center;
   align-items: center;
   bottom: 0;
-  right: 0;
+  inset-inline-end: 0;
   position: absolute;
   border-radius: 5px 0 0 0;
   padding: 2px 4px;
+}
+
+.text-only {
+  width: clamp(7.5rem, 22vw, 10rem);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+
+  .card-name {
+    position: static;
+    padding: 0;
+    background: none;
+    font-size: 0.95rem;
+    line-height: 1.25;
+  }
+
+  .type-text {
+    position: static;
+    align-self: flex-end;
+    border-radius: 5px 5px 0 0;
+    text-transform: uppercase;
+  }
+}
+
+.text-only-body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  box-sizing: border-box;
+  text-align: start;
+  unicode-bidi: plaintext;
 }

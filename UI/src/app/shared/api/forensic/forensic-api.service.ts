@@ -77,6 +77,14 @@ export class ForensicApiService {
     }
   }
 
+  async restartGame() {
+    const gameId = this.gameApi.gameId$.value;
+    const response = await this.http.post<{ success: boolean }>(`/api/games/${gameId}/restart`, {}, this.getRoomRequestOptions()).toPromise();
+    if (response.success) {
+      await this.gameApi.refreshSnapshot();
+    }
+  }
+
   private getRoomRequestOptions() {
     let headers = new HttpHeaders();
     if (this.gameApi.roomAuth$.value) {

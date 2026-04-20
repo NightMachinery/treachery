@@ -21,6 +21,16 @@ export class GuessComponent implements OnInit {
     this.gameApi.guesses$.pipe(take(1)).subscribe(guesses => {
       this.gameApi.playersDict$.pipe(take(1)).subscribe(playersDict => {
         this.gameApi.viewer$.pipe(take(1)).subscribe(viewer => {
+          const duplicateGuess = guesses.some(
+            guess =>
+              guess.murdererUid === this.guess.murdererUid &&
+              guess.meansCardName === this.guess.meansCardName &&
+              guess.clueCardName === this.guess.clueCardName
+          );
+          if (duplicateGuess) {
+            this.snack.error('That exact guess was already submitted.');
+            return;
+          }
           if (guesses.filter(guess => guess.guessedByUid === viewer.uid).length === 0) {
             this.gameApi.makeGuess(this.guess);
           } else {

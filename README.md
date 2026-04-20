@@ -36,7 +36,7 @@ A web app for a board game based on Deception: Murder in Hong Kong
 
 ![1](screenshots/forensic/5.png)
 
-8. **Ending the game**: If no one correctly guesses who the murderer is before the end of round 3, the murderer team wins. If the investigators guess correctly and there are no witnesses in the lobby settings, the investigator team wins immediately. If witnesses are enabled, the game enters a final witness-selection step for the murderer team instead. The creator gets a blind suspect list they can use to quietly re-show the prompt without learning the murderer team, and any creator-issued accomplice prompt can be dismissed. The first submitted witness selection ends the game immediately, and the finished screen now reveals every hidden role.
+8. **Ending the game**: If no one correctly guesses who the murderer is before the end of round 3, the murderer team wins. If the investigators guess correctly and there are no witnesses in the lobby settings, the investigator team wins immediately. If witnesses are enabled, the game enters a final witness-selection step for the murderer team instead. The creator gets a blind suspect list they can use to quietly re-show the prompt without learning the murderer team, and any creator-issued accomplice prompt can be dismissed. The first submitted witness selection ends the game immediately, and the finished screen now reveals every hidden role. From that finished screen, the creator can use **Play again** to confirm-reset the same room back to the lobby without changing the URL; the current room roster, player/observer roles, and saved settings stay in place.
 
 ![1](screenshots/forensic/6.png)
 
@@ -60,7 +60,7 @@ A web app for a board game based on Deception: Murder in Hong Kong
 
 ![1](screenshots/investigator/3.png)
 
-3. **Making a guess**: At any point in the game, after the murderer has selected their cards, you may submit your guess to who the murderer is along with the clue card and means card they selected. To do this, select a clue card and a means card for one of the players by clicking the two cards. You will see a guess composer below the players list. If you're sure you want to guess, click "Make guess". Keep in mind that you only get one guess per game, so use your guess wisely.
+3. **Making a guess**: At any point in the game, after the murderer has selected their cards, you may submit your guess to who the murderer is along with the clue card and means card they selected. To do this, select a clue card and a means card for one of the players by clicking the two cards. You will see a guess composer below the players list. If you're sure you want to guess, click "Make guess". Keep in mind that you only get one guess per game, and the room also blocks exact duplicate full guesses from being submitted twice, so use your guess wisely.
 
 ![1](screenshots/investigator/4.png)
 

@@ -3,7 +3,7 @@
     <ng-container *ngIf="viewer$ | async as viewer">
       <div
         class="deck-container"
-        *ngFor="let player of otherPlayers(players$ | async, viewer); let i = index; first as isFirst"
+        *ngFor="let player of otherPlayers(players$ | async, viewer); trackBy: trackByPlayerUid; first as isFirst"
         [class.first]="isFirst"
       >
         <app-player-deck

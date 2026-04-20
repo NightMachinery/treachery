@@ -46,4 +46,8 @@ export class PlayerDeckPagerComponent implements OnInit {
   otherPlayers(players: TgPlayer[], viewer: TgViewer) {
     return players ? players.filter(player => !viewer || player.uid !== viewer.uid) : [];
   }
+
+  trackByPlayerUid(index: number, player: TgPlayer) {
+    return player.uid;
+  }
 }

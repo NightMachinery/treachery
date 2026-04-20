@@ -33,6 +33,7 @@ The lobby uses the existing **Save settings** flow, so pre-start changes to this
   - text-only cards that hide the means/clue images
 - After the game starts, the creator gets a live **Room mods** toggle for this setting on room screens.
 - Mid-game room-mod changes apply immediately to everyone in the room, including observers and the forensic scientist.
+- Existing suspect card images stay mounted when new forensic hints arrive, so revealing another hint does not reload the card art.
 - Only means/clue cards are affected; forensic clue cards stay unchanged.
 - Means/clue card labels now use browser auto-direction (`dir="auto"`) so RTL text renders correctly in both image and text-only modes.
 
@@ -90,3 +91,9 @@ Once the game ends, the UI shows:
 - winner/result message
 - the murderer and murder cards
 - a full role reveal for everyone in the room
+- a creator-only **Play again** confirmation that resets the same room back to the lobby while keeping the room URL, current participant roster, participant roles, and saved settings
+
+## Guess restrictions
+
+- Every suspect still gets only one submitted guess per game.
+- Exact duplicate full guesses are rejected room-wide, so the same suspect + clue + means combination cannot be submitted twice.

@@ -5,7 +5,7 @@
   </div>
   <div class="cards">
     <app-card
-      *ngFor="let card of player.meansCards"
+      *ngFor="let card of player.meansCards; trackBy: trackByCardName"
       [card]="card"
       [active]="!disableSelectionDisplay && selectedMeans === card.name"
       [means]="true"
@@ -14,7 +14,7 @@
   </div>
   <div class="cards">
     <app-card
-      *ngFor="let card of player.clueCards"
+      *ngFor="let card of player.clueCards; trackBy: trackByCardName"
       [card]="card"
       [active]="!disableSelectionDisplay && selectedClue === card.name"
       [means]="false"

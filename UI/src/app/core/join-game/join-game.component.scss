@@ -29,6 +29,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+  min-width: 0;
 }
 
 .button-container {
@@ -59,11 +60,29 @@
 
   input[type='number'] {
     min-height: 2.5rem;
-    padding: 0 var(--space-3);
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 var(--space-4);
     border-radius: var(--tg-border-radius);
     border: 1px solid var(--tg-dark-5-color);
-    background: transparent;
+    background: rgba(255, 255, 255, 0.04);
     color: inherit;
+    font-size: 1rem;
+    line-height: 1.2;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    appearance: textfield;
+
+    &:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 1px var(--accent-color);
+    }
+  }
+
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    margin: 0;
   }
 }
 
@@ -88,4 +107,32 @@
 
 .no-such-game {
   margin: var(--space-8);
+}
+
+@media only screen and (max-width: 40rem) {
+  .join-container {
+    padding: var(--space-4);
+    padding-bottom: 0;
+  }
+
+  .button-container {
+    margin-left: 0;
+  }
+
+  .settings-panel {
+    padding: var(--space-4);
+  }
+
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .start-button-container {
+    padding-bottom: var(--space-4);
+  }
 }

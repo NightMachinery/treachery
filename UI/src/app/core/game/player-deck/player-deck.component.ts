@@ -1,5 +1,5 @@
-import {TgPlayer} from '../../../shared/api/models/models';
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { TgCard, TgPlayer } from '../../../shared/api/models/models';
 
 @Component({
   selector: 'app-player-deck',
@@ -15,8 +15,7 @@ export class PlayerDeckComponent implements OnInit {
   @Output() selectedMeansChange = new EventEmitter<string>();
   @Input() disableSelectionDisplay = false;
 
-  constructor() {
-  }
+  constructor() {}
 
   clueClick(cardName) {
     this.selectedClue = cardName;
@@ -28,7 +27,9 @@ export class PlayerDeckComponent implements OnInit {
     this.selectedMeansChange.emit(this.selectedMeans);
   }
 
+  ngOnInit() {}
 
-  ngOnInit() {
+  trackByCardName(index: number, card: TgCard) {
+    return card.name;
   }
 }

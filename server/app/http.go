@@ -45,6 +45,7 @@ func (a *App) Handler() http.Handler {
 	mux.HandleFunc("POST /api/games/{gameId}/guess", a.handleMakeGuess)
 	mux.HandleFunc("POST /api/games/{gameId}/messages", a.handleSendMessage)
 	mux.HandleFunc("POST /api/games/{gameId}/end", a.handleEndGame)
+	mux.HandleFunc("POST /api/games/{gameId}/restart", a.handleRestartGame)
 	mux.HandleFunc("/", a.handleSPA)
 	return withCORSAndLogging(mux)
 }
@@ -448,6 +449,12 @@ func (a *App) handleSendMessage(w http.ResponseWriter, r *http.Request) {
 func (a *App) handleEndGame(w http.ResponseWriter, r *http.Request) {
 	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
 		return a.EndGame(gameID, viewerUID)
+	})
+}
+
+func (a *App) handleRestartGame(w http.ResponseWriter, r *http.Request) {
+	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
+		return a.RestartGame(gameID, viewerUID)
 	})
 }
 

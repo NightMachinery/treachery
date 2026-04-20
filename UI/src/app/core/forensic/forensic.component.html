@@ -108,6 +108,7 @@
             <tg-info>{{ game.resultMessage || 'Game finished!' }}</tg-info>
             <tg-murderer-info></tg-murderer-info>
             <app-role-reveal></app-role-reveal>
+            <tg-confirmation-button *ngIf="(gameApi.viewer$ | async)?.isCreator" (whenClicked)="restartGame()">Play again</tg-confirmation-button>
           </ng-container>
         </div>
         <app-chat [disableChat]="game.startedOn && !game.finished"></app-chat>

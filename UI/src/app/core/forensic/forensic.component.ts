@@ -153,6 +153,10 @@ export class ForensicComponent implements OnInit, OnDestroy {
     this.forensicApi.endGame();
   }
 
+  restartGame() {
+    this.forensicApi.restartGame();
+  }
+
   async copyMigrateLink() {
     const link = await this.gameApi.createMigrateLink();
     if (!link) {

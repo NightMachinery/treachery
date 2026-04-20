@@ -87,6 +87,10 @@ export class GameComponent implements OnInit, OnDestroy {
     await this.forensicApi.endGame();
   }
 
+  async restartGame() {
+    await this.forensicApi.restartGame();
+  }
+
   getWinnerLabel(winner: string) {
     switch (winner) {
       case 'investigatorTeam':

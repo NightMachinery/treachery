@@ -954,7 +954,7 @@ func (a *App) updateRoomTimer(gameID, actorUID string, fn func(*Game) error) err
 }
 
 func (a *App) replaceGamePlayersTx(tx *sql.Tx, gameID string, suspects []Participant, clueCards, meansCards []Card, clueCardsPerPlayer, meansCardsPerPlayer int) error {
-	if _, err := tx.Exec(`DELETE FROM players WHERE game_id = ?`, gameID); err != nil {
+	if err := clearPlayersTx(tx, gameID); err != nil {
 		return err
 	}
 	for i, participant := range suspects {
@@ -977,6 +977,42 @@ func (a *App) replaceGamePlayersTx(tx *sql.Tx, gameID string, suspects []Partici
 		}
 	}
 	return nil
+}
+
+func clearGameRoundDataTx(tx *sql.Tx, gameID string) error {
+	if err := clearPlayersTx(tx, gameID); err != nil {
+		return err
+	}
+	if err := clearPlayerRolesTx(tx, gameID); err != nil {
+		return err
+	}
+	if err := clearGuessesTx(tx, gameID); err != nil {
+		return err
+	}
+	if err := clearMessagesTx(tx, gameID); err != nil {
+		return err
+	}
+	return clearWitnessSelectionPromptsTx(tx, gameID)
+}
+
+func clearPlayersTx(tx *sql.Tx, gameID string) error {
+	_, err := tx.Exec(`DELETE FROM players WHERE game_id = ?`, gameID)
+	return err
+}
+
+func clearPlayerRolesTx(tx *sql.Tx, gameID string) error {
+	_, err := tx.Exec(`DELETE FROM player_roles WHERE game_id = ?`, gameID)
+	return err
+}
+
+func clearGuessesTx(tx *sql.Tx, gameID string) error {
+	_, err := tx.Exec(`DELETE FROM guesses WHERE game_id = ?`, gameID)
+	return err
+}
+
+func clearMessagesTx(tx *sql.Tx, gameID string) error {
+	_, err := tx.Exec(`DELETE FROM messages WHERE game_id = ?`, gameID)
+	return err
 }
 
 func (a *App) SelectMurdererCards(gameID, uid, clueCardName, meansCardName string) error {
@@ -1098,6 +1134,19 @@ func (a *App) MakeGuess(gameID, uid, murdererUID, clueCardName, meansCardName st
 		if existingCount > 0 {
 			return fmt.Errorf("%w: each player only gets one guess", ErrBadInput)
 		}
+		var duplicateGuessCount int
+		if err := tx.QueryRow(
+			`SELECT COUNT(1) FROM guesses WHERE game_id = ? AND murderer_uid = ? AND means_card_name = ? AND clue_card_name = ?`,
+			gameID,
+			murdererUID,
+			meansCardName,
+			clueCardName,
+		).Scan(&duplicateGuessCount); err != nil {
+			return err
+		}
+		if duplicateGuessCount > 0 {
+			return fmt.Errorf("%w: that exact guess was already submitted", ErrBadInput)
+		}
 		guessedPlayer, err := a.getPlayerTx(tx, gameID, murdererUID)
 		if err != nil {
 			return err
@@ -1161,6 +1210,45 @@ func (a *App) EndGame(gameID, uid string) error {
 		if err := a.clearWitnessSelectionPromptsTx(tx, gameID); err != nil {
 			return err
 		}
+		return a.saveGameTx(tx, game)
+	})
+}
+
+func (a *App) RestartGame(gameID, uid string) error {
+	gameID = strings.ToUpper(strings.TrimSpace(gameID))
+	return a.withTx(context.Background(), func(tx *sql.Tx) error {
+		game, err := a.getGameTx(tx, gameID)
+		if err != nil {
+			return err
+		}
+		if game.CreatorUID != uid {
+			return fmt.Errorf("%w: only the creator can restart the game", ErrForbidden)
+		}
+		if !game.Finished {
+			return fmt.Errorf("%w: game must be finished before it can be restarted", ErrBadInput)
+		}
+		if err := clearGameRoundDataTx(tx, gameID); err != nil {
+			return err
+		}
+
+		game.StartedOn = ""
+		game.StartedTimestamp = ""
+		game.ScientistUID = ""
+		game.MurdererUID = ""
+		game.MurdererSelected = false
+		game.MurdererCardsSelected = false
+		game.MurdererClueCardName = ""
+		game.MurdererMeansCardName = ""
+		game.CauseCard = nil
+		game.LocationCard = nil
+		game.OtherCards = []ForensicCard{}
+		game.PendingWitnessSelection = false
+		game.Finished = false
+		game.Winner = WinnerNone
+		game.FinishedReason = ""
+		game.ResultMessage = ""
+		clearRoomTimer(game)
+
 		return a.saveGameTx(tx, game)
 	})
 }
@@ -1771,7 +1859,7 @@ func scanPlayerRoles(rows *sql.Rows) (map[string]SecretRole, error) {
 }
 
 func (a *App) replacePlayerRolesTx(tx *sql.Tx, gameID string, roles map[string]SecretRole) error {
-	if _, err := tx.Exec(`DELETE FROM player_roles WHERE game_id = ?`, gameID); err != nil {
+	if err := clearPlayerRolesTx(tx, gameID); err != nil {
 		return err
 	}
 	for uid, role := range roles {
@@ -1838,9 +1926,13 @@ func (a *App) upsertWitnessSelectionPromptTx(tx *sql.Tx, gameID, uid string, pro
 	return err
 }
 
-func (a *App) clearWitnessSelectionPromptsTx(tx *sql.Tx, gameID string) error {
+func clearWitnessSelectionPromptsTx(tx *sql.Tx, gameID string) error {
 	_, err := tx.Exec(`DELETE FROM witness_selection_prompts WHERE game_id = ?`, gameID)
 	return err
+}
+
+func (a *App) clearWitnessSelectionPromptsTx(tx *sql.Tx, gameID string) error {
+	return clearWitnessSelectionPromptsTx(tx, gameID)
 }
 
 func (a *App) deleteWitnessSelectionPromptTx(tx *sql.Tx, gameID, uid string) error {

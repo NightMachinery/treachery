@@ -1,6 +1,8 @@
 package app
 
 import (
+	"context"
+	"database/sql"
 	"errors"
 	mathrand "math/rand"
 	"path/filepath"
@@ -272,6 +274,261 @@ func TestCorrectGuessFinishesGame(t *testing.T) {
 	}
 	if len(updated.Guesses) != 1 || !updated.Guesses[0].Correct {
 		t.Fatalf("expected one correct guess, got %+v", updated.Guesses)
+	}
+}
+
+func TestDuplicateExactGuessRejectedButDifferentComboAllowed(t *testing.T) {
+	app := newTestApp(t)
+	defer app.Close()
+
+	creator := "creator"
+	setProfile(t, app, creator, "Creator")
+	if err := app.CreateGame(creator, "DUPL"); err != nil {
+		t.Fatalf("create game: %v", err)
+	}
+	for _, uid := range []string{"p1", "p2", "p3", "p4"} {
+		joinPlayer(t, app, "DUPL", uid, uid)
+	}
+	if err := app.StartGame("DUPL", creator); err != nil {
+		t.Fatalf("start game: %v", err)
+	}
+
+	creatorSnapshot, err := app.GetSnapshot("DUPL", creator)
+	if err != nil {
+		t.Fatalf("creator snapshot: %v", err)
+	}
+	scientistSnapshot, err := app.GetSnapshot("DUPL", creatorSnapshot.Game.ScientistUID)
+	if err != nil {
+		t.Fatalf("scientist snapshot: %v", err)
+	}
+	murderer := scientistSnapshot.ForensicPrivateData.Murderer
+	murdererUID := murderer.UID
+	clue1 := murderer.ClueCards[0].Name
+	clue2 := murderer.ClueCards[1].Name
+	means1 := murderer.MeansCards[0].Name
+	means2 := murderer.MeansCards[1].Name
+	if err := app.SelectMurdererCards("DUPL", murdererUID, clue1, means1); err != nil {
+		t.Fatalf("select murderer cards: %v", err)
+	}
+
+	guessers := []string{}
+	for _, player := range creatorSnapshot.Players {
+		if player.UID != murdererUID {
+			guessers = append(guessers, player.UID)
+		}
+	}
+	if len(guessers) < 2 {
+		t.Fatalf("expected at least 2 non-murderer guessers, got %v", guessers)
+	}
+
+	if err := app.MakeGuess("DUPL", guessers[0], murdererUID, clue2, means2); err != nil {
+		t.Fatalf("first guess: %v", err)
+	}
+	if err := app.MakeGuess("DUPL", guessers[1], murdererUID, clue2, means2); !errors.Is(err, ErrBadInput) {
+		t.Fatalf("expected duplicate exact guess to fail with bad input, got %v", err)
+	}
+	if err := app.MakeGuess("DUPL", guessers[1], murdererUID, clue2, means1); err != nil {
+		t.Fatalf("expected different combo for same suspect to be allowed, got %v", err)
+	}
+}
+
+func TestPlayerStillGetsOnlyOneGuess(t *testing.T) {
+	app := newTestApp(t)
+	defer app.Close()
+
+	creator := "creator"
+	setProfile(t, app, creator, "Creator")
+	if err := app.CreateGame(creator, "ONCE"); err != nil {
+		t.Fatalf("create game: %v", err)
+	}
+	for _, uid := range []string{"p1", "p2", "p3", "p4"} {
+		joinPlayer(t, app, "ONCE", uid, uid)
+	}
+	if err := app.StartGame("ONCE", creator); err != nil {
+		t.Fatalf("start game: %v", err)
+	}
+
+	creatorSnapshot, err := app.GetSnapshot("ONCE", creator)
+	if err != nil {
+		t.Fatalf("creator snapshot: %v", err)
+	}
+	scientistSnapshot, err := app.GetSnapshot("ONCE", creatorSnapshot.Game.ScientistUID)
+	if err != nil {
+		t.Fatalf("scientist snapshot: %v", err)
+	}
+	murderer := scientistSnapshot.ForensicPrivateData.Murderer
+	murdererUID := murderer.UID
+	clue1 := murderer.ClueCards[0].Name
+	clue2 := murderer.ClueCards[1].Name
+	means1 := murderer.MeansCards[0].Name
+	means2 := murderer.MeansCards[1].Name
+	if err := app.SelectMurdererCards("ONCE", murdererUID, clue1, means1); err != nil {
+		t.Fatalf("select murderer cards: %v", err)
+	}
+
+	var guesserUID string
+	for _, player := range creatorSnapshot.Players {
+		if player.UID != murdererUID {
+			guesserUID = player.UID
+			break
+		}
+	}
+	if guesserUID == "" {
+		t.Fatalf("expected non-murderer guesser")
+	}
+
+	if err := app.MakeGuess("ONCE", guesserUID, murdererUID, clue2, means2); err != nil {
+		t.Fatalf("first guess: %v", err)
+	}
+	if err := app.MakeGuess("ONCE", guesserUID, murdererUID, clue2, means1); !errors.Is(err, ErrBadInput) {
+		t.Fatalf("expected second guess to fail with bad input, got %v", err)
+	}
+}
+
+func TestRestartGameKeepsLobbyRosterAndSettingsButClearsRoundState(t *testing.T) {
+	app := newTestApp(t)
+	defer app.Close()
+
+	creator := "creator"
+	setProfile(t, app, creator, "Creator")
+	if err := app.CreateGame(creator, "RSET"); err != nil {
+		t.Fatalf("create game: %v", err)
+	}
+	joinPlayer(t, app, "RSET", "p1", "Player 1")
+	joinPlayer(t, app, "RSET", "p2", "Player 2")
+	joinPlayer(t, app, "RSET", "p3", "Player 3")
+	joinPlayer(t, app, "RSET", "p4", "Player 4")
+	if err := app.SetParticipantRole("RSET", creator, "p4", ParticipantRoleObserver); err != nil {
+		t.Fatalf("set observer: %v", err)
+	}
+	if err := app.ToggleScientistMark("RSET", creator, "p2"); err != nil {
+		t.Fatalf("mark scientist: %v", err)
+	}
+	if err := app.UpdateGameSettings("RSET", creator, GameSettingsInput{
+		MeansCardsPerPlayer:  5,
+		ClueCardsPerPlayer:   3,
+		LinkClueCountToMeans: false,
+		MeansCluesTextOnly:   true,
+		AccompliceCount:      1,
+		WitnessCount:         0,
+		WitnessesToFind:      0,
+	}); err != nil {
+		t.Fatalf("update settings: %v", err)
+	}
+	roomAuthToken, err := app.CreateOrGetRoomAuthToken("RSET", creator)
+	if err != nil {
+		t.Fatalf("create room auth: %v", err)
+	}
+	if err := app.StartGame("RSET", creator); err != nil {
+		t.Fatalf("start game: %v", err)
+	}
+
+	startedSnapshot, err := app.GetSnapshot("RSET", creator)
+	if err != nil {
+		t.Fatalf("started snapshot: %v", err)
+	}
+	scientistSnapshot, err := app.GetSnapshot("RSET", startedSnapshot.Game.ScientistUID)
+	if err != nil {
+		t.Fatalf("scientist snapshot: %v", err)
+	}
+	murderer := scientistSnapshot.ForensicPrivateData.Murderer
+	murdererUID := murderer.UID
+	if err := app.SelectMurdererCards("RSET", murdererUID, murderer.ClueCards[0].Name, murderer.MeansCards[0].Name); err != nil {
+		t.Fatalf("select murderer cards: %v", err)
+	}
+
+	var guesserUID string
+	for _, player := range startedSnapshot.Players {
+		if player.UID != murdererUID {
+			guesserUID = player.UID
+			break
+		}
+	}
+	if guesserUID == "" {
+		t.Fatalf("expected non-murderer guesser")
+	}
+	if err := app.MakeGuess("RSET", guesserUID, murdererUID, murderer.ClueCards[1].Name, murderer.MeansCards[1].Name); err != nil {
+		t.Fatalf("make guess: %v", err)
+	}
+	if err := app.SendChatMessage("RSET", guesserUID, "still thinking"); err != nil {
+		t.Fatalf("send chat message: %v", err)
+	}
+	if err := app.StartRoomTimer("RSET", creator, nil); err != nil {
+		t.Fatalf("start room timer: %v", err)
+	}
+	if err := app.withTx(context.Background(), func(tx *sql.Tx) error {
+		return app.upsertWitnessSelectionPromptTx(tx, "RSET", murdererUID, WitnessSelectionPromptState{
+			RequiredSelections: 1,
+			Dismissible:        true,
+			CreatorInitiated:   true,
+		})
+	}); err != nil {
+		t.Fatalf("seed witness prompt: %v", err)
+	}
+	if err := app.EndGame("RSET", creator); err != nil {
+		t.Fatalf("end game: %v", err)
+	}
+
+	if err := app.RestartGame("RSET", creator); err != nil {
+		t.Fatalf("restart game: %v", err)
+	}
+
+	restartedSnapshot, err := app.GetSnapshot("RSET", creator)
+	if err != nil {
+		t.Fatalf("restarted snapshot: %v", err)
+	}
+	if restartedSnapshot.Game.GameID != "RSET" {
+		t.Fatalf("expected same game id, got %+v", restartedSnapshot.Game)
+	}
+	if restartedSnapshot.Game.StartedOn != "" || restartedSnapshot.Game.StartedTimestamp != "" {
+		t.Fatalf("expected lobby game after restart, got %+v", restartedSnapshot.Game)
+	}
+	if restartedSnapshot.Game.Finished || restartedSnapshot.Game.PendingWitnessSelection {
+		t.Fatalf("expected unfinished lobby game after restart, got %+v", restartedSnapshot.Game)
+	}
+	if restartedSnapshot.Game.MeansCardsPerPlayer != 5 || restartedSnapshot.Game.ClueCardsPerPlayer != 3 || !restartedSnapshot.Game.MeansCluesTextOnly {
+		t.Fatalf("expected settings to persist, got %+v", restartedSnapshot.Game)
+	}
+	if restartedSnapshot.Game.MarkedScientistUID != "p2" {
+		t.Fatalf("expected marked scientist to persist, got %q", restartedSnapshot.Game.MarkedScientistUID)
+	}
+	if restartedSnapshot.Game.ScientistUID != "" || restartedSnapshot.Game.MurdererUID != "" || restartedSnapshot.Game.MurdererCardsSelected {
+		t.Fatalf("expected round assignments to clear, got %+v", restartedSnapshot.Game)
+	}
+	if restartedSnapshot.Game.CauseCard != nil || restartedSnapshot.Game.LocationCard != nil || len(restartedSnapshot.Game.OtherCards) != 0 {
+		t.Fatalf("expected forensic cards cleared, got %+v", restartedSnapshot.Game)
+	}
+	if restartedSnapshot.Game.RoomTimer != nil {
+		t.Fatalf("expected room timer cleared, got %+v", restartedSnapshot.Game.RoomTimer)
+	}
+	if len(restartedSnapshot.Players) != 0 {
+		t.Fatalf("expected dealt suspect state cleared, got %+v", restartedSnapshot.Players)
+	}
+	if len(restartedSnapshot.Guesses) != 0 {
+		t.Fatalf("expected guesses cleared, got %+v", restartedSnapshot.Guesses)
+	}
+	if len(restartedSnapshot.Messages) != 0 {
+		t.Fatalf("expected messages cleared, got %+v", restartedSnapshot.Messages)
+	}
+	if restartedSnapshot.ModeratorPrivateData != nil {
+		t.Fatalf("expected moderator private data cleared in lobby, got %+v", restartedSnapshot.ModeratorPrivateData)
+	}
+	if len(restartedSnapshot.RoleReveal) != 0 {
+		t.Fatalf("expected role reveal cleared after restart, got %+v", restartedSnapshot.RoleReveal)
+	}
+	if resolvedUID, err := app.ResolveRoomAuthToken("RSET", roomAuthToken.Token); err != nil || resolvedUID != creator {
+		t.Fatalf("expected room auth token to survive restart, got uid=%q err=%v", resolvedUID, err)
+	}
+
+	roleByUID := map[string]ParticipantRole{}
+	for _, participant := range restartedSnapshot.Participants {
+		roleByUID[participant.UID] = participant.Role
+	}
+	if len(roleByUID) != 5 {
+		t.Fatalf("expected full participant roster to persist, got %+v", restartedSnapshot.Participants)
+	}
+	if roleByUID["creator"] != ParticipantRolePlayer || roleByUID["p1"] != ParticipantRolePlayer || roleByUID["p2"] != ParticipantRolePlayer || roleByUID["p3"] != ParticipantRolePlayer || roleByUID["p4"] != ParticipantRoleObserver {
+		t.Fatalf("expected participant roles to persist, got %+v", restartedSnapshot.Participants)
 	}
 }
 

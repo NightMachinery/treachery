@@ -17,6 +17,7 @@
         <tg-info *ngIf="game.resultMessage">{{ game.resultMessage }}</tg-info>
         <tg-murderer-info></tg-murderer-info>
         <app-role-reveal></app-role-reveal>
+        <tg-confirmation-button *ngIf="viewer.isCreator" (whenClicked)="restartGame()">Play again</tg-confirmation-button>
       </ng-container>
 
       <ng-container *ngIf="!game.finished && game.pendingWitnessSelection">

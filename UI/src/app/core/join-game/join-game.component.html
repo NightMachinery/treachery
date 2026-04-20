@@ -21,12 +21,62 @@
           </tg-info>
         </ng-template>
 
+        <div class="settings-panel" *ngIf="viewer.isCreator">
+          <h3>Lobby settings</h3>
+          <div class="settings-grid">
+            <label>
+              <span>Means cards / suspect</span>
+              <input type="number" min="1" [(ngModel)]="settings.meansCardsPerPlayer" (ngModelChange)="handleMeansCardCountChange()" />
+            </label>
+            <label>
+              <span>Evidence cards / suspect</span>
+              <input
+                type="number"
+                min="1"
+                [disabled]="settings.linkClueCountToMeans"
+                [(ngModel)]="settings.clueCardsPerPlayer"
+                (ngModelChange)="handleClueCardCountChange()"
+              />
+            </label>
+            <label class="checkbox-row wide">
+              <input type="checkbox" [(ngModel)]="settings.linkClueCountToMeans" (ngModelChange)="handleLinkClueCountChange()" />
+              <span>Evidence count just follows means count</span>
+            </label>
+            <label>
+              <span>Accomplices</span>
+              <input type="number" min="0" max="10" [(ngModel)]="settings.accompliceCount" (ngModelChange)="handleRoleCountChange()" />
+            </label>
+            <label>
+              <span>Witnesses</span>
+              <input type="number" min="0" max="10" [(ngModel)]="settings.witnessCount" (ngModelChange)="handleRoleCountChange()" />
+            </label>
+            <label *ngIf="settings.witnessCount > 0">
+              <span>Witnesses murderer must find</span>
+              <input type="number" min="1" [max]="settings.witnessCount" [(ngModel)]="settings.witnessesToFind" (ngModelChange)="handleRoleCountChange()" />
+            </label>
+          </div>
+          <div class="settings-actions">
+            <button mat-stroked-button type="button" (click)="resetSettings(game)" [disabled]="!settingsDirty">Reset</button>
+            <button mat-raised-button color="accent" type="button" (click)="saveSettings()" [disabled]="!settingsDirty">Save settings</button>
+          </div>
+          <tg-info *ngIf="getStartValidationMessage(game, (gameApi.participants$ | async) || []) as validation" [hidden]="!validation">
+            {{ validation }}
+          </tg-info>
+        </div>
+
         <div class="joined-list-container">
           <app-joined-players-list [showModControls]="viewer.isCreator"></app-joined-players-list>
         </div>
 
         <div class="start-button-container" *ngIf="viewer.isCreator">
-          <button mat-raised-button color="accent" (click)="startGame()">Start Game</button>
+          <button
+            mat-raised-button
+            color="accent"
+            (click)="startGame()"
+            [disabled]="!!getStartValidationMessage(game, (gameApi.participants$ | async) || []) || settingsDirty"
+          >
+            {{ settingsDirty ? 'Save settings to start' : 'Start Game' }}
+          </button>
         </div>
       </ng-container>
 

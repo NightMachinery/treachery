@@ -10,6 +10,7 @@
   padding: var(--space-8);
   display: flex;
   overflow: auto;
+
   app-joined-players-list {
     flex: 1;
     min-height: 0;
@@ -25,12 +26,64 @@
 .join-container {
   padding: var(--space-8);
   padding-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
 }
 
 .button-container {
   display: flex;
   justify-content: center;
   margin-left: var(--space-8);
+}
+
+.settings-panel {
+  background: var(--tg-card-background-color);
+  border-radius: var(--tg-border-radius);
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--space-4);
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  input[type='number'] {
+    min-height: 2.5rem;
+    padding: 0 var(--space-3);
+    border-radius: var(--tg-border-radius);
+    border: 1px solid var(--tg-dark-5-color);
+    background: transparent;
+    color: inherit;
+  }
+}
+
+.checkbox-row {
+  flex-direction: row !important;
+  align-items: center;
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+.settings-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-4);
+}
+
+.start-button-container {
+  padding-bottom: var(--space-8);
 }
 
 .no-such-game {

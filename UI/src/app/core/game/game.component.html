@@ -11,9 +11,19 @@
       </div>
 
       <ng-container *ngIf="game.finished">
-        <tg-info>Game has ended!</tg-info>
+        <tg-info>{{ getWinnerLabel(game.winner) }}</tg-info>
+        <tg-info *ngIf="game.resultMessage">{{ game.resultMessage }}</tg-info>
         <tg-murderer-info></tg-murderer-info>
+        <app-role-reveal></app-role-reveal>
       </ng-container>
+
+      <ng-container *ngIf="!game.finished && game.pendingWitnessSelection">
+        <tg-info>
+          A correct guess was made. The murderer team is now choosing {{ game.witnessesToFind }} witness{{ game.witnessesToFind === 1 ? '' : 'es' }}.
+        </tg-info>
+      </ng-container>
+
+      <app-moderator-witness-controls></app-moderator-witness-controls>
 
       <ng-container *ngIf="!game.finished && isObserverRoute()">
         <tg-info>You are observing this room. You can watch, but not chat or guess.</tg-info>
@@ -33,6 +43,7 @@
             <div *ngIf="privateData.isMurderer && !game.murdererCardsSelected">
               <app-murderer-select-dialog [player]="player"></app-murderer-select-dialog>
             </div>
+            <app-witness-selection-prompt></app-witness-selection-prompt>
             <div class="murderer-selecting-cards" *ngIf="!game.murdererCardsSelected && !privateData.isMurderer">
               Murderer is selecting their cards ...
             </div>
@@ -45,6 +56,7 @@
                 <tg-info>Forensic Scientist is selecting other cards...</tg-info>
               </ng-template>
             </ng-container>
+            <app-private-role-panel></app-private-role-panel>
             <div class="cards">
               <app-forensic-card *ngIf="game.causeCard" [forensicCard]="game.causeCard"></app-forensic-card>
               <app-forensic-card *ngIf="game.locationCard" [forensicCard]="game.locationCard"></app-forensic-card>
@@ -52,8 +64,8 @@
                 <app-forensic-card *ngIf="card.selectedChoice && !card.replaced" [forensicCard]="card"></app-forensic-card>
               </div>
             </div>
-            <app-player-deck-pager [guess]="guess"></app-player-deck-pager>
-            <app-guess *ngIf="game.murdererCardsSelected" [guess]="guess"></app-guess>
+            <app-player-deck-pager [guess]="guess" [disableSelection]="game.pendingWitnessSelection"></app-player-deck-pager>
+            <app-guess *ngIf="game.murdererCardsSelected && !game.pendingWitnessSelection" [guess]="guess"></app-guess>
             <div class="player-deck-container">
               <div>
                 <h3 class="your-cards-header">Your cards</h3>

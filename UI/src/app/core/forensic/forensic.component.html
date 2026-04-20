@@ -10,7 +10,11 @@
               End game
             </tg-confirmation-button>
           </div>
+          <app-moderator-witness-controls></app-moderator-witness-controls>
           <ng-container *ngIf="!game.finished">
+            <tg-info *ngIf="game.pendingWitnessSelection">
+              A correct guess was made. The murderer team is now choosing {{ game.witnessesToFind }} witness{{ game.witnessesToFind === 1 ? '' : 'es' }}.
+            </tg-info>
             <ng-container *ngIf="forensicApi.forensicPrivateData$ | async as privateData">
               <ng-container *ngIf="privateData.murdererClueCardName && privateData.murdererMeansCardName">
                 <ng-container *ngIf="game.startedOn">
@@ -100,8 +104,9 @@
             </ng-container>
           </ng-container>
           <ng-container *ngIf="game.finished">
-            <tg-info>Game finished!</tg-info>
+            <tg-info>{{ game.resultMessage || 'Game finished!' }}</tg-info>
             <tg-murderer-info></tg-murderer-info>
+            <app-role-reveal></app-role-reveal>
           </ng-container>
         </div>
         <app-chat [disableChat]="game.startedOn && !game.finished"></app-chat>

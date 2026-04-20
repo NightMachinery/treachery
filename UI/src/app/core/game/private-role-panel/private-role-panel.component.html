@@ -1,0 +1,26 @@
+<ng-container *ngIf="vm$ | async as vm">
+  <div class="role-panel" *ngIf="vm.privateData?.role && vm.privateData.role !== 'investigator'">
+    <h3>{{ getRoleTitle(vm.privateData.role) }}</h3>
+
+    <ng-container *ngIf="vm.privateData.knownMurdererTeam?.length">
+      <div class="subtitle">Known murderer team</div>
+      <div class="team-list">
+        <div class="team-member" *ngFor="let member of vm.privateData.knownMurdererTeam">
+          <tg-avatar [uid]="member.uid" [diameter]="40"></tg-avatar>
+          <div>
+            <div>{{ member.name }}</div>
+            <div class="role-label">{{ member.role }}</div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="vm.privateData.role === 'accomplice' && vm.murdererClueCard && vm.murdererMeansCard">
+      <div class="subtitle">Murderer cards</div>
+      <div class="cards">
+        <app-card [card]="vm.murdererMeansCard" [means]="true"></app-card>
+        <app-card [card]="vm.murdererClueCard" [means]="false"></app-card>
+      </div>
+    </ng-container>
+  </div>
+</ng-container>

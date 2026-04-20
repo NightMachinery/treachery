@@ -1,11 +1,9 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
 import { ChatApiService } from 'src/app/shared/api/chat/chat-api.service';
 import { TgGameSnapshot, TgPartialGuess } from './../../shared/api/models/models';
 import { GameApiService } from '../../shared/api/game/game-api.service';
-import { MurdererSelectDialogComponent } from './murderer-select-dialog/murderer-select-dialog.component';
 import { AuthService } from './../../shared/api/auth/auth.service';
 import { ForensicApiService } from './../../shared/api/forensic/forensic-api.service';
 import { SnackBarService } from './../../shared/api/snack-bar/snack-bar.service';
@@ -22,7 +20,6 @@ export class GameComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    public dialog: MatDialog,
     public gameApi: GameApiService,
     private auth: AuthService,
     private router: Router,
@@ -69,10 +66,6 @@ export class GameComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  openDialog() {
-    this.dialog.open(MurdererSelectDialogComponent, {});
-  }
-
   isObserverRoute() {
     return this.router.url.startsWith('/observe/');
   }
@@ -92,6 +85,17 @@ export class GameComponent implements OnInit, OnDestroy {
 
   async endGame() {
     await this.forensicApi.endGame();
+  }
+
+  getWinnerLabel(winner: string) {
+    switch (winner) {
+      case 'investigatorTeam':
+        return 'Investigator team wins';
+      case 'murdererTeam':
+        return 'Murderer team wins';
+      default:
+        return 'Game ended';
+    }
   }
 
   private async syncRoute(snapshot: TgGameSnapshot) {

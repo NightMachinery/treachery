@@ -1,0 +1,21 @@
+.floating-prompt {
+  position: fixed;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  z-index: 30;
+}
+
+.candidate-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin: var(--space-4) 0;
+}
+
+.selected {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.selection-summary {
+  margin-bottom: var(--space-4);
+}

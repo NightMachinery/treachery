@@ -1,0 +1,29 @@
+<ng-container *ngIf="visible">
+  <div class="floating-prompt">
+    <tg-prompt-panel
+      title="Choose the witness"
+      [dismissible]="prompt.dismissible"
+      [(minimized)]="minimized"
+      (dismissed)="dismiss()"
+    >
+      <p>
+        Select {{ prompt.requiredSelections }} player{{ prompt.requiredSelections === 1 ? '' : 's' }} that you believe are witness{{
+          prompt.requiredSelections === 1 ? '' : 'es'
+        }}.
+      </p>
+      <div class="candidate-list">
+        <button
+          mat-stroked-button
+          type="button"
+          *ngFor="let player of candidates"
+          [class.selected]="isSelected(player.uid)"
+          (click)="toggleSelected(player.uid)"
+        >
+          {{ player.name }}
+        </button>
+      </div>
+      <div class="selection-summary">Selected: {{ selectedUids.length }} / {{ prompt.requiredSelections }}</div>
+      <button mat-raised-button color="accent" type="button" (click)="submit()">Submit witness selection</button>
+    </tg-prompt-panel>
+  </div>
+</ng-container>

@@ -1,10 +1,8 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border: var(--tg-border-size) solid var(--warn-lighter-color);
-  border-radius: var(--tg-border-radius);
-  padding: var(--space-8);
+.floating-prompt {
+  position: fixed;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  z-index: 30;
 }
 
 .deck-container {
@@ -15,4 +13,25 @@
 
 .select-button {
   margin-top: var(--space-4);
+}
+
+.team-list {
+  margin-bottom: var(--space-4);
+}
+
+.team-member {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.subtitle {
+  margin-bottom: var(--space-2);
+  font-weight: 600;
+}
+
+.role-label {
+  opacity: 0.75;
+  text-transform: capitalize;
 }

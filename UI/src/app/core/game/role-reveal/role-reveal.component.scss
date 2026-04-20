@@ -1,0 +1,23 @@
+.role-reveal {
+  background: var(--tg-card-background-color);
+  border-radius: var(--tg-border-radius);
+  padding: var(--space-6);
+  margin-top: var(--space-4);
+}
+
+.role-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--space-4);
+}
+
+.role-entry {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.role-label {
+  opacity: 0.75;
+  text-transform: capitalize;
+}

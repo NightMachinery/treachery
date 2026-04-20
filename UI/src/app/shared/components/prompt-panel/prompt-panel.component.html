@@ -1,0 +1,12 @@
+<div class="panel">
+  <div class="panel-header">
+    <h3>{{ title }}</h3>
+    <div class="actions">
+      <button mat-button type="button" (click)="toggleMinimized()">{{ minimized ? 'Expand' : 'Minimize' }}</button>
+      <button mat-button type="button" *ngIf="dismissible" (click)="dismiss()">Dismiss</button>
+    </div>
+  </div>
+  <div class="panel-body" *ngIf="!minimized">
+    <ng-content></ng-content>
+  </div>
+</div>

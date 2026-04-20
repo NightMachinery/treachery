@@ -18,13 +18,13 @@ A web app for a board game based on Deception: Murder in Hong Kong
 
 ![1](screenshots/forensic/1.png)
 
-3. **Set up the lobby**: The creator is a normal player and moderator. Before the game starts, the creator can toggle any participant between **player** and **observer**, and can toggle-mark one player as the forensic scientist. If nobody is marked, the app picks a forensic scientist randomly from the current players.
+3. **Set up the lobby**: The creator is a normal player and moderator. Before the game starts, the creator can toggle any participant between **player** and **observer**, toggle-mark one player as the forensic scientist, configure how many **means** and **evidence/clue** cards each suspect receives, and optionally add **accomplices** and **witnesses**. Evidence can follow the means count automatically, or be set separately. Witnesses and accomplices default to `0`.
 
 ![1](screenshots/forensic/2.png)
 
 4. **Start the game**: You now need at least four lobby players total so one can become the forensic scientist and three suspects remain. When the game starts, the selected forensic scientist stays visible in the room roster but does not receive cards, cannot guess, and cannot chat during the active game.
 
-5. **Wait for murderer to select their cards**: The game distributes cards among the remaining suspect players randomly. Each suspect gets 4 means cards and 4 clue cards. One suspect is selected to be the murderer. Only the forensic scientist knows that identity, and they are not allowed to reveal it. The murderer is prompted to select one clue card and one means card from the cards they were dealt.
+5. **Wait for murderer to select their cards**: The game distributes cards among the remaining suspect players randomly using the configured lobby counts. One suspect is selected to be the murderer. Optional accomplices and witnesses are also assigned randomly. The murderer is prompted to select one clue card and one means card from the cards they were dealt. These prompts can now be minimized while the player looks at the board.
 
 ![1](screenshots/forensic/3.png)
 
@@ -36,7 +36,7 @@ A web app for a board game based on Deception: Murder in Hong Kong
 
 ![1](screenshots/forensic/5.png)
 
-8. **Ending the game**: If no one correctly guesses who the murderer is before the end of round 3, you must end the game. The murderer wins. At any point, if an investigator submits the correct guess, the game also ends and the Investigators win.
+8. **Ending the game**: If no one correctly guesses who the murderer is before the end of round 3, the murderer team wins. If the investigators guess correctly and there are no witnesses in the lobby settings, the investigator team wins immediately. If witnesses are enabled, the game enters a final witness-selection step for the murderer team instead. The creator can manually show that prompt to the murderer or any accomplice, and those creator-issued prompts can be dismissed. The first submitted witness selection ends the game immediately, and the finished screen now reveals every hidden role.
 
 ![1](screenshots/forensic/6.png)
 
@@ -46,7 +46,7 @@ A web app for a board game based on Deception: Murder in Hong Kong
 
 ![1](screenshots/investigator/0.png)
 
-2. **Lobby**: You can see every room participant in the lobby, including observers. Players can use chat in the lobby. The creator can switch participants between player and observer, and can mark one player as the forensic scientist. The lobby needs at least 4 players before the game can start. After the game starts, the chosen forensic scientist is either the marked player or a random player if nobody was marked.
+2. **Lobby**: You can see every room participant in the lobby, including observers. Players can use chat in the lobby. The creator can switch participants between player and observer, mark one player as the forensic scientist, choose card counts, and configure optional accomplices and witnesses before the game starts. The lobby still needs at least 4 players before the game can start. After the game starts, the chosen forensic scientist is either the marked player or a random player if nobody was marked.
 
 ![1](screenshots/investigator/1.png)
 
@@ -60,7 +60,7 @@ A web app for a board game based on Deception: Murder in Hong Kong
 
 ![1](screenshots/investigator/3.png)
 
-3. **Making a guess**: At any point in the game, after the murderer has selected their cards, you may submit your guess to who the murderer is along with the clue card and means card they selected. To do this, select a clue card and a meas card for one of the players by clicking the two cards, you will see a guess composer popping up below the players list. If you're sure you want to guess, click "Make guess". Keep in mind that you only get one guess per game, so use your guess wisely.
+3. **Making a guess**: At any point in the game, after the murderer has selected their cards, you may submit your guess to who the murderer is along with the clue card and means card they selected. To do this, select a clue card and a means card for one of the players by clicking the two cards. You will see a guess composer below the players list. If you're sure you want to guess, click "Make guess". Keep in mind that you only get one guess per game, so use your guess wisely.
 
 ![1](screenshots/investigator/4.png)
 
@@ -81,6 +81,12 @@ A web app for a board game based on Deception: Murder in Hong Kong
 2. **Gameplay**: Throughout the rounds, your role is the same as the Investigators. You have to pose as one, and make sure no one suspects you. You can make one guess just like everyone else. If by the end of Round 3, no one has guessed correctly or guesses have expired for everybody else, you win!
 
 ![1](screenshots/murderer/1.png)
+
+## Optional accomplices and witnesses
+
+- **Accomplices** know the full murderer team, including the murderer and the other accomplices.
+- **Witnesses** know the murderer team, but the murderer team does not know which players are witnesses.
+- If a correct accusation happens while witnesses are enabled, the murderer team gets one final witness-selection action before the case is resolved.
 
 ## Workflow
 

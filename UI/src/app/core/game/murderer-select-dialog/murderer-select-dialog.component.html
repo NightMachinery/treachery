@@ -1,10 +1,20 @@
-<div class="container">
-  <h1>You are the murderer!</h1>
-  <p>Select a clue and means card from your deck below.</p>
-  <div class="deck-container">
-    <div class="fill-remaining-space"></div>
-    <app-player-deck [(selectedClue)]="selectedClue" [(selectedMeans)]="selectedMeans" [player]="player"></app-player-deck>
-    <div class="fill-remaining-space"></div>
-  </div>
-  <button class="select-button" mat-raised-button color="accent" (click)="selectCards()" cdkFocusInitial>Select cards</button>
+<div class="floating-prompt">
+  <tg-prompt-panel title="You are the murderer" [(minimized)]="minimized">
+    <p>Select a clue card and a means card from your deck.</p>
+    <ng-container *ngIf="(gameApi.playerPrivateData$ | async) as privateData">
+      <div class="team-list" *ngIf="privateData.knownMurdererTeam?.length > 1">
+        <div class="subtitle">Your team</div>
+        <div class="team-member" *ngFor="let member of privateData.knownMurdererTeam">
+          <tg-avatar [uid]="member.uid" [diameter]="36"></tg-avatar>
+          <div>{{ member.name }} <span class="role-label">{{ member.role }}</span></div>
+        </div>
+      </div>
+    </ng-container>
+    <div class="deck-container">
+      <div class="fill-remaining-space"></div>
+      <app-player-deck [(selectedClue)]="selectedClue" [(selectedMeans)]="selectedMeans" [player]="player"></app-player-deck>
+      <div class="fill-remaining-space"></div>
+    </div>
+    <button class="select-button" mat-raised-button color="accent" (click)="selectCards()" cdkFocusInitial>Select cards</button>
+  </tg-prompt-panel>
 </div>

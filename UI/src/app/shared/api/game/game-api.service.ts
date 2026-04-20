@@ -7,12 +7,15 @@ import { AuthService } from './../auth/auth.service';
 import {
   TgGame,
   TgGameSnapshot,
+  TgGameSettingsInput,
   TgGuess,
   TgPartialGuess,
   TgPlayer,
   TgPlayerPrivateData,
   TgForensicCard,
+  TgModeratorPrivateData,
   TgParticipant,
+  TgRoleRevealEntry,
   TgViewer
 } from '../models/models';
 import { SnackBarService } from '../snack-bar/snack-bar.service';
@@ -31,6 +34,8 @@ export class GameApiService {
   public roomAuth$: BehaviorSubject<string>;
   public guesses$: Observable<TgGuess[]>;
   public playerPrivateData$: Observable<TgPlayerPrivateData>;
+  public moderatorPrivateData$: Observable<TgModeratorPrivateData>;
+  public roleReveal$: Observable<TgRoleRevealEntry[]>;
   public participantsDict$: Observable<Map<string, TgParticipant>>;
   public playersDict$: Observable<Map<string, TgPlayer>>;
   public joinLink$: Observable<string>;
@@ -76,6 +81,14 @@ export class GameApiService {
     );
     this.playerPrivateData$ = this.snapshot$.pipe(
       map(snapshot => (snapshot ? snapshot.playerPrivateData || ({} as TgPlayerPrivateData) : ({} as TgPlayerPrivateData))),
+      shareReplay(1)
+    );
+    this.moderatorPrivateData$ = this.snapshot$.pipe(
+      map(snapshot => (snapshot ? snapshot.moderatorPrivateData || ({ witnessPromptTargets: [] } as TgModeratorPrivateData) : ({ witnessPromptTargets: [] } as TgModeratorPrivateData))),
+      shareReplay(1)
+    );
+    this.roleReveal$ = this.snapshot$.pipe(
+      map(snapshot => (snapshot ? snapshot.roleReveal || [] : [])),
       shareReplay(1)
     );
     this.participantsDict$ = this.participants$.pipe(
@@ -199,6 +212,16 @@ export class GameApiService {
     }
   }
 
+  async updateGameSettings(settings: TgGameSettingsInput) {
+    const gameId = this.gameId$.value;
+    const response = await this.http
+      .post<{ success: boolean }>(`/api/games/${gameId}/settings`, settings, this.getRoomRequestOptions())
+      .toPromise();
+    if (response.success) {
+      await this.refreshSnapshot();
+    }
+  }
+
   async createMigrateLink() {
     const gameId = this.gameId$.value;
     const response = await this.http
@@ -215,6 +238,36 @@ export class GameApiService {
     const gameId = this.gameId$.value;
     const response = await this.http
       .post<{ success: boolean }>(`/api/games/${gameId}/murderer-selection`, { clueCardName, meansCardName }, this.getRoomRequestOptions())
+      .toPromise();
+    if (response.success) {
+      await this.refreshSnapshot();
+    }
+  }
+
+  async showWitnessSelectionPrompt(targetUid: string) {
+    const gameId = this.gameId$.value;
+    const response = await this.http
+      .post<{ success: boolean }>(`/api/games/${gameId}/witness-selection/show`, { targetUid }, this.getRoomRequestOptions())
+      .toPromise();
+    if (response.success) {
+      await this.refreshSnapshot();
+    }
+  }
+
+  async submitWitnessSelection(selectedUids: string[]) {
+    const gameId = this.gameId$.value;
+    const response = await this.http
+      .post<{ success: boolean }>(`/api/games/${gameId}/witness-selection`, { selectedUids }, this.getRoomRequestOptions())
+      .toPromise();
+    if (response.success) {
+      await this.refreshSnapshot();
+    }
+  }
+
+  async dismissWitnessSelectionPrompt() {
+    const gameId = this.gameId$.value;
+    const response = await this.http
+      .post<{ success: boolean }>(`/api/games/${gameId}/witness-selection/dismiss`, {}, this.getRoomRequestOptions())
       .toPromise();
     if (response.success) {
       await this.refreshSnapshot();

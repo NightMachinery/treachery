@@ -26,9 +26,13 @@ func (a *App) Handler() http.Handler {
 	mux.HandleFunc("POST /api/games/{gameId}/join", a.handleJoinGame)
 	mux.HandleFunc("POST /api/games/{gameId}/participants/{uid}/role", a.handleSetParticipantRole)
 	mux.HandleFunc("POST /api/games/{gameId}/scientist/toggle", a.handleToggleScientist)
+	mux.HandleFunc("POST /api/games/{gameId}/settings", a.handleUpdateGameSettings)
 	mux.HandleFunc("POST /api/games/{gameId}/migrate-device", a.handleCreateRoomAuth)
 	mux.HandleFunc("POST /api/games/{gameId}/start", a.handleStartGame)
 	mux.HandleFunc("POST /api/games/{gameId}/murderer-selection", a.handleSelectMurdererCards)
+	mux.HandleFunc("POST /api/games/{gameId}/witness-selection/show", a.handleShowWitnessSelectionPrompt)
+	mux.HandleFunc("POST /api/games/{gameId}/witness-selection", a.handleSubmitWitnessSelection)
+	mux.HandleFunc("POST /api/games/{gameId}/witness-selection/dismiss", a.handleDismissWitnessSelectionPrompt)
 	mux.HandleFunc("POST /api/games/{gameId}/forensic/cause", a.handleSelectCauseCard)
 	mux.HandleFunc("POST /api/games/{gameId}/forensic/location", a.handleSelectLocationCard)
 	mux.HandleFunc("POST /api/games/{gameId}/forensic/other", a.handleSelectOtherCard)
@@ -238,6 +242,16 @@ func (a *App) handleToggleScientist(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+func (a *App) handleUpdateGameSettings(w http.ResponseWriter, r *http.Request) {
+	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
+		var body GameSettingsInput
+		if err := decodeBody(r, &body); err != nil {
+			return fmt.Errorf("%w: %s", ErrBadInput, err.Error())
+		}
+		return a.UpdateGameSettings(gameID, viewerUID, body)
+	})
+}
+
 func (a *App) handleCreateRoomAuth(w http.ResponseWriter, r *http.Request) {
 	session, err := a.requireSession(r)
 	if err != nil {
@@ -283,6 +297,36 @@ func (a *App) handleSelectMurdererCards(w http.ResponseWriter, r *http.Request) 
 			return fmt.Errorf("%w: %s", ErrBadInput, err.Error())
 		}
 		return a.SelectMurdererCards(gameID, viewerUID, body.ClueCardName, body.MeansCardName)
+	})
+}
+
+func (a *App) handleShowWitnessSelectionPrompt(w http.ResponseWriter, r *http.Request) {
+	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
+		var body struct {
+			TargetUID string `json:"targetUid"`
+		}
+		if err := decodeBody(r, &body); err != nil {
+			return fmt.Errorf("%w: %s", ErrBadInput, err.Error())
+		}
+		return a.ShowWitnessSelectionPrompt(gameID, viewerUID, body.TargetUID)
+	})
+}
+
+func (a *App) handleSubmitWitnessSelection(w http.ResponseWriter, r *http.Request) {
+	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
+		var body struct {
+			SelectedUIDs []string `json:"selectedUids"`
+		}
+		if err := decodeBody(r, &body); err != nil {
+			return fmt.Errorf("%w: %s", ErrBadInput, err.Error())
+		}
+		return a.SubmitWitnessSelection(gameID, viewerUID, body.SelectedUIDs)
+	})
+}
+
+func (a *App) handleDismissWitnessSelectionPrompt(w http.ResponseWriter, r *http.Request) {
+	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
+		return a.DismissWitnessSelectionPrompt(gameID, viewerUID)
 	})
 }
 

@@ -76,6 +76,7 @@ app-player-deck-pager {
 .player-deck-container {
   display: flex;
   justify-content: center;
+
   app-player-deck {
     margin-top: var(--space-4);
   }

@@ -35,6 +35,23 @@ const (
 	ParticipantRoleObserver ParticipantRole = "observer"
 )
 
+type SecretRole string
+
+const (
+	SecretRoleInvestigator SecretRole = "investigator"
+	SecretRoleMurderer     SecretRole = "murderer"
+	SecretRoleAccomplice   SecretRole = "accomplice"
+	SecretRoleWitness      SecretRole = "witness"
+)
+
+type Winner string
+
+const (
+	WinnerNone             Winner = "none"
+	WinnerInvestigatorTeam Winner = "investigatorTeam"
+	WinnerMurdererTeam     Winner = "murdererTeam"
+)
+
 type Participant struct {
 	Name              string          `json:"name"`
 	UID               string          `json:"uid"`
@@ -86,28 +103,56 @@ type Message struct {
 }
 
 type Game struct {
-	CreatorUID            string         `json:"creatorUid"`
-	ScientistUID          string         `json:"scientistUid,omitempty"`
-	MarkedScientistUID    string         `json:"markedScientistUid,omitempty"`
-	CauseCard             *ForensicCard  `json:"causeCard,omitempty"`
-	LocationCard          *ForensicCard  `json:"locationCard,omitempty"`
-	OtherCards            []ForensicCard `json:"otherCards"`
-	GameID                string         `json:"gameId"`
-	CreatedTimestamp      string         `json:"createdTimestamp"`
-	StartedTimestamp      string         `json:"startedTimestamp,omitempty"`
-	MurdererSelected      bool           `json:"murdererSelected,omitempty"`
-	MurdererCardsSelected bool           `json:"murdererCardsSelected"`
-	MurdererClueCardName  string         `json:"murdererClueCardName,omitempty"`
-	MurdererMeansCardName string         `json:"murdererMeansCardName,omitempty"`
-	MurdererUID           string         `json:"murdererUid,omitempty"`
-	StartedOn             string         `json:"startedOn,omitempty"`
-	Finished              bool           `json:"finished"`
+	CreatorUID              string         `json:"creatorUid"`
+	ScientistUID            string         `json:"scientistUid,omitempty"`
+	MarkedScientistUID      string         `json:"markedScientistUid,omitempty"`
+	CauseCard               *ForensicCard  `json:"causeCard,omitempty"`
+	LocationCard            *ForensicCard  `json:"locationCard,omitempty"`
+	OtherCards              []ForensicCard `json:"otherCards"`
+	GameID                  string         `json:"gameId"`
+	CreatedTimestamp        string         `json:"createdTimestamp"`
+	StartedTimestamp        string         `json:"startedTimestamp,omitempty"`
+	MurdererSelected        bool           `json:"murdererSelected,omitempty"`
+	MurdererCardsSelected   bool           `json:"murdererCardsSelected"`
+	MurdererClueCardName    string         `json:"murdererClueCardName,omitempty"`
+	MurdererMeansCardName   string         `json:"murdererMeansCardName,omitempty"`
+	MurdererUID             string         `json:"murdererUid,omitempty"`
+	StartedOn               string         `json:"startedOn,omitempty"`
+	Finished                bool           `json:"finished"`
+	MeansCardsPerPlayer     int            `json:"meansCardsPerPlayer"`
+	ClueCardsPerPlayer      int            `json:"clueCardsPerPlayer"`
+	LinkClueCountToMeans    bool           `json:"linkClueCountToMeans"`
+	AccompliceCount         int            `json:"accompliceCount"`
+	WitnessCount            int            `json:"witnessCount"`
+	WitnessesToFind         int            `json:"witnessesToFind"`
+	PendingWitnessSelection bool           `json:"pendingWitnessSelection"`
+	Winner                  Winner         `json:"winner"`
+	FinishedReason          string         `json:"finishedReason,omitempty"`
+	ResultMessage           string         `json:"resultMessage,omitempty"`
+}
+
+type KnownRolePlayer struct {
+	UID  string     `json:"uid"`
+	Name string     `json:"name"`
+	Role SecretRole `json:"role"`
+}
+
+type WitnessSelectionPromptState struct {
+	RequiredSelections int  `json:"requiredSelections"`
+	Dismissible        bool `json:"dismissible"`
+	CreatorInitiated   bool `json:"creatorInitiated"`
+	Active             bool `json:"active"`
 }
 
 type PlayerPrivateData struct {
-	IsMurderer    bool   `json:"isMurderer"`
-	ClueCardName  string `json:"clueCardName,omitempty"`
-	MeansCardName string `json:"meansCardName,omitempty"`
+	IsMurderer                   bool                         `json:"isMurderer"`
+	ClueCardName                 string                       `json:"clueCardName,omitempty"`
+	MeansCardName                string                       `json:"meansCardName,omitempty"`
+	Role                         SecretRole                   `json:"role,omitempty"`
+	KnownMurdererTeam            []KnownRolePlayer            `json:"knownMurdererTeam,omitempty"`
+	KnownMurdererClueCardName    string                       `json:"knownMurdererClueCardName,omitempty"`
+	KnownMurdererMeansCardName   string                       `json:"knownMurdererMeansCardName,omitempty"`
+	ActiveWitnessSelectionPrompt *WitnessSelectionPromptState `json:"activeWitnessSelectionPrompt,omitempty"`
 }
 
 type ForensicPrivateData struct {
@@ -116,15 +161,36 @@ type ForensicPrivateData struct {
 	MurdererMeansCardName string  `json:"murdererMeansCardName,omitempty"`
 }
 
+type WitnessPromptTarget struct {
+	UID              string     `json:"uid"`
+	Name             string     `json:"name"`
+	Role             SecretRole `json:"role"`
+	HasActivePrompt  bool       `json:"hasActivePrompt"`
+	Dismissible      bool       `json:"dismissible"`
+	CreatorInitiated bool       `json:"creatorInitiated"`
+}
+
+type ModeratorPrivateData struct {
+	WitnessPromptTargets []WitnessPromptTarget `json:"witnessPromptTargets"`
+}
+
+type RoleRevealEntry struct {
+	UID  string `json:"uid"`
+	Name string `json:"name"`
+	Role string `json:"role"`
+}
+
 type GameSnapshot struct {
-	Game                *Game                `json:"game"`
-	Participants        []Participant        `json:"participants"`
-	Players             []Player             `json:"players"`
-	Guesses             []Guess              `json:"guesses"`
-	Messages            []Message            `json:"messages"`
-	Viewer              Viewer               `json:"viewer"`
-	PlayerPrivateData   PlayerPrivateData    `json:"playerPrivateData"`
-	ForensicPrivateData *ForensicPrivateData `json:"forensicPrivateData,omitempty"`
+	Game                 *Game                 `json:"game"`
+	Participants         []Participant         `json:"participants"`
+	Players              []Player              `json:"players"`
+	Guesses              []Guess               `json:"guesses"`
+	Messages             []Message             `json:"messages"`
+	Viewer               Viewer                `json:"viewer"`
+	PlayerPrivateData    PlayerPrivateData     `json:"playerPrivateData"`
+	ForensicPrivateData  *ForensicPrivateData  `json:"forensicPrivateData,omitempty"`
+	ModeratorPrivateData *ModeratorPrivateData `json:"moderatorPrivateData,omitempty"`
+	RoleReveal           []RoleRevealEntry     `json:"roleReveal,omitempty"`
 }
 
 type Session struct {

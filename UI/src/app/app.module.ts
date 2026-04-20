@@ -41,6 +41,11 @@ import { CopyLinkComponent } from './shared/copy-link/copy-link.component';
 import { InfoComponent } from './shared/components/info/info.component';
 import { MurdererInfoComponent } from './core/forensic/murderer-info/murderer-info.component';
 import { ConfirmationButtonComponent } from './shared/components/confirmation-button/confirmation-button.component';
+import { PromptPanelComponent } from './shared/components/prompt-panel/prompt-panel.component';
+import { WitnessSelectionPromptComponent } from './core/game/witness-selection-prompt/witness-selection-prompt.component';
+import { ModeratorWitnessControlsComponent } from './core/game/moderator-witness-controls/moderator-witness-controls.component';
+import { PrivateRolePanelComponent } from './core/game/private-role-panel/private-role-panel.component';
+import { RoleRevealComponent } from './core/game/role-reveal/role-reveal.component';
 import { GameApiService } from './shared/api/game/game-api.service';
 import { AuthTokenInterceptor } from './shared/api/auth/auth-token.interceptor';
 
@@ -69,7 +74,12 @@ import { AuthTokenInterceptor } from './shared/api/auth/auth-token.interceptor';
     CopyLinkComponent,
     InfoComponent,
     MurdererInfoComponent,
-    ConfirmationButtonComponent
+    ConfirmationButtonComponent,
+    PromptPanelComponent,
+    WitnessSelectionPromptComponent,
+    ModeratorWitnessControlsComponent,
+    PrivateRolePanelComponent,
+    RoleRevealComponent
   ],
   imports: [
     BrowserModule,

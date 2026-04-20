@@ -28,11 +28,11 @@ A web app for a board game based on Deception: Murder in Hong Kong
 
 ![1](screenshots/forensic/3.png)
 
-6. **Round 1 of clues**: You will be presented with cards that you can use to give clues to the Investigators to figure out who the murderer is. For each card, select one of the options and click "Select \_\_\_ card" to finalize your selection. The first card, the Cause of death card is fixed. For the second card, you get a choice among different Location cards. Choose whichever one you think would fit best. For the rest of the cards, they're selected randomly. In the first round, you should select a total of 6 cards. After selection is complete, start a timer for Investigators to discuss among themselves. Ideally, Investigators should be on a voice call, but you may also use the text chat function provided by the app. (You're not allowed to reveal who the murderer is, or any clues other than the cards you selected.). The discussion timer can be anything you decide, for instance 2:00 minutes. After the 2:00 minutes for discussion is over, each Investigator gets 30 secs uninterrupted to speak their case for who they think it is and why. After this is over, we move on to round 2.
+6. **Round 1 of clues**: You will be presented with cards that you can use to give clues to the Investigators to figure out who the murderer is. For each card, select one of the options and click "Select \_\_\_ card" to finalize your selection. The first card, the Cause of death card is fixed. For the second card, you get a choice among different Location cards. Choose whichever one you think would fit best. For the rest of the cards, they're selected randomly. In the first round, you should select a total of 6 cards. After selection is complete, the creator can start the built-in shared room timer (default `0:40`, but any positive whole-second duration works) for Investigators to discuss among themselves. Ideally, Investigators should be on a voice call, but you may also use the text chat function provided by the app. (You're not allowed to reveal who the murderer is, or any clues other than the cards you selected.). After the discussion timer is over, each Investigator gets 30 secs uninterrupted to speak their case for who they think it is and why. After this is over, we move on to round 2.
 
 ![1](screenshots/forensic/4.png)
 
-7. **Round 2 & 3 of clues**: You will now randomly be dealt another card, which you can use to replace one of the existing cards. After making this replacement, start a timer again for investigators to discuss, say 2:00 min, followed by each Investigator getting 30 seconds interrupted to present their case. Repeat this for round 3.
+7. **Round 2 & 3 of clues**: You will now randomly be dealt another card, which you can use to replace one of the existing cards. After making this replacement, the creator can restart, pause, resume, reset, or clear the shared room timer for the next discussion window. Repeat this for round 3.
 
 ![1](screenshots/forensic/5.png)
 
@@ -64,11 +64,11 @@ A web app for a board game based on Deception: Murder in Hong Kong
 
 ![1](screenshots/investigator/4.png)
 
-4. **Round 1**: Your forensic scientist will initially select 6 cards, here Round 1 begins and the Forensic Scientist gives you a set time to discuss amongst yourselves to who you think the murderer is. Use this time wisely. At the end of the discussion time, you will all get 30 seconds uninterrupted to present your case for who you think the murderer is, or why you're not the murderer. Round 1 ends here.
+4. **Round 1**: Your forensic scientist will initially select 6 cards, here Round 1 begins and the Forensic Scientist gives you a set time to discuss amongst yourselves to who you think the murderer is. Use this time wisely. At the end of the discussion time, you will all get 30 seconds uninterrupted to present your case for who you think the murderer is, or why you're not the murderer. The shared room timer stays pinned near the top of supported game views so mobile players can keep it in view while scrolling. Round 1 ends here.
 
 ![1](screenshots/investigator/5.png)
 
-5. **Round 2 & 3**: For Round 2, the forensic Scientist will replace one of the cards. Everything else about this round is same as the previous round. Round 3 is similar to round 2, Forensic scientist will replace another card. You must submit your guess before the end of Round 3.
+5. **Round 2 & 3**: For Round 2, the forensic Scientist will replace one of the cards. Everything else about this round is same as the previous round, and the moderator can reuse the shared room timer for each new discussion window. Round 3 is similar to round 2, Forensic scientist will replace another card. You must submit your guess before the end of Round 3.
 
 ![1](screenshots/investigator/6.png)
 

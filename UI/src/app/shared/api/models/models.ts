@@ -70,6 +70,13 @@ export interface TgMessage {
   type: TgMessageType;
 }
 
+export interface TgRoomTimer {
+  durationSeconds: number;
+  expiresAt: string;
+  pausedRemainingSeconds: number;
+  runId: number;
+}
+
 export interface TgGame {
   creatorUid: string;
   scientistUid: string;
@@ -97,6 +104,7 @@ export interface TgGame {
   winner: TgWinner;
   finishedReason: string;
   resultMessage: string;
+  roomTimer?: TgRoomTimer;
 }
 
 export interface TgKnownRolePlayer {
@@ -177,6 +185,7 @@ export interface TgGameSnapshot {
   forensicPrivateData: TgForensicPrivateData;
   moderatorPrivateData: TgModeratorPrivateData;
   roleReveal: TgRoleRevealEntry[];
+  serverTimestamp: string;
 }
 
 export interface TgAuthUser {

@@ -24,6 +24,8 @@ var (
 	ErrBadInput  = errors.New("bad input")
 )
 
+const defaultRoomTimerDurationSeconds = 40
+
 type Config struct {
 	DistDir   string
 	DataDir   string
@@ -129,7 +131,11 @@ func (a *App) migrate() error {
 			pending_witness_selection INTEGER NOT NULL DEFAULT 0,
 			winner TEXT NOT NULL DEFAULT 'none',
 			finished_reason TEXT,
-			result_message TEXT
+			result_message TEXT,
+			room_timer_duration_seconds INTEGER NOT NULL DEFAULT 0,
+			room_timer_expires_at TEXT,
+			room_timer_paused_remaining_seconds INTEGER NOT NULL DEFAULT 0,
+			room_timer_run_id INTEGER NOT NULL DEFAULT 0
 		);`,
 		`CREATE TABLE IF NOT EXISTS participants (
 			game_id TEXT NOT NULL,
@@ -222,6 +228,10 @@ func (a *App) migrate() error {
 		`ALTER TABLE games ADD COLUMN winner TEXT NOT NULL DEFAULT 'none';`,
 		`ALTER TABLE games ADD COLUMN finished_reason TEXT;`,
 		`ALTER TABLE games ADD COLUMN result_message TEXT;`,
+		`ALTER TABLE games ADD COLUMN room_timer_duration_seconds INTEGER NOT NULL DEFAULT 0;`,
+		`ALTER TABLE games ADD COLUMN room_timer_expires_at TEXT;`,
+		`ALTER TABLE games ADD COLUMN room_timer_paused_remaining_seconds INTEGER NOT NULL DEFAULT 0;`,
+		`ALTER TABLE games ADD COLUMN room_timer_run_id INTEGER NOT NULL DEFAULT 0;`,
 	}
 	for _, stmt := range legacyAlterStatements {
 		_, _ = a.db.Exec(stmt)
@@ -607,7 +617,7 @@ func (a *App) ResolveRoomAuthToken(gameID, token string) (string, error) {
 }
 
 func (a *App) ListGames() ([]Game, error) {
-	rows, err := a.db.Query(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished, means_cards_per_player, clue_cards_per_player, link_clue_count_to_means, accomplice_count, witness_count, witnesses_to_find, pending_witness_selection, winner, finished_reason, result_message FROM games ORDER BY created_timestamp DESC`)
+	rows, err := a.db.Query(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished, means_cards_per_player, clue_cards_per_player, link_clue_count_to_means, accomplice_count, witness_count, witnesses_to_find, pending_witness_selection, winner, finished_reason, result_message, room_timer_duration_seconds, room_timer_expires_at, room_timer_paused_remaining_seconds, room_timer_run_id FROM games ORDER BY created_timestamp DESC`)
 	if err != nil {
 		return nil, err
 	}
@@ -674,6 +684,7 @@ func (a *App) GetSnapshot(gameID, viewerUID string) (*GameSnapshot, error) {
 		Messages:          messages,
 		Viewer:            viewer,
 		PlayerPrivateData: PlayerPrivateData{},
+		ServerTimestamp:   nowTimestamp(a.timeNow()),
 	}
 
 	if viewerUID == "" {
@@ -800,6 +811,7 @@ func (a *App) StartGame(gameID, creatorUID string) error {
 		game.LocationCard = nil
 		game.MurdererClueCardName = ""
 		game.MurdererMeansCardName = ""
+		clearRoomTimer(game)
 		if err := a.saveGameTx(tx, game); err != nil {
 			return err
 		}
@@ -819,6 +831,100 @@ func (a *App) selectScientist(game *Game, playerParticipants []Participant) Part
 		}
 	}
 	return playerParticipants[a.rand.Intn(len(playerParticipants))]
+}
+
+func (a *App) StartRoomTimer(gameID, actorUID string, seconds *int) error {
+	durationSeconds := defaultRoomTimerDurationSeconds
+	if seconds != nil {
+		durationSeconds = *seconds
+	}
+	if durationSeconds <= 0 {
+		return fmt.Errorf("%w: room timer duration must be a positive whole number of seconds", ErrBadInput)
+	}
+	return a.updateRoomTimer(gameID, actorUID, func(game *Game) error {
+		nextRunID := currentRoomTimerRunID(game) + 1
+		game.RoomTimerRunID = nextRunID
+		game.RoomTimer = newRunningRoomTimer(a.timeNow(), durationSeconds, nextRunID)
+		return nil
+	})
+}
+
+func (a *App) PauseRoomTimer(gameID, actorUID string) error {
+	return a.updateRoomTimer(gameID, actorUID, func(game *Game) error {
+		if game.RoomTimer == nil {
+			return fmt.Errorf("%w: room timer has not been started", ErrBadInput)
+		}
+		remainingSeconds, err := roomTimerRemainingSeconds(game.RoomTimer.ExpiresAt, a.timeNow())
+		if err != nil {
+			return err
+		}
+		if game.RoomTimer.ExpiresAt == "" || remainingSeconds <= 0 {
+			return fmt.Errorf("%w: room timer is not currently running", ErrBadInput)
+		}
+		game.RoomTimer.PausedRemainingSeconds = remainingSeconds
+		game.RoomTimer.ExpiresAt = ""
+		return nil
+	})
+}
+
+func (a *App) ResumeRoomTimer(gameID, actorUID string) error {
+	return a.updateRoomTimer(gameID, actorUID, func(game *Game) error {
+		if game.RoomTimer == nil {
+			return fmt.Errorf("%w: room timer has not been started", ErrBadInput)
+		}
+		if game.RoomTimer.ExpiresAt != "" || game.RoomTimer.PausedRemainingSeconds <= 0 {
+			return fmt.Errorf("%w: room timer is not paused", ErrBadInput)
+		}
+		game.RoomTimer.ExpiresAt = roomTimerExpiryTimestamp(a.timeNow(), game.RoomTimer.PausedRemainingSeconds)
+		game.RoomTimer.PausedRemainingSeconds = 0
+		return nil
+	})
+}
+
+func (a *App) ResetRoomTimer(gameID, actorUID string) error {
+	return a.updateRoomTimer(gameID, actorUID, func(game *Game) error {
+		if game.RoomTimer == nil || game.RoomTimer.DurationSeconds <= 0 {
+			return fmt.Errorf("%w: room timer has not been started", ErrBadInput)
+		}
+		nextRunID := currentRoomTimerRunID(game) + 1
+		durationSeconds := game.RoomTimer.DurationSeconds
+		game.RoomTimerRunID = nextRunID
+		game.RoomTimer = newRunningRoomTimer(a.timeNow(), durationSeconds, nextRunID)
+		return nil
+	})
+}
+
+func (a *App) ClearRoomTimer(gameID, actorUID string) error {
+	return a.updateRoomTimer(gameID, actorUID, func(game *Game) error {
+		if game.RoomTimer == nil {
+			return fmt.Errorf("%w: room timer has not been started", ErrBadInput)
+		}
+		clearRoomTimer(game)
+		return nil
+	})
+}
+
+func (a *App) updateRoomTimer(gameID, actorUID string, fn func(*Game) error) error {
+	gameID = strings.ToUpper(strings.TrimSpace(gameID))
+	return a.withTx(context.Background(), func(tx *sql.Tx) error {
+		game, err := a.getGameTx(tx, gameID)
+		if err != nil {
+			return err
+		}
+		if game.CreatorUID != actorUID {
+			return fmt.Errorf("%w: only the creator can control the room timer", ErrForbidden)
+		}
+		if game.StartedOn == "" {
+			return fmt.Errorf("%w: room timer is only available after the game starts", ErrBadInput)
+		}
+		if game.Finished {
+			return fmt.Errorf("%w: room timer is not available after the game ends", ErrBadInput)
+		}
+		if err := fn(game); err != nil {
+			return err
+		}
+		return a.saveGameTx(tx, game)
+	})
 }
 
 func (a *App) replaceGamePlayersTx(tx *sql.Tx, gameID string, suspects []Participant, clueCards, meansCards []Card, clueCardsPerPlayer, meansCardsPerPlayer int) error {
@@ -1203,6 +1309,7 @@ func finishGame(game *Game, winner Winner, reason, message string) {
 	game.Winner = winner
 	game.FinishedReason = reason
 	game.ResultMessage = message
+	clearRoomTimer(game)
 }
 
 func validateStartSettings(game *Game, suspectCount, totalClueCards, totalMeansCards int) error {
@@ -1320,7 +1427,7 @@ func (a *App) checkAndEndGameTx(tx *sql.Tx, game *Game) error {
 }
 
 func (a *App) getGame(gameID string) (*Game, error) {
-	row := a.db.QueryRow(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished, means_cards_per_player, clue_cards_per_player, link_clue_count_to_means, accomplice_count, witness_count, witnesses_to_find, pending_witness_selection, winner, finished_reason, result_message FROM games WHERE game_id = ?`, gameID)
+	row := a.db.QueryRow(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished, means_cards_per_player, clue_cards_per_player, link_clue_count_to_means, accomplice_count, witness_count, witnesses_to_find, pending_witness_selection, winner, finished_reason, result_message, room_timer_duration_seconds, room_timer_expires_at, room_timer_paused_remaining_seconds, room_timer_run_id FROM games WHERE game_id = ?`, gameID)
 	game, err := scanGame(row)
 	if err != nil {
 		return nil, err
@@ -1329,7 +1436,7 @@ func (a *App) getGame(gameID string) (*Game, error) {
 }
 
 func (a *App) getGameTx(tx *sql.Tx, gameID string) (*Game, error) {
-	row := tx.QueryRow(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished, means_cards_per_player, clue_cards_per_player, link_clue_count_to_means, accomplice_count, witness_count, witnesses_to_find, pending_witness_selection, winner, finished_reason, result_message FROM games WHERE game_id = ?`, gameID)
+	row := tx.QueryRow(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished, means_cards_per_player, clue_cards_per_player, link_clue_count_to_means, accomplice_count, witness_count, witnesses_to_find, pending_witness_selection, winner, finished_reason, result_message, room_timer_duration_seconds, room_timer_expires_at, room_timer_paused_remaining_seconds, room_timer_run_id FROM games WHERE game_id = ?`, gameID)
 	game, err := scanGame(row)
 	if err != nil {
 		return nil, err
@@ -1346,7 +1453,7 @@ func scanGame(scanner rowScanner) (*Game, error) {
 		gameID, creatorUID, createdTimestamp                                string
 		startedOn, murdererUID, murdererClueCardName, murdererMeansCardName sql.NullString
 		scientistUID, markedScientistUID                                    sql.NullString
-		causeCardJSON, locationCardJSON                                     sql.NullString
+		causeCardJSON, locationCardJSON, roomTimerExpiresAt                 sql.NullString
 		finishedReason, resultMessage                                       sql.NullString
 		otherCardsJSON, winner                                              string
 		murdererCardsSelected, finished                                     int
@@ -1354,6 +1461,8 @@ func scanGame(scanner rowScanner) (*Game, error) {
 		linkClueCountToMeans                                                int
 		accompliceCount, witnessCount, witnessesToFind                      int
 		pendingWitnessSelection                                             int
+		roomTimerDurationSeconds, roomTimerPausedRemainingSeconds           int
+		roomTimerRunID                                                      int
 	)
 	if err := scanner.Scan(
 		&gameID,
@@ -1380,6 +1489,10 @@ func scanGame(scanner rowScanner) (*Game, error) {
 		&winner,
 		&finishedReason,
 		&resultMessage,
+		&roomTimerDurationSeconds,
+		&roomTimerExpiresAt,
+		&roomTimerPausedRemainingSeconds,
+		&roomTimerRunID,
 	); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, ErrNotFound
@@ -1410,6 +1523,7 @@ func scanGame(scanner rowScanner) (*Game, error) {
 		Winner:                  Winner(winner),
 		FinishedReason:          finishedReason.String,
 		ResultMessage:           resultMessage.String,
+		RoomTimerRunID:          roomTimerRunID,
 	}
 	if game.Winner == "" {
 		game.Winner = WinnerNone
@@ -1432,6 +1546,14 @@ func scanGame(scanner rowScanner) (*Game, error) {
 			return nil, err
 		}
 		game.LocationCard = &card
+	}
+	if roomTimerDurationSeconds > 0 {
+		game.RoomTimer = &RoomTimer{
+			DurationSeconds:        roomTimerDurationSeconds,
+			ExpiresAt:              roomTimerExpiresAt.String,
+			PausedRemainingSeconds: roomTimerPausedRemainingSeconds,
+			RunID:                  roomTimerRunID,
+		}
 	}
 	return game, nil
 }
@@ -1745,7 +1867,19 @@ func (a *App) saveGameTx(tx *sql.Tx, game *Game) error {
 		}
 		locationCardJSON = string(data)
 	}
-	_, err = tx.Exec(`UPDATE games SET started_on = ?, murderer_cards_selected = ?, murderer_uid = ?, murderer_clue_card_name = ?, murderer_means_card_name = ?, scientist_uid = ?, marked_scientist_uid = ?, cause_card_json = ?, location_card_json = ?, other_cards_json = ?, finished = ?, means_cards_per_player = ?, clue_cards_per_player = ?, link_clue_count_to_means = ?, accomplice_count = ?, witness_count = ?, witnesses_to_find = ?, pending_witness_selection = ?, winner = ?, finished_reason = ?, result_message = ? WHERE game_id = ?`,
+	roomTimerRunID := currentRoomTimerRunID(game)
+	game.RoomTimerRunID = roomTimerRunID
+	roomTimerDurationSeconds := 0
+	roomTimerPausedRemainingSeconds := 0
+	var roomTimerExpiresAt any
+	if game.RoomTimer != nil {
+		roomTimerDurationSeconds = game.RoomTimer.DurationSeconds
+		roomTimerPausedRemainingSeconds = game.RoomTimer.PausedRemainingSeconds
+		roomTimerRunID = game.RoomTimer.RunID
+		game.RoomTimerRunID = roomTimerRunID
+		roomTimerExpiresAt = nullableString(game.RoomTimer.ExpiresAt)
+	}
+	_, err = tx.Exec(`UPDATE games SET started_on = ?, murderer_cards_selected = ?, murderer_uid = ?, murderer_clue_card_name = ?, murderer_means_card_name = ?, scientist_uid = ?, marked_scientist_uid = ?, cause_card_json = ?, location_card_json = ?, other_cards_json = ?, finished = ?, means_cards_per_player = ?, clue_cards_per_player = ?, link_clue_count_to_means = ?, accomplice_count = ?, witness_count = ?, witnesses_to_find = ?, pending_witness_selection = ?, winner = ?, finished_reason = ?, result_message = ?, room_timer_duration_seconds = ?, room_timer_expires_at = ?, room_timer_paused_remaining_seconds = ?, room_timer_run_id = ? WHERE game_id = ?`,
 		nullableString(game.StartedOn),
 		boolToInt(game.MurdererCardsSelected),
 		nullableString(game.MurdererUID),
@@ -1767,6 +1901,10 @@ func (a *App) saveGameTx(tx *sql.Tx, game *Game) error {
 		string(game.Winner),
 		nullableString(game.FinishedReason),
 		nullableString(game.ResultMessage),
+		roomTimerDurationSeconds,
+		roomTimerExpiresAt,
+		roomTimerPausedRemainingSeconds,
+		roomTimerRunID,
 		game.GameID,
 	)
 	return err
@@ -1889,6 +2027,51 @@ func cloneForensicCards(cards []ForensicCard) []ForensicCard {
 	result := make([]ForensicCard, len(cards))
 	copy(result, cards)
 	return result
+}
+
+func newRunningRoomTimer(now time.Time, durationSeconds, runID int) *RoomTimer {
+	return &RoomTimer{
+		DurationSeconds: durationSeconds,
+		ExpiresAt:       roomTimerExpiryTimestamp(now, durationSeconds),
+		RunID:           runID,
+	}
+}
+
+func roomTimerExpiryTimestamp(now time.Time, durationSeconds int) string {
+	return nowTimestamp(now.Add(time.Duration(durationSeconds) * time.Second))
+}
+
+func roomTimerRemainingSeconds(expiresAt string, now time.Time) (int, error) {
+	if strings.TrimSpace(expiresAt) == "" {
+		return 0, nil
+	}
+	expiresAtTime, err := time.Parse(time.RFC3339Nano, expiresAt)
+	if err != nil {
+		return 0, err
+	}
+	remainingDuration := expiresAtTime.Sub(now)
+	if remainingDuration <= 0 {
+		return 0, nil
+	}
+	return int((remainingDuration + time.Second - 1) / time.Second), nil
+}
+
+func currentRoomTimerRunID(game *Game) int {
+	if game == nil {
+		return 0
+	}
+	if game.RoomTimer != nil && game.RoomTimer.RunID > game.RoomTimerRunID {
+		return game.RoomTimer.RunID
+	}
+	return game.RoomTimerRunID
+}
+
+func clearRoomTimer(game *Game) {
+	if game == nil {
+		return
+	}
+	game.RoomTimerRunID = currentRoomTimerRunID(game)
+	game.RoomTimer = nil
 }
 
 func sampleRandom[T any](rng *mathrand.Rand, source []T, count int) []T {

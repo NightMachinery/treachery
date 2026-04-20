@@ -1,0 +1,137 @@
+@import '~@angular/material/theming';
+
+.room-timer {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+  padding: var(--space-4);
+  border-radius: var(--tg-border-radius);
+  background: var(--tg-card-background-color);
+  border: 1px solid var(--tg-dark-5-color);
+  @include mat-elevation(3);
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.75;
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.time {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.status-pill {
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: var(--tg-dark-5-color);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.hint {
+  opacity: 0.75;
+  text-align: right;
+}
+
+.creator-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-4);
+}
+
+.duration-input {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+
+  input {
+    width: 7rem;
+    min-height: 2.5rem;
+    padding: 0 var(--space-3);
+    border-radius: var(--tg-border-radius);
+    border: 1px solid var(--tg-dark-5-color);
+    background: transparent;
+    color: inherit;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.room-timer.running {
+  border-color: rgba(76, 175, 80, 0.5);
+}
+
+.room-timer.paused {
+  border-color: rgba(255, 193, 7, 0.6);
+}
+
+.room-timer.expired {
+  border-color: rgba(244, 67, 54, 0.75);
+  animation: room-timer-pulse 1.2s ease-in-out infinite;
+}
+
+.room-timer.expired .status-pill {
+  background: rgba(244, 67, 54, 0.18);
+}
+
+@keyframes room-timer-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(244, 67, 54, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 0.85rem rgba(244, 67, 54, 0.35);
+  }
+}
+
+@media only screen and (max-width: 40rem) {
+  .summary,
+  .creator-controls {
+    align-items: stretch;
+  }
+
+  .summary,
+  .creator-controls,
+  .actions {
+    flex-direction: column;
+  }
+
+  .hint {
+    text-align: left;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+
+  .duration-input input {
+    width: 100%;
+  }
+}

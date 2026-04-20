@@ -1,0 +1,29 @@
+<div class="room-timer" *ngIf="shouldRender" [ngClass]="{ running: isRunning, paused: isPaused, expired: isExpired }">
+  <div class="summary">
+    <div>
+      <div class="eyebrow">Shared room timer</div>
+      <div class="status-row">
+        <span class="time">{{ timeLabel }}</span>
+        <span class="status-pill">{{ statusLabel }}</span>
+      </div>
+    </div>
+    <div class="hint" *ngIf="!isCreator">Controlled by the moderator</div>
+  </div>
+
+  <div class="creator-controls" *ngIf="isCreator">
+    <label class="duration-input">
+      <span>Seconds</span>
+      <input type="number" min="1" [(ngModel)]="durationSeconds" (blur)="normalizeDurationInput()" />
+    </label>
+
+    <div class="actions">
+      <button mat-raised-button color="accent" type="button" (click)="startTimer()" [disabled]="busy">
+        {{ roomTimer ? 'Start new' : 'Start' }}
+      </button>
+      <button mat-stroked-button type="button" *ngIf="isRunning" (click)="pauseTimer()" [disabled]="busy">Pause</button>
+      <button mat-stroked-button type="button" *ngIf="isPaused" (click)="resumeTimer()" [disabled]="busy">Resume</button>
+      <button mat-stroked-button type="button" *ngIf="roomTimer" (click)="resetTimer()" [disabled]="busy">Reset</button>
+      <button mat-stroked-button type="button" *ngIf="roomTimer" (click)="clearTimer()" [disabled]="busy">Clear</button>
+    </div>
+  </div>
+</div>

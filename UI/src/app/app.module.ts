@@ -46,6 +46,7 @@ import { WitnessSelectionPromptComponent } from './core/game/witness-selection-p
 import { ModeratorWitnessControlsComponent } from './core/game/moderator-witness-controls/moderator-witness-controls.component';
 import { PrivateRolePanelComponent } from './core/game/private-role-panel/private-role-panel.component';
 import { RoleRevealComponent } from './core/game/role-reveal/role-reveal.component';
+import { RoomTimerComponent } from './shared/components/room-timer/room-timer.component';
 import { GameApiService } from './shared/api/game/game-api.service';
 import { AuthTokenInterceptor } from './shared/api/auth/auth-token.interceptor';
 
@@ -79,7 +80,8 @@ import { AuthTokenInterceptor } from './shared/api/auth/auth-token.interceptor';
     WitnessSelectionPromptComponent,
     ModeratorWitnessControlsComponent,
     PrivateRolePanelComponent,
-    RoleRevealComponent
+    RoleRevealComponent,
+    RoomTimerComponent
   ],
   imports: [
     BrowserModule,

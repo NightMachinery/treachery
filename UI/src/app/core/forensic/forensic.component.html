@@ -10,6 +10,7 @@
               End game
             </tg-confirmation-button>
           </div>
+          <app-room-timer *ngIf="game.startedOn && !game.finished"></app-room-timer>
           <app-moderator-witness-controls></app-moderator-witness-controls>
           <ng-container *ngIf="!game.finished">
             <tg-info *ngIf="game.pendingWitnessSelection">

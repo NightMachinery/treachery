@@ -22,6 +22,19 @@ Defaults:
 - witnesses: `0`
 - witnesses to find: `0`
 
+## Shared room timer
+
+- Once the game has started, the creator can launch a shared room timer from the active room view.
+- The timer defaults to `40` seconds, but the creator can enter any positive whole-second duration.
+- Timer controls are creator-only and support:
+  - start a new timer
+  - pause
+  - resume
+  - reset back to the last-set duration and immediately restart
+  - clear
+- Everyone in the room sees the same sticky timer banner on game screens, including mobile.
+- When the timer expires, it stays visible at `0:00` until the creator restarts or clears it, with a visual expiry cue and a best-effort sound cue in supported browsers.
+
 ## Role assignment
 
 When the creator starts the game:

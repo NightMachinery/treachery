@@ -29,6 +29,11 @@ func (a *App) Handler() http.Handler {
 	mux.HandleFunc("POST /api/games/{gameId}/settings", a.handleUpdateGameSettings)
 	mux.HandleFunc("POST /api/games/{gameId}/migrate-device", a.handleCreateRoomAuth)
 	mux.HandleFunc("POST /api/games/{gameId}/start", a.handleStartGame)
+	mux.HandleFunc("POST /api/games/{gameId}/room-timer/start", a.handleStartRoomTimer)
+	mux.HandleFunc("POST /api/games/{gameId}/room-timer/pause", a.handlePauseRoomTimer)
+	mux.HandleFunc("POST /api/games/{gameId}/room-timer/resume", a.handleResumeRoomTimer)
+	mux.HandleFunc("POST /api/games/{gameId}/room-timer/reset", a.handleResetRoomTimer)
+	mux.HandleFunc("POST /api/games/{gameId}/room-timer/clear", a.handleClearRoomTimer)
 	mux.HandleFunc("POST /api/games/{gameId}/murderer-selection", a.handleSelectMurdererCards)
 	mux.HandleFunc("POST /api/games/{gameId}/witness-selection/show", a.handleShowWitnessSelectionPrompt)
 	mux.HandleFunc("POST /api/games/{gameId}/witness-selection", a.handleSubmitWitnessSelection)
@@ -284,6 +289,42 @@ func (a *App) handleCreateRoomAuth(w http.ResponseWriter, r *http.Request) {
 func (a *App) handleStartGame(w http.ResponseWriter, r *http.Request) {
 	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
 		return a.StartGame(gameID, viewerUID)
+	})
+}
+
+func (a *App) handleStartRoomTimer(w http.ResponseWriter, r *http.Request) {
+	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
+		var body struct {
+			Seconds *int `json:"seconds"`
+		}
+		if err := decodeBody(r, &body); err != nil {
+			return fmt.Errorf("%w: %s", ErrBadInput, err.Error())
+		}
+		return a.StartRoomTimer(gameID, viewerUID, body.Seconds)
+	})
+}
+
+func (a *App) handlePauseRoomTimer(w http.ResponseWriter, r *http.Request) {
+	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
+		return a.PauseRoomTimer(gameID, viewerUID)
+	})
+}
+
+func (a *App) handleResumeRoomTimer(w http.ResponseWriter, r *http.Request) {
+	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
+		return a.ResumeRoomTimer(gameID, viewerUID)
+	})
+}
+
+func (a *App) handleResetRoomTimer(w http.ResponseWriter, r *http.Request) {
+	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
+		return a.ResetRoomTimer(gameID, viewerUID)
+	})
+}
+
+func (a *App) handleClearRoomTimer(w http.ResponseWriter, r *http.Request) {
+	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
+		return a.ClearRoomTimer(gameID, viewerUID)
 	})
 }
 

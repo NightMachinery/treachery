@@ -102,6 +102,13 @@ type Message struct {
 	Type      MessageType `json:"type"`
 }
 
+type RoomTimer struct {
+	DurationSeconds        int    `json:"durationSeconds"`
+	ExpiresAt              string `json:"expiresAt,omitempty"`
+	PausedRemainingSeconds int    `json:"pausedRemainingSeconds,omitempty"`
+	RunID                  int    `json:"runId"`
+}
+
 type Game struct {
 	CreatorUID              string         `json:"creatorUid"`
 	ScientistUID            string         `json:"scientistUid,omitempty"`
@@ -129,6 +136,8 @@ type Game struct {
 	Winner                  Winner         `json:"winner"`
 	FinishedReason          string         `json:"finishedReason,omitempty"`
 	ResultMessage           string         `json:"resultMessage,omitempty"`
+	RoomTimer               *RoomTimer     `json:"roomTimer,omitempty"`
+	RoomTimerRunID          int            `json:"-"`
 }
 
 type KnownRolePlayer struct {
@@ -191,6 +200,7 @@ type GameSnapshot struct {
 	ForensicPrivateData  *ForensicPrivateData  `json:"forensicPrivateData,omitempty"`
 	ModeratorPrivateData *ModeratorPrivateData `json:"moderatorPrivateData,omitempty"`
 	RoleReveal           []RoleRevealEntry     `json:"roleReveal,omitempty"`
+	ServerTimestamp      string                `json:"serverTimestamp"`
 }
 
 type Session struct {

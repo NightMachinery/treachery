@@ -15,6 +15,7 @@ import {
   TgForensicCard,
   TgModeratorPrivateData,
   TgParticipant,
+  TgRoomTimer,
   TgRoleRevealEntry,
   TgViewer
 } from '../models/models';
@@ -35,6 +36,7 @@ export class GameApiService {
   public guesses$: Observable<TgGuess[]>;
   public playerPrivateData$: Observable<TgPlayerPrivateData>;
   public moderatorPrivateData$: Observable<TgModeratorPrivateData>;
+  public roomTimer$: Observable<TgRoomTimer>;
   public roleReveal$: Observable<TgRoleRevealEntry[]>;
   public participantsDict$: Observable<Map<string, TgParticipant>>;
   public playersDict$: Observable<Map<string, TgPlayer>>;
@@ -89,6 +91,10 @@ export class GameApiService {
     );
     this.roleReveal$ = this.snapshot$.pipe(
       map(snapshot => (snapshot ? snapshot.roleReveal || [] : [])),
+      shareReplay(1)
+    );
+    this.roomTimer$ = this.game$.pipe(
+      map(game => (game ? game.roomTimer || null : null)),
       shareReplay(1)
     );
     this.participantsDict$ = this.participants$.pipe(
@@ -239,6 +245,48 @@ export class GameApiService {
     const response = await this.http
       .post<{ success: boolean }>(`/api/games/${gameId}/murderer-selection`, { clueCardName, meansCardName }, this.getRoomRequestOptions())
       .toPromise();
+    if (response.success) {
+      await this.refreshSnapshot();
+    }
+  }
+
+  async startRoomTimer(seconds?: number) {
+    const gameId = this.gameId$.value;
+    const response = await this.http
+      .post<{ success: boolean }>(`/api/games/${gameId}/room-timer/start`, { seconds }, this.getRoomRequestOptions())
+      .toPromise();
+    if (response.success) {
+      await this.refreshSnapshot();
+    }
+  }
+
+  async pauseRoomTimer() {
+    const gameId = this.gameId$.value;
+    const response = await this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/pause`, {}, this.getRoomRequestOptions()).toPromise();
+    if (response.success) {
+      await this.refreshSnapshot();
+    }
+  }
+
+  async resumeRoomTimer() {
+    const gameId = this.gameId$.value;
+    const response = await this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/resume`, {}, this.getRoomRequestOptions()).toPromise();
+    if (response.success) {
+      await this.refreshSnapshot();
+    }
+  }
+
+  async resetRoomTimer() {
+    const gameId = this.gameId$.value;
+    const response = await this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/reset`, {}, this.getRoomRequestOptions()).toPromise();
+    if (response.success) {
+      await this.refreshSnapshot();
+    }
+  }
+
+  async clearRoomTimer() {
+    const gameId = this.gameId$.value;
+    const response = await this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/clear`, {}, this.getRoomRequestOptions()).toPromise();
     if (response.success) {
       await this.refreshSnapshot();
     }

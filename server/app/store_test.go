@@ -1,9 +1,11 @@
 package app
 
 import (
+	"errors"
 	mathrand "math/rand"
 	"path/filepath"
 	"testing"
+	"time"
 )
 
 func newTestApp(t *testing.T) *App {
@@ -38,6 +40,18 @@ func joinPlayers(t *testing.T, app *App, gameID string, uids ...string) {
 	t.Helper()
 	for _, uid := range uids {
 		joinPlayer(t, app, gameID, uid, uid)
+	}
+}
+
+func startTestGame(t *testing.T, app *App, gameID, creator string, otherUIDs ...string) {
+	t.Helper()
+	setProfile(t, app, creator, "Creator")
+	if err := app.CreateGame(creator, gameID); err != nil {
+		t.Fatalf("create game: %v", err)
+	}
+	joinPlayers(t, app, gameID, otherUIDs...)
+	if err := app.StartGame(gameID, creator); err != nil {
+		t.Fatalf("start game: %v", err)
 	}
 }
 
@@ -429,4 +443,167 @@ func TestWitnessSelectionFlowAndAccompliceKnowledge(t *testing.T) {
 	if !finalSnapshot.Game.Finished || finalSnapshot.Game.Winner != WinnerMurdererTeam {
 		t.Fatalf("expected murderer team to win after finding the witness, got %+v", finalSnapshot.Game)
 	}
+}
+
+func TestRoomTimerLifecycle(t *testing.T) {
+	app := newTestApp(t)
+	defer app.Close()
+
+	currentTime := time.Date(2026, time.April, 20, 12, 0, 0, 0, time.UTC)
+	app.timeNow = func() time.Time {
+		return currentTime
+	}
+
+	startTestGame(t, app, "TIME", "creator", "p1", "p2", "p3")
+
+	if err := app.StartRoomTimer("TIME", "creator", nil); err != nil {
+		t.Fatalf("start room timer: %v", err)
+	}
+
+	snapshot, err := app.GetSnapshot("TIME", "creator")
+	if err != nil {
+		t.Fatalf("snapshot after start: %v", err)
+	}
+	if snapshot.ServerTimestamp != nowTimestamp(currentTime) {
+		t.Fatalf("expected server timestamp %s, got %s", nowTimestamp(currentTime), snapshot.ServerTimestamp)
+	}
+	if snapshot.Game.RoomTimer == nil {
+		t.Fatalf("expected room timer to exist")
+	}
+	if snapshot.Game.RoomTimer.DurationSeconds != defaultRoomTimerDurationSeconds {
+		t.Fatalf("expected default timer duration, got %+v", snapshot.Game.RoomTimer)
+	}
+	if snapshot.Game.RoomTimer.ExpiresAt != nowTimestamp(currentTime.Add(40*time.Second)) {
+		t.Fatalf("unexpected timer expiry after start: %+v", snapshot.Game.RoomTimer)
+	}
+	if snapshot.Game.RoomTimer.RunID != 1 {
+		t.Fatalf("expected first run id 1, got %+v", snapshot.Game.RoomTimer)
+	}
+
+	currentTime = currentTime.Add(10 * time.Second)
+	if err := app.PauseRoomTimer("TIME", "creator"); err != nil {
+		t.Fatalf("pause room timer: %v", err)
+	}
+	snapshot, err = app.GetSnapshot("TIME", "creator")
+	if err != nil {
+		t.Fatalf("snapshot after pause: %v", err)
+	}
+	if snapshot.Game.RoomTimer.ExpiresAt != "" || snapshot.Game.RoomTimer.PausedRemainingSeconds != 30 || snapshot.Game.RoomTimer.RunID != 1 {
+		t.Fatalf("unexpected paused timer state: %+v", snapshot.Game.RoomTimer)
+	}
+
+	currentTime = currentTime.Add(15 * time.Second)
+	if err := app.ResumeRoomTimer("TIME", "creator"); err != nil {
+		t.Fatalf("resume room timer: %v", err)
+	}
+	snapshot, err = app.GetSnapshot("TIME", "creator")
+	if err != nil {
+		t.Fatalf("snapshot after resume: %v", err)
+	}
+	if snapshot.Game.RoomTimer.PausedRemainingSeconds != 0 {
+		t.Fatalf("expected resumed timer to clear paused seconds, got %+v", snapshot.Game.RoomTimer)
+	}
+	if snapshot.Game.RoomTimer.ExpiresAt != nowTimestamp(currentTime.Add(30*time.Second)) {
+		t.Fatalf("unexpected timer expiry after resume: %+v", snapshot.Game.RoomTimer)
+	}
+	if snapshot.Game.RoomTimer.RunID != 1 {
+		t.Fatalf("resume should preserve run id, got %+v", snapshot.Game.RoomTimer)
+	}
+
+	currentTime = currentTime.Add(5 * time.Second)
+	if err := app.ResetRoomTimer("TIME", "creator"); err != nil {
+		t.Fatalf("reset room timer: %v", err)
+	}
+	snapshot, err = app.GetSnapshot("TIME", "creator")
+	if err != nil {
+		t.Fatalf("snapshot after reset: %v", err)
+	}
+	if snapshot.Game.RoomTimer.DurationSeconds != 40 || snapshot.Game.RoomTimer.ExpiresAt != nowTimestamp(currentTime.Add(40*time.Second)) {
+		t.Fatalf("unexpected timer after reset: %+v", snapshot.Game.RoomTimer)
+	}
+	if snapshot.Game.RoomTimer.RunID != 2 {
+		t.Fatalf("expected reset to increment run id, got %+v", snapshot.Game.RoomTimer)
+	}
+
+	if err := app.ClearRoomTimer("TIME", "creator"); err != nil {
+		t.Fatalf("clear room timer: %v", err)
+	}
+	snapshot, err = app.GetSnapshot("TIME", "creator")
+	if err != nil {
+		t.Fatalf("snapshot after clear: %v", err)
+	}
+	if snapshot.Game.RoomTimer != nil {
+		t.Fatalf("expected timer to clear, got %+v", snapshot.Game.RoomTimer)
+	}
+
+	if err := app.StartRoomTimer("TIME", "creator", intPtr(15)); err != nil {
+		t.Fatalf("restart room timer after clear: %v", err)
+	}
+	snapshot, err = app.GetSnapshot("TIME", "creator")
+	if err != nil {
+		t.Fatalf("snapshot after restart: %v", err)
+	}
+	if snapshot.Game.RoomTimer == nil || snapshot.Game.RoomTimer.RunID != 3 || snapshot.Game.RoomTimer.DurationSeconds != 15 {
+		t.Fatalf("expected new timer run after clear, got %+v", snapshot.Game.RoomTimer)
+	}
+}
+
+func TestRoomTimerRejectsInvalidStatesAndActors(t *testing.T) {
+	app := newTestApp(t)
+	defer app.Close()
+
+	setProfile(t, app, "creator", "Creator")
+	if err := app.CreateGame("creator", "LOCK"); err != nil {
+		t.Fatalf("create game: %v", err)
+	}
+	joinPlayers(t, app, "LOCK", "p1", "p2", "p3")
+
+	if err := app.StartRoomTimer("LOCK", "creator", nil); !errors.Is(err, ErrBadInput) {
+		t.Fatalf("expected bad input before game start, got %v", err)
+	}
+	if err := app.StartRoomTimer("LOCK", "creator", intPtr(0)); !errors.Is(err, ErrBadInput) {
+		t.Fatalf("expected bad input for zero-second timer, got %v", err)
+	}
+
+	if err := app.StartGame("LOCK", "creator"); err != nil {
+		t.Fatalf("start game: %v", err)
+	}
+	if err := app.StartRoomTimer("LOCK", "p1", nil); !errors.Is(err, ErrForbidden) {
+		t.Fatalf("expected forbidden for non-creator timer control, got %v", err)
+	}
+	if err := app.ResetRoomTimer("LOCK", "creator"); !errors.Is(err, ErrBadInput) {
+		t.Fatalf("expected bad input when resetting missing timer, got %v", err)
+	}
+	if err := app.EndGame("LOCK", "creator"); err != nil {
+		t.Fatalf("end game: %v", err)
+	}
+	if err := app.StartRoomTimer("LOCK", "creator", nil); !errors.Is(err, ErrBadInput) {
+		t.Fatalf("expected bad input after game finish, got %v", err)
+	}
+}
+
+func TestRoomTimerClearsWhenGameEnds(t *testing.T) {
+	app := newTestApp(t)
+	defer app.Close()
+
+	startTestGame(t, app, "DONE", "creator", "p1", "p2", "p3")
+
+	if err := app.StartRoomTimer("DONE", "creator", intPtr(20)); err != nil {
+		t.Fatalf("start room timer: %v", err)
+	}
+	if err := app.EndGame("DONE", "creator"); err != nil {
+		t.Fatalf("end game: %v", err)
+	}
+
+	snapshot, err := app.GetSnapshot("DONE", "creator")
+	if err != nil {
+		t.Fatalf("snapshot after end: %v", err)
+	}
+	if snapshot.Game.RoomTimer != nil {
+		t.Fatalf("expected room timer to clear when game ends, got %+v", snapshot.Game.RoomTimer)
+	}
+}
+
+func intPtr(value int) *int {
+	return &value
 }

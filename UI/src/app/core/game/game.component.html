@@ -10,6 +10,8 @@
         >
       </div>
 
+      <app-room-timer *ngIf="game.startedOn && !game.finished"></app-room-timer>
+
       <ng-container *ngIf="game.finished">
         <tg-info>{{ getWinnerLabel(game.winner) }}</tg-info>
         <tg-info *ngIf="game.resultMessage">{{ game.resultMessage }}</tg-info>

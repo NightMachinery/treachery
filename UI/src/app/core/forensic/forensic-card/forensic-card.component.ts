@@ -18,7 +18,7 @@ export class ForensicCardComponent implements OnInit {
   ngOnInit() { }
 
   isSelected(choiceName: string) {
-    return choiceName === this.forensicCard.selectedChoice || choiceName === this.selectedOptionName;
+    return choiceName === this.forensicCard.selectedChoice || (this.selected && choiceName === this.selectedOptionName);
   }
 
   choiceClick(choice: string) {

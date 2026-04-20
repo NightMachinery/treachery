@@ -1,24 +1,38 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ForensicCardComponent } from './forensic-card.component';
 
 describe('ForensicCardComponent', () => {
-  let component: ForensicCardComponent;
-  let fixture: ComponentFixture<ForensicCardComponent>;
+  function createComponent() {
+    const component = new ForensicCardComponent();
+    component.forensicCard = {
+      cardName: 'Locations',
+      choices: ['Living Room', 'Bedroom'],
+      selectedChoice: '',
+      replaced: false
+    };
+    return component;
+  }
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ForensicCardComponent]
-    }).compileComponents();
-  }));
+  it('does not highlight the transient selected option for cards that are not selected', () => {
+    const component = createComponent();
+    component.selected = false;
+    component.selectedOptionName = 'Bedroom';
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ForensicCardComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    expect(component.isSelected('Bedroom')).toBe(false);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('highlights the transient selected option for the selected card', () => {
+    const component = createComponent();
+    component.selected = true;
+    component.selectedOptionName = 'Bedroom';
+
+    expect(component.isSelected('Bedroom')).toBe(true);
+  });
+
+  it('always highlights persisted selected choices', () => {
+    const component = createComponent();
+    component.selected = false;
+    component.forensicCard.selectedChoice = 'Living Room';
+
+    expect(component.isSelected('Living Room')).toBe(true);
   });
 });

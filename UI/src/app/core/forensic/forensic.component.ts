@@ -17,7 +17,7 @@ import { TgCard, TgForensicCard, TgForensicPrivateData, TgGame } from './../../s
 })
 export class ForensicComponent implements OnInit, OnDestroy {
   selectedCauseCardName: string;
-  selectedLocationCardName: string;
+  selectedLocationCard: TgForensicCard;
   selectedCauseCardOption: string;
   selectedLocationCardOption: string;
   selectedOtherCardOption: string;
@@ -85,8 +85,8 @@ export class ForensicComponent implements OnInit, OnDestroy {
   }
 
   locationCardClick(card: TgForensicCard) {
-    if (this.selectedLocationCardName !== card.cardName) {
-      this.selectedLocationCardName = card.cardName;
+    if (this.selectedLocationCard !== card) {
+      this.selectedLocationCard = card;
       this.selectedLocationCardOption = card.choices[0];
     }
   }
@@ -102,10 +102,11 @@ export class ForensicComponent implements OnInit, OnDestroy {
   }
 
   async selectLocationCard() {
-    this.gameApi.selectForensicLocationCard(
-      await this.cardApi.getLocationCard(this.selectedLocationCardName, this.selectedLocationCardOption)
-    );
-    this.selectedLocationCardName = null;
+    this.gameApi.selectForensicLocationCard({
+      ...this.selectedLocationCard,
+      selectedChoice: this.selectedLocationCardOption
+    });
+    this.selectedLocationCard = null;
     this.selectedLocationCardOption = null;
   }
 

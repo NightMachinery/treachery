@@ -26,13 +26,4 @@ export class CardApiService {
       selectedChoice
     } as TgForensicCard;
   }
-
-  async getLocationCard(cardName: string, selectedChoice: string): Promise<TgForensicCard> {
-    const cards = await this.getCardsSnapshot();
-
-    return {
-      ...cards.forensicCards.locationCards.find(card => card.cardName === cardName),
-      selectedChoice
-    };
-  }
 }

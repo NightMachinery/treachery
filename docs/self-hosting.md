@@ -109,6 +109,7 @@ Then verify in a browser:
 - forensic / murderer private views stay isolated per browser session
 - migrate-device links preserve the imported room identity across refresh without affecting other rooms
 - selecting the 5th or 6th forensic other card requires choosing a replacement card first
+- selecting a non-first forensic Location card shows that exact card and chosen hint to players/observers
 - copy-link works on **HTTP**
 
 ## Troubleshooting

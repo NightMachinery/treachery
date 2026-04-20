@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -14,7 +15,6 @@ import { MatListModule } from '@angular/material/list';
 import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { LazyLoadImageModule } from 'ng-lazyload-image';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -91,6 +91,7 @@ import { AuthTokenInterceptor } from './shared/api/auth/auth-token.interceptor';
     FormsModule,
     MatButtonModule,
     MatDividerModule,
+    MatFormFieldModule,
     MatInputModule,
     MatToolbarModule,
     MatProgressSpinnerModule,
@@ -99,7 +100,6 @@ import { AuthTokenInterceptor } from './shared/api/auth/auth-token.interceptor';
     MatDialogModule,
     MatCardModule,
     MatProgressBarModule,
-    LazyLoadImageModule,
     MatSnackBarModule
   ],
   providers: [
@@ -107,7 +107,6 @@ import { AuthTokenInterceptor } from './shared/api/auth/auth-token.interceptor';
     { provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true },
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }
   ],
-  bootstrap: [AppComponent],
-  entryComponents: [MurdererSelectDialogComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

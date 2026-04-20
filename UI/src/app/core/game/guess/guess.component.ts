@@ -7,6 +7,7 @@ import { SnackBarService } from 'src/app/shared/api/snack-bar/snack-bar.service'
 
 @Component({
   selector: 'app-guess',
+  standalone: false,
   templateUrl: './guess.component.html',
   styleUrls: ['./guess.component.scss']
 })

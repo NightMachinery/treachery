@@ -4,6 +4,7 @@ import { AvatarService } from './../../api/avatar/avatar.service';
 
 @Component({
   selector: 'tg-avatar',
+  standalone: false,
   templateUrl: './avatar.component.html',
   styleUrls: ['./avatar.component.scss']
 })
@@ -31,6 +32,17 @@ export class AvatarComponent implements OnInit {
 
   getSrc(uid: string) {
     return this.avatar.getAvatar(uid);
+  }
+
+  avatarSrc(uid: string) {
+    return this.getSrc(uid) || this.defaultSvgUri(uid);
+  }
+
+  onImageError(event: Event, uid: string) {
+    const img = event.target as HTMLImageElement;
+    if (img && img.src !== this.defaultSvgUri(uid)) {
+      img.src = this.defaultSvgUri(uid);
+    }
   }
 
   getFill(uid: string) {

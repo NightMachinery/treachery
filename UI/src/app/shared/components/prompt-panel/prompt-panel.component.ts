@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'tg-prompt-panel',
+  standalone: false,
   templateUrl: './prompt-panel.component.html',
   styleUrls: ['./prompt-panel.component.scss']
 })

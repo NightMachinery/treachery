@@ -1,16 +1,24 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { AvatarService } from './../../api/avatar/avatar.service';
 import { AvatarComponent } from './avatar.component';
 
 describe('AvatarComponent', () => {
   let component: AvatarComponent;
   let fixture: ComponentFixture<AvatarComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AvatarComponent ]
-    })
-    .compileComponents();
+      declarations: [AvatarComponent],
+      providers: [
+        {
+          provide: AvatarService,
+          useValue: {
+            getAvatar: () => 'avatar.svg'
+          }
+        }
+      ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

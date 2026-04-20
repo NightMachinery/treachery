@@ -15,9 +15,10 @@
     <div class="card-name" dir="auto">{{ card.name }}</div>
     <img
       class="main-img"
-      [defaultImage]="means ? 'assets/means-bg.jpg' : 'assets/clue-bg.jpg'"
-      [lazyLoad]="card.imgUrl"
-      [errorImage]="card.altImgUrl"
+      [src]="imageSrc()"
+      [alt]="card.name"
+      loading="lazy"
+      (error)="onImageError($event)"
     />
     <div class="type-text">{{ means ? 'means' : 'clue' }}</div>
   </ng-template>

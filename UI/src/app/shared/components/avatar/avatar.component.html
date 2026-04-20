@@ -1,1 +1,1 @@
-<img [height]="diameter" [width]="diameter" [defaultImage]="defaultSvgUri(uid)" [lazyLoad]="getSrc(uid) ? getSrc(uid) : defaultSvgUri(uid)" [errorImage]="defaultSvgUri(uid)">
+<img [height]="diameter" [width]="diameter" [src]="avatarSrc(uid)" [alt]="uid || 'avatar'" loading="lazy" (error)="onImageError($event, uid)">

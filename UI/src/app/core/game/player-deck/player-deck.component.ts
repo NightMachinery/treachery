@@ -3,6 +3,7 @@ import { TgCard, TgPlayer } from '../../../shared/api/models/models';
 
 @Component({
   selector: 'app-player-deck',
+  standalone: false,
   templateUrl: './player-deck.component.html',
   styleUrls: ['./player-deck.component.scss']
 })

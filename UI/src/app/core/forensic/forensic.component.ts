@@ -12,6 +12,7 @@ import { TgCard, TgForensicCard, TgForensicPrivateData, TgGame } from './../../s
 
 @Component({
   selector: 'app-forensic',
+  standalone: false,
   templateUrl: './forensic.component.html',
   styleUrls: ['./forensic.component.scss']
 })

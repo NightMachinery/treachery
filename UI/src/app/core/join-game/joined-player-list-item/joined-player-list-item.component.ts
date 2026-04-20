@@ -4,6 +4,7 @@ import { AvatarService } from './../../../shared/api/avatar/avatar.service';
 
 @Component({
   selector: 'app-joined-player-list-item',
+  standalone: false,
   templateUrl: './joined-player-list-item.component.html',
   styleUrls: ['./joined-player-list-item.component.scss']
 })

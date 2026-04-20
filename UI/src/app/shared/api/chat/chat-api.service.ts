@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { GameApiService } from '../game/game-api.service';
-import { TgMessage, TgMessageType } from '../models/models';
+import { TgMessage } from '../models/models';
 
 @Injectable({
   providedIn: 'root'
@@ -27,9 +27,9 @@ export class ChatApiService {
     }
   }
 
-  async sendMessage(message: string, type: TgMessageType = TgMessageType.CHAT) {
+  async sendMessage(message: string) {
     const gameId = this.gameApi.gameId$.value;
-    await this.http.post(`/api/games/${gameId}/messages`, { message }, this.getRoomRequestOptions()).toPromise();
+    await firstValueFrom(this.http.post(`/api/games/${gameId}/messages`, { message }, this.getRoomRequestOptions()));
     await this.gameApi.refreshSnapshot();
   }
 

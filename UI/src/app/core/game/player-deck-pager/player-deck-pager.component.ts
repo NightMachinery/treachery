@@ -5,6 +5,7 @@ import { TgPartialGuess, TgPlayer, TgViewer } from '../../../shared/api/models/m
 
 @Component({
   selector: 'app-player-deck-pager',
+  standalone: false,
   templateUrl: './player-deck-pager.component.html',
   styleUrls: ['./player-deck-pager.component.scss']
 })

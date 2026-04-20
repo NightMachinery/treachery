@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, of, timer } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable, of, timer } from 'rxjs';
 import { catchError, map, shareReplay, switchMap } from 'rxjs/operators';
 import { AuthService } from './../auth/auth.service';
 import {
@@ -191,9 +191,9 @@ export class GameApiService {
 
   async joinGame(gameId: string, role: 'player' | 'observer' = 'player') {
     this.setGameContext(gameId, this.roomAuth$.value);
-    const response = await this.http
-      .post<{ success: boolean }>(`/api/games/${gameId.toUpperCase()}/join`, { role }, this.getRoomRequestOptions())
-      .toPromise();
+    const response = await firstValueFrom(
+      this.http.post<{ success: boolean }>(`/api/games/${gameId.toUpperCase()}/join`, { role }, this.getRoomRequestOptions())
+    );
     if (response.success) {
       await this.refreshSnapshot();
     }
@@ -201,9 +201,9 @@ export class GameApiService {
 
   async setParticipantRole(uid: string, role: 'player' | 'observer') {
     const gameId = this.gameId$.value;
-    const response = await this.http
-      .post<{ success: boolean }>(`/api/games/${gameId}/participants/${uid}/role`, { role }, this.getRoomRequestOptions())
-      .toPromise();
+    const response = await firstValueFrom(
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/participants/${uid}/role`, { role }, this.getRoomRequestOptions())
+    );
     if (response.success) {
       await this.refreshSnapshot();
     }
@@ -211,9 +211,9 @@ export class GameApiService {
 
   async toggleScientist(uid: string) {
     const gameId = this.gameId$.value;
-    const response = await this.http
-      .post<{ success: boolean }>(`/api/games/${gameId}/scientist/toggle`, { uid }, this.getRoomRequestOptions())
-      .toPromise();
+    const response = await firstValueFrom(
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/scientist/toggle`, { uid }, this.getRoomRequestOptions())
+    );
     if (response.success) {
       await this.refreshSnapshot();
     }
@@ -221,9 +221,9 @@ export class GameApiService {
 
   async updateGameSettings(settings: TgGameSettingsInput) {
     const gameId = this.gameId$.value;
-    const response = await this.http
-      .post<{ success: boolean }>(`/api/games/${gameId}/settings`, settings, this.getRoomRequestOptions())
-      .toPromise();
+    const response = await firstValueFrom(
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/settings`, settings, this.getRoomRequestOptions())
+    );
     if (response.success) {
       await this.refreshSnapshot();
     }
@@ -231,9 +231,9 @@ export class GameApiService {
 
   async updateRoomMods(roomMods: TgGameRoomModsInput) {
     const gameId = this.gameId$.value;
-    const response = await this.http
-      .post<{ success: boolean }>(`/api/games/${gameId}/room-mods`, roomMods, this.getRoomRequestOptions())
-      .toPromise();
+    const response = await firstValueFrom(
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-mods`, roomMods, this.getRoomRequestOptions())
+    );
     if (response.success) {
       await this.refreshSnapshot();
     }
@@ -241,9 +241,9 @@ export class GameApiService {
 
   async createMigrateLink() {
     const gameId = this.gameId$.value;
-    const response = await this.http
-      .post<{ success: boolean; token: string }>(`/api/games/${gameId}/migrate-device`, {}, this.getRoomRequestOptions())
-      .toPromise();
+    const response = await firstValueFrom(
+      this.http.post<{ success: boolean; token: string }>(`/api/games/${gameId}/migrate-device`, {}, this.getRoomRequestOptions())
+    );
     if (!response.success || !response.token) {
       return '';
     }
@@ -253,9 +253,9 @@ export class GameApiService {
 
   async selectMurdererCards(clueCardName: string, meansCardName: string) {
     const gameId = this.gameId$.value;
-    const response = await this.http
-      .post<{ success: boolean }>(`/api/games/${gameId}/murderer-selection`, { clueCardName, meansCardName }, this.getRoomRequestOptions())
-      .toPromise();
+    const response = await firstValueFrom(
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/murderer-selection`, { clueCardName, meansCardName }, this.getRoomRequestOptions())
+    );
     if (response.success) {
       await this.refreshSnapshot();
     }
@@ -263,9 +263,9 @@ export class GameApiService {
 
   async startRoomTimer(seconds?: number) {
     const gameId = this.gameId$.value;
-    const response = await this.http
-      .post<{ success: boolean }>(`/api/games/${gameId}/room-timer/start`, { seconds }, this.getRoomRequestOptions())
-      .toPromise();
+    const response = await firstValueFrom(
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/start`, { seconds }, this.getRoomRequestOptions())
+    );
     if (response.success) {
       await this.refreshSnapshot();
     }
@@ -273,7 +273,7 @@ export class GameApiService {
 
   async pauseRoomTimer() {
     const gameId = this.gameId$.value;
-    const response = await this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/pause`, {}, this.getRoomRequestOptions()).toPromise();
+    const response = await firstValueFrom(this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/pause`, {}, this.getRoomRequestOptions()));
     if (response.success) {
       await this.refreshSnapshot();
     }
@@ -281,7 +281,7 @@ export class GameApiService {
 
   async resumeRoomTimer() {
     const gameId = this.gameId$.value;
-    const response = await this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/resume`, {}, this.getRoomRequestOptions()).toPromise();
+    const response = await firstValueFrom(this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/resume`, {}, this.getRoomRequestOptions()));
     if (response.success) {
       await this.refreshSnapshot();
     }
@@ -289,7 +289,7 @@ export class GameApiService {
 
   async resetRoomTimer() {
     const gameId = this.gameId$.value;
-    const response = await this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/reset`, {}, this.getRoomRequestOptions()).toPromise();
+    const response = await firstValueFrom(this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/reset`, {}, this.getRoomRequestOptions()));
     if (response.success) {
       await this.refreshSnapshot();
     }
@@ -297,7 +297,7 @@ export class GameApiService {
 
   async clearRoomTimer() {
     const gameId = this.gameId$.value;
-    const response = await this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/clear`, {}, this.getRoomRequestOptions()).toPromise();
+    const response = await firstValueFrom(this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/clear`, {}, this.getRoomRequestOptions()));
     if (response.success) {
       await this.refreshSnapshot();
     }
@@ -305,9 +305,9 @@ export class GameApiService {
 
   async showWitnessSelectionPrompt(targetUid: string) {
     const gameId = this.gameId$.value;
-    const response = await this.http
-      .post<{ success: boolean }>(`/api/games/${gameId}/witness-selection/show`, { targetUid }, this.getRoomRequestOptions())
-      .toPromise();
+    const response = await firstValueFrom(
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/witness-selection/show`, { targetUid }, this.getRoomRequestOptions())
+    );
     if (response.success) {
       await this.refreshSnapshot();
     }
@@ -315,9 +315,9 @@ export class GameApiService {
 
   async submitWitnessSelection(selectedUids: string[]) {
     const gameId = this.gameId$.value;
-    const response = await this.http
-      .post<{ success: boolean }>(`/api/games/${gameId}/witness-selection`, { selectedUids }, this.getRoomRequestOptions())
-      .toPromise();
+    const response = await firstValueFrom(
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/witness-selection`, { selectedUids }, this.getRoomRequestOptions())
+    );
     if (response.success) {
       await this.refreshSnapshot();
     }
@@ -325,9 +325,9 @@ export class GameApiService {
 
   async dismissWitnessSelectionPrompt() {
     const gameId = this.gameId$.value;
-    const response = await this.http
-      .post<{ success: boolean }>(`/api/games/${gameId}/witness-selection/dismiss`, {}, this.getRoomRequestOptions())
-      .toPromise();
+    const response = await firstValueFrom(
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/witness-selection/dismiss`, {}, this.getRoomRequestOptions())
+    );
     if (response.success) {
       await this.refreshSnapshot();
     }
@@ -335,9 +335,7 @@ export class GameApiService {
 
   async makeGuess(guess: TgPartialGuess) {
     const gameId = this.gameId$.value;
-    const response = await this.http
-      .post<{ success: boolean }>(`/api/games/${gameId}/guess`, guess, this.getRoomRequestOptions())
-      .toPromise();
+    const response = await firstValueFrom(this.http.post<{ success: boolean }>(`/api/games/${gameId}/guess`, guess, this.getRoomRequestOptions()));
     if (response.success) {
       await this.refreshSnapshot();
     }
@@ -349,7 +347,7 @@ export class GameApiService {
       return;
     }
     const gameId = this.gameId$.value;
-    await this.http.post(`/api/games/${gameId}/forensic/cause`, { card }, this.getRoomRequestOptions()).toPromise();
+    await firstValueFrom(this.http.post(`/api/games/${gameId}/forensic/cause`, { card }, this.getRoomRequestOptions()));
     await this.refreshSnapshot();
   }
 
@@ -359,7 +357,7 @@ export class GameApiService {
       return;
     }
     const gameId = this.gameId$.value;
-    await this.http.post(`/api/games/${gameId}/forensic/location`, { card }, this.getRoomRequestOptions()).toPromise();
+    await firstValueFrom(this.http.post(`/api/games/${gameId}/forensic/location`, { card }, this.getRoomRequestOptions()));
     await this.refreshSnapshot();
   }
 
@@ -373,7 +371,7 @@ export class GameApiService {
       return;
     }
     const gameId = this.gameId$.value;
-    await this.http.post(`/api/games/${gameId}/forensic/other`, { card, replaceCardName }, this.getRoomRequestOptions()).toPromise();
+    await firstValueFrom(this.http.post(`/api/games/${gameId}/forensic/other`, { card, replaceCardName }, this.getRoomRequestOptions()));
     await this.refreshSnapshot();
   }
 
@@ -387,7 +385,7 @@ export class GameApiService {
 
   async gameExists(gameId: string): Promise<boolean> {
     try {
-      await this.http.get<TgGameSnapshot>(`/api/games/${gameId.toUpperCase()}/snapshot`, this.getRoomRequestOptions()).toPromise();
+      await firstValueFrom(this.http.get<TgGameSnapshot>(`/api/games/${gameId.toUpperCase()}/snapshot`, this.getRoomRequestOptions()));
       return true;
     } catch (error) {
       return false;
@@ -399,7 +397,7 @@ export class GameApiService {
     if (!gameId || !this.auth.user) {
       return null;
     }
-    const snapshot = await this.http.get<TgGameSnapshot>(`/api/games/${gameId}/snapshot`, this.getRoomRequestOptions()).toPromise();
+    const snapshot = await firstValueFrom(this.http.get<TgGameSnapshot>(`/api/games/${gameId}/snapshot`, this.getRoomRequestOptions()));
     this.snapshotSubject.next(snapshot);
     return snapshot;
   }

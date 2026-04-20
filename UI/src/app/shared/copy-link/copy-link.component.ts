@@ -2,6 +2,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'tg-copy-link',
+  standalone: false,
   templateUrl: './copy-link.component.html',
   styleUrls: ['./copy-link.component.scss']
 })

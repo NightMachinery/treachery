@@ -1,4 +1,5 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CopyLinkComponent } from './copy-link.component';
 
@@ -6,11 +7,11 @@ describe('CopyLinkComponent', () => {
   let component: CopyLinkComponent;
   let fixture: ComponentFixture<CopyLinkComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CopyLinkComponent ]
-    })
-    .compileComponents();
+      declarations: [CopyLinkComponent],
+      schemas: [NO_ERRORS_SCHEMA]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

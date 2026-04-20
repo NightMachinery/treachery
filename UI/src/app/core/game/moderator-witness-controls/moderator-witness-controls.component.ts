@@ -3,6 +3,7 @@ import { GameApiService } from '../../../shared/api/game/game-api.service';
 
 @Component({
   selector: 'app-moderator-witness-controls',
+  standalone: false,
   templateUrl: './moderator-witness-controls.component.html',
   styleUrls: ['./moderator-witness-controls.component.scss']
 })

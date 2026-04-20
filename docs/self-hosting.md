@@ -4,6 +4,7 @@ This repo now self-hosts without Firebase or Docker.
 
 ## What runs
 
+- **Frontend toolchain**: Angular 20 on Node 24 LTS with pnpm.
 - **Caddy** terminates HTTP / self-signed HTTPS for `treachery.pinky.lilf.ir`.
 - **One Go server** runs in tmux and serves:
   - the built Angular SPA
@@ -46,7 +47,7 @@ If omitted, the default is `https://treachery.pinky.lilf.ir`.
 3. Loads Node via:
    ```zsh
    nvm-load
-   nvm use 16.20.2
+   nvm use 24
    ```
 4. Runs `pnpm install --frozen-lockfile --prefer-offline` in `UI/`.
 5. Builds the Angular app.
@@ -121,3 +122,4 @@ Then verify in a browser:
   tmux attach -t treachery-self-host
   ```
 - If you changed frontend dependencies, rerun `./self_host.zsh redeploy` instead of `start`.
+- Angular unit tests still use Karma + ChromeHeadless. On a minimal VPS, install Chromium/Chrome or set `CHROME_BIN` to a compatible browser binary before running `pnpm test -- --watch=false --browsers=ChromeHeadless`.

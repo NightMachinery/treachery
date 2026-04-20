@@ -1,14 +1,37 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { BehaviorSubject } from 'rxjs';
 
+import { GameApiService } from './../../api/game/game-api.service';
+import { ChatApiService } from './../../api/chat/chat-api.service';
 import { ChatComponent } from './chat.component';
 
 describe('ChatComponent', () => {
   let component: ChatComponent;
   let fixture: ComponentFixture<ChatComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ChatComponent]
+      declarations: [ChatComponent],
+      providers: [
+        {
+          provide: ChatApiService,
+          useValue: {
+            collapsed: false,
+            messages$: new BehaviorSubject([]),
+            toggleCollapse: jasmine.createSpy('toggleCollapse')
+          }
+        },
+        {
+          provide: GameApiService,
+          useValue: {
+            participantsDict$: new BehaviorSubject(new Map()),
+            game$: new BehaviorSubject(null),
+            viewer$: new BehaviorSubject(null)
+          }
+        }
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
 

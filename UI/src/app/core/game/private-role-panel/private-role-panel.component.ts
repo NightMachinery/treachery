@@ -6,6 +6,7 @@ import { findClueCard, findMeansCard } from '../../../shared/utils/find';
 
 @Component({
   selector: 'app-private-role-panel',
+  standalone: false,
   templateUrl: './private-role-panel.component.html',
   styleUrls: ['./private-role-panel.component.scss']
 })

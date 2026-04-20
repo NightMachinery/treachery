@@ -6,6 +6,7 @@ import { SnackBarService } from '../../../shared/api/snack-bar/snack-bar.service
 
 @Component({
   selector: 'app-witness-selection-prompt',
+  standalone: false,
   templateUrl: './witness-selection-prompt.component.html',
   styleUrls: ['./witness-selection-prompt.component.scss']
 })

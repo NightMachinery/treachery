@@ -3,6 +3,7 @@ import { GameApiService } from '../../../shared/api/game/game-api.service';
 
 @Component({
   selector: 'app-role-reveal',
+  standalone: false,
   templateUrl: './role-reveal.component.html',
   styleUrls: ['./role-reveal.component.scss']
 })

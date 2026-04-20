@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-ripple-mat-card',
+  standalone: false,
   templateUrl: './ripple-mat-card.component.html',
   styleUrls: ['./ripple-mat-card.component.scss']
 })

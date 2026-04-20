@@ -10,6 +10,7 @@ import { SnackBarService } from '../../shared/api/snack-bar/snack-bar.service';
 
 @Component({
   selector: 'app-join-game',
+  standalone: false,
   templateUrl: './join-game.component.html',
   styleUrls: ['./join-game.component.scss']
 })

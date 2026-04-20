@@ -6,6 +6,7 @@ import { GameApiService } from '../../api/game/game-api.service';
 
 @Component({
   selector: 'tg-navbar',
+  standalone: false,
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })

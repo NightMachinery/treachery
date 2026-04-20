@@ -8,6 +8,7 @@ import { TgMurdererInfo } from './../../../shared/api/models/models';
 
 @Component({
   selector: 'tg-murderer-info',
+  standalone: false,
   templateUrl: './murderer-info.component.html',
   styleUrls: ['./murderer-info.component.scss']
 })

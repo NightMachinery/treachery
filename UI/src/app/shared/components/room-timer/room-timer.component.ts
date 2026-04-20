@@ -10,6 +10,7 @@ type RoomTimerStatus = 'idle' | 'running' | 'paused' | 'expired';
 
 @Component({
   selector: 'app-room-timer',
+  standalone: false,
   templateUrl: './room-timer.component.html',
   styleUrls: ['./room-timer.component.scss']
 })

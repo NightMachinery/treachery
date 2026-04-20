@@ -7,6 +7,7 @@ import { GameApiService } from '../../shared/api/game/game-api.service';
 
 @Component({
   selector: 'app-all-games',
+  standalone: false,
   templateUrl: './all-games.component.html',
   styleUrls: ['./all-games.component.scss']
 })

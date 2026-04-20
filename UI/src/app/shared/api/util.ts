@@ -1,5 +1,4 @@
-import { first } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 
 export const getPlainObject = (obj) => {
   return Object.assign({}, obj);
@@ -24,5 +23,5 @@ export const randomReadableId = (length = 4) => {
 };
 
 export async function getObservableInstance<E>(observable: Observable<E>): Promise<E> {
-  return observable.pipe(first()).toPromise();
+  return firstValueFrom(observable);
 }

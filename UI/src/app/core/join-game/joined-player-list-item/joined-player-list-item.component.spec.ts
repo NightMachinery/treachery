@@ -1,14 +1,25 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { AvatarService } from './../../../shared/api/avatar/avatar.service';
 import { JoinedPlayerListItemComponent } from './joined-player-list-item.component';
 
 describe('JoinedPlayerListItemComponent', () => {
   let component: JoinedPlayerListItemComponent;
   let fixture: ComponentFixture<JoinedPlayerListItemComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [JoinedPlayerListItemComponent]
+      declarations: [JoinedPlayerListItemComponent],
+      providers: [
+        {
+          provide: AvatarService,
+          useValue: {
+            getAvatar: () => 'avatar.svg'
+          }
+        }
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
 

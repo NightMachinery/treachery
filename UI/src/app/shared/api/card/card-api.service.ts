@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 import { TgCardResources, TgForensicCard } from './../models/models';
 
@@ -15,7 +15,7 @@ export class CardApiService {
   }
 
   async getCardsSnapshot(): Promise<TgCardResources> {
-    return this.cards$.toPromise<TgCardResources>();
+    return firstValueFrom(this.cards$);
   }
 
   async getCauseCard(cardName: string, selectedChoice: string): Promise<TgForensicCard> {

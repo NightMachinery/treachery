@@ -4,6 +4,7 @@ import { AvatarService } from './shared/api/avatar/avatar.service';
 
 @Component({
   selector: 'app-root',
+  standalone: false,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

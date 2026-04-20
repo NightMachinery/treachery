@@ -1,5 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BehaviorSubject } from 'rxjs';
 
 import { GameApiService } from '../../api/game/game-api.service';
@@ -11,7 +11,7 @@ describe('CardComponent', () => {
   let fixture: ComponentFixture<CardComponent>;
   let game$: BehaviorSubject<TgGame>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     game$ = new BehaviorSubject<TgGame>({ meansCluesTextOnly: false } as TgGame);
     TestBed.configureTestingModule({
       declarations: [CardComponent],

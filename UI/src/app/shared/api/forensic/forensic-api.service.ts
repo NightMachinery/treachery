@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { AuthService } from './../auth/auth.service';
 import { randomReadableId } from './../util';
@@ -18,7 +17,6 @@ export class ForensicApiService {
   constructor(
     private http: HttpClient,
     private authService: AuthService,
-    private router: Router,
     public gameApi: GameApiService,
     private snack: SnackBarService
   ) {
@@ -45,9 +43,7 @@ export class ForensicApiService {
       return;
     }
     const requestedGameId = randomReadableId();
-    const response = await this.http
-      .post<{ success: boolean; gameId: string }>(`/api/games`, { gameId: requestedGameId })
-      .toPromise();
+    const response = await firstValueFrom(this.http.post<{ success: boolean; gameId: string }>(`/api/games`, { gameId: requestedGameId }));
 
     if (response.success) {
       this.gameApi.setGameContext(response.gameId || requestedGameId, null);
@@ -63,7 +59,7 @@ export class ForensicApiService {
       this.snack.error('Need at least 4 players to start!');
       return;
     }
-    const response = await this.http.post<{ success: boolean }>(`/api/games/${gameId}/start`, {}, this.getRoomRequestOptions()).toPromise();
+    const response = await firstValueFrom(this.http.post<{ success: boolean }>(`/api/games/${gameId}/start`, {}, this.getRoomRequestOptions()));
     if (response.success) {
       await this.gameApi.refreshSnapshot();
     }
@@ -71,7 +67,7 @@ export class ForensicApiService {
 
   async endGame() {
     const gameId = this.gameApi.gameId$.value;
-    const response = await this.http.post<{ success: boolean }>(`/api/games/${gameId}/end`, {}, this.getRoomRequestOptions()).toPromise();
+    const response = await firstValueFrom(this.http.post<{ success: boolean }>(`/api/games/${gameId}/end`, {}, this.getRoomRequestOptions()));
     if (response.success) {
       await this.gameApi.refreshSnapshot();
     }
@@ -79,7 +75,7 @@ export class ForensicApiService {
 
   async restartGame() {
     const gameId = this.gameApi.gameId$.value;
-    const response = await this.http.post<{ success: boolean }>(`/api/games/${gameId}/restart`, {}, this.getRoomRequestOptions()).toPromise();
+    const response = await firstValueFrom(this.http.post<{ success: boolean }>(`/api/games/${gameId}/restart`, {}, this.getRoomRequestOptions()));
     if (response.success) {
       await this.gameApi.refreshSnapshot();
     }

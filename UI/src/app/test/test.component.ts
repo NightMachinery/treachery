@@ -8,6 +8,7 @@ import {PlayerApiService} from '../shared/api/player/player-api.service';
 
 @Component({
   selector: 'app-test',
+  standalone: false,
   templateUrl: './test.component.html',
   styleUrls: ['./test.component.scss']
 })

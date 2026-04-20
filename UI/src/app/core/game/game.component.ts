@@ -10,6 +10,7 @@ import { SnackBarService } from './../../shared/api/snack-bar/snack-bar.service'
 
 @Component({
   selector: 'app-game',
+  standalone: false,
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss']
 })

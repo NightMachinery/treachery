@@ -3,6 +3,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-forensic-card',
+  standalone: false,
   templateUrl: './forensic-card.component.html',
   styleUrls: ['./forensic-card.component.scss']
 })

@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { TgAuthUser } from '../models/models';
 
@@ -54,7 +54,7 @@ export class AuthService {
     if (roomAuth) {
       headers = headers.set('X-Treachery-Room-Auth', roomAuth);
     }
-    const user = await this.http.put<TgAuthUser>('/api/me', { displayName, gameId }, { headers }).toPromise();
+    const user = await firstValueFrom(this.http.put<TgAuthUser>('/api/me', { displayName, gameId }, { headers }));
     this.userSubject.next({ ...(this.user || ({} as TgAuthUser)), ...user, displayName: user.displayName || displayName });
     return this.user;
   }

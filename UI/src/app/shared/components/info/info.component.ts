@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'tg-info',
+  standalone: false,
   templateUrl: './info.component.html',
   styleUrls: ['./info.component.scss']
 })

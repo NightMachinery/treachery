@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'tg-confirmation-button',
+  standalone: false,
   templateUrl: './confirmation-button.component.html',
   styleUrls: ['./confirmation-button.component.scss']
 })

@@ -1,8 +1,6 @@
-![Deployment](https://github.com/kindeep/treachery-angular/workflows/Firebase%20Deployment/badge.svg?branch=master)
-
 # Treachery Web App
 
-https://treacheryonline.web.app
+https://treachery.pinky.lilf.ir
 
 A web app for a board game based on Deception: Murder in Hong Kong
 
@@ -10,7 +8,7 @@ A web app for a board game based on Deception: Murder in Hong Kong
 
 ## Forensic Scientist
 
-1. **Create a game**: Go to https://treacheryonline.web.app and click "Create Game"
+1. **Create a game**: Go to https://treachery.pinky.lilf.ir and click "Create Game"
 
 ![1](screenshots/forensic/0.png)
 
@@ -88,9 +86,10 @@ A web app for a board game based on Deception: Murder in Hong Kong
 - **Witnesses** know the murderer team, but the murderer team does not know which players are witnesses.
 - If a correct accusation happens while witnesses are enabled, the murderer team gets one final witness-selection action before the case is resolved.
 
-## Workflow
+## Deployment workflow
 
-- Pushes to `master` go to production at https://treacheryonline.web.app
+- This repo is self-hosted.
+- Follow `docs/self-hosting.md` and use `./self_host.zsh redeploy` to publish local changes.
 
 ## Identity and device migration
 

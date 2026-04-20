@@ -10,23 +10,23 @@ describe('ForensicApiService', () => {
     const http = {
       post: jasmine.createSpy('post').and.returnValue(of({ success: true, gameId: 'WXYZ' }))
     };
-    const router = {
-      navigateByUrl: jasmine.createSpy('navigateByUrl')
-    };
     const gameApi = {
       snapshot$: of(null),
       game$: of(null),
-      setGameId: jasmine.createSpy('setGameId'),
-      refreshSnapshot: jasmine.createSpy('refreshSnapshot')
+      setGameContext: jasmine.createSpy('setGameContext'),
+      navigateTo: jasmine.createSpy('navigateTo').and.resolveTo(true)
+    };
+    const authService = {
+      ensureDisplayName: jasmine.createSpy('ensureDisplayName').and.resolveTo(true)
     };
 
-    const service = new ForensicApiService(http as any, {} as any, router as any, gameApi as any, {} as any);
+    const service = new ForensicApiService(http as any, authService as any, gameApi as any, {} as any);
 
     await service.createGame();
 
     expect(http.post).toHaveBeenCalledWith('/api/games', { gameId: 'abcd' });
-    expect(gameApi.setGameId).not.toHaveBeenCalled();
-    expect(gameApi.refreshSnapshot).not.toHaveBeenCalled();
-    expect(router.navigateByUrl).toHaveBeenCalledWith('/forensic/WXYZ');
+    expect(authService.ensureDisplayName).toHaveBeenCalled();
+    expect(gameApi.setGameContext).toHaveBeenCalledWith('WXYZ', null);
+    expect(gameApi.navigateTo).toHaveBeenCalledWith('join', 'WXYZ');
   });
 });

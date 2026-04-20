@@ -5,6 +5,7 @@ import { GameApiService } from './../../api/game/game-api.service';
 
 @Component({
   selector: 'app-chat',
+  standalone: false,
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })

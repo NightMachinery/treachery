@@ -4,6 +4,7 @@ import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-active-games-list-item',
+  standalone: false,
   templateUrl: './active-games-list-item.component.html',
   styleUrls: ['./active-games-list-item.component.scss']
 })

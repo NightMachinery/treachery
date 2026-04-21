@@ -1,15 +1,26 @@
 <div class="app-navbar">
-  <div class="title">Treachery</div>
+  <div class="brand">
+    <div class="brand-mark">T</div>
+    <div class="brand-copy">
+      <div class="title">Treachery</div>
+      <div class="subtitle">mystery party lobby</div>
+    </div>
+  </div>
+
   <div class="identity" *ngIf="identity$ | async as identity; else showLoading">
-    <div class="name">{{ identity.name }}</div>
-    <button mat-button type="button" (click)="rename()">Rename</button>
+    <div class="identity-copy">
+      <div class="identity-label">Signed in as</div>
+      <div class="name">{{ identity.name }}</div>
+    </div>
+    <button mat-stroked-button type="button" (click)="rename()">Rename</button>
     <div class="avatar-container">
       <tg-avatar [diameter]="50" [uid]="identity.uid"></tg-avatar>
     </div>
   </div>
+
   <ng-template #showLoading>
-    <div class="avatar-container">
-      <mat-spinner [diameter]="50" color="accent"></mat-spinner>
+    <div class="avatar-container loading-avatar">
+      <mat-spinner [diameter]="36" color="accent"></mat-spinner>
     </div>
   </ng-template>
 </div>

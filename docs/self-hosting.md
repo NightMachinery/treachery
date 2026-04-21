@@ -32,6 +32,7 @@ Default origin:
 ./self_host.zsh setup [url]
 ./self_host.zsh redeploy [url]
 ./self_host.zsh start [url]
+./self_host.zsh dev-start [url]
 ./self_host.zsh stop
 ```
 
@@ -42,7 +43,7 @@ If omitted, the default is `https://treachery.pinky.lilf.ir`.
 
 ### `setup`
 
-1. Stops the tmux session if it exists.
+1. Stops both the production and development tmux sessions if they exist.
 2. Writes `.self_host/config.env`.
 3. Loads Node via:
    ```zsh
@@ -58,17 +59,26 @@ If omitted, the default is `https://treachery.pinky.lilf.ir`.
 
 ### `redeploy`
 
-Same as `setup`, but meant for redeploying the latest local code changes.
+Same as `setup`, but meant for redeploying the latest local code changes. It also clears out any running `dev-start` session first.
 
 ### `start`
 
+- Stops both the production and development tmux sessions first.
 - Reuses the existing build artifacts and config.
 - Rewrites / reloads the managed Caddy block.
 - Fails fast if the app port is already taken by another process.
 
+### `dev-start`
+
+- Stops both the production and development tmux sessions first.
+- Rebuilds the Go server, then starts it in tmux for `/api/*`.
+- Starts Angular dev server in a second tmux session for live-reloading UI work.
+- Rewrites / reloads the managed Caddy block so the public host proxies `/api/*` to the Go server and all other requests to Angular dev server.
+- Requires `UI/node_modules` to already exist.
+
 ### `stop`
 
-- Stops only the tmux app session.
+- Stops both tmux sessions used by `start` and `dev-start`.
 - Leaves the managed Caddy block in place.
 
 ## Managed files and paths
@@ -76,7 +86,7 @@ Same as `setup`, but meant for redeploying the latest local code changes.
 - config: `.self_host/config.env`
 - binary: `.self_host/bin/treachery-server`
 - data: `.self_host/data/treachery.sqlite`
-- tmux session: `treachery-self-host`
+- tmux sessions: `treachery-self-host` and `treachery-self-host-ui`
 - Caddy block markers:
   - `# BEGIN treachery self-host global`
   - `# END treachery self-host global`
@@ -90,7 +100,7 @@ If proxy variables such as `ALL_PROXY`, `HTTP_PROXY`, `HTTPS_PROXY`, `npm_config
 
 ## Verification checklist
 
-After `setup` or `redeploy`:
+After `setup`, `redeploy`, or `dev-start`:
 
 ```bash
 curl -I http://treachery.pinky.lilf.ir

@@ -1,53 +1,72 @@
-.card {
-  margin: 8px;
+.player-card {
   display: flex;
-  justify-content: space-between;
-
-  app-ripple-mat-card {
-    flex: 1 1 auto;
-  }
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.95rem;
 }
 
 .img-container {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  padding-right: 10px;
+  flex: 0 0 auto;
+}
+
+.player-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1 1 auto;
 }
 
 .name-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+
+.name {
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.role-label {
+  color: rgba(255, 255, 255, 0.56);
+  font-size: 0.86rem;
 }
 
 .badges {
   display: inline-flex;
   gap: 6px;
   flex-wrap: wrap;
-  justify-content: flex-end;
 }
 
 .badge {
   border-radius: 999px;
   font-size: 12px;
-  padding: 2px 8px;
+  padding: 0.22rem 0.62rem;
   background: rgba(255, 255, 255, 0.08);
 }
 
 .creator {
-  background: #4b2d63;
+  background: rgba(138, 99, 210, 0.28);
 }
 
 .scientist {
-  background: #125b50;
+  background: rgba(33, 193, 147, 0.22);
 }
 
 .marked {
-  background: #8d6e00;
+  background: rgba(245, 173, 64, 0.24);
 }
 
-.observer {
-  background: #3a4f6a;
+@media only screen and (max-width: 40rem) {
+  .name-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

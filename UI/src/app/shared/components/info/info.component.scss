@@ -1,8 +1,10 @@
 .info {
-  background-color: var(--tg-info-color);
-  border-radius: var(--tg-border-radius);
-  padding: var(--space-4);
-  color: (var(--tg-info-text));
+  background: linear-gradient(135deg, rgba(249, 168, 37, 0.16), rgba(249, 168, 37, 0.1));
+  border: 1px solid rgba(249, 168, 37, 0.34);
+  border-radius: var(--tg-border-radius-16);
+  padding: 0.85rem 1rem;
+  color: var(--tg-info-text);
   font-weight: var(--tg-info-weight);
-  margin-bottom: var(--space-4);
+  margin: 0;
+  box-sizing: border-box;
 }

@@ -1,28 +1,49 @@
-<div *ngIf="!loading && !missingGame && (gameApi.game$ | async) as game; else fallback" class="root-container">
-  <div class="join-container">
-    <div class="heading-container">
-      <h2>Game ID: {{ gameApi.gameId$ | async }}</h2>
-      <tg-copy-link [text]="gameApi.joinLink$ | async"></tg-copy-link>
-      <button mat-stroked-button type="button" *ngIf="(gameApi.viewer$ | async)?.isParticipant" (click)="copyMigrateLink()">
-        Migrate device
-      </button>
+<div *ngIf="!loading && !missingGame && (gameApi.game$ | async) as game; else fallback" class="join-page page-shell">
+  <section class="join-hero surface-panel">
+    <div class="hero-copy">
+      <p class="eyebrow">{{ game.startedOn ? 'Live room' : 'Lobby setup' }}</p>
+      <h1>Game {{ gameApi.gameId$ | async }}</h1>
+      <p class="hero-summary muted-copy">
+        {{ game.startedOn ? 'This room is already in progress. Join as an observer or keep tabs on the table.' : 'Invite friends, tune the room settings, and launch the game when everyone is ready.' }}
+      </p>
     </div>
 
-    <ng-container *ngIf="gameApi.viewer$ | async as viewer">
-      <ng-container *ngIf="!game.startedOn; else startedBlock">
-        <div class="flex-horizontal" *ngIf="!viewer.isParticipant; else joinedInfo">
-          <div class="button-container">
-            <button mat-raised-button color="accent" (click)="joinAsPlayer()">Join lobby</button>
-          </div>
-        </div>
-        <ng-template #joinedInfo>
-          <tg-info>
-            {{ viewer.isCreator ? 'You are the room moderator and a lobby player.' : 'You are in the lobby.' }}
-          </tg-info>
-        </ng-template>
+    <div class="hero-side surface-panel--soft">
+      <tg-copy-link [text]="gameApi.joinLink$ | async"></tg-copy-link>
+      <button mat-stroked-button type="button" *ngIf="(gameApi.viewer$ | async)?.isParticipant" (click)="copyMigrateLink()">Migrate device</button>
+    </div>
+  </section>
 
-        <div class="settings-panel" *ngIf="viewer.isCreator">
-          <h3>Lobby settings</h3>
+  <ng-container *ngIf="gameApi.viewer$ | async as viewer">
+    <ng-container *ngIf="!game.startedOn; else startedBlock">
+      <section class="status-panel surface-panel--soft">
+        <div class="status-copy">
+          <p class="eyebrow">Room status</p>
+          <div class="status-title">{{ viewer.isParticipant ? 'You are already in this lobby.' : 'You have not joined this lobby yet.' }}</div>
+          <tg-info *ngIf="viewer.isParticipant">
+            {{ viewer.isCreator ? 'You are the moderator for this room.' : 'You are in the room and ready to play.' }}
+          </tg-info>
+        </div>
+
+        <div class="status-actions" *ngIf="!viewer.isParticipant">
+          <button mat-raised-button color="accent" (click)="joinAsPlayer()">Join lobby</button>
+        </div>
+      </section>
+
+      <div class="join-grid" [class.single-column]="!viewer.isCreator">
+        <section class="joined-list-container surface-panel--soft">
+          <app-joined-players-list [showModControls]="viewer.isCreator"></app-joined-players-list>
+        </section>
+
+        <section class="settings-panel surface-panel--soft" *ngIf="viewer.isCreator">
+          <div class="settings-header">
+            <div>
+              <p class="eyebrow">Moderator controls</p>
+              <h2>Lobby settings</h2>
+            </div>
+            <p class="muted-copy">Balance the room before you start the match.</p>
+          </div>
+
           <div class="settings-grid">
             <label>
               <span>Means cards / suspect</span>
@@ -40,11 +61,11 @@
             </label>
             <label class="checkbox-row wide">
               <input type="checkbox" [(ngModel)]="settings.linkClueCountToMeans" (ngModelChange)="handleLinkClueCountChange()" />
-              <span>Evidence count just follows means count</span>
+              <span>Keep evidence count synced with means count</span>
             </label>
             <label class="checkbox-row wide">
               <input type="checkbox" [(ngModel)]="settings.meansCluesTextOnly" (ngModelChange)="handleMeansCluesTextOnlyChange()" />
-              <span>Means/clues text only (hide images)</span>
+              <span>Text-only means/clues cards</span>
             </label>
             <label>
               <span>Accomplices</span>
@@ -59,44 +80,49 @@
               <input type="number" min="1" [max]="settings.witnessCount" [(ngModel)]="settings.witnessesToFind" (ngModelChange)="handleRoleCountChange()" />
             </label>
           </div>
+
           <div class="settings-actions">
             <button mat-stroked-button type="button" (click)="resetSettings(game)" [disabled]="!settingsDirty">Reset</button>
             <button mat-raised-button color="accent" type="button" (click)="saveSettings()" [disabled]="!settingsDirty">Save settings</button>
           </div>
+
           <tg-info *ngIf="getStartValidationMessage(game, (gameApi.participants$ | async) || []) as validation" [hidden]="!validation">
             {{ validation }}
           </tg-info>
+        </section>
+      </div>
+
+      <div class="start-button-container" *ngIf="viewer.isCreator">
+        <button
+          mat-raised-button
+          color="accent"
+          (click)="startGame()"
+          [disabled]="!!getStartValidationMessage(game, (gameApi.participants$ | async) || []) || settingsDirty"
+        >
+          {{ settingsDirty ? 'Save settings to start' : 'Start Game' }}
+        </button>
+      </div>
+    </ng-container>
+
+    <ng-template #startedBlock>
+      <section class="status-panel surface-panel--soft started-panel">
+        <div class="status-copy">
+          <p class="eyebrow">Room status</p>
+          <div class="status-title">This game has already started.</div>
+          <tg-info *ngIf="!viewer.isParticipant">You can still follow along in observer mode.</tg-info>
         </div>
 
-        <div class="joined-list-container">
-          <app-joined-players-list [showModControls]="viewer.isCreator"></app-joined-players-list>
-        </div>
-
-        <div class="start-button-container" *ngIf="viewer.isCreator">
-          <button
-            mat-raised-button
-            color="accent"
-            (click)="startGame()"
-            [disabled]="!!getStartValidationMessage(game, (gameApi.participants$ | async) || []) || settingsDirty"
-          >
-            {{ settingsDirty ? 'Save settings to start' : 'Start Game' }}
-          </button>
-        </div>
-      </ng-container>
-
-      <ng-template #startedBlock>
-        <tg-info *ngIf="!viewer.isParticipant">This game already started. Observe it in read-only mode.</tg-info>
-        <div class="button-container" *ngIf="!viewer.isParticipant">
+        <div class="status-actions" *ngIf="!viewer.isParticipant">
           <button mat-raised-button color="accent" (click)="observeStartedGame()">Observe game</button>
         </div>
-      </ng-template>
-    </ng-container>
-  </div>
+      </section>
+    </ng-template>
+  </ng-container>
 </div>
 
 <ng-template #fallback>
   <ng-container *ngIf="loading; else missing">
-    <div class="flex-vertical">
+    <div class="flex-vertical spinner-wrap">
       <mat-spinner></mat-spinner>
     </div>
   </ng-container>

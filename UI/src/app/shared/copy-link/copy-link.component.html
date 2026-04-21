@@ -1,9 +1,7 @@
 <div matRipple class="copy-container" (click)="copyText()">
   <div class="copy-input">
-    <mat-form-field class="example-full-width">
-      <mat-label>Invite friends with this url</mat-label>
-      <input #copyInput matInput [value]="text" readonly />
-    </mat-form-field>
+    <span class="copy-label">Invite link</span>
+    <input #copyInput [value]="text" readonly />
   </div>
-  <button mat-button type="button" (click)="$event.stopPropagation(); copyText()">Copy</button>
+  <button mat-stroked-button type="button" (click)="$event.stopPropagation(); copyText()">Copy link</button>
 </div>

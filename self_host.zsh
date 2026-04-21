@@ -10,7 +10,9 @@ DEFAULT_PUBLIC_URL="${DEFAULT_PUBLIC_URL:-https://treachery.pinky.lilf.ir}"
 CONFIG_FILE="${CONFIG_FILE:-$ROOT_DIR/.self_host/config.env}"
 CADDYFILE_PATH="${CADDYFILE_PATH:-$HOME/Caddyfile}"
 APP_ADDR="${APP_ADDR:-127.0.0.1:18083}"
+DEV_UI_ADDR="${DEV_UI_ADDR:-127.0.0.1:14200}"
 SESSION_APP="treachery-self-host"
+SESSION_DEV_UI="treachery-self-host-ui"
 CADDY_BLOCK_BEGIN="# BEGIN treachery self-host"
 CADDY_BLOCK_END="# END treachery self-host"
 CADDY_GLOBAL_BLOCK_BEGIN="# BEGIN treachery self-host global"
@@ -24,10 +26,11 @@ CARDS_PATH="$ROOT_DIR/UI/src/assets/cards.json"
 
 PUBLIC_URL=""
 PUBLIC_HOST=""
+RUN_MODE="prod"
 
-tmuxnew () {
-	tmux kill-session -t "$1" &> /dev/null || true
-	tmux new -d -s "$@"
+tmuxnew() {
+  tmux kill-session -t "$1" &> /dev/null || true
+  tmux new -d -s "$@"
 }
 
 say() {
@@ -69,7 +72,9 @@ write_config() {
 PUBLIC_URL=$requested_url
 PUBLIC_HOST=$host
 APP_ADDR=$APP_ADDR
+DEV_UI_ADDR=$DEV_UI_ADDR
 SESSION_APP=$SESSION_APP
+SESSION_DEV_UI=$SESSION_DEV_UI
 BINARY_PATH=$BINARY_PATH
 DATA_DIR=$DATA_DIR
 DIST_DIR=$DIST_DIR
@@ -86,6 +91,9 @@ load_config() {
   PUBLIC_URL="${PUBLIC_URL:-$DEFAULT_PUBLIC_URL}"
   PUBLIC_HOST="${PUBLIC_HOST:-$(host_from_url "$PUBLIC_URL")}"
   APP_ADDR="${APP_ADDR:-127.0.0.1:18083}"
+  DEV_UI_ADDR="${DEV_UI_ADDR:-127.0.0.1:14200}"
+  SESSION_APP="${SESSION_APP:-treachery-self-host}"
+  SESSION_DEV_UI="${SESSION_DEV_UI:-treachery-self-host-ui}"
   BINARY_PATH="${BINARY_PATH:-$SELF_HOST_DIR/bin/treachery-server}"
   DATA_DIR="${DATA_DIR:-$SELF_HOST_DIR/data}"
   DIST_DIR="${DIST_DIR:-$ROOT_DIR/UI/dist/deceptiongame}"
@@ -115,10 +123,12 @@ proxy_exports() {
   done
 }
 
-ensure_port_free() {
-  local port="${APP_ADDR##*:}"
+ensure_addr_free() {
+  local addr="$1"
+  local label="$2"
+  local port="${addr##*:}"
   if ss -ltn | awk '{print $4}' | grep -Eq "(^|:)$port$"; then
-    die "Required listen port $port is already in use."
+    die "$label port $port is already in use."
   fi
 }
 
@@ -126,6 +136,15 @@ ensure_build_artifacts() {
   [[ -x "$BINARY_PATH" ]] || die "Missing $BINARY_PATH. Run ./self_host.zsh setup or redeploy first."
   [[ -f "$DIST_DIR/index.html" ]] || die "Missing $DIST_DIR/index.html. Run ./self_host.zsh setup or redeploy first."
   [[ -f "$CARDS_PATH" ]] || die "Missing $CARDS_PATH"
+}
+
+ensure_server_artifacts() {
+  [[ -x "$BINARY_PATH" ]] || die "Missing $BINARY_PATH. Run ./self_host.zsh setup, redeploy, or dev-start first."
+  [[ -f "$CARDS_PATH" ]] || die "Missing $CARDS_PATH"
+}
+
+ensure_ui_dependencies() {
+  [[ -d "$ROOT_DIR/UI/node_modules" ]] || die "Missing UI/node_modules. Run ./self_host.zsh setup or install UI deps first."
 }
 
 build_ui() {
@@ -147,29 +166,55 @@ build_server() {
 }
 
 write_caddy_block() {
-  local app_port="${APP_ADDR##*:}"
-  python3 - "$CADDYFILE_PATH" "$PUBLIC_HOST" "$app_port" "$CADDY_BLOCK_BEGIN" "$CADDY_BLOCK_END" "$CADDY_GLOBAL_BLOCK_BEGIN" "$CADDY_GLOBAL_BLOCK_END" <<'PY'
+  python3 - "$CADDYFILE_PATH" "$PUBLIC_HOST" "$APP_ADDR" "$DEV_UI_ADDR" "$RUN_MODE" "$CADDY_BLOCK_BEGIN" "$CADDY_BLOCK_END" "$CADDY_GLOBAL_BLOCK_BEGIN" "$CADDY_GLOBAL_BLOCK_END" <<'PY'
 from pathlib import Path
 import sys
 
 path = Path(sys.argv[1]).expanduser()
 host = sys.argv[2]
-port = sys.argv[3]
-block_begin = sys.argv[4]
-block_end = sys.argv[5]
-global_begin = sys.argv[6]
-global_end = sys.argv[7]
+app_addr = sys.argv[3]
+dev_ui_addr = sys.argv[4]
+run_mode = sys.argv[5]
+block_begin = sys.argv[6]
+block_end = sys.argv[7]
+global_begin = sys.argv[8]
+global_end = sys.argv[9]
 
-site_block = f"""{block_begin}
+if run_mode == "dev":
+    site_block = f"""{block_begin}
 http://{host} {{
     encode zstd gzip
-    reverse_proxy 127.0.0.1:{port}
+    handle /api/* {{
+        reverse_proxy {app_addr}
+    }}
+    handle {{
+        reverse_proxy {dev_ui_addr}
+    }}
 }}
 
 https://{host} {{
     tls internal
     encode zstd gzip
-    reverse_proxy 127.0.0.1:{port}
+    handle /api/* {{
+        reverse_proxy {app_addr}
+    }}
+    handle {{
+        reverse_proxy {dev_ui_addr}
+    }}
+}}
+{block_end}
+"""
+else:
+    site_block = f"""{block_begin}
+http://{host} {{
+    encode zstd gzip
+    reverse_proxy {app_addr}
+}}
+
+https://{host} {{
+    tls internal
+    encode zstd gzip
+    reverse_proxy {app_addr}
 }}
 {block_end}
 """
@@ -212,7 +257,7 @@ if not text.endswith("\n"):
 
 path.write_text(text)
 PY
-  say "Updated $CADDYFILE_PATH for $PUBLIC_HOST"
+  say "Updated $CADDYFILE_PATH for $PUBLIC_HOST ($RUN_MODE mode)"
 }
 
 reload_or_start_caddy() {
@@ -229,21 +274,33 @@ reload_or_start_caddy() {
   say "Started Caddy with $CADDYFILE_PATH (log: $caddy_log)"
 }
 
-start_session() {
-  ensure_port_free
-  ensure_build_artifacts
+start_app_session() {
+  ensure_addr_free "$APP_ADDR" "App"
   local exports cmd
   exports="$(proxy_exports)"
   cmd="$exports cd ${(q)ROOT_DIR}; ${(q)BINARY_PATH} -addr ${(q)APP_ADDR} -dist-dir ${(q)DIST_DIR} -data-dir ${(q)DATA_DIR} -cards-path ${(q)CARDS_PATH}"
   tmuxnew "$SESSION_APP" zsh -lc "$cmd"
   say "Started tmux session $SESSION_APP"
-  say "Primary URL: $PUBLIC_URL"
-  say "Also available at: http://$PUBLIC_HOST"
 }
 
-stop_session() {
+start_dev_ui_session() {
+  ensure_addr_free "$DEV_UI_ADDR" "Dev UI"
+  local exports cmd
+  exports="$(proxy_exports)"
+  cmd="$exports cd ${(q)ROOT_DIR}/UI; nvm-load; nvm use ${(q)NODE_VERSION}; pnpm exec ng serve --host 127.0.0.1 --port ${DEV_UI_ADDR##*:} --allowed-hosts ${(q)PUBLIC_HOST}"
+  tmuxnew "$SESSION_DEV_UI" zsh -lc "$cmd"
+  say "Started tmux session $SESSION_DEV_UI"
+}
+
+stop_all_sessions() {
   tmux kill-session -t "$SESSION_APP" &> /dev/null || true
-  say "Stopped tmux session $SESSION_APP"
+  tmux kill-session -t "$SESSION_DEV_UI" &> /dev/null || true
+  say "Stopped tmux sessions $SESSION_APP and $SESSION_DEV_UI"
+}
+
+print_urls() {
+  say "Primary URL: $PUBLIC_URL"
+  say "Also available at: http://$PUBLIC_HOST"
 }
 
 prepare_config() {
@@ -256,33 +313,59 @@ prepare_config() {
 }
 
 setup_cmd() {
-  stop_session
   prepare_config "${1:-}"
   ensure_tools
+  stop_all_sessions
   build_ui
   build_server
+  RUN_MODE="prod"
   write_caddy_block
   reload_or_start_caddy
-  start_session
+  ensure_build_artifacts
+  start_app_session
+  print_urls
 }
 
 redeploy_cmd() {
-  stop_session
   prepare_config "${1:-}"
   ensure_tools
+  stop_all_sessions
   build_ui
   build_server
+  RUN_MODE="prod"
   write_caddy_block
   reload_or_start_caddy
-  start_session
+  ensure_build_artifacts
+  start_app_session
+  print_urls
 }
 
 start_cmd() {
   prepare_config "${1:-}"
   ensure_tools
+  stop_all_sessions
+  RUN_MODE="prod"
   write_caddy_block
   reload_or_start_caddy
-  start_session
+  ensure_build_artifacts
+  start_app_session
+  print_urls
+}
+
+dev_start_cmd() {
+  prepare_config "${1:-}"
+  ensure_tools
+  stop_all_sessions
+  ensure_ui_dependencies
+  build_server
+  RUN_MODE="dev"
+  write_caddy_block
+  reload_or_start_caddy
+  ensure_server_artifacts
+  start_app_session
+  start_dev_ui_session
+  print_urls
+  say "Development mode routes /api/* to the Go server and all other requests to Angular dev server with live reload."
 }
 
 main() {
@@ -296,11 +379,14 @@ main() {
     start)
       start_cmd "${2:-}"
       ;;
+    dev-start)
+      dev_start_cmd "${2:-}"
+      ;;
     stop)
-      stop_session
+      stop_all_sessions
       ;;
     *)
-      die "Usage: ./self_host.zsh [setup|redeploy|start|stop] [url]"
+      die "Usage: ./self_host.zsh [setup|redeploy|start|dev-start|stop] [url]"
       ;;
   esac
 }

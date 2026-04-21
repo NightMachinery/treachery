@@ -1,29 +1,34 @@
-<div class="grid-container mat-typography">
-  <div class="container">
-    <div class="info-container">
-      <h1>Welcome to Treachery!</h1>
-      <p>
-        A game of deception, that can be played among 4 or more people.
-      </p>
-    </div>
-    <div class="actions-container-container">
-      <div>
-        <div class="create-button-container">
-          <button class="create-button" mat-raised-button color="accent" (click)="forensicApi.createGame()">
-            Create Game 🚀
-          </button>
-        </div>
-        <div class="actions-container">
-          <mat-form-field color="accent">
-            <input matInput placeholder="Game ID" #gameIdInput />
-          </mat-form-field>
-          <div class="join-button-container">
-            <button mat-raised-button color="accent" (click)="joinGame(gameIdInput.value)">
-              Join Game
-            </button>
-          </div>
-        </div>
+<div class="home-page page-shell mat-typography">
+  <section class="hero surface-panel">
+    <div class="hero-copy">
+      <p class="eyebrow">Online social deduction</p>
+      <h1>Welcome to Treachery</h1>
+      <p class="lede muted-copy">Host a room, pass out secret roles, and run a polished deception game for 4 or more players.</p>
+
+      <div class="feature-list">
+        <span>Private roles</span>
+        <span>Fast room setup</span>
+        <span>Live observers</span>
       </div>
     </div>
-  </div>
+
+    <div class="hero-actions">
+      <div class="action-card surface-panel--soft">
+        <p class="eyebrow">Start a room</p>
+        <h2>Create a fresh lobby</h2>
+        <p class="muted-copy">Spin up a game instantly and share the room link with your group.</p>
+        <button class="primary-action" mat-raised-button color="accent" (click)="forensicApi.createGame()">Create Game 🚀</button>
+      </div>
+
+      <div class="action-card surface-panel--soft">
+        <p class="eyebrow">Join friends</p>
+        <h2>Enter a game code</h2>
+        <label class="join-field">
+          <span>Game ID</span>
+          <input #gameIdInput autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="KGEH" />
+        </label>
+        <button mat-stroked-button color="accent" (click)="joinGame(gameIdInput.value)">Join Game</button>
+      </div>
+    </div>
+  </section>
 </div>

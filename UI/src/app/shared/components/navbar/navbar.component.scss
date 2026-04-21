@@ -1,29 +1,115 @@
+:host {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
 .app-navbar {
+  height: var(--tg-navbar-height);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
+  gap: var(--space-8);
+  padding: 0 clamp(1rem, 2vw, 2rem);
+  background: rgba(12, 13, 18, 0.72);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(18px);
+  box-sizing: border-box;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-width: 0;
+}
+
+.brand-mark {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  color: white;
+  background: linear-gradient(135deg, #8a1212, #8a63d2);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+.brand-copy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 .title {
-  font-size: 24px;
-  font-weight: 600;
+  font-size: clamp(1.25rem, 2vw, 1.7rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.subtitle,
+.identity-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .identity {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.identity-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 0;
 }
 
 .name {
-  max-width: 220px;
+  max-width: 16rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-weight: 600;
 }
 
 .avatar-container {
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.loading-avatar {
+  min-width: 3rem;
+}
+
+@media only screen and (max-width: 48rem) {
+  .app-navbar {
+    height: auto;
+    padding: 0.75rem 1rem;
+    flex-wrap: nowrap;
+  }
+
+  .identity {
+    width: auto;
+    justify-content: flex-end;
+    margin-left: auto;
+    gap: 0.5rem;
+  }
+
+  .identity-copy,
+  .subtitle,
+  .identity-label {
+    display: none;
+  }
+
+  .name {
+    max-width: 9rem;
+  }
 }

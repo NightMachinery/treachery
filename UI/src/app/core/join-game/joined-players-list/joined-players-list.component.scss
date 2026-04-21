@@ -1,25 +1,57 @@
-.title {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-
 .container {
   display: flex;
   flex-direction: column;
+  gap: var(--space-8);
+}
+
+.header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+
+.title {
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.count {
+  color: rgba(255, 255, 255, 0.58);
+  font-weight: 500;
+}
+
+.participants {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
 }
 
 .participant-card {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: var(--space-4);
 }
 
 .controls {
   display: flex;
-  gap: 8px;
+  gap: var(--space-4);
   flex-wrap: wrap;
-  padding: 0 8px 8px 68px;
+  padding-left: 4.75rem;
+}
+
+.empty-state {
+  padding: 1rem;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+@media only screen and (max-width: 40rem) {
+  .header-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .controls {
+    padding-left: 0;
+  }
 }

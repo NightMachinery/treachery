@@ -17,6 +17,7 @@ This pass focused on the main interaction pain points that showed up in live Chr
 - strengthened selected-card states and de-emphasized non-selected suspect cards once a guess target is chosen
 - made clicking an already-selected suspect card toggle it off again and added a cancel action to the accusation panel
 - made the accusation panel show partial selections, with placeholders for whichever means/clue card is still missing
+- reduced ugly forensic-option wrapping by widening clue cards and using tighter, more balanced option label typography
 - normalized spacing tokens used across the UI so card/panel spacing is consistent
 
 ## Verified flows

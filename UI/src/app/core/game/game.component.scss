@@ -126,12 +126,13 @@
    padding: var(--space-16) var(--space-12);
  }
  
- .forensic-card-grid {
-   display: grid;
-   grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
-   gap: var(--space-6);
-   padding: 0 var(--space-2);
- }
+.forensic-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13.25rem, 1fr));
+  gap: var(--space-6);
+  padding: 0 var(--space-2);
+  align-items: start;
+}
  
 .guess-section {
    display: block;

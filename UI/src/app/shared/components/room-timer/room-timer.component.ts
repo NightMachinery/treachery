@@ -61,24 +61,6 @@ export class RoomTimerComponent implements OnInit, OnDestroy {
     return this.status === 'expired';
   }
 
-  get statusLabel(): string {
-    switch (this.status) {
-      case 'running':
-        return 'Running';
-      case 'paused':
-        return 'Paused';
-      case 'expired':
-        return 'Time\'s up';
-      default:
-        return 'Not running';
-    }
-  }
-
-  get currentDurationLabel(): string {
-    const seconds = Math.max(1, Math.floor(Number(this.durationSeconds) || DEFAULT_ROOM_TIMER_SECONDS));
-    return `${seconds}s`;
-  }
-
   get timeLabel(): string {
     const totalSeconds = Math.max(0, this.status === 'paused' && this.roomTimer ? this.roomTimer.pausedRemainingSeconds || 0 : this.remainingSeconds);
     const minutes = Math.floor(totalSeconds / 60);

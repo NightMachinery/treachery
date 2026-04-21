@@ -23,6 +23,8 @@ This pass focused on the main interaction pain points that showed up in live Chr
 - redesigned the desktop shared room timer so the countdown, duration stepper, and moderator actions sit in a tighter two-column control surface instead of leaving a large empty slab
 - followed up by stripping that timer/control treatment back down into a slimmer single-surface layout with inline duration controls and compact moderator actions
 - tightened the live room-mods card so the toggle/status treatment reads faster and wastes less vertical space
+- removed redundant timer badges and leaned harder on stateful color/glow treatment so paused/running/expired each read visually without extra UI chrome
+- added smooth timer-surface state transitions so border/glow/background changes animate instead of snapping abruptly
 - normalized spacing tokens used across the UI so card/panel spacing is consistent
 
 ## Verified flows
@@ -36,6 +38,7 @@ Using the remote Chrome workflow in `docs/chrome/README.md`:
 - mobile text-only game: text-only means/clues cards remain readable without console errors
 - mobile live game: redesigned timer stack stays readable and touch-friendly in iPhone-sized emulation
 - desktop/mobile follow-up: compact timer + room-mod pass verified after removing the earlier bulky multi-panel treatment
+- desktop/mobile follow-up: refined timer pass verified again after removing redundant badges and adding animated state styling
 
 ## Validation notes
 

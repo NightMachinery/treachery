@@ -3,16 +3,11 @@
     <div class="timer-summary">
       <div class="timer-copy">
         <div class="eyebrow">Shared room timer</div>
-        <div class="timer-title-row">
-          <h3>Discussion clock</h3>
-          <span class="status-pill">{{ statusLabel }}</span>
+        <h3>Discussion clock</h3>
+        <div class="time-wrap">
+          <div class="time">{{ timeLabel }}</div>
+          <div class="state-note" *ngIf="isExpired">Time’s up</div>
         </div>
-        <div class="time">{{ timeLabel }}</div>
-      </div>
-      <div class="timer-meta">
-        <span class="meta-chip">{{ currentDurationLabel }}</span>
-        <span class="meta-chip" *ngIf="isCreator">Moderator</span>
-        <span class="meta-chip" *ngIf="!isCreator">Room-wide</span>
       </div>
     </div>
 

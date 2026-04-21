@@ -10,6 +10,7 @@ This pass focused on the main interaction pain points that showed up in live Chr
 - tightened the text-only means/clues cards so they are easier to scan at a glance
 - centered and padded card labels more aggressively so text stays clear near rounded corners
 - fixed forensic option buttons so long labels like `Suffocation` wrap/fit inside the selected chip instead of overflowing
+- hid the empty accusation helper panel until a player actually starts composing a guess
 - normalized spacing tokens used across the UI so card/panel spacing is consistent
 
 ## Verified flows

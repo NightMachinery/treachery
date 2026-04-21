@@ -29,6 +29,9 @@ This pass focused on the main interaction pain points that showed up in live Chr
 - removed the redundant room-mod status badge and made the enabled text-only toggle read as clearly active through the switch/card styling itself
 - refreshed text-only suspect cards with a more intentional glassy treatment, cleaner centered labels, and fixed sizing so they no longer collide in the deck grid
 - removed scale-based card enlargement from selected suspect cards so highlighted image/text cards feel premium without overlapping adjacent cards
+- rebuilt the shared timer into a centered compact control card with much tighter hierarchy: timer first, duration second, actions grouped beneath
+- renamed the timer length control so it clearly reads as the discussion timer duration instead of a vague round-length label
+- split timer actions into primary and utility clusters, softening “Start new” and tightening the overall width so the timer no longer sprawls edge-to-edge
 - normalized spacing tokens used across the UI so card/panel spacing is consistent
 
 ## Verified flows
@@ -46,6 +49,7 @@ Using the remote Chrome workflow in `docs/chrome/README.md`:
 - desktop follow-up: verified timer control buttons now react consistently on hover instead of only some controls lifting/highlighting
 - room-mod follow-up: verified the text-only toggle now has a clearer enabled state without relying on a duplicate “Text only” badge
 - suspect-deck follow-up: verified text-only means/clue cards render without overlap in the grid, and selected-card emphasis no longer causes collisions
+- timer follow-up: verified the critique-driven centered timer layout on desktop and mobile after tightening width/grouping and reducing action sprawl
 
 ## Validation notes
 

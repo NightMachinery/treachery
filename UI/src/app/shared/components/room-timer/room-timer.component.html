@@ -1,19 +1,16 @@
 <div class="room-timer" *ngIf="shouldRender" [ngClass]="{ running: isRunning, paused: isPaused, expired: isExpired, 'read-only': !isCreator }">
   <div class="timer-shell">
     <div class="timer-summary">
-      <div class="timer-copy">
-        <div class="eyebrow">Shared room timer</div>
-        <h3>Discussion clock</h3>
-        <div class="time-wrap">
-          <div class="time">{{ timeLabel }}</div>
-          <div class="state-note" *ngIf="isExpired">Time’s up</div>
-        </div>
+      <div class="eyebrow">Shared room timer</div>
+      <div class="time-wrap">
+        <div class="time">{{ timeLabel }}</div>
+        <div class="state-note" *ngIf="isExpired">Time’s up</div>
       </div>
     </div>
 
     <div class="timer-controls" *ngIf="isCreator">
       <div class="duration-group">
-        <span class="control-label">Round length</span>
+        <span class="control-label">Discussion timer length</span>
         <div class="number-stepper number-stepper--timer compact-stepper">
           <button type="button" class="stepper-button" aria-label="Decrease timer duration by five seconds" (click)="adjustDuration(-5)">−5</button>
           <input name="roomTimerSeconds" type="number" min="1" [(ngModel)]="durationSeconds" (blur)="normalizeDurationInput()" />
@@ -22,13 +19,28 @@
       </div>
 
       <div class="actions">
-        <button class="primary-action" mat-raised-button color="accent" type="button" (click)="startTimer()" [disabled]="busy">
-          {{ roomTimer ? 'Start new' : 'Start' }}
-        </button>
-        <button mat-stroked-button type="button" *ngIf="isRunning" (click)="pauseTimer()" [disabled]="busy">Pause</button>
-        <button mat-stroked-button type="button" *ngIf="isPaused" (click)="resumeTimer()" [disabled]="busy">Resume</button>
-        <button mat-stroked-button type="button" *ngIf="roomTimer" (click)="resetTimer()" [disabled]="busy">Reset</button>
-        <button mat-stroked-button type="button" *ngIf="roomTimer" (click)="clearTimer()" [disabled]="busy">Clear</button>
+        <div class="action-cluster action-cluster--primary">
+          <button
+            class="start-action"
+            [class.is-secondary]="isPaused"
+            mat-raised-button
+            color="accent"
+            type="button"
+            (click)="startTimer()"
+            [disabled]="busy"
+          >
+            {{ roomTimer ? 'Start new' : 'Start' }}
+          </button>
+          <button class="resume-action" mat-raised-button color="accent" type="button" *ngIf="isPaused" (click)="resumeTimer()" [disabled]="busy">
+            Resume
+          </button>
+          <button class="pause-action" mat-stroked-button type="button" *ngIf="isRunning" (click)="pauseTimer()" [disabled]="busy">Pause</button>
+        </div>
+
+        <div class="action-cluster action-cluster--utility" *ngIf="roomTimer">
+          <button mat-stroked-button type="button" (click)="resetTimer()" [disabled]="busy">Reset</button>
+          <button mat-stroked-button type="button" (click)="clearTimer()" [disabled]="busy">Clear</button>
+        </div>
       </div>
     </div>
 

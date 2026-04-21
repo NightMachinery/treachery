@@ -16,14 +16,26 @@
         </div>
         <ng-container *ngIf="getMeansCard(murderer) as meansCard">
           <app-card [card]="meansCard" [means]="true"></app-card>
-          <ng-container *ngIf="getClueCard(murderer) as clueCard">
-            <app-card [card]="clueCard" [means]="false"></app-card>
-            <div class="button-container">
-              <button mat-stroked-button type="button" (click)="cancelGuess()">Cancel</button>
-              <button mat-raised-button color="accent" (click)="makeGuess()">Make guess</button>
-            </div>
-          </ng-container>
         </ng-container>
+        <div class="selection-placeholder" *ngIf="!getMeansCard(murderer)">
+          <div class="placeholder-label">Means</div>
+          <div class="placeholder-copy">Pick a means card</div>
+        </div>
+
+        <ng-container *ngIf="getClueCard(murderer) as clueCard; else cluePlaceholder">
+          <app-card [card]="clueCard" [means]="false"></app-card>
+        </ng-container>
+        <ng-template #cluePlaceholder>
+          <div class="selection-placeholder">
+            <div class="placeholder-label">Clue</div>
+            <div class="placeholder-copy">Pick a clue card</div>
+          </div>
+        </ng-template>
+
+        <div class="button-container">
+          <button mat-stroked-button type="button" (click)="cancelGuess()">Cancel</button>
+          <button mat-raised-button color="accent" (click)="makeGuess()" [disabled]="!guess?.meansCardName || !guess?.clueCardName">Make guess</button>
+        </div>
       </ng-container>
     </ng-container>
   </div>

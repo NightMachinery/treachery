@@ -16,6 +16,7 @@ This pass focused on the main interaction pain points that showed up in live Chr
 - made chat start collapsed by default and added an accusation history section after the player's private cards
 - strengthened selected-card states and de-emphasized non-selected suspect cards once a guess target is chosen
 - made clicking an already-selected suspect card toggle it off again and added a cancel action to the accusation panel
+- made the accusation panel show partial selections, with placeholders for whichever means/clue card is still missing
 - normalized spacing tokens used across the UI so card/panel spacing is consistent
 
 ## Verified flows

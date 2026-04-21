@@ -31,11 +31,16 @@
  
 .card-lane {
   position: relative;
-  padding: var(--space-6) var(--space-5);
-  border-radius: 18px;
-  background: linear-gradient(135deg, rgba(15, 18, 27, 0.66), rgba(10, 12, 18, 0.5));
+  padding: var(--space-5);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at top center, rgba(255, 255, 255, 0.05), transparent 55%),
+    linear-gradient(180deg, rgba(24, 28, 40, 0.88), rgba(16, 19, 29, 0.92));
   border: 1px solid rgba(255, 255, 255, 0.07);
-  backdrop-filter: blur(6px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -18px 40px rgba(0, 0, 0, 0.16);
+  backdrop-filter: blur(10px);
   overflow: hidden;
 
   &::before {
@@ -43,7 +48,16 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.9;
+    opacity: 0.82;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 1rem;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    pointer-events: none;
   }
 }
 
@@ -53,24 +67,47 @@
 
 .means-lane::before {
   background:
-    linear-gradient(180deg, rgba(86, 112, 255, 0.18), transparent 22%),
-    radial-gradient(circle at top left, rgba(86, 112, 255, 0.18), transparent 45%);
+    linear-gradient(180deg, rgba(86, 112, 255, 0.2), transparent 30%),
+    radial-gradient(circle at top left, rgba(86, 112, 255, 0.22), transparent 50%),
+    radial-gradient(circle at bottom right, rgba(46, 65, 156, 0.12), transparent 42%);
 }
 
 .clue-lane::before {
   background:
-    linear-gradient(180deg, rgba(255, 112, 102, 0.17), transparent 22%),
-    radial-gradient(circle at top left, rgba(255, 112, 102, 0.17), transparent 45%);
+    linear-gradient(180deg, rgba(255, 112, 102, 0.18), transparent 30%),
+    radial-gradient(circle at top left, rgba(255, 112, 102, 0.2), transparent 50%),
+    radial-gradient(circle at bottom right, rgba(135, 51, 42, 0.12), transparent 42%);
 }
 
 .cards {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   justify-content: center;
-  gap: var(--space-5);
+  gap: var(--space-4);
   padding: 0;
 }
 
 .cards app-card {
   display: block;
+  min-width: 0;
+  --tg-card-width: 100%;
+  --tg-card-height: clamp(7.35rem, 14vw, 8.8rem);
+}
+
+@media only screen and (max-width: 56rem) {
+  .cards {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media only screen and (max-width: 40rem) {
+  .card-lane {
+    padding: var(--space-4);
+  }
+
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+    --tg-card-height: clamp(7.4rem, 34vw, 8.8rem);
+  }
 }

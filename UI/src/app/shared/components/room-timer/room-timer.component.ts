@@ -74,42 +74,6 @@ export class RoomTimerComponent implements OnInit, OnDestroy {
     }
   }
 
-  get summaryCopy(): string {
-    if (!this.roomTimer) {
-      return this.isCreator
-        ? 'Launch a synced discussion countdown for everyone in the room.'
-        : 'Waiting for the moderator to start the shared discussion timer.';
-    }
-
-    switch (this.status) {
-      case 'running':
-        return 'Everyone sees the same live countdown, so the table stays in sync.';
-      case 'paused':
-        return 'Discussion is paused. Resume when the room is ready to continue.';
-      case 'expired':
-        return 'The shared discussion window has ended. Reset or start a fresh round when ready.';
-      default:
-        return 'The previous room timer is idle and ready to be started again.';
-    }
-  }
-
-  get nextActionHint(): string {
-    if (!this.roomTimer) {
-      return 'Pick a round length, then start the timer when the table is ready to discuss.';
-    }
-
-    switch (this.status) {
-      case 'running':
-        return 'Pause if discussion needs a break, or start a new round length to replace this timer.';
-      case 'paused':
-        return 'Resume from the saved time, reset to the original duration, or clear the timer entirely.';
-      case 'expired':
-        return 'Reset to reuse the same duration or start a fresh timer with a new length.';
-      default:
-        return 'Restart the current duration or swap in a different length for the next discussion window.';
-    }
-  }
-
   get currentDurationLabel(): string {
     const seconds = Math.max(1, Math.floor(Number(this.durationSeconds) || DEFAULT_ROOM_TIMER_SECONDS));
     return `${seconds}s`;

@@ -1,70 +1,42 @@
 <div class="room-timer" *ngIf="shouldRender" [ngClass]="{ running: isRunning, paused: isPaused, expired: isExpired, 'read-only': !isCreator }">
-  <section class="summary-panel">
-    <div class="summary-head">
-      <div class="summary-copy">
+  <div class="timer-shell">
+    <div class="timer-summary">
+      <div class="timer-copy">
         <div class="eyebrow">Shared room timer</div>
-        <h3>Discussion clock</h3>
-      </div>
-      <span class="summary-badge">{{ isCreator ? 'Moderator controls' : 'Room-wide sync' }}</span>
-    </div>
-
-    <div class="status-row">
-      <span class="time">{{ timeLabel }}</span>
-      <span class="status-pill">{{ statusLabel }}</span>
-    </div>
-
-    <p class="summary-description">{{ summaryCopy }}</p>
-
-    <div class="summary-meta">
-      <span class="meta-chip">{{ roomTimer ? 'Current round live' : 'Ready to start' }}</span>
-      <span class="meta-chip">{{ currentDurationLabel }} duration</span>
-    </div>
-
-    <div class="hint-banner" *ngIf="!isCreator">Only the moderator can change the discussion timer.</div>
-  </section>
-
-  <div class="control-panels" *ngIf="isCreator">
-    <section class="duration-panel">
-      <div class="panel-head">
-        <div>
-          <span class="panel-kicker">Round length</span>
-          <h4>{{ currentDurationLabel }} shared discussion window</h4>
+        <div class="timer-title-row">
+          <h3>Discussion clock</h3>
+          <span class="status-pill">{{ statusLabel }}</span>
         </div>
-        <span class="panel-chip">Whole seconds</span>
+        <div class="time">{{ timeLabel }}</div>
       </div>
+      <div class="timer-meta">
+        <span class="meta-chip">{{ currentDurationLabel }}</span>
+        <span class="meta-chip" *ngIf="isCreator">Moderator</span>
+        <span class="meta-chip" *ngIf="!isCreator">Room-wide</span>
+      </div>
+    </div>
 
-      <label class="duration-input">
-        <span class="duration-label">Adjust duration</span>
-        <span class="duration-caption">{{ roomTimer ? 'Start new replaces the live timer immediately.' : 'Choose the shared discussion length before starting.' }}</span>
-
-        <div class="number-stepper number-stepper--timer">
+    <div class="timer-controls" *ngIf="isCreator">
+      <div class="duration-group">
+        <span class="control-label">Round length</span>
+        <div class="number-stepper number-stepper--timer compact-stepper">
           <button type="button" class="stepper-button" aria-label="Decrease timer duration by five seconds" (click)="adjustDuration(-5)">−5</button>
           <input name="roomTimerSeconds" type="number" min="1" [(ngModel)]="durationSeconds" (blur)="normalizeDurationInput()" />
           <button type="button" class="stepper-button" aria-label="Increase timer duration by five seconds" (click)="adjustDuration(5)">+5</button>
         </div>
-      </label>
-    </section>
-
-    <section class="actions-panel">
-      <div class="panel-head">
-        <div>
-          <span class="panel-kicker">Moderator actions</span>
-          <h4>Keep the table moving</h4>
-        </div>
-        <span class="panel-chip" *ngIf="busy">Updating…</span>
       </div>
 
-      <p class="actions-copy">{{ nextActionHint }}</p>
-
       <div class="actions">
-        <button class="start-action" mat-raised-button color="accent" type="button" (click)="startTimer()" [disabled]="busy">
-          {{ roomTimer ? 'Start new' : 'Start timer' }}
+        <button class="primary-action" mat-raised-button color="accent" type="button" (click)="startTimer()" [disabled]="busy">
+          {{ roomTimer ? 'Start new' : 'Start' }}
         </button>
         <button mat-stroked-button type="button" *ngIf="isRunning" (click)="pauseTimer()" [disabled]="busy">Pause</button>
         <button mat-stroked-button type="button" *ngIf="isPaused" (click)="resumeTimer()" [disabled]="busy">Resume</button>
         <button mat-stroked-button type="button" *ngIf="roomTimer" (click)="resetTimer()" [disabled]="busy">Reset</button>
         <button mat-stroked-button type="button" *ngIf="roomTimer" (click)="clearTimer()" [disabled]="busy">Clear</button>
       </div>
-    </section>
+    </div>
+
+    <div class="timer-readonly" *ngIf="!isCreator">Controlled by the moderator</div>
   </div>
 </div>

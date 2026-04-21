@@ -21,8 +21,8 @@ This pass focused on the main interaction pain points that showed up in live Chr
 - changed automatic bad-team victory logic so accomplices no longer block the endgame once every good-team guess has been spent
 - polished the finished-state UI for both player and forensic views with clearer winner banners, round metrics, and a final accusation log
 - redesigned the desktop shared room timer so the countdown, duration stepper, and moderator actions sit in a tighter two-column control surface instead of leaving a large empty slab
-- upgraded the shared room timer again into a three-part control deck with a richer summary card, clearer duration editor, and a dedicated moderator action panel
-- restyled the live room-mods panel into a proper settings card with a custom toggle, clearer status badge, and stronger hierarchy for witness prompt follow-ups
+- followed up by stripping that timer/control treatment back down into a slimmer single-surface layout with inline duration controls and compact moderator actions
+- tightened the live room-mods card so the toggle/status treatment reads faster and wastes less vertical space
 - normalized spacing tokens used across the UI so card/panel spacing is consistent
 
 ## Verified flows
@@ -35,6 +35,7 @@ Using the remote Chrome workflow in `docs/chrome/README.md`:
 - desktop live game: redesigned timer + room-mod control strip renders cleanly for the moderator in a seeded debug room
 - mobile text-only game: text-only means/clues cards remain readable without console errors
 - mobile live game: redesigned timer stack stays readable and touch-friendly in iPhone-sized emulation
+- desktop/mobile follow-up: compact timer + room-mod pass verified after removing the earlier bulky multi-panel treatment
 
 ## Validation notes
 

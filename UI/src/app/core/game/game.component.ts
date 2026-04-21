@@ -2,7 +2,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ChatApiService } from 'src/app/shared/api/chat/chat-api.service';
-import { TgGameSnapshot, TgGuess, TgPartialGuess, TgParticipant, TgPlayer } from './../../shared/api/models/models';
+import { TgGame, TgGameSnapshot, TgGuess, TgPartialGuess, TgParticipant, TgPlayer } from './../../shared/api/models/models';
 import { GameApiService } from '../../shared/api/game/game-api.service';
 import { AuthService } from './../../shared/api/auth/auth.service';
 import { ForensicApiService } from './../../shared/api/forensic/forensic-api.service';
@@ -103,6 +103,41 @@ export class GameComponent implements OnInit, OnDestroy {
       default:
         return 'Game ended';
     }
+  }
+
+  getResultHeadline(game: TgGame) {
+    switch (game.winner) {
+      case 'investigatorTeam':
+        return game.pendingWitnessSelection ? 'Witness showdown' : 'Case solved';
+      case 'murdererTeam':
+        return 'The killer got away';
+      default:
+        return 'Round concluded';
+    }
+  }
+
+  getFinishedReasonLabel(reason: string) {
+    switch (reason) {
+      case 'correct-guess':
+        return 'Correct accusation';
+      case 'all-guesses-used':
+        return 'Good-team guesses exhausted';
+      case 'witnesses-found':
+        return 'Witnesses identified';
+      case 'witnesses-missed':
+        return 'Witnesses escaped';
+      case 'moderator-ended':
+        return 'Ended by moderator';
+      default:
+        return 'Round complete';
+    }
+  }
+
+  getWitnessModeLabel(game: TgGame) {
+    if (!game.witnessCount) {
+      return 'Off';
+    }
+    return `${game.witnessesToFind}/${game.witnessCount} to find`;
   }
 
   cancelGuess() {

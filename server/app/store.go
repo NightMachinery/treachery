@@ -1520,6 +1520,10 @@ func (a *App) checkAndEndGameTx(tx *sql.Tx, game *Game) error {
 	if err != nil {
 		return err
 	}
+	playerRoles, err := a.getPlayerRolesTx(tx, game.GameID)
+	if err != nil {
+		return err
+	}
 	rows, err := tx.Query(`SELECT guessed_by_uid FROM guesses WHERE game_id = ?`, game.GameID)
 	if err != nil {
 		return err
@@ -1539,14 +1543,21 @@ func (a *App) checkAndEndGameTx(tx *sql.Tx, game *Game) error {
 	}
 
 	for _, player := range players {
-		if player.UID == game.MurdererUID {
+		role, ok := playerRoles[player.UID]
+		if !ok {
+			continue
+		}
+		if role == SecretRoleMurderer || role == SecretRoleAccomplice {
 			continue
 		}
 		if _, ok := guessedBy[player.UID]; !ok {
 			return nil
 		}
 	}
-	finishGame(game, WinnerMurdererTeam, "all-guesses-used", "No correct guess was made before the suspects ran out of guesses. The murderer team wins.")
+	finishGame(game, WinnerMurdererTeam, "all-guesses-used", "No correct good-team guess was made before every eligible good-team player ran out of guesses. The murderer team wins.")
+	if err := a.sendForensicMessageTx(tx, game.GameID, "All good-team guesses are exhausted. The murderer team wins."); err != nil {
+		return err
+	}
 	return a.saveGameTx(tx, game)
 }
 

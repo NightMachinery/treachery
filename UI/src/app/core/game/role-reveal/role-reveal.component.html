@@ -1,11 +1,14 @@
 <ng-container *ngIf="gameApi.roleReveal$ | async as roleReveal">
   <div class="role-reveal" *ngIf="roleReveal.length > 0">
-    <h3>Role reveal</h3>
+    <div class="role-reveal__head">
+      <p class="eyebrow">Hidden roles</p>
+      <h3>Role reveal</h3>
+    </div>
     <div class="role-list">
       <div class="role-entry" *ngFor="let entry of roleReveal">
-        <tg-avatar [uid]="entry.uid" [diameter]="40"></tg-avatar>
-        <div>
-          <div>{{ entry.name }}</div>
+        <tg-avatar [uid]="entry.uid" [diameter]="44"></tg-avatar>
+        <div class="role-copy">
+          <div class="role-name">{{ entry.name }}</div>
           <div class="role-label">{{ entry.role }}</div>
         </div>
       </div>

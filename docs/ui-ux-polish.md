@@ -18,6 +18,8 @@ This pass focused on the main interaction pain points that showed up in live Chr
 - made clicking an already-selected suspect card toggle it off again and added a cancel action to the accusation panel
 - made the accusation panel show partial selections, with placeholders for whichever means/clue card is still missing
 - reduced ugly forensic-option wrapping by widening clue cards and using tighter, more balanced option label typography
+- changed automatic bad-team victory logic so accomplices no longer block the endgame once every good-team guess has been spent
+- polished the finished-state UI for both player and forensic views with clearer winner banners, round metrics, and a final accusation log
 - normalized spacing tokens used across the UI so card/panel spacing is consistent
 
 ## Verified flows

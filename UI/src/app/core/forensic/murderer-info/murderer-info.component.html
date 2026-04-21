@@ -1,14 +1,19 @@
 <ng-container *ngIf="murderer$ | async as murdererInfo">
-  <div class="title">Murderer</div>
-  <div class="container">
-    <div class="horizontal">
+  <div class="murderer-card">
+    <div class="murderer-card__head">
+      <p class="eyebrow">Revealed culprit</p>
+      <h3>Murderer</h3>
+    </div>
+    <div class="container">
       <div class="avatar-container">
-        <tg-avatar [diameter]="80" [uid]="murdererInfo.murderer.uid"></tg-avatar>
-        <div>{{ murdererInfo.murderer.name }}</div>
+        <tg-avatar [diameter]="84" [uid]="murdererInfo.murderer.uid"></tg-avatar>
+        <div class="murderer-name">{{ murdererInfo.murderer.name }}</div>
       </div>
       <ng-container *ngIf="murdererInfo.clueCard && murdererInfo.meansCard; else selectingCards">
-        <app-card [card]="murdererInfo.clueCard" [means]="false"></app-card>
-        <app-card [card]="murdererInfo.meansCard" [means]="true"></app-card>
+        <div class="evidence-pair">
+          <app-card [card]="murdererInfo.clueCard" [means]="false"></app-card>
+          <app-card [card]="murdererInfo.meansCard" [means]="true"></app-card>
+        </div>
       </ng-container>
       <ng-template #selectingCards>
         <tg-info>{{ murdererInfo.murderer.name }} is selecting their cards.</tg-info>

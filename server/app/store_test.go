@@ -787,6 +787,102 @@ func TestWitnessSelectionFlowAndAccompliceKnowledge(t *testing.T) {
 	}
 }
 
+func TestBadTeamWinsOnceAllGoodTeamGuessesAreUsed(t *testing.T) {
+	app := newTestApp(t)
+	defer app.Close()
+
+	creator := "creator"
+	setProfile(t, app, creator, "Creator")
+	if err := app.CreateGame(creator, "EXHA"); err != nil {
+		t.Fatalf("create game: %v", err)
+	}
+	joinPlayers(t, app, "EXHA", "p1", "p2", "p3", "p4")
+	if err := app.UpdateGameSettings("EXHA", creator, GameSettingsInput{
+		MeansCardsPerPlayer:  4,
+		ClueCardsPerPlayer:   4,
+		LinkClueCountToMeans: true,
+		AccompliceCount:      1,
+		WitnessCount:         1,
+		WitnessesToFind:      1,
+	}); err != nil {
+		t.Fatalf("update settings: %v", err)
+	}
+	if err := app.StartGame("EXHA", creator); err != nil {
+		t.Fatalf("start game: %v", err)
+	}
+
+	creatorSnapshot, err := app.GetSnapshot("EXHA", creator)
+	if err != nil {
+		t.Fatalf("creator snapshot: %v", err)
+	}
+	scientistUID := creatorSnapshot.Game.ScientistUID
+
+	var murdererUID string
+	var accompliceUID string
+	goodTeamUIDs := []string{}
+	for _, participant := range creatorSnapshot.Participants {
+		if participant.UID == scientistUID || participant.Role != ParticipantRolePlayer {
+			continue
+		}
+		snapshot, err := app.GetSnapshot("EXHA", participant.UID)
+		if err != nil {
+			t.Fatalf("player snapshot for %s: %v", participant.UID, err)
+		}
+		switch snapshot.PlayerPrivateData.Role {
+		case SecretRoleMurderer:
+			murdererUID = participant.UID
+		case SecretRoleAccomplice:
+			accompliceUID = participant.UID
+		default:
+			goodTeamUIDs = append(goodTeamUIDs, participant.UID)
+		}
+	}
+	if murdererUID == "" || accompliceUID == "" || len(goodTeamUIDs) != 2 {
+		t.Fatalf("unexpected role assignment: murderer=%q accomplice=%q good=%v", murdererUID, accompliceUID, goodTeamUIDs)
+	}
+
+	scientistSnapshot, err := app.GetSnapshot("EXHA", scientistUID)
+	if err != nil {
+		t.Fatalf("scientist snapshot: %v", err)
+	}
+	murderer := scientistSnapshot.ForensicPrivateData.Murderer
+	if err := app.SelectMurdererCards("EXHA", murdererUID, murderer.ClueCards[0].Name, murderer.MeansCards[0].Name); err != nil {
+		t.Fatalf("select murderer cards: %v", err)
+	}
+
+	firstWrongTarget := accompliceUID
+	secondWrongTarget := goodTeamUIDs[0]
+	if secondWrongTarget == firstWrongTarget {
+		secondWrongTarget = goodTeamUIDs[1]
+	}
+	if err := app.MakeGuess("EXHA", goodTeamUIDs[0], firstWrongTarget, murderer.ClueCards[0].Name, murderer.MeansCards[0].Name); err != nil {
+		t.Fatalf("first wrong guess: %v", err)
+	}
+
+	midSnapshot, err := app.GetSnapshot("EXHA", creator)
+	if err != nil {
+		t.Fatalf("mid snapshot: %v", err)
+	}
+	if midSnapshot.Game.Finished {
+		t.Fatalf("expected game to continue until every good-team guess is used, got %+v", midSnapshot.Game)
+	}
+
+	if err := app.MakeGuess("EXHA", goodTeamUIDs[1], secondWrongTarget, murderer.ClueCards[1].Name, murderer.MeansCards[1].Name); err != nil {
+		t.Fatalf("second wrong guess: %v", err)
+	}
+
+	finalSnapshot, err := app.GetSnapshot("EXHA", creator)
+	if err != nil {
+		t.Fatalf("final snapshot: %v", err)
+	}
+	if !finalSnapshot.Game.Finished || finalSnapshot.Game.Winner != WinnerMurdererTeam {
+		t.Fatalf("expected murderer team win after all good-team guesses are used, got %+v", finalSnapshot.Game)
+	}
+	if finalSnapshot.Game.FinishedReason != "all-guesses-used" {
+		t.Fatalf("expected all-guesses-used finish reason, got %+v", finalSnapshot.Game)
+	}
+}
+
 func TestRoomTimerLifecycle(t *testing.T) {
 	app := newTestApp(t)
 	defer app.Close()

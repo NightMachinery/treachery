@@ -151,6 +151,52 @@ export class ForensicComponent implements OnInit, OnDestroy {
     return game.causeCard && game.locationCard && game.otherCards.filter(card => card.selectedChoice).length >= 6;
   }
 
+  getResultHeadline(game: TgGame) {
+    switch (game.winner) {
+      case 'investigatorTeam':
+        return 'Case solved';
+      case 'murdererTeam':
+        return 'The killer got away';
+      default:
+        return 'Round concluded';
+    }
+  }
+
+  getWinnerLabel(winner: string) {
+    switch (winner) {
+      case 'investigatorTeam':
+        return 'Investigator team wins';
+      case 'murdererTeam':
+        return 'Murderer team wins';
+      default:
+        return 'Game ended';
+    }
+  }
+
+  getFinishedReasonLabel(reason: string) {
+    switch (reason) {
+      case 'correct-guess':
+        return 'Correct accusation';
+      case 'all-guesses-used':
+        return 'Good-team guesses exhausted';
+      case 'witnesses-found':
+        return 'Witnesses identified';
+      case 'witnesses-missed':
+        return 'Witnesses escaped';
+      case 'moderator-ended':
+        return 'Ended by moderator';
+      default:
+        return 'Round complete';
+    }
+  }
+
+  getWitnessModeLabel(game: TgGame) {
+    if (!game.witnessCount) {
+      return 'Off';
+    }
+    return `${game.witnessesToFind}/${game.witnessCount} to find`;
+  }
+
   endGame() {
     this.forensicApi.endGame();
   }

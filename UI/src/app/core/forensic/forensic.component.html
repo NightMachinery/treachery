@@ -133,12 +133,71 @@
             </ng-container>
           </ng-container>
           <ng-container *ngIf="game.finished">
-            <tg-info>{{ game.resultMessage || 'Game finished!' }}</tg-info>
-            <tg-murderer-info></tg-murderer-info>
-            <app-role-reveal></app-role-reveal>
-            <div class="finished-actions">
-              <tg-confirmation-button *ngIf="(gameApi.viewer$ | async)?.isCreator" (whenClicked)="restartGame()">Play again</tg-confirmation-button>
-            </div>
+            <section class="result-panel surface-panel--soft">
+              <div class="result-hero-banner" [class.investigator-win]="game.winner === 'investigatorTeam'" [class.murderer-win]="game.winner === 'murdererTeam'">
+                <div class="result-copy">
+                  <p class="eyebrow">Final result</p>
+                  <h3>{{ getResultHeadline(game) }}</h3>
+                  <p class="muted-copy">{{ game.resultMessage || 'Review the outcome, hidden roles, and final accusation trail.' }}</p>
+                </div>
+
+                <div class="result-badges">
+                  <span class="result-badge winner">{{ getWinnerLabel(game.winner) }}</span>
+                  <span class="result-badge">{{ getFinishedReasonLabel(game.finishedReason) }}</span>
+                </div>
+              </div>
+
+              <div class="result-metrics" *ngIf="gameApi.guesses$ | async as guesses">
+                <article class="result-metric-card">
+                  <span class="metric-label">Accusations made</span>
+                  <strong>{{ guesses.length }}</strong>
+                </article>
+                <article class="result-metric-card">
+                  <span class="metric-label">Witness mode</span>
+                  <strong>{{ getWitnessModeLabel(game) }}</strong>
+                </article>
+                <article class="result-metric-card">
+                  <span class="metric-label">Outcome</span>
+                  <strong>{{ getWinnerLabel(game.winner) }}</strong>
+                </article>
+              </div>
+
+              <div class="result-reveal-stack">
+                <tg-murderer-info></tg-murderer-info>
+                <app-role-reveal></app-role-reveal>
+              </div>
+
+              <section class="selected-cards-container surface-panel--soft" *ngIf="gameApi.guesses$ | async as guesses">
+                <h2>Final accusation log</h2>
+                <ng-container *ngIf="guesses.length; else noResultGuessesYet">
+                  <ng-container *ngIf="gameApi.participantsDict$ | async as participantsDict">
+                    <ng-container *ngIf="gameApi.playersDict$ | async as playersDict">
+                      <div class="guess-history-list">
+                        <article class="guess-history-item" *ngFor="let submittedGuess of guesses.slice().reverse()">
+                          <div class="guess-history-line">
+                            <span class="guesser">{{ participantsDict.get(submittedGuess.guessedByUid)?.name || 'Someone' }}</span>
+                            <span class="muted-copy">guessed</span>
+                            <span class="suspect">{{ playersDict.get(submittedGuess.murdererUid)?.name || 'Unknown suspect' }}</span>
+                          </div>
+                          <div class="guess-history-meta">
+                            <span class="guess-chip means-chip">{{ submittedGuess.meansCardName }}</span>
+                            <span class="guess-chip clue-chip">{{ submittedGuess.clueCardName }}</span>
+                            <span class="guess-status" [class.correct]="submittedGuess.correct">{{ submittedGuess.correct ? 'Correct' : 'Not correct' }}</span>
+                          </div>
+                        </article>
+                      </div>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+                <ng-template #noResultGuessesYet>
+                  <tg-info>No accusations were submitted before the round ended.</tg-info>
+                </ng-template>
+              </section>
+
+              <div class="finished-actions">
+                <tg-confirmation-button *ngIf="(gameApi.viewer$ | async)?.isCreator" (whenClicked)="restartGame()">Play again</tg-confirmation-button>
+              </div>
+            </section>
           </ng-container>
         </div>
         <app-chat [disableChat]="game.startedOn && !game.finished"></app-chat>

@@ -14,6 +14,7 @@ export class CardComponent {
   @Input() card: TgCard;
   @Input() active = false;
   @Input() means: boolean;
+  @Input() subdued = false;
   textOnlyMode$: Observable<boolean>;
 
   constructor(public gameApi: GameApiService) {

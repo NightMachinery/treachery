@@ -180,6 +180,43 @@
                   [selectedMeans]="(gameApi.playerPrivateData$ | async)?.meansCardName"
                 ></app-player-deck>
               </section>
+
+              <section class="history-panel surface-panel--soft" *ngIf="gameApi.guesses$ | async as guesses">
+                <div class="section-head compact">
+                  <div>
+                    <p class="eyebrow">Guess history</p>
+                    <h3>Previous accusations</h3>
+                  </div>
+                  <p class="muted-copy">See who accused whom, and which means and clue cards they named.</p>
+                </div>
+
+                <ng-container *ngIf="guesses.length; else noGuessesYet">
+                  <ng-container *ngIf="gameApi.participantsDict$ | async as participantsDict">
+                    <ng-container *ngIf="gameApi.playersDict$ | async as playersDict">
+                      <div class="guess-history-list">
+                        <article class="guess-history-item" *ngFor="let submittedGuess of sortedGuesses(guesses); trackBy: trackByGuess">
+                          <div class="guess-history-line">
+                            <span class="guesser">{{ participantName(submittedGuess.guessedByUid, participantsDict) }}</span>
+                            <span class="muted-copy">guessed</span>
+                            <span class="suspect">{{ playerName(submittedGuess.murdererUid, playersDict) }}</span>
+                          </div>
+                          <div class="guess-history-meta">
+                            <span class="guess-chip means-chip">{{ submittedGuess.meansCardName }}</span>
+                            <span class="guess-chip clue-chip">{{ submittedGuess.clueCardName }}</span>
+                            <span class="guess-status" [class.correct]="submittedGuess.correct">
+                              {{ submittedGuess.correct ? 'Correct' : 'Not correct' }}
+                            </span>
+                          </div>
+                        </article>
+                      </div>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+
+                <ng-template #noGuessesYet>
+                  <tg-info>No accusations yet. Once players start guessing, they will appear here.</tg-info>
+                </ng-template>
+              </section>
             </ng-container>
           </ng-container>
         </ng-template>

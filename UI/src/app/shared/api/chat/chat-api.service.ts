@@ -10,7 +10,7 @@ import { TgMessage } from '../models/models';
 })
 export class ChatApiService {
   messages$: Observable<TgMessage[]>;
-  collapsed = false;
+  collapsed = true;
 
   constructor(private http: HttpClient, private gameApi: GameApiService) {
     this.messages$ = this.gameApi.snapshot$.pipe(

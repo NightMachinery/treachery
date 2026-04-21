@@ -2,7 +2,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ChatApiService } from 'src/app/shared/api/chat/chat-api.service';
-import { TgGameSnapshot, TgPartialGuess } from './../../shared/api/models/models';
+import { TgGameSnapshot, TgGuess, TgPartialGuess, TgParticipant, TgPlayer } from './../../shared/api/models/models';
 import { GameApiService } from '../../shared/api/game/game-api.service';
 import { AuthService } from './../../shared/api/auth/auth.service';
 import { ForensicApiService } from './../../shared/api/forensic/forensic-api.service';
@@ -103,6 +103,26 @@ export class GameComponent implements OnInit, OnDestroy {
       default:
         return 'Game ended';
     }
+  }
+
+  sortedGuesses(guesses: TgGuess[]) {
+    return [...(guesses || [])].sort((a, b) => {
+      const aTime = a.createdTimestamp ? Date.parse(a.createdTimestamp) : 0;
+      const bTime = b.createdTimestamp ? Date.parse(b.createdTimestamp) : 0;
+      return bTime - aTime;
+    });
+  }
+
+  participantName(uid: string, participantsDict: Map<string, TgParticipant>) {
+    return participantsDict?.get(uid)?.name || 'Someone';
+  }
+
+  playerName(uid: string, playersDict: Map<string, TgPlayer>) {
+    return playersDict?.get(uid)?.name || 'Unknown suspect';
+  }
+
+  trackByGuess(index: number, guess: TgGuess) {
+    return `${guess.guessedByUid}-${guess.murdererUid}-${guess.meansCardName}-${guess.clueCardName}-${guess.createdTimestamp || index}`;
   }
 
   private async syncRoute(snapshot: TgGameSnapshot) {

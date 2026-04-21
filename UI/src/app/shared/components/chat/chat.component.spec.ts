@@ -17,7 +17,7 @@ describe('ChatComponent', () => {
         {
           provide: ChatApiService,
           useValue: {
-            collapsed: false,
+            collapsed: true,
             messages$: new BehaviorSubject([]),
             toggleCollapse: jasmine.createSpy('toggleCollapse')
           }

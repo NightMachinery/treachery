@@ -4,6 +4,7 @@
       <app-player-deck
         [disableSelection]="disableSelection"
         [disableSelectionDisplay]="disableSelection"
+        [selectedSuspectUid]="guess?.murdererUid"
         [(selectedClue)]="selectedClue"
         (selectedClueChange)="handleClueChange(player)"
         [(selectedMeans)]="selectedMeans"

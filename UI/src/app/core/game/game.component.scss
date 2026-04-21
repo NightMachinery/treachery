@@ -121,6 +121,7 @@
  .forensic-board,
  .suspects-panel,
  .hand-panel,
+ .history-panel,
  .result-panel {
    padding: var(--space-16) var(--space-12);
  }
@@ -132,8 +133,76 @@
    padding: 0 var(--space-2);
  }
  
- .guess-section {
+.guess-section {
    display: block;
+}
+
+.guess-history-list {
+  display: grid;
+  gap: var(--space-4);
+  padding: 0 var(--space-2);
+}
+
+.guess-history-item {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.025));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.guess-history-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.guesser,
+.suspect {
+  font-weight: 700;
+}
+
+.guess-history-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.guess-chip,
+.guess-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.guess-chip {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.means-chip {
+  box-shadow: inset 0 0 0 1px rgba(142, 159, 255, 0.18);
+}
+
+.clue-chip {
+  box-shadow: inset 0 0 0 1px rgba(255, 134, 124, 0.18);
+}
+
+.guess-status {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--tg-text-muted);
+}
+
+.guess-status.correct {
+  background: rgba(76, 175, 80, 0.16);
+  color: #c3f3cb;
 }
 
 .result-actions {
@@ -203,6 +272,7 @@ app-chat {
    .forensic-board,
    .suspects-panel,
    .hand-panel,
+   .history-panel,
    .result-panel {
      padding: var(--space-12) var(--space-8);
    }

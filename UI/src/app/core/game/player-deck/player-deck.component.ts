@@ -15,6 +15,7 @@ export class PlayerDeckComponent implements OnInit {
   @Input() selectedMeans: string;
   @Output() selectedMeansChange = new EventEmitter<string>();
   @Input() disableSelectionDisplay = false;
+  @Input() selectedSuspectUid: string;
 
   constructor() {}
 
@@ -29,6 +30,22 @@ export class PlayerDeckComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  get deckSelected() {
+    return !!this.selectedSuspectUid && this.selectedSuspectUid === this.player?.uid;
+  }
+
+  get deckDimmed() {
+    return !!this.selectedSuspectUid && this.selectedSuspectUid !== this.player?.uid;
+  }
+
+  shouldSubdueMeans(cardName: string) {
+    return this.deckSelected && !!this.selectedMeans && this.selectedMeans !== cardName;
+  }
+
+  shouldSubdueClue(cardName: string) {
+    return this.deckSelected && !!this.selectedClue && this.selectedClue !== cardName;
+  }
 
   trackByCardName(index: number, card: TgCard) {
     return card.name;

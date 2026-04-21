@@ -1,4 +1,4 @@
-<div class="player-deck">
+<div class="player-deck" [class.deck-selected]="deckSelected" [class.deck-dimmed]="deckDimmed">
   <div class="player">
     <div class="avatar-container"><tg-avatar [uid]="player.uid"></tg-avatar></div>
     <div>
@@ -13,6 +13,7 @@
         *ngFor="let card of player.meansCards; trackBy: trackByCardName"
         [card]="card"
         [active]="!disableSelectionDisplay && selectedMeans === card.name"
+        [subdued]="shouldSubdueMeans(card.name)"
         [means]="true"
         (click)="!disableSelection && meansClick(card.name)"
       ></app-card>
@@ -25,6 +26,7 @@
         *ngFor="let card of player.clueCards; trackBy: trackByCardName"
         [card]="card"
         [active]="!disableSelectionDisplay && selectedClue === card.name"
+        [subdued]="shouldSubdueClue(card.name)"
         [means]="false"
         (click)="!disableSelection && clueClick(card.name)"
       ></app-card>

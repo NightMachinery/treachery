@@ -11,7 +11,7 @@
      linear-gradient(180deg, rgba(12, 13, 19, 0.16), rgba(12, 13, 19, 0.88)),
      rgba(22, 25, 35, 0.94);
    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.24);
-   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, opacity 0.18s ease, filter 0.18s ease;
    cursor: pointer;
 
    &::after {
@@ -47,6 +47,17 @@
      filter: saturate(1.05) contrast(1.04);
    }
  }
+
+.card.subdued {
+  opacity: 0.48;
+  filter: saturate(0.72) brightness(0.88);
+  transform: none;
+}
+
+.card.subdued:hover {
+  transform: none;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
  
 .card-name {
    position: absolute;
@@ -75,13 +86,27 @@
  
  .means.selected {
    border-color: #8e9fff;
-   box-shadow: 0 0 0 2px rgba(142, 159, 255, 0.22), 0 16px 34px rgba(25, 37, 92, 0.42);
+   box-shadow:
+     0 0 0 2px rgba(142, 159, 255, 0.32),
+     0 0 0 6px rgba(142, 159, 255, 0.1),
+     0 22px 40px rgba(25, 37, 92, 0.48);
+   transform: translateY(-4px) scale(1.04);
  }
  
  .clue.selected {
    border-color: #ff867c;
-   box-shadow: 0 0 0 2px rgba(255, 134, 124, 0.2), 0 16px 34px rgba(113, 18, 18, 0.38);
+   box-shadow:
+     0 0 0 2px rgba(255, 134, 124, 0.3),
+     0 0 0 6px rgba(255, 134, 124, 0.1),
+     0 22px 40px rgba(113, 18, 18, 0.44);
+   transform: translateY(-4px) scale(1.04);
  }
+
+.card.selected .card-name {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: linear-gradient(180deg, rgba(54, 60, 78, 0.92), rgba(12, 15, 24, 0.88));
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.34);
+}
  
  .not-selected {
    color: white;

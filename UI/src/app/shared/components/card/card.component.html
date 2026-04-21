@@ -1,6 +1,11 @@
 <div
   matRipple
-  [ngClass]="[active ? 'selected' : 'not-selected', means ? 'means' : 'clue', (textOnlyMode$ | async) ? 'text-only' : 'image-card']"
+  [ngClass]="[
+    active ? 'selected' : 'not-selected',
+    subdued ? 'subdued' : '',
+    means ? 'means' : 'clue',
+    (textOnlyMode$ | async) ? 'text-only' : 'image-card'
+  ]"
   class="card"
   [class.mat-elevation-z2]="true"
 >

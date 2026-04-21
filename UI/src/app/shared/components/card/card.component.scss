@@ -13,6 +13,15 @@
    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.24);
    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
    cursor: pointer;
+
+   &::after {
+     content: '';
+     position: absolute;
+     inset: auto 0 0;
+     height: 46%;
+     background: linear-gradient(180deg, rgba(6, 8, 14, 0.02), rgba(6, 8, 14, 0.78) 42%, rgba(6, 8, 14, 0.95));
+     z-index: 1;
+   }
  
    &::before {
      content: '';
@@ -42,20 +51,23 @@
 .card-name {
    position: absolute;
    z-index: 2;
-   left: 0;
-   right: 0;
-   bottom: 0;
-   max-width: 100%;
+   left: var(--space-4);
+   right: var(--space-4);
+   bottom: var(--space-4);
    font-weight: 700;
-  font-size: 0.76rem;
-  line-height: 1.18;
-  padding: 1.45rem var(--space-4) var(--space-4);
+  font-size: 0.77rem;
+  line-height: 1.15;
+  padding: 0.5rem 0.55rem 0.45rem;
   word-wrap: break-word;
   word-break: break-word;
   text-align: center;
   unicode-bidi: plaintext;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.85), 0 2px 12px rgba(0, 0, 0, 0.5);
-  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.94) 0%, rgba(0, 0, 0, 0.65) 60%, rgba(0, 0, 0, 0));
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95), 0 2px 10px rgba(0, 0, 0, 0.65);
+  background: rgba(12, 15, 24, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
 }
  
  .means.selected {
@@ -72,8 +84,9 @@
    color: white;
  }
  
- .means {
-   border-color: rgba(70, 102, 255, 0.72);
+.means {
+  border-color: rgba(70, 102, 255, 0.72);
+  box-shadow: 0 12px 28px rgba(22, 35, 86, 0.25);
  
    &::before {
     background: linear-gradient(90deg, rgba(99, 126, 255, 1), rgba(138, 159, 255, 0.75));
@@ -82,6 +95,7 @@
 
 .clue {
   border-color: rgba(208, 68, 63, 0.72);
+  box-shadow: 0 12px 28px rgba(89, 28, 26, 0.24);
 
   &::before {
     background: linear-gradient(90deg, rgba(255, 118, 110, 1), rgba(255, 160, 144, 0.78));

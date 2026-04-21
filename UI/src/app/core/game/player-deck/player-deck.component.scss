@@ -29,36 +29,48 @@
    font-size: 0.85rem;
  }
  
- .card-lane {
-   padding: var(--space-6) var(--space-5);
-   border-radius: 14px;
-   background: linear-gradient(135deg, rgba(9, 10, 15, 0.32), rgba(9, 10, 15, 0.24));
-   border: 1px solid rgba(255, 255, 255, 0.06);
-   backdrop-filter: blur(6px);
- }
- 
- .card-lane + .card-lane {
-   margin-top: var(--space-6);
- }
- 
- .lane-label {
-   margin-bottom: var(--space-5);
-   padding: 0 var(--space-2);
-   text-transform: uppercase;
-   letter-spacing: 0.14em;
-   font-size: 0.7rem;
-   font-weight: 700;
-   color: #d4b8ff;
-   opacity: 0.9;
- }
- 
- .cards {
-   display: flex;
-   flex-wrap: wrap;
-   gap: var(--space-5);
-   padding: 0 var(--space-2);
- }
- 
- .cards app-card {
-   display: block;
- }
+.card-lane {
+  position: relative;
+  padding: var(--space-6) var(--space-5);
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(15, 18, 27, 0.66), rgba(10, 12, 18, 0.5));
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.9;
+  }
+}
+
+.card-lane + .card-lane {
+  margin-top: var(--space-6);
+}
+
+.means-lane::before {
+  background:
+    linear-gradient(180deg, rgba(86, 112, 255, 0.18), transparent 22%),
+    radial-gradient(circle at top left, rgba(86, 112, 255, 0.18), transparent 45%);
+}
+
+.clue-lane::before {
+  background:
+    linear-gradient(180deg, rgba(255, 112, 102, 0.17), transparent 22%),
+    radial-gradient(circle at top left, rgba(255, 112, 102, 0.17), transparent 45%);
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-5);
+  padding: 0;
+}
+
+.cards app-card {
+  display: block;
+}

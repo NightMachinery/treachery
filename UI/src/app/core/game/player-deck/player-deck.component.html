@@ -7,8 +7,7 @@
     </div>
   </div>
 
-  <div class="card-lane">
-    <div class="lane-label">Means</div>
+  <div class="card-lane means-lane">
     <div class="cards">
       <app-card
         *ngFor="let card of player.meansCards; trackBy: trackByCardName"
@@ -20,8 +19,7 @@
     </div>
   </div>
 
-  <div class="card-lane">
-    <div class="lane-label">Clues</div>
+  <div class="card-lane clue-lane">
     <div class="cards">
       <app-card
         *ngFor="let card of player.clueCards; trackBy: trackByCardName"

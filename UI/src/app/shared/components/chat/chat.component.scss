@@ -134,6 +134,29 @@
   color: rgba(255, 255, 255, 0.55);
 }
 
+.message-field input:focus {
+  outline: none;
+  border-color: rgba(138, 99, 210, 0.55);
+  box-shadow: 0 0 0 3px rgba(138, 99, 210, 0.16);
+}
+
+.message-field input:disabled {
+  color: rgba(255, 255, 255, 0.72);
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.input button {
+  min-width: 6rem;
+}
+
+.input button:disabled {
+  opacity: 0.48;
+  color: rgba(255, 255, 255, 0.45) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: none !important;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;

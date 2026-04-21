@@ -42,8 +42,10 @@
 }
 
 .hero-actions {
-  flex: 0 1 18rem;
-  width: min(100%, 18rem);
+  flex: 0 1 auto;
+  width: auto;
+  min-width: min(100%, 14rem);
+  max-width: 18rem;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -51,6 +53,7 @@
 }
 
 .action-button-row {
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -58,7 +61,9 @@
 }
 
 .action-button-row > * {
-  flex: 1 1 10rem;
+  flex: 0 1 auto;
+  min-width: 11rem;
+  max-width: 100%;
   display: flex;
   justify-content: center;
 }
@@ -157,6 +162,7 @@ app-forensic-card {
 
   .hero-actions {
     width: 100%;
+    min-width: 0;
     max-width: none;
     align-self: center;
   }
@@ -175,5 +181,10 @@ app-forensic-card {
 
   .action-button-row {
     flex-direction: column;
+  }
+
+  .action-button-row > * {
+    min-width: 0;
+    width: 100%;
   }
 }

@@ -45,6 +45,7 @@ The lobby uses the existing **Save settings** flow, so pre-start changes to this
 - Chat is presented as a dedicated side panel on wide screens and stacks underneath the board on smaller screens.
 - On mobile, the chat composer stays pinned to the bottom of the chat panel with safe-area padding so the text input remains visible.
 - Creator action buttons such as **Migrate device** and **End game** are centered in their action groups, and **End game** now uses a dialog confirmation to reduce accidental taps.
+- The accusation panel now shows guided next steps before a full accusation is ready, so the section stays useful instead of looking empty between selections.
 - The same layout applies in both image-card mode and text-only means/clues mode.
 
 ## Shared room timer

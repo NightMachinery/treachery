@@ -18,10 +18,21 @@
 
         <div class="hero-actions">
           <tg-copy-link *ngIf="!game.startedOn" [text]="gameApi.joinLink$ | async"></tg-copy-link>
-          <button mat-stroked-button type="button" *ngIf="viewer.isParticipant" (click)="copyMigrateLink()">Migrate device</button>
-          <tg-confirmation-button *ngIf="viewer.isCreator && game.startedOn && !game.finished" (whenClicked)="endGame()"
-            >End game</tg-confirmation-button
-          >
+          <div class="action-button-row">
+            <button mat-stroked-button type="button" *ngIf="viewer.isParticipant" (click)="copyMigrateLink()">Migrate device</button>
+            <tg-confirmation-button
+              *ngIf="viewer.isCreator && game.startedOn && !game.finished"
+              mode="dialog"
+              variant="danger"
+              confirmTitle="End this game?"
+              confirmMessage="This ends the current round for everyone in the room. Use it when you need to stop the game early."
+              confirmButtonLabel="End game"
+              cancelButtonLabel="Keep playing"
+              (whenClicked)="endGame()"
+            >
+              End game
+            </tg-confirmation-button>
+          </div>
         </div>
       </section>
 

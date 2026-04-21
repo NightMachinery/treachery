@@ -1,5 +1,5 @@
 .player-deck {
-  padding: var(--space-6);
+  padding: var(--space-8);
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--tg-border-radius-16);
@@ -10,7 +10,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-8);
 }
 
 .avatar-container {
@@ -26,12 +26,19 @@
   font-size: 0.85rem;
 }
 
+.card-lane {
+  padding: var(--space-4);
+  border-radius: var(--tg-border-radius-16);
+  background: rgba(9, 10, 15, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
 .card-lane + .card-lane {
-  margin-top: var(--space-5);
+  margin-top: var(--space-6);
 }
 
 .lane-label {
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-size: 0.72rem;
@@ -42,7 +49,7 @@
 .cards {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2);
+  gap: var(--space-4);
 }
 
 .cards app-card {

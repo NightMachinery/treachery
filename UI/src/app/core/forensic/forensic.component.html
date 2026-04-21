@@ -3,15 +3,43 @@
     <ng-container *ngIf="gameApi.game$ | async as game">
       <ng-container *ngIf="gameApi.players$ | async as players">
         <div class="game-info-container">
-          <div class="heading-container">
-            <h2>Game ID: {{ gameId }}</h2>
-            <button mat-stroked-button type="button" (click)="copyMigrateLink()">Migrate device</button>
-            <tg-confirmation-button *ngIf="!game.finished && game.startedOn" (whenClicked)="endGame()">
-              End game
-            </tg-confirmation-button>
+          <section class="forensic-hero surface-panel">
+            <div class="hero-copy">
+              <p class="eyebrow">{{ game.finished ? 'Game complete' : 'Forensic scientist' }}</p>
+              <h2>Game ID: {{ gameId }}</h2>
+              <p class="muted-copy">
+                {{
+                  game.finished
+                    ? 'Review the result, revealed roles, and final evidence.'
+                    : 'Guide the investigators with clue cards while keeping the murderer hidden.'
+                }}
+              </p>
+            </div>
+
+            <div class="hero-actions">
+              <div class="action-button-row">
+                <button mat-stroked-button type="button" (click)="copyMigrateLink()">Migrate device</button>
+                <tg-confirmation-button
+                  *ngIf="!game.finished && game.startedOn"
+                  mode="dialog"
+                  variant="danger"
+                  confirmTitle="End this game?"
+                  confirmMessage="This ends the current round for everyone in the room. Use it when you need to stop the game early."
+                  confirmButtonLabel="End game"
+                  cancelButtonLabel="Keep playing"
+                  (whenClicked)="endGame()"
+                >
+                  End game
+                </tg-confirmation-button>
+              </div>
+            </div>
+          </section>
+
+          <div class="control-strip">
+            <app-room-timer *ngIf="game.startedOn && !game.finished"></app-room-timer>
+            <app-moderator-witness-controls></app-moderator-witness-controls>
           </div>
-          <app-room-timer *ngIf="game.startedOn && !game.finished"></app-room-timer>
-          <app-moderator-witness-controls></app-moderator-witness-controls>
+
           <ng-container *ngIf="!game.finished">
             <tg-info *ngIf="game.pendingWitnessSelection">
               A correct guess was made. The murderer team is now choosing {{ game.witnessesToFind }} witness{{ game.witnessesToFind === 1 ? '' : 'es' }}.
@@ -45,7 +73,7 @@
                           [selected]="card.cardName === selectedCauseCardName"
                         ></app-forensic-card>
                       </div>
-                      <div>
+                      <div class="selection-action">
                         <button mat-raised-button color="accent" (click)="selectCauseCard()">Select Cause Card</button>
                       </div>
                     </ng-container>
@@ -61,7 +89,7 @@
                           [selected]="card === selectedLocationCard"
                         ></app-forensic-card>
                       </div>
-                      <div>
+                      <div class="selection-action">
                         <button mat-raised-button color="accent" (click)="selectLocationCard()">Select Location Card</button>
                       </div>
                     </ng-container>
@@ -75,16 +103,16 @@
                           [selected]="true"
                         ></app-forensic-card>
                       </div>
-                      <div>
+                      <div class="selection-action">
                         <button mat-raised-button color="accent" (click)="selectNextOtherCard()" [disabled]="!canSelectNextOtherCard(game)">
                           Select next card
                         </button>
                       </div>
                     </ng-container>
-                    <tg-info *ngIf="waitingToEnd(game)"
-                      >You're done your part! Sit back, and hope the investigators figure this out.</tg-info
-                    >
-                    <div class="selected-cards-container" *ngIf="game.causeCard">
+                    <tg-info *ngIf="waitingToEnd(game)">
+                      You're done your part! Sit back, and hope the investigators figure this out.
+                    </tg-info>
+                    <div class="selected-cards-container surface-panel--soft" *ngIf="game.causeCard">
                       <h2>Selected Cards</h2>
                       <div class="cards-container">
                         <app-forensic-card [forensicCard]="game.causeCard"></app-forensic-card>
@@ -108,7 +136,9 @@
             <tg-info>{{ game.resultMessage || 'Game finished!' }}</tg-info>
             <tg-murderer-info></tg-murderer-info>
             <app-role-reveal></app-role-reveal>
-            <tg-confirmation-button *ngIf="(gameApi.viewer$ | async)?.isCreator" (whenClicked)="restartGame()">Play again</tg-confirmation-button>
+            <div class="finished-actions">
+              <tg-confirmation-button *ngIf="(gameApi.viewer$ | async)?.isCreator" (whenClicked)="restartGame()">Play again</tg-confirmation-button>
+            </div>
           </ng-container>
         </div>
         <app-chat [disableChat]="game.startedOn && !game.finished"></app-chat>
@@ -116,7 +146,7 @@
     </ng-container>
   </ng-container>
   <ng-template #showLoading>
-    <div class="flex-vertical">
+    <div class="flex-vertical loading-shell surface-panel--soft">
       <mat-spinner></mat-spinner>
       <div *ngIf="!loading">
         Huh, something seems to have gone wrong. It should not take this long. Try again?

@@ -36,12 +36,15 @@ The lobby uses the existing **Save settings** flow, so pre-start changes to this
 - Existing suspect card images stay mounted when new forensic hints arrive, so revealing another hint does not reload the card art.
 - Only means/clue cards are affected; forensic clue cards stay unchanged.
 - Means/clue card labels now use browser auto-direction (`dir="auto"`) so RTL text renders correctly in both image and text-only modes.
+- Means/clue cards no longer repeat the words `means` or `clue` on every card; the card content stays prominent while color accents still distinguish the two decks.
 
 ## In-game room layout
 
 - Active game screens now group the play table into clear sections: room controls, forensic clues, suspect decks, guess composition, the viewer's private hand, and chat.
 - Suspect decks now reflow into responsive cards instead of forcing a wide horizontal strip, so desktop and mobile layouts stay readable when comparing players.
 - Chat is presented as a dedicated side panel on wide screens and stacks underneath the board on smaller screens.
+- On mobile, the chat composer stays pinned to the bottom of the chat panel with safe-area padding so the text input remains visible.
+- Creator action buttons such as **Migrate device** and **End game** are centered in their action groups, and **End game** now uses a dialog confirmation to reduce accidental taps.
 - The same layout applies in both image-card mode and text-only means/clues mode.
 
 ## Shared room timer

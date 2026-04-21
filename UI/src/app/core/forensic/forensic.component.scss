@@ -1,104 +1,179 @@
 .container {
   flex: 1;
-  height: 100%;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-16);
+  padding: var(--space-16);
+  align-items: start;
 }
 
 :host {
   flex: 1;
-  display: flex;
-  max-height: 100%;
+  display: block;
+  min-height: 0;
 }
 
 .game-info-container {
-  padding: var(--space-8);
+  min-width: 0;
   display: flex;
-  overflow: auto;
   flex-direction: column;
+  gap: var(--space-12);
 }
 
-.joined-players-container {
-  height: 100%;
-  min-height: 100px;
+.forensic-hero {
   display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
+  align-items: center;
   justify-content: space-between;
+  gap: var(--space-12);
+  padding: var(--space-12);
+}
 
-  app-joined-players-list {
-    height: 100%;
-    flex: 1 1 auto;
-    margin: var(--space-8) 0;
-    min-height: 100px;
+.hero-copy {
+  min-width: 0;
+
+  h2 {
+    margin: var(--space-2) 0 0;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+  }
+
+  p:last-child {
+    margin-bottom: 0;
   }
 }
 
+.hero-actions {
+  flex: 0 1 18rem;
+  width: min(100%, 18rem);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.action-button-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.action-button-row > * {
+  flex: 1 1 10rem;
+  display: flex;
+  justify-content: center;
+}
+
+.action-button-row button,
+.action-button-row tg-confirmation-button {
+  width: 100%;
+}
+
+.control-strip {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+}
+
 app-chat {
-  overflow: auto;
+  min-width: 0;
 }
 
 app-player-deck-pager {
-  margin: var(--space-4) 0;
+  margin: var(--space-8) 0 0;
 }
 
 .cards-container {
   flex: 0 0 auto;
   overflow-x: auto;
-  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-2);
   width: 100%;
   display: flex;
+  gap: var(--space-4);
 }
 
 app-forensic-card {
-  margin-right: var(--space-4);
+  flex: 0 0 auto;
+}
+
+.selection-action,
+.finished-actions {
+  display: flex;
+  justify-content: center;
+  margin: var(--space-4) 0 var(--space-8);
+}
+
+.selection-action button,
+.finished-actions tg-confirmation-button {
+  width: min(100%, 16rem);
 }
 
 .selected-cards-container {
-  border: var(--tg-border-size) solid var(--tg-card-background-color);
-  border-radius: var(--tg-border-radius);
-  margin: var(--space-4) 0;
-  padding: var(--space-4);
+  margin: var(--space-8) 0 0;
+  padding: var(--space-8);
+
+  h2 {
+    margin: 0 0 var(--space-6);
+  }
+}
+
+.loading-shell {
+  align-items: center;
+  justify-content: center;
+  min-height: 18rem;
+  gap: var(--space-6);
+  padding: var(--space-12);
+}
+
+@media only screen and (min-width: 72rem) {
+  .container {
+    grid-template-columns: minmax(0, 1.35fr) minmax(19rem, 26rem);
+  }
+
+  .container.chat-collapsed {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  app-chat {
+    position: sticky;
+    top: calc(var(--tg-navbar-height) + var(--space-8));
+    align-self: start;
+    max-height: calc((var(--tg-vh, 1vh) * 100) - var(--tg-navbar-height) - var(--space-16));
+  }
+}
+
+@media only screen and (max-width: 72rem) {
+  .container {
+    padding: var(--space-8);
+  }
+
+  .forensic-hero {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-copy {
+    text-align: center;
+  }
+
+  .hero-actions {
+    width: 100%;
+    max-width: none;
+    align-self: center;
+  }
 }
 
 @media only screen and (max-width: 40rem) {
   .container {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 2fr;
+    gap: var(--space-8);
+    padding: var(--space-8);
   }
-  .container.chat-collapsed {
-    grid-template-columns: auto;
-    grid-template-rows: auto;
-  }
-}
 
-@media only screen and (min-width: 40rem) and (max-width: 65rem) {
-  .container {
-    grid-template-columns: 4fr 3fr;
+  .forensic-hero,
+  .selected-cards-container {
+    padding: var(--space-8);
   }
-  .container.chat-collapsed {
-    grid-template-columns: auto;
+
+  .action-button-row {
+    flex-direction: column;
   }
-}
-
-@media only screen and (min-width: 65rem) {
-  .container {
-    grid-template-columns: 2fr 1fr;
-  }
-  .container.chat-collapsed {
-    grid-template-columns: auto;
-  }
-}
-
-button {
-  width: 100%;
-}
-
-.heading-container {
-  display: flex;
-  justify-content: space-between;
-  min-height: fit-content;
-}
-
-.chat-collapsed .start-button-container {
-  padding-right: calc(50px);
 }

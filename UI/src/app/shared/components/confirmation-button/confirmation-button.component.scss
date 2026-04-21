@@ -1,0 +1,18 @@
+:host {
+  display: inline-flex;
+  max-width: 100%;
+}
+
+.trigger-button {
+  width: 100%;
+}
+
+.trigger-button.danger {
+  background: linear-gradient(135deg, rgba(171, 47, 38, 0.98), rgba(130, 22, 17, 0.98)) !important;
+  color: #fff !important;
+  box-shadow: 0 14px 28px rgba(105, 20, 16, 0.3) !important;
+}
+
+.trigger-button.danger:hover {
+  filter: brightness(1.05);
+}

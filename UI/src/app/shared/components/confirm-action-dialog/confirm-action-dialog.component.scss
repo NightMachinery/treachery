@@ -1,0 +1,52 @@
+:host {
+  display: block;
+}
+
+.dialog-shell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-4);
+
+  h2 {
+    margin: 0;
+    font-size: 1.35rem;
+  }
+
+  p {
+    margin: 0;
+    color: var(--tg-text-muted);
+    line-height: 1.5;
+  }
+}
+
+.dialog-shell.danger .eyebrow {
+  color: #ffb7b1;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.dialog-actions button {
+  min-width: 8.5rem;
+}
+
+@media only screen and (max-width: 40rem) {
+  .dialog-shell {
+    padding: 0;
+  }
+
+  .dialog-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .dialog-actions button {
+    width: 100%;
+  }
+}

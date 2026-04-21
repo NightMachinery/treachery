@@ -41,6 +41,7 @@ import { CopyLinkComponent } from './shared/copy-link/copy-link.component';
 import { InfoComponent } from './shared/components/info/info.component';
 import { MurdererInfoComponent } from './core/forensic/murderer-info/murderer-info.component';
 import { ConfirmationButtonComponent } from './shared/components/confirmation-button/confirmation-button.component';
+import { ConfirmActionDialogComponent } from './shared/components/confirm-action-dialog/confirm-action-dialog.component';
 import { PromptPanelComponent } from './shared/components/prompt-panel/prompt-panel.component';
 import { WitnessSelectionPromptComponent } from './core/game/witness-selection-prompt/witness-selection-prompt.component';
 import { ModeratorWitnessControlsComponent } from './core/game/moderator-witness-controls/moderator-witness-controls.component';
@@ -76,6 +77,7 @@ import { AuthTokenInterceptor } from './shared/api/auth/auth-token.interceptor';
     InfoComponent,
     MurdererInfoComponent,
     ConfirmationButtonComponent,
+    ConfirmActionDialogComponent,
     PromptPanelComponent,
     WitnessSelectionPromptComponent,
     ModeratorWitnessControlsComponent,

@@ -234,6 +234,24 @@ mat-card {
   background: transparent;
 }
 
+
+.tg-confirm-dialog .mat-dialog-container,
+.tg-confirm-dialog .mat-mdc-dialog-surface {
+  background: rgba(20, 22, 31, 0.98) !important;
+  color: #f4f7fb !important;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--tg-border-radius-24) !important;
+  box-shadow: var(--tg-shadow-strong) !important;
+}
+
+.tg-confirm-dialog .mat-dialog-container {
+  padding: var(--space-8) !important;
+}
+
+.tg-confirm-dialog .cdk-overlay-pane {
+  max-width: calc(100vw - 1rem);
+}
+
 @media only screen and (max-width: 48rem) {
   .page-shell {
     width: min(100%, calc(100% - 1rem));

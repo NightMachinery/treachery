@@ -27,6 +27,8 @@ This pass focused on the main interaction pain points that showed up in live Chr
 - added smooth timer-surface state transitions so border/glow/background changes animate instead of snapping abruptly
 - unified the timer control interaction language so primary, secondary, and stepper buttons all share the same hover/focus/press rhythm instead of feeling mismatched
 - removed the redundant room-mod status badge and made the enabled text-only toggle read as clearly active through the switch/card styling itself
+- refreshed text-only suspect cards with a more intentional glassy treatment, cleaner centered labels, and fixed sizing so they no longer collide in the deck grid
+- removed scale-based card enlargement from selected suspect cards so highlighted image/text cards feel premium without overlapping adjacent cards
 - normalized spacing tokens used across the UI so card/panel spacing is consistent
 
 ## Verified flows
@@ -43,6 +45,7 @@ Using the remote Chrome workflow in `docs/chrome/README.md`:
 - desktop/mobile follow-up: refined timer pass verified again after removing redundant badges and adding animated state styling
 - desktop follow-up: verified timer control buttons now react consistently on hover instead of only some controls lifting/highlighting
 - room-mod follow-up: verified the text-only toggle now has a clearer enabled state without relying on a duplicate “Text only” badge
+- suspect-deck follow-up: verified text-only means/clue cards render without overlap in the grid, and selected-card emphasis no longer causes collisions
 
 ## Validation notes
 

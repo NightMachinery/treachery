@@ -1,94 +1,186 @@
-<div [ngClass]="['container', chatApi.collapsed ? 'chat-collapsed' : '']">
+<div [ngClass]="['game-layout', chatApi.collapsed ? 'chat-collapsed' : '']">
   <div class="game-info-container" *ngIf="gameApi.game$ | async as game; else loadingBlock">
     <ng-container *ngIf="gameApi.viewer$ | async as viewer">
-      <div class="heading-container">
-        <h2>Game ID: {{ gameApi.gameId$ | async }}</h2>
-        <tg-copy-link *ngIf="!game.startedOn" [text]="gameApi.joinLink$ | async"></tg-copy-link>
-        <button mat-stroked-button type="button" *ngIf="viewer.isParticipant" (click)="copyMigrateLink()">Migrate device</button>
-        <tg-confirmation-button *ngIf="viewer.isCreator && game.startedOn && !game.finished" (whenClicked)="endGame()"
-          >End game</tg-confirmation-button
-        >
+      <section class="game-hero surface-panel">
+        <div class="hero-copy">
+          <p class="eyebrow">{{ game.finished ? 'Game complete' : isObserverRoute() ? 'Observer view' : 'Live investigation' }}</p>
+          <h2>Game {{ gameApi.gameId$ | async }}</h2>
+          <p class="muted-copy">
+            {{
+              game.finished
+                ? 'Review the result, revealed roles, and final evidence.'
+                : isObserverRoute()
+                  ? 'Watch the table unfold without participating in chat or guesses.'
+                  : 'Track the forensic clues, compare suspect decks, and keep your own hand close.'
+            }}
+          </p>
+        </div>
+
+        <div class="hero-actions">
+          <tg-copy-link *ngIf="!game.startedOn" [text]="gameApi.joinLink$ | async"></tg-copy-link>
+          <button mat-stroked-button type="button" *ngIf="viewer.isParticipant" (click)="copyMigrateLink()">Migrate device</button>
+          <tg-confirmation-button *ngIf="viewer.isCreator && game.startedOn && !game.finished" (whenClicked)="endGame()"
+            >End game</tg-confirmation-button
+          >
+        </div>
+      </section>
+
+      <div class="control-strip" *ngIf="game.startedOn && !game.finished">
+        <app-room-timer></app-room-timer>
+        <app-moderator-witness-controls></app-moderator-witness-controls>
       </div>
 
-      <app-room-timer *ngIf="game.startedOn && !game.finished"></app-room-timer>
-
-      <ng-container *ngIf="game.finished">
-        <tg-info>{{ getWinnerLabel(game.winner) }}</tg-info>
-        <tg-info *ngIf="game.resultMessage">{{ game.resultMessage }}</tg-info>
-        <tg-murderer-info></tg-murderer-info>
-        <app-role-reveal></app-role-reveal>
-        <tg-confirmation-button *ngIf="viewer.isCreator" (whenClicked)="restartGame()">Play again</tg-confirmation-button>
-      </ng-container>
-
-      <ng-container *ngIf="!game.finished && game.pendingWitnessSelection">
-        <tg-info>
-          A correct guess was made. The murderer team is now choosing {{ game.witnessesToFind }} witness{{ game.witnessesToFind === 1 ? '' : 'es' }}.
-        </tg-info>
-      </ng-container>
-
-      <app-moderator-witness-controls></app-moderator-witness-controls>
-
-      <ng-container *ngIf="!game.finished && isObserverRoute()">
-        <tg-info>You are observing this room. You can watch, but not chat or guess.</tg-info>
-        <div class="cards">
-          <app-forensic-card *ngIf="game.causeCard" [forensicCard]="game.causeCard"></app-forensic-card>
-          <app-forensic-card *ngIf="game.locationCard" [forensicCard]="game.locationCard"></app-forensic-card>
-          <div *ngFor="let card of game.otherCards">
-            <app-forensic-card *ngIf="card.selectedChoice && !card.replaced" [forensicCard]="card"></app-forensic-card>
+      <ng-container *ngIf="game.finished; else activeGame">
+        <section class="result-panel surface-panel--soft">
+          <div class="section-head compact">
+            <div>
+              <p class="eyebrow">Final result</p>
+              <h3>Round summary</h3>
+            </div>
           </div>
-        </div>
-        <app-player-deck-pager [disableSelection]="true"></app-player-deck-pager>
+
+          <div class="status-stack">
+            <tg-info>{{ getWinnerLabel(game.winner) }}</tg-info>
+            <tg-info *ngIf="game.resultMessage">{{ game.resultMessage }}</tg-info>
+          </div>
+
+          <tg-murderer-info></tg-murderer-info>
+          <app-role-reveal></app-role-reveal>
+          <div class="result-actions">
+            <tg-confirmation-button *ngIf="viewer.isCreator" (whenClicked)="restartGame()">Play again</tg-confirmation-button>
+          </div>
+        </section>
       </ng-container>
 
-      <ng-container *ngIf="!game.finished && !isObserverRoute()">
-        <ng-container *ngIf="gameApi.me$ | async as player">
-          <ng-container *ngIf="gameApi.playerPrivateData$ | async as privateData">
-            <div *ngIf="privateData.isMurderer && !game.murdererCardsSelected">
-              <app-murderer-select-dialog [player]="player"></app-murderer-select-dialog>
+      <ng-template #activeGame>
+        <div class="status-stack" *ngIf="game.pendingWitnessSelection">
+          <tg-info>
+            A correct guess was made. The murderer team is now choosing {{ game.witnessesToFind }} witness{{ game.witnessesToFind === 1 ? '' : 'es' }}.
+          </tg-info>
+        </div>
+
+        <ng-container *ngIf="isObserverRoute(); else activePlayerView">
+          <div class="status-stack observer-note">
+            <tg-info>You are observing this room. You can watch, but not chat or guess.</tg-info>
+          </div>
+
+          <section class="forensic-board surface-panel--soft">
+            <div class="section-head compact">
+              <div>
+                <p class="eyebrow">Forensic board</p>
+                <h3>Revealed clues</h3>
+              </div>
+              <p class="muted-copy">Follow the selected forensic hints without interacting.</p>
             </div>
-            <app-witness-selection-prompt></app-witness-selection-prompt>
-            <div class="murderer-selecting-cards" *ngIf="!game.murdererCardsSelected && !privateData.isMurderer">
-              Murderer is selecting their cards ...
-            </div>
-            <ng-container *ngIf="game.murdererCardsSelected">
-              <tg-info *ngIf="!game.causeCard; else causeSelected">Forensic Scientist is selecting the clue card...</tg-info>
-              <ng-template #causeSelected>
-                <tg-info *ngIf="!game.locationCard; else locationSelected">Forensic Scientist is selecting the location card...</tg-info>
-              </ng-template>
-              <ng-template #locationSelected>
-                <tg-info>Forensic Scientist is selecting other cards...</tg-info>
-              </ng-template>
-            </ng-container>
-            <app-private-role-panel></app-private-role-panel>
-            <div class="cards">
+
+            <div class="forensic-card-grid">
               <app-forensic-card *ngIf="game.causeCard" [forensicCard]="game.causeCard"></app-forensic-card>
               <app-forensic-card *ngIf="game.locationCard" [forensicCard]="game.locationCard"></app-forensic-card>
-              <div *ngFor="let card of game.otherCards">
+              <ng-container *ngFor="let card of game.otherCards">
                 <app-forensic-card *ngIf="card.selectedChoice && !card.replaced" [forensicCard]="card"></app-forensic-card>
-              </div>
+              </ng-container>
             </div>
-            <app-player-deck-pager [guess]="guess" [disableSelection]="game.pendingWitnessSelection"></app-player-deck-pager>
-            <app-guess *ngIf="game.murdererCardsSelected && !game.pendingWitnessSelection" [guess]="guess"></app-guess>
-            <div class="player-deck-container">
+          </section>
+
+          <section class="suspects-panel surface-panel--soft">
+            <div class="section-head compact">
               <div>
-                <h3 class="your-cards-header">Your cards</h3>
+                <p class="eyebrow">Suspects</p>
+                <h3>Visible suspect decks</h3>
+              </div>
+              <p class="muted-copy">Browse every suspect hand without enabling selections.</p>
+            </div>
+            <app-player-deck-pager [disableSelection]="true"></app-player-deck-pager>
+          </section>
+        </ng-container>
+
+        <ng-template #activePlayerView>
+          <ng-container *ngIf="gameApi.me$ | async as player">
+            <ng-container *ngIf="gameApi.playerPrivateData$ | async as privateData">
+              <div *ngIf="privateData.isMurderer && !game.murdererCardsSelected">
+                <app-murderer-select-dialog [player]="player"></app-murderer-select-dialog>
+              </div>
+
+              <app-witness-selection-prompt></app-witness-selection-prompt>
+
+              <div class="status-stack">
+                <div class="murderer-selecting-cards" *ngIf="!game.murdererCardsSelected && !privateData.isMurderer">
+                  Murderer is selecting their cards ...
+                </div>
+
+                <ng-container *ngIf="game.murdererCardsSelected">
+                  <tg-info *ngIf="!game.causeCard; else causeSelected">Forensic Scientist is selecting the clue card...</tg-info>
+                  <ng-template #causeSelected>
+                    <tg-info *ngIf="!game.locationCard; else locationSelected">Forensic Scientist is selecting the location card...</tg-info>
+                  </ng-template>
+                  <ng-template #locationSelected>
+                    <tg-info>Forensic Scientist is selecting other cards...</tg-info>
+                  </ng-template>
+                </ng-container>
+              </div>
+
+              <app-private-role-panel></app-private-role-panel>
+
+              <section class="forensic-board surface-panel--soft">
+                <div class="section-head compact">
+                  <div>
+                    <p class="eyebrow">Forensic board</p>
+                    <h3>Current evidence trail</h3>
+                  </div>
+                  <p class="muted-copy">Use the revealed clues to narrow down the suspect decks below.</p>
+                </div>
+
+                <div class="forensic-card-grid">
+                  <app-forensic-card *ngIf="game.causeCard" [forensicCard]="game.causeCard"></app-forensic-card>
+                  <app-forensic-card *ngIf="game.locationCard" [forensicCard]="game.locationCard"></app-forensic-card>
+                  <ng-container *ngFor="let card of game.otherCards">
+                    <app-forensic-card *ngIf="card.selectedChoice && !card.replaced" [forensicCard]="card"></app-forensic-card>
+                  </ng-container>
+                </div>
+              </section>
+
+              <section class="suspects-panel surface-panel--soft">
+                <div class="section-head compact">
+                  <div>
+                    <p class="eyebrow">Suspects</p>
+                    <h3>Compare other players</h3>
+                  </div>
+                  <p class="muted-copy">Pick a means and clue from the same suspect to compose a guess.</p>
+                </div>
+                <app-player-deck-pager [guess]="guess" [disableSelection]="game.pendingWitnessSelection"></app-player-deck-pager>
+              </section>
+
+              <section class="guess-section" *ngIf="game.murdererCardsSelected && !game.pendingWitnessSelection">
+                <app-guess [guess]="guess"></app-guess>
+              </section>
+
+              <section class="hand-panel surface-panel--soft">
+                <div class="section-head compact">
+                  <div>
+                    <p class="eyebrow">Private hand</p>
+                    <h3>Your cards</h3>
+                  </div>
+                  <p class="muted-copy">Keep your own evidence visible while you study the table.</p>
+                </div>
                 <app-player-deck
                   [player]="player"
                   [disableSelection]="true"
                   [selectedClue]="(gameApi.playerPrivateData$ | async)?.clueCardName"
                   [selectedMeans]="(gameApi.playerPrivateData$ | async)?.meansCardName"
                 ></app-player-deck>
-              </div>
-            </div>
+              </section>
+            </ng-container>
           </ng-container>
-        </ng-container>
-      </ng-container>
+        </ng-template>
+      </ng-template>
     </ng-container>
   </div>
+
   <ng-template #loadingBlock>
-    <div>
+    <div class="loading-shell surface-panel--soft">
       <mat-spinner [diameter]="50"></mat-spinner>
     </div>
   </ng-template>
+
   <app-chat [disableChat]="isObserverRoute()"></app-chat>
 </div>

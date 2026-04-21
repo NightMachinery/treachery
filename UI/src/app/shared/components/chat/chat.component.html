@@ -3,17 +3,20 @@
     <ng-container *ngIf="gameApi.viewer$ | async as viewer">
       <div class="container" *ngIf="!chatApi.collapsed; else collapsed">
         <div class="title-bar">
-          <div class="chat-title">Chat</div>
-          <div class="vertical-centered">
-            <button mat-icon-button (click)="chatApi.toggleCollapse(true)" aria-label="Close chat">×</button>
+          <div>
+            <div class="eyebrow">Table talk</div>
+            <div class="chat-title">Chat</div>
           </div>
+          <button mat-icon-button class="close-button" (click)="chatApi.toggleCollapse(true)" aria-label="Close chat">×</button>
         </div>
+
         <div class="messages" #messages>
           <ng-container *ngFor="let message of chatApi.messages$ | async">
-            <div class="message-container">
-              <div *ngIf="!mine(message, viewer.uid)" class="image-container left">
+            <div class="message-container" [class.mine]="mine(message, viewer.uid)">
+              <div class="image-container" *ngIf="!mine(message, viewer.uid)">
                 <tg-avatar [uid]="message.playerUid || game.scientistUid || game.creatorUid"></tg-avatar>
               </div>
+
               <div class="message-card">
                 <div class="info">
                   <div class="name">
@@ -25,37 +28,38 @@
                 </div>
                 <div class="message">{{ message.message }}</div>
               </div>
-              <div *ngIf="mine(message, viewer.uid)" class="image-container right">
+
+              <div class="image-container" *ngIf="mine(message, viewer.uid)">
                 <tg-avatar [uid]="viewer.uid"></tg-avatar>
               </div>
             </div>
           </ng-container>
         </div>
+
         <div class="input">
-          <mat-form-field color="accent">
+          <label class="message-field">
+            <span class="sr-only">Message</span>
             <input
-              matInput
               [disabled]="disableChat"
               [placeholder]="disableChat ? 'Chat is disabled for this role' : 'Type a message'"
               (keyup.enter)="sendMessage()"
               [(ngModel)]="message"
               #messageInput
             />
-          </mat-form-field>
-          <div class="vertical-centered">
-            <button
-              mat-raised-button
-              [disabled]="disableChat || !message || !message.trim()"
-              color="accent"
-              name="message"
-              autocomplete="off"
-              (click)="sendMessage()"
-            >
-              Send
-            </button>
-          </div>
+          </label>
+          <button
+            mat-raised-button
+            [disabled]="disableChat || !message || !message.trim()"
+            color="accent"
+            name="message"
+            autocomplete="off"
+            (click)="sendMessage()"
+          >
+            Send
+          </button>
         </div>
       </div>
+
       <ng-template #collapsed>
         <button mat-icon-button (click)="chatApi.toggleCollapse(false)" class="collapsed-chat-button" aria-label="Open chat">💬</button>
       </ng-template>

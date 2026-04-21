@@ -1,88 +1,175 @@
-.container {
-  flex: 1;
-  height: 100%;
-  display: grid;
-}
-
 :host {
   flex: 1;
-  display: flex;
-  max-height: 100%;
-}
-
-.game-info-container {
-  padding: var(--space-8);
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-}
-
-app-joined-players-list {
-  flex: 1 1 auto;
+  display: block;
   min-height: 0;
 }
 
-app-chat {
-  overflow: auto;
+.game-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-12);
+  padding: var(--space-12);
+  align-items: start;
+}
+
+.game-info-container {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.game-hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-8);
+  padding: var(--space-8);
+}
+
+.hero-copy {
+  min-width: 0;
+
+  h2 {
+    margin: var(--space-2) 0 0;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+.control-strip {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+}
+
+.status-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
 }
 
 .murderer-selecting-cards {
-  background-color: var(--tg-info-color);
-  border-radius: var(--tg-border-radius);
-  padding: var(--space-4);
-  color: (var(--tg-info-text));
+  background: rgba(249, 168, 37, 0.12);
+  border: 1px solid rgba(249, 168, 37, 0.28);
+  border-radius: var(--tg-border-radius-16);
+  padding: var(--space-4) var(--space-6);
+  color: var(--tg-info-text);
   font-weight: var(--tg-info-weight);
 }
 
-app-player-deck-pager {
-  margin: var(--space-4) 0;
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-6);
+  margin-bottom: var(--space-6);
+
+  h3 {
+    margin: var(--space-2) 0 0;
+    font-size: 1.25rem;
+  }
+
+  p {
+    margin: 0;
+    max-width: 30rem;
+  }
 }
 
-.cards {
-  flex: 0 0 auto;
+.section-head.compact {
+  align-items: center;
+}
+
+.forensic-board,
+.suspects-panel,
+.hand-panel,
+.result-panel {
+  padding: var(--space-8);
+}
+
+.forensic-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11.5rem, 1fr));
+  gap: var(--space-4);
+}
+
+.guess-section {
+  display: block;
+}
+
+.result-actions {
+  margin-top: var(--space-8);
+}
+
+.loading-shell {
   display: flex;
-  overflow-x: auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 18rem;
+}
+
+app-chat {
+  min-width: 0;
+}
+
+@media only screen and (min-width: 72rem) {
+  .game-layout {
+    grid-template-columns: minmax(0, 1.35fr) minmax(19rem, 26rem);
+  }
+
+  .game-layout.chat-collapsed {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  app-chat {
+    position: sticky;
+    top: calc(var(--tg-navbar-height) + var(--space-8));
+    align-self: start;
+    max-height: calc((var(--tg-vh, 1vh) * 100) - var(--tg-navbar-height) - var(--space-16));
+  }
+}
+
+@media only screen and (max-width: 72rem) {
+  .game-layout {
+    padding: var(--space-8);
+  }
+
+  .game-hero,
+  .section-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-actions {
+    justify-content: flex-start;
+  }
 }
 
 @media only screen and (max-width: 40rem) {
-  .container {
+  .game-layout {
+    gap: var(--space-8);
+    padding: var(--space-4);
+  }
+
+  .game-hero,
+  .forensic-board,
+  .suspects-panel,
+  .hand-panel,
+  .result-panel {
+    padding: var(--space-6);
+  }
+
+  .forensic-card-grid {
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 2fr;
   }
-  .container.chat-collapsed {
-    grid-template-columns: auto;
-    grid-template-rows: auto;
-  }
-}
-
-@media only screen and (min-width: 40rem) and (max-width: 65rem) {
-  .container {
-    grid-template-columns: 4fr 3fr;
-  }
-  .container.chat-collapsed {
-    grid-template-columns: auto;
-  }
-}
-
-@media only screen and (min-width: 65rem) {
-  .container {
-    grid-template-columns: 2fr 1fr;
-  }
-  .container.chat-collapsed {
-    grid-template-columns: auto;
-  }
-}
-
-.player-deck-container {
-  display: flex;
-  justify-content: center;
-
-  app-player-deck {
-    margin-top: var(--space-4);
-  }
-}
-
-.your-cards-header {
-  margin-top: var(--space-8);
-  margin-bottom: var(--space-4);
 }

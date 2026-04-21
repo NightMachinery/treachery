@@ -1,17 +1,26 @@
+.wrapper {
+  padding: var(--space-8);
+  font-weight: var(--tg-info-weight);
+}
+
+.guess-copy {
+  margin-bottom: var(--space-6);
+
+  h3 {
+    margin: var(--space-2) 0;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   gap: var(--space-4);
-  margin-top: var(--space-4);
-}
-
-.wrapper {
-  padding: var(--space-4) var(--space-8);
-  background-color: var(--tg-card-background-color);
-  border-radius: var(--tg-border-radius);
-  font-weight: var(--tg-info-weight);
 }
 
 .murderer {
@@ -21,19 +30,27 @@
   flex-direction: column;
   text-align: center;
   padding-right: var(--space-4);
+  min-width: 8rem;
 }
 
-.subtitle {
-  font-weight: normal;
-  font-style: italic;
-}
-
+.subtitle,
 .think {
-  font-weight: normal;
+  color: var(--tg-text-muted);
+}
+
+.name {
+  margin-top: var(--space-3);
+  font-weight: 700;
 }
 
 .button-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+@media only screen and (max-width: 40rem) {
+  .wrapper {
+    padding: var(--space-6);
+  }
 }

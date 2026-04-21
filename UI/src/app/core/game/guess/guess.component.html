@@ -1,13 +1,16 @@
-<div class="wrapper">
-  <div>
-    Compose a guess by selecting one of the cards above
+<div class="wrapper surface-panel--soft">
+  <div class="guess-copy">
+    <p class="eyebrow">Accusation</p>
+    <h3>Compose a guess</h3>
+    <p class="muted-copy">Select a suspect, then pick one means card and one clue card from that same deck.</p>
   </div>
+
   <div class="container" *ngIf="guess && guess.murdererUid">
     <ng-container *ngIf="gameApi.players$ | async as players">
       <ng-container *ngIf="getMurderer(players) as murderer">
         <div class="murderer">
           <div class="think">I think</div>
-          <tg-avatar [diameter]="50" [uid]="murderer.uid"></tg-avatar>
+          <tg-avatar [diameter]="52" [uid]="murderer.uid"></tg-avatar>
           <div class="name">{{ murderer.name }}</div>
           <div class="subtitle">is the murderer</div>
         </div>

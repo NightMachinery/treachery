@@ -1,21 +1,15 @@
-<div class="horizontal-scroll">
-  <div class="container flex-horizontal">
-    <ng-container *ngIf="viewer$ | async as viewer">
-      <div
-        class="deck-container"
-        *ngFor="let player of otherPlayers(players$ | async, viewer); trackBy: trackByPlayerUid; first as isFirst"
-        [class.first]="isFirst"
-      >
-        <app-player-deck
-          [disableSelection]="disableSelection"
-          [disableSelectionDisplay]="disableSelection"
-          [(selectedClue)]="selectedClue"
-          (selectedClueChange)="handleClueChange(player)"
-          [(selectedMeans)]="selectedMeans"
-          (selectedMeansChange)="handleMeansChange(player)"
-          [player]="player"
-        ></app-player-deck>
-      </div>
-    </ng-container>
-  </div>
+<div class="deck-grid">
+  <ng-container *ngIf="viewer$ | async as viewer">
+    <div class="deck-container" *ngFor="let player of otherPlayers(players$ | async, viewer); trackBy: trackByPlayerUid">
+      <app-player-deck
+        [disableSelection]="disableSelection"
+        [disableSelectionDisplay]="disableSelection"
+        [(selectedClue)]="selectedClue"
+        (selectedClueChange)="handleClueChange(player)"
+        [(selectedMeans)]="selectedMeans"
+        (selectedMeansChange)="handleMeansChange(player)"
+        [player]="player"
+      ></app-player-deck>
+    </div>
+  </ng-container>
 </div>

@@ -1,29 +1,32 @@
 .card {
   height: var(--tg-card-height);
   width: var(--tg-card-width);
-  border-radius: 4px;
-  margin: var(--space-2);
-  border: 2px solid;
+  border-radius: 14px;
+  margin: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   position: relative;
   overflow: hidden;
-  background: var(--tg-dark-bg-lighter-5);
+  background:
+    linear-gradient(180deg, rgba(12, 13, 19, 0.22), rgba(12, 13, 19, 0.86)),
+    rgba(22, 25, 35, 0.94);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.24);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.32);
+  }
+
   .main-img {
     position: absolute;
+    inset: 0;
     height: 100%;
     width: 100%;
     object-fit: cover;
     object-position: center;
+    filter: saturate(1.05) contrast(1.04);
   }
-  .overlay-img {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-    object-position: center;
-    opacity: 0.3;
-    z-index: 1;
-  }
-  transition: all 0.2s ease-in;
 }
 
 .card-name {
@@ -33,30 +36,35 @@
   inset-inline-start: 0;
   inset-inline-end: 0;
   max-width: 100%;
-  font-weight: 500;
-  padding: var(--space-2);
+  font-weight: 700;
+  font-size: 0.74rem;
+  line-height: 1.15;
+  padding: var(--space-2) var(--space-2) 0.9rem;
   word-wrap: break-word;
   word-break: break-word;
   text-align: start;
   unicode-bidi: plaintext;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 75%, rgba(0, 0, 0, 0));
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.75);
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.55) 70%, rgba(0, 0, 0, 0));
 }
 
 .means.selected {
-  color: #8e9fff;
   border-color: #8e9fff;
+  box-shadow: 0 0 0 2px rgba(142, 159, 255, 0.22), 0 16px 34px rgba(25, 37, 92, 0.42);
+
   .type-text {
     background-color: #8e9fff;
-    color: black;
+    color: #081022;
   }
 }
 
 .clue.selected {
-  color: #ff5144;
-  border-color: #ff5144;
+  border-color: #ff867c;
+  box-shadow: 0 0 0 2px rgba(255, 134, 124, 0.2), 0 16px 34px rgba(113, 18, 18, 0.38);
+
   .type-text {
-    background-color: #ff5144;
-    color: black;
+    background-color: #ff867c;
+    color: #2a0605;
   }
 }
 
@@ -65,16 +73,18 @@
 }
 
 .means {
-  border-color: #001fc5;
+  border-color: rgba(70, 102, 255, 0.72);
+
   .type-text {
-    background-color: #001fc5;
+    background-color: rgba(53, 84, 224, 0.96);
   }
 }
 
 .clue {
-  border-color: #8d0900;
+  border-color: rgba(208, 68, 63, 0.72);
+
   .type-text {
-    background-color: #8d0900;
+    background-color: rgba(175, 45, 40, 0.96);
   }
 }
 
@@ -87,12 +97,18 @@
   bottom: 0;
   inset-inline-end: 0;
   position: absolute;
-  border-radius: 5px 0 0 0;
-  padding: 2px 4px;
+  border-radius: 12px 0 0 0;
+  padding: 0.28rem 0.42rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.55rem;
+  font-weight: 700;
 }
 
 .text-only {
-  width: clamp(7.5rem, 22vw, 10rem);
+  width: clamp(8rem, 19vw, 10.5rem);
+  min-height: var(--tg-card-height);
+  height: auto;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
 
   .card-name {
@@ -101,13 +117,14 @@
     background: none;
     font-size: 0.95rem;
     line-height: 1.25;
+    text-shadow: none;
   }
 
   .type-text {
     position: static;
-    align-self: flex-end;
-    border-radius: 5px 5px 0 0;
-    text-transform: uppercase;
+    align-self: flex-start;
+    border-radius: 999px;
+    padding: 0.32rem 0.58rem;
   }
 }
 

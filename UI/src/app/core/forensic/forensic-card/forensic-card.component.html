@@ -1,10 +1,14 @@
 <ng-container *ngIf="!!forensicCard">
   <div class="card" [ngClass]="[disabled ? 'disabled-card' : '', selected ? 'selected-card' : '']">
-    <!-- adding mat ripple to mat card has a bug, mat card resizes on click, workaround -->
-    <h4>{{ forensicCard.cardName }}</h4>
+    <div class="card-header">
+      <p class="eyebrow">Forensic clue</p>
+      <h4>{{ forensicCard.cardName }}</h4>
+    </div>
+
     <div class="options">
       <button
         mat-flat-button
+        type="button"
         class="option"
         [ngClass]="[!disabled && isSelected(choice) ? 'option-selected' : 'option-not-selected']"
         *ngFor="let choice of forensicCard.choices"

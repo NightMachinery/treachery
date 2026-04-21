@@ -37,6 +37,13 @@ The lobby uses the existing **Save settings** flow, so pre-start changes to this
 - Only means/clue cards are affected; forensic clue cards stay unchanged.
 - Means/clue card labels now use browser auto-direction (`dir="auto"`) so RTL text renders correctly in both image and text-only modes.
 
+## In-game room layout
+
+- Active game screens now group the play table into clear sections: room controls, forensic clues, suspect decks, guess composition, the viewer's private hand, and chat.
+- Suspect decks now reflow into responsive cards instead of forcing a wide horizontal strip, so desktop and mobile layouts stay readable when comparing players.
+- Chat is presented as a dedicated side panel on wide screens and stacks underneath the board on smaller screens.
+- The same layout applies in both image-card mode and text-only means/clues mode.
+
 ## Shared room timer
 
 - Once the game has started, the creator can launch a shared room timer from the active room view.

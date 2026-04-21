@@ -1,24 +1,35 @@
 <div class="player-deck">
   <div class="player">
     <div class="avatar-container"><tg-avatar [uid]="player.uid"></tg-avatar></div>
-    <div class="name">{{ player.name }}</div>
+    <div>
+      <div class="name">{{ player.name }}</div>
+      <div class="subtitle">Suspect cards</div>
+    </div>
   </div>
-  <div class="cards">
-    <app-card
-      *ngFor="let card of player.meansCards; trackBy: trackByCardName"
-      [card]="card"
-      [active]="!disableSelectionDisplay && selectedMeans === card.name"
-      [means]="true"
-      (click)="!disableSelection && meansClick(card.name)"
-    ></app-card>
+
+  <div class="card-lane">
+    <div class="lane-label">Means</div>
+    <div class="cards">
+      <app-card
+        *ngFor="let card of player.meansCards; trackBy: trackByCardName"
+        [card]="card"
+        [active]="!disableSelectionDisplay && selectedMeans === card.name"
+        [means]="true"
+        (click)="!disableSelection && meansClick(card.name)"
+      ></app-card>
+    </div>
   </div>
-  <div class="cards">
-    <app-card
-      *ngFor="let card of player.clueCards; trackBy: trackByCardName"
-      [card]="card"
-      [active]="!disableSelectionDisplay && selectedClue === card.name"
-      [means]="false"
-      (click)="!disableSelection && clueClick(card.name)"
-    ></app-card>
+
+  <div class="card-lane">
+    <div class="lane-label">Clues</div>
+    <div class="cards">
+      <app-card
+        *ngFor="let card of player.clueCards; trackBy: trackByCardName"
+        [card]="card"
+        [active]="!disableSelectionDisplay && selectedClue === card.name"
+        [means]="false"
+        (click)="!disableSelection && clueClick(card.name)"
+      ></app-card>
+    </div>
   </div>
 </div>

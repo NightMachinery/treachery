@@ -1,14 +1,25 @@
 <ng-container *ngIf="vm$ | async as vm">
-  <div class="role-panel" *ngIf="vm.privateData?.role && vm.privateData.role !== 'investigator'">
+  <div class="role-panel surface-panel--soft" *ngIf="vm.privateData?.role && vm.privateData.role !== 'investigator'">
+    <p class="eyebrow">Hidden role</p>
     <h3>{{ getRoleTitle(vm.privateData.role) }}</h3>
+
+    <ng-container *ngIf="vm.privateData.role === 'murderer'">
+      <p class="muted-copy">Blend in, protect your chosen cards, and keep the forensic clues ambiguous.</p>
+    </ng-container>
+    <ng-container *ngIf="vm.privateData.role === 'accomplice'">
+      <p class="muted-copy">Support the murderer without giving away the whole team.</p>
+    </ng-container>
+    <ng-container *ngIf="vm.privateData.role === 'witness'">
+      <p class="muted-copy">You know the murderer team identities, but you still need to survive suspicion.</p>
+    </ng-container>
 
     <ng-container *ngIf="vm.privateData.knownMurdererTeam?.length">
       <div class="subtitle">Known murderer team</div>
       <div class="team-list">
         <div class="team-member" *ngFor="let member of vm.privateData.knownMurdererTeam">
-          <tg-avatar [uid]="member.uid" [diameter]="40"></tg-avatar>
+          <tg-avatar [uid]="member.uid" [diameter]="42"></tg-avatar>
           <div>
-            <div>{{ member.name }}</div>
+            <div class="member-name">{{ member.name }}</div>
             <div class="role-label">{{ member.role }}</div>
           </div>
         </div>

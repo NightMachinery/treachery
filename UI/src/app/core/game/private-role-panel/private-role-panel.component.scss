@@ -1,13 +1,14 @@
 .role-panel {
-  background: var(--tg-card-background-color);
-  border-radius: var(--tg-border-radius);
-  padding: var(--space-6);
-  margin: var(--space-4) 0;
+  padding: var(--space-8);
+}
+
+h3 {
+  margin: var(--space-2) 0 var(--space-4);
 }
 
 .subtitle {
-  margin: var(--space-4) 0 var(--space-2);
-  font-weight: 600;
+  margin: var(--space-6) 0 var(--space-3);
+  font-weight: 700;
 }
 
 .team-list {
@@ -20,6 +21,14 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--tg-border-radius-16);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.member-name {
+  font-weight: 700;
 }
 
 .role-label {
@@ -31,5 +40,4 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-4);
-  overflow-x: auto;
 }

@@ -7,6 +7,7 @@ import { GameApiService } from '../../shared/api/game/game-api.service';
 import { ForensicApiService } from '../../shared/api/forensic/forensic-api.service';
 import { TgGame, TgGameSettingsInput, TgParticipant } from '../../shared/api/models/models';
 import { SnackBarService } from '../../shared/api/snack-bar/snack-bar.service';
+import { copyTextToClipboard } from '../../shared/utils/clipboard';
 
 @Component({
   selector: 'app-join-game',
@@ -117,11 +118,12 @@ export class JoinGameComponent implements OnInit, OnDestroy {
       this.snack.error('Could not create a migrate-device link.');
       return;
     }
-    if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(link);
-    } else {
-      window.prompt('Copy this migrate-device link', link);
+    const copied = await copyTextToClipboard(link);
+    if (copied) {
+      this.snack.success('Migrate-device link copied.');
+      return;
     }
+    this.snack.error('Could not copy the migrate-device link.');
   }
 
   handleMeansCardCountChange() {
@@ -157,6 +159,35 @@ export class JoinGameComponent implements OnInit, OnDestroy {
     } else {
       this.settings.witnessesToFind = this.normalizeBoundedNumber(this.settings.witnessesToFind, 1, this.settings.witnessCount, 1);
     }
+  }
+
+  adjustMeansCards(delta: number) {
+    this.settings.meansCardsPerPlayer = (Number(this.settings.meansCardsPerPlayer) || 4) + delta;
+    this.handleMeansCardCountChange();
+  }
+
+  adjustClueCards(delta: number) {
+    if (this.settings.linkClueCountToMeans) {
+      return;
+    }
+    this.settings.clueCardsPerPlayer = (Number(this.settings.clueCardsPerPlayer) || this.settings.meansCardsPerPlayer || 4) + delta;
+    this.handleClueCardCountChange();
+  }
+
+  adjustAccomplices(delta: number) {
+    this.settings.accompliceCount = (Number(this.settings.accompliceCount) || 0) + delta;
+    this.handleRoleCountChange();
+  }
+
+  adjustWitnesses(delta: number) {
+    this.settings.witnessCount = (Number(this.settings.witnessCount) || 0) + delta;
+    this.handleRoleCountChange();
+  }
+
+  adjustWitnessesToFind(delta: number) {
+    const fallback = this.settings.witnessCount > 0 ? 1 : 0;
+    this.settings.witnessesToFind = (Number(this.settings.witnessesToFind) || fallback) + delta;
+    this.handleRoleCountChange();
   }
 
   async saveSettings() {

@@ -47,17 +47,42 @@
           <div class="settings-grid">
             <label>
               <span>Means cards / suspect</span>
-              <input type="number" min="1" [(ngModel)]="settings.meansCardsPerPlayer" (ngModelChange)="handleMeansCardCountChange()" />
+              <div class="number-stepper">
+                <button type="button" class="stepper-button" aria-label="Decrease means cards per suspect" (click)="adjustMeansCards(-1)">−</button>
+                <input name="meansCardsPerPlayer" type="number" min="1" [(ngModel)]="settings.meansCardsPerPlayer" (ngModelChange)="handleMeansCardCountChange()" />
+                <button type="button" class="stepper-button" aria-label="Increase means cards per suspect" (click)="adjustMeansCards(1)">+</button>
+              </div>
             </label>
             <label>
               <span>Evidence cards / suspect</span>
-              <input
-                type="number"
-                min="1"
-                [disabled]="settings.linkClueCountToMeans"
-                [(ngModel)]="settings.clueCardsPerPlayer"
-                (ngModelChange)="handleClueCardCountChange()"
-              />
+              <div class="number-stepper" [class.is-disabled]="settings.linkClueCountToMeans">
+                <button
+                  type="button"
+                  class="stepper-button"
+                  aria-label="Decrease evidence cards per suspect"
+                  [disabled]="settings.linkClueCountToMeans"
+                  (click)="adjustClueCards(-1)"
+                >
+                  −
+                </button>
+                <input
+                  name="clueCardsPerPlayer"
+                  type="number"
+                  min="1"
+                  [disabled]="settings.linkClueCountToMeans"
+                  [(ngModel)]="settings.clueCardsPerPlayer"
+                  (ngModelChange)="handleClueCardCountChange()"
+                />
+                <button
+                  type="button"
+                  class="stepper-button"
+                  aria-label="Increase evidence cards per suspect"
+                  [disabled]="settings.linkClueCountToMeans"
+                  (click)="adjustClueCards(1)"
+                >
+                  +
+                </button>
+              </div>
             </label>
             <label class="checkbox-row wide">
               <input type="checkbox" [(ngModel)]="settings.linkClueCountToMeans" (ngModelChange)="handleLinkClueCountChange()" />
@@ -69,15 +94,27 @@
             </label>
             <label>
               <span>Accomplices</span>
-              <input type="number" min="0" max="10" [(ngModel)]="settings.accompliceCount" (ngModelChange)="handleRoleCountChange()" />
+              <div class="number-stepper">
+                <button type="button" class="stepper-button" aria-label="Decrease accomplices" (click)="adjustAccomplices(-1)">−</button>
+                <input name="accompliceCount" type="number" min="0" max="10" [(ngModel)]="settings.accompliceCount" (ngModelChange)="handleRoleCountChange()" />
+                <button type="button" class="stepper-button" aria-label="Increase accomplices" (click)="adjustAccomplices(1)">+</button>
+              </div>
             </label>
             <label>
               <span>Witnesses</span>
-              <input type="number" min="0" max="10" [(ngModel)]="settings.witnessCount" (ngModelChange)="handleRoleCountChange()" />
+              <div class="number-stepper">
+                <button type="button" class="stepper-button" aria-label="Decrease witnesses" (click)="adjustWitnesses(-1)">−</button>
+                <input name="witnessCount" type="number" min="0" max="10" [(ngModel)]="settings.witnessCount" (ngModelChange)="handleRoleCountChange()" />
+                <button type="button" class="stepper-button" aria-label="Increase witnesses" (click)="adjustWitnesses(1)">+</button>
+              </div>
             </label>
             <label *ngIf="settings.witnessCount > 0">
               <span>Witnesses murderer must find</span>
-              <input type="number" min="1" [max]="settings.witnessCount" [(ngModel)]="settings.witnessesToFind" (ngModelChange)="handleRoleCountChange()" />
+              <div class="number-stepper">
+                <button type="button" class="stepper-button" aria-label="Decrease witnesses to find" (click)="adjustWitnessesToFind(-1)">−</button>
+                <input name="witnessesToFind" type="number" min="1" [max]="settings.witnessCount" [(ngModel)]="settings.witnessesToFind" (ngModelChange)="handleRoleCountChange()" />
+                <button type="button" class="stepper-button" aria-label="Increase witnesses to find" (click)="adjustWitnessesToFind(1)">+</button>
+              </div>
             </label>
           </div>
 

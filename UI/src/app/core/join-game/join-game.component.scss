@@ -133,44 +133,8 @@
      }
    }
  
-   input[type='number'] {
-     min-height: 3.2rem;
-     box-sizing: border-box;
-     width: 100%;
-     padding: 0 1.25rem;
-     border-radius: 14px;
-     border: 1.5px solid rgba(255, 255, 255, 0.14);
-     background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
-     color: inherit;
-     font-size: 1.1rem;
-     font-weight: 600;
-     line-height: 1.2;
-     text-align: center;
-     font-variant-numeric: tabular-nums;
-     appearance: textfield;
-     transition: all 0.2s ease;
-     backdrop-filter: blur(8px);
- 
-     &:focus {
-       outline: none;
-       border-color: rgba(138, 99, 210, 0.7);
-       box-shadow: 0 0 0 2px rgba(138, 99, 210, 0.25), 0 4px 12px rgba(138, 99, 210, 0.15);
-       background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.06));
-     }
- 
-     &:hover:not(:disabled) {
-       border-color: rgba(255, 255, 255, 0.22);
-       background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-     }
- 
-     &:disabled {
-      opacity: 0.5;
-    }
-  }
-
-  input[type='number']::-webkit-outer-spin-button,
-  input[type='number']::-webkit-inner-spin-button {
-    margin: 0;
+  .number-stepper {
+    backdrop-filter: blur(8px);
   }
 }
 

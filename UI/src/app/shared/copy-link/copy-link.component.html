@@ -1,17 +1,17 @@
- <div class="copy-container">
-   <input #copyInput [value]="text" readonly style="position: absolute; left: -9999px;" />
-   <button 
-     mat-raised-button 
-     color="accent"
-     type="button" 
-     class="copy-button"
-     [class.copied]="copied"
-     (click)="copyText()"
-   >
-     <span class="button-content">
-       <span class="icon" [class.show]="!copied">📋</span>
-       <span class="icon checkmark" [class.show]="copied">✓</span>
-       <span class="label">{{ copied ? 'Copied!' : 'Copy invite link' }}</span>
-     </span>
-   </button>
- </div>
+<div class="copy-container">
+  <button
+    mat-raised-button
+    color="accent"
+    type="button"
+    class="copy-button"
+    [class.copied]="copied"
+    [attr.aria-label]="copied ? 'Copied invite link' : 'Copy invite link'"
+    (click)="copyText()"
+  >
+    <span class="button-content">
+      <span class="icon" aria-hidden="true" [class.show]="!copied">📋</span>
+      <span class="icon checkmark" aria-hidden="true" [class.show]="copied">✓</span>
+      <span class="label">{{ copied ? 'Copied!' : 'Copy invite link' }}</span>
+    </span>
+  </button>
+</div>

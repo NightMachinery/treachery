@@ -1,8 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { TgAuthUser } from '../models/models';
+import { DisplayNameDialogComponent } from '../../components/display-name-dialog/display-name-dialog.component';
 
 const SESSION_STORAGE_KEY = 'treachery.session.token';
 const DISPLAY_NAME_STORAGE_KEY = 'treachery.session.displayName';
@@ -17,7 +19,7 @@ export class AuthService {
   private readonly userSubject = new BehaviorSubject<TgAuthUser>(null);
   private readonly displayNameSubject = new BehaviorSubject<string>(localStorage.getItem(DISPLAY_NAME_STORAGE_KEY) || '');
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private dialog: MatDialog) {
     this.user$ = this.userSubject.asObservable();
     this.displayName$ = this.displayNameSubject.asObservable().pipe(distinctUntilChanged());
     this.user$.subscribe(value => {
@@ -68,7 +70,22 @@ export class AuthService {
 
   async promptForDisplayName(gameId?: string, roomAuth?: string): Promise<boolean> {
     const current = this.getStoredDisplayName();
-    const result = window.prompt('Choose a display name for Treachery', current || '');
+    const result = await firstValueFrom(
+      this.dialog
+        .open(DisplayNameDialogComponent, {
+          panelClass: ['tg-confirm-dialog', 'tg-name-dialog'],
+          hasBackdrop: true,
+          autoFocus: false,
+          restoreFocus: false,
+          data: {
+            initialValue: current || '',
+            title: current ? 'Update your display name' : 'Choose a display name',
+            helperText: 'Pick the name that appears to everyone else in the room.',
+            submitLabel: current ? 'Save changes' : 'Save name'
+          }
+        })
+        .afterClosed()
+    );
     const trimmed = (result || '').trim();
     if (!trimmed) {
       return false;

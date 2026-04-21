@@ -1,0 +1,26 @@
+<div class="dialog-shell">
+  <div class="eyebrow">Identity</div>
+  <h2>{{ data.title || 'Choose a display name' }}</h2>
+  <p>{{ data.helperText || 'Pick the name other players will see at the table.' }}</p>
+
+  <div class="field">
+    <span>Display name</span>
+    <input
+      cdkFocusInitial
+      type="text"
+      name="displayName"
+      maxlength="32"
+      autocomplete="name"
+      [(ngModel)]="displayName"
+      (keydown.enter)="save()"
+      placeholder="Detective Nova"
+    />
+  </div>
+
+  <div class="dialog-actions">
+    <button mat-stroked-button type="button" (click)="cancel()">Not now</button>
+    <button mat-raised-button color="accent" type="button" (click)="save()" [disabled]="!(displayName || '').trim()">
+      {{ data.submitLabel || 'Save name' }}
+    </button>
+  </div>
+</div>

@@ -9,6 +9,7 @@ import { GameApiService } from '../../shared/api/game/game-api.service';
 import { ForensicApiService } from './../../shared/api/forensic/forensic-api.service';
 import { SnackBarService } from './../../shared/api/snack-bar/snack-bar.service';
 import { TgCard, TgForensicCard, TgForensicPrivateData, TgGame } from './../../shared/api/models/models';
+import { copyTextToClipboard } from '../../shared/utils/clipboard';
 
 @Component({
   selector: 'app-forensic',
@@ -164,11 +165,12 @@ export class ForensicComponent implements OnInit, OnDestroy {
       this.snack.error('Could not create a migrate-device link.');
       return;
     }
-    if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(link);
-    } else {
-      window.prompt('Copy this migrate-device link', link);
+    const copied = await copyTextToClipboard(link);
+    if (copied) {
+      this.snack.success('Migrate-device link copied.');
+      return;
     }
+    this.snack.error('Could not copy the migrate-device link.');
   }
 
   private async syncRoute(snapshot) {

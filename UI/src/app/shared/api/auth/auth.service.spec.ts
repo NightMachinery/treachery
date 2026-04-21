@@ -1,5 +1,6 @@
 import { provideHttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
 
 import { AuthService } from './auth.service';
 
@@ -8,7 +9,7 @@ describe('AuthService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient()]
+      providers: [provideHttpClient(), { provide: MatDialog, useValue: { open: jasmine.createSpy('open') } }]
     });
     service = TestBed.inject(AuthService);
   });

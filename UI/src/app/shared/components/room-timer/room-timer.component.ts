@@ -86,6 +86,11 @@ export class RoomTimerComponent implements OnInit, OnDestroy {
     this.durationSeconds = parsed >= 1 ? parsed : DEFAULT_ROOM_TIMER_SECONDS;
   }
 
+  adjustDuration(delta: number) {
+    this.durationSeconds = (Number(this.durationSeconds) || DEFAULT_ROOM_TIMER_SECONDS) + delta;
+    this.normalizeDurationInput();
+  }
+
   async startTimer() {
     this.normalizeDurationInput();
     await this.performAction(async () => this.gameApi.startRoomTimer(this.durationSeconds));

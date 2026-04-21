@@ -43,6 +43,7 @@ import { MurdererInfoComponent } from './core/forensic/murderer-info/murderer-in
 import { ConfirmationButtonComponent } from './shared/components/confirmation-button/confirmation-button.component';
 import { ConfirmActionDialogComponent } from './shared/components/confirm-action-dialog/confirm-action-dialog.component';
 import { PromptPanelComponent } from './shared/components/prompt-panel/prompt-panel.component';
+import { DisplayNameDialogComponent } from './shared/components/display-name-dialog/display-name-dialog.component';
 import { WitnessSelectionPromptComponent } from './core/game/witness-selection-prompt/witness-selection-prompt.component';
 import { ModeratorWitnessControlsComponent } from './core/game/moderator-witness-controls/moderator-witness-controls.component';
 import { PrivateRolePanelComponent } from './core/game/private-role-panel/private-role-panel.component';
@@ -79,6 +80,7 @@ import { AuthTokenInterceptor } from './shared/api/auth/auth-token.interceptor';
     ConfirmationButtonComponent,
     ConfirmActionDialogComponent,
     PromptPanelComponent,
+    DisplayNameDialogComponent,
     WitnessSelectionPromptComponent,
     ModeratorWitnessControlsComponent,
     PrivateRolePanelComponent,

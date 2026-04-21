@@ -184,6 +184,12 @@ Open a fresh page in a new isolated context instead of depending on a problemati
 
 Webpack/ng-serve reconnect messages are normal during `dev-start`; focus on whether the actual page content updated.
 
+### Native browser prompts hang or block Chrome MCP
+
+Avoid `window.prompt()`/native browser prompt flows for Treachery UI work when possible.
+
+They can block or confuse the Chrome MCP automation layer. Prefer in-app dialogs and programmatic clipboard fallbacks instead.
+
 ## 10. Files in this folder
 
 - `README.md`: this playbook

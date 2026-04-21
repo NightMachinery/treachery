@@ -40,6 +40,7 @@
           <label class="message-field">
             <span class="sr-only">Message</span>
             <input
+              name="message"
               [disabled]="disableChat"
               [placeholder]="disableChat ? 'Chat is disabled for this role' : 'Type a message'"
               (keyup.enter)="sendMessage()"
@@ -51,7 +52,6 @@
             mat-raised-button
             [disabled]="disableChat || !message || !message.trim()"
             color="accent"
-            name="message"
             autocomplete="off"
             (click)="sendMessage()"
           >

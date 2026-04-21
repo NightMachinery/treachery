@@ -25,7 +25,7 @@
         <h2>Enter a game code</h2>
         <label class="join-field">
           <span>Game ID</span>
-          <input #gameIdInput autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="KGEH" />
+          <input #gameIdInput name="gameId" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="KGEH" />
         </label>
         <button mat-stroked-button color="accent" (click)="joinGame(gameIdInput.value)">Join Game</button>
       </div>

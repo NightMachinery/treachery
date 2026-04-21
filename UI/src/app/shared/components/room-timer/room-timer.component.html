@@ -13,7 +13,11 @@
   <div class="creator-controls" *ngIf="isCreator">
     <label class="duration-input">
       <span>Seconds</span>
-      <input type="number" min="1" [(ngModel)]="durationSeconds" (blur)="normalizeDurationInput()" />
+      <div class="number-stepper number-stepper--timer">
+        <button type="button" class="stepper-button" aria-label="Decrease timer duration by five seconds" (click)="adjustDuration(-5)">−5</button>
+        <input name="roomTimerSeconds" type="number" min="1" [(ngModel)]="durationSeconds" (blur)="normalizeDurationInput()" />
+        <button type="button" class="stepper-button" aria-label="Increase timer duration by five seconds" (click)="adjustDuration(5)">+5</button>
+      </div>
     </label>
 
     <div class="actions">

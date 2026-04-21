@@ -321,6 +321,12 @@ app-chat {
   min-width: 0;
 }
 
+@media only screen and (min-width: 60rem) {
+  .control-strip app-room-timer {
+    grid-column: 1 / -1;
+  }
+}
+
 @media only screen and (min-width: 72rem) {
   .game-layout {
     grid-template-columns: minmax(0, 1.35fr) minmax(19rem, 26rem);

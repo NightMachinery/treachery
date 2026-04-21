@@ -20,6 +20,7 @@ This pass focused on the main interaction pain points that showed up in live Chr
 - reduced ugly forensic-option wrapping by widening clue cards and using tighter, more balanced option label typography
 - changed automatic bad-team victory logic so accomplices no longer block the endgame once every good-team guess has been spent
 - polished the finished-state UI for both player and forensic views with clearer winner banners, round metrics, and a final accusation log
+- redesigned the desktop shared room timer so the countdown, duration stepper, and moderator actions sit in a tighter two-column control surface instead of leaving a large empty slab
 - normalized spacing tokens used across the UI so card/panel spacing is consistent
 
 ## Verified flows

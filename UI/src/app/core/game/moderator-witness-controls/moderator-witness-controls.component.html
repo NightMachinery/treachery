@@ -1,25 +1,48 @@
 <ng-container *ngIf="(gameApi.game$ | async) as game">
   <ng-container *ngIf="(gameApi.viewer$ | async) as viewer">
-    <div class="moderator-panel" *ngIf="viewer.isCreator && game.startedOn">
-      <h3>Room mods</h3>
-      <label class="toggle-row">
+    <div class="moderator-panel moderator-panel--room-mods" *ngIf="viewer.isCreator && game.startedOn">
+      <div class="panel-head">
+        <div>
+          <p class="eyebrow">Live discussion settings</p>
+          <h3>Room mods</h3>
+        </div>
+        <span class="panel-badge">{{ game.meansCluesTextOnly ? 'Text only' : 'Images on' }}</span>
+      </div>
+
+      <label class="toggle-card" [class.is-checked]="game.meansCluesTextOnly" [class.is-disabled]="roomModsBusy">
         <input
+          class="toggle-input"
           type="checkbox"
           [checked]="game.meansCluesTextOnly"
           [disabled]="roomModsBusy"
           (change)="setMeansCluesTextOnly($any($event.target).checked, game.meansCluesTextOnly)"
         />
-        <span>Means/clues text only (hide images)</span>
+        <span class="toggle-visual" aria-hidden="true">
+          <span class="toggle-knob"></span>
+        </span>
+        <span class="toggle-copy">
+          <span class="toggle-title">Means/clues text only (hide images)</span>
+          <span class="toggle-description">Switch every suspect deck to text-only cards immediately so the room can focus on labels instead of art.</span>
+        </span>
       </label>
       <p class="panel-copy">Applies immediately to everyone in the room.</p>
     </div>
     <ng-container *ngIf="viewer.isCreator && game.pendingWitnessSelection && (gameApi.moderatorPrivateData$ | async) as moderatorData">
-      <div class="moderator-panel" *ngIf="moderatorData.witnessPromptCandidates.length > 0">
-        <h3>Witness prompt controls</h3>
-        <p>Choose any suspect to quietly re-send the witness-selection prompt without revealing hidden roles.</p>
+      <div class="moderator-panel moderator-panel--witness" *ngIf="moderatorData.witnessPromptCandidates.length > 0">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Moderator follow-up</p>
+            <h3>Witness prompt controls</h3>
+          </div>
+          <span class="panel-badge">{{ moderatorData.witnessPromptCandidates.length }} target{{ moderatorData.witnessPromptCandidates.length === 1 ? '' : 's' }}</span>
+        </div>
+        <p class="panel-copy">Choose any suspect to quietly re-send the witness-selection prompt without revealing hidden roles.</p>
         <div class="target-list">
           <div class="target-row" *ngFor="let candidate of moderatorData.witnessPromptCandidates">
-            <strong>{{ candidate.name }}</strong>
+            <div class="target-copy">
+              <strong>{{ candidate.name }}</strong>
+              <span>Quietly reopen the hidden witness-selection prompt.</span>
+            </div>
             <button mat-stroked-button type="button" (click)="showPrompt(candidate.uid)">Show prompt</button>
           </div>
         </div>

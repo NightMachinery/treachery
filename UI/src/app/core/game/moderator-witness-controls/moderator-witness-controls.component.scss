@@ -1,30 +1,144 @@
+:host {
+  display: grid;
+  gap: var(--space-6);
+  align-content: start;
+}
+
 .moderator-panel {
-  background: rgba(28, 31, 43, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--tg-border-radius-16);
+  max-width: 30rem;
+  background:
+    linear-gradient(180deg, rgba(28, 31, 43, 0.96), rgba(20, 23, 32, 0.92)),
+    rgba(28, 31, 43, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 22px;
   padding: var(--space-6);
-  box-shadow: var(--tg-shadow-soft);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
 }
 
 .moderator-panel h3 {
-  margin: 0 0 var(--space-4);
+  margin: var(--space-2) 0 0;
+  font-size: 1.2rem;
+  letter-spacing: -0.02em;
 }
 
-.toggle-row {
+.panel-head {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: space-between;
   gap: var(--space-4);
 }
 
+.panel-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(10, 12, 18, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.toggle-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: center;
+  margin-top: var(--space-5);
+  padding: var(--space-5);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.toggle-card:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.toggle-card.is-checked {
+  border-color: rgba(138, 99, 210, 0.4);
+  background: linear-gradient(135deg, rgba(138, 99, 210, 0.16), rgba(255, 255, 255, 0.04));
+}
+
+.toggle-card.is-disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.toggle-card:focus-within {
+  border-color: rgba(138, 99, 210, 0.6);
+  box-shadow: 0 0 0 2px rgba(138, 99, 210, 0.16);
+}
+
+.toggle-input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.toggle-visual {
+  position: relative;
+  width: 3.3rem;
+  height: 1.95rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  transition: background 0.2s ease;
+}
+
+.toggle-knob {
+  position: absolute;
+  top: 0.2rem;
+  left: 0.22rem;
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 50%;
+  background: #f4f7fb;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.28);
+  transition: transform 0.2s ease;
+}
+
+.toggle-card.is-checked .toggle-visual {
+  background: linear-gradient(135deg, rgba(138, 99, 210, 0.9), rgba(255, 214, 102, 0.9));
+}
+
+.toggle-card.is-checked .toggle-knob {
+  transform: translateX(1.35rem);
+}
+
+.toggle-copy {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.toggle-title {
+  font-weight: 700;
+}
+
+.toggle-description,
 .panel-copy {
-  margin: var(--space-4) 0 0;
+  margin: 0;
+  line-height: 1.5;
   color: var(--tg-text-muted);
+}
+
+.panel-copy {
+  margin-top: var(--space-4);
 }
 
 .target-list {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+  margin-top: var(--space-5);
 }
 
 .target-row {
@@ -32,16 +146,42 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--tg-border-radius-16);
-  background: rgba(255, 255, 255, 0.04);
+  padding: var(--space-4) var(--space-5);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.045);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.target-copy {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+
+  strong {
+    font-size: 1rem;
+  }
+
+  span {
+    color: var(--tg-text-muted);
+    line-height: 1.4;
+  }
+}
+
 @media only screen and (max-width: 40rem) {
+  .moderator-panel,
+  .panel-badge {
+    max-width: none;
+    width: 100%;
+  }
+
+  .panel-head,
   .target-row {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .toggle-card {
+    grid-template-columns: 1fr;
   }
 
   .target-row button {

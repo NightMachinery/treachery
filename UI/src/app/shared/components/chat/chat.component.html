@@ -14,7 +14,10 @@
           <ng-container *ngFor="let message of chatApi.messages$ | async">
             <div class="message-container" [class.mine]="mine(message, viewer.uid)">
               <div class="image-container" *ngIf="!mine(message, viewer.uid)">
-                <tg-avatar [uid]="message.playerUid || game.scientistUid || game.creatorUid"></tg-avatar>
+                <tg-avatar
+                  [uid]="message.playerUid || game.scientistUid || game.creatorUid"
+                  [name]="participantsDict.get(message.playerUid || game.scientistUid || game.creatorUid)?.name"
+                ></tg-avatar>
               </div>
 
               <div class="message-card">
@@ -30,7 +33,7 @@
               </div>
 
               <div class="image-container" *ngIf="mine(message, viewer.uid)">
-                <tg-avatar [uid]="viewer.uid"></tg-avatar>
+                <tg-avatar [uid]="viewer.uid" [name]="viewer.name"></tg-avatar>
               </div>
             </div>
           </ng-container>

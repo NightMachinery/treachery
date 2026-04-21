@@ -6,7 +6,7 @@
     </div>
     <div class="role-list">
       <div class="role-entry" *ngFor="let entry of roleReveal">
-        <tg-avatar [uid]="entry.uid" [diameter]="44"></tg-avatar>
+        <tg-avatar [uid]="entry.uid" [name]="entry.name" [diameter]="44"></tg-avatar>
         <div class="role-copy">
           <div class="role-name">{{ entry.name }}</div>
           <div class="role-label">{{ entry.role }}</div>

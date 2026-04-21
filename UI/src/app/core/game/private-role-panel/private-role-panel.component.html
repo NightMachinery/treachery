@@ -17,7 +17,7 @@
       <div class="subtitle">Known murderer team</div>
       <div class="team-list">
         <div class="team-member" *ngFor="let member of vm.privateData.knownMurdererTeam">
-          <tg-avatar [uid]="member.uid" [diameter]="42"></tg-avatar>
+          <tg-avatar [uid]="member.uid" [name]="member.name" [diameter]="42"></tg-avatar>
           <div>
             <div class="member-name">{{ member.name }}</div>
             <div class="role-label">{{ member.role }}</div>

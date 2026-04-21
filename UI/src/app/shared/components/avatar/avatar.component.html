@@ -1,1 +1,1 @@
-<img [height]="diameter" [width]="diameter" [src]="avatarSrc(uid)" [alt]="uid || 'avatar'" loading="lazy" (error)="onImageError($event, uid)">
+<img [height]="diameter" [width]="diameter" [src]="src" [alt]="name || uid || 'avatar'" loading="lazy" (error)="onImageError($event)">

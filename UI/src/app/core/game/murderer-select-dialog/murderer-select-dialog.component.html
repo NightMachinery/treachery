@@ -5,7 +5,7 @@
       <div class="team-list" *ngIf="privateData.knownMurdererTeam?.length > 1">
         <div class="subtitle">Your team</div>
         <div class="team-member" *ngFor="let member of privateData.knownMurdererTeam">
-          <tg-avatar [uid]="member.uid" [diameter]="36"></tg-avatar>
+          <tg-avatar [uid]="member.uid" [name]="member.name" [diameter]="36"></tg-avatar>
           <div>{{ member.name }} <span class="role-label">{{ member.role }}</span></div>
         </div>
       </div>

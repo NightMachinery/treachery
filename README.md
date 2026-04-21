@@ -95,6 +95,7 @@ A web app for a board game based on Deception: Murder in Hong Kong
 
 - Each browser keeps a local auth token in local storage.
 - Your saved display name is attached to that auth identity, so you only need to enter it once.
+- Players without a custom avatar get a deterministic generated fallback avatar seeded from their user ID plus display name. See `docs/identity-and-avatars.md`.
 - Any room participant can use **Migrate device** to copy a room-specific link that reuses that room identity on another device without exposing the real auth token.
 - The migration link is room-scoped and stays in the URL so refresh keeps the imported identity for that room.
 - Opening a started-game room link as someone who is not already in the room joins as an observer automatically or via the observe prompt.

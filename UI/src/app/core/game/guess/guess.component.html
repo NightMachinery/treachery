@@ -10,7 +10,7 @@
       <ng-container *ngIf="getMurderer(players) as murderer">
         <div class="murderer">
           <div class="think">I think</div>
-          <tg-avatar [diameter]="52" [uid]="murderer.uid"></tg-avatar>
+          <tg-avatar [diameter]="52" [uid]="murderer.uid" [name]="murderer.name"></tg-avatar>
           <div class="name">{{ murderer.name }}</div>
           <div class="subtitle">is the murderer</div>
         </div>

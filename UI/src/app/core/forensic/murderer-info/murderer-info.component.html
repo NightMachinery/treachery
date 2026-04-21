@@ -6,7 +6,7 @@
     </div>
     <div class="container">
       <div class="avatar-container">
-        <tg-avatar [diameter]="84" [uid]="murdererInfo.murderer.uid"></tg-avatar>
+        <tg-avatar [diameter]="84" [uid]="murdererInfo.murderer.uid" [name]="murdererInfo.murderer.name"></tg-avatar>
         <div class="murderer-name">{{ murdererInfo.murderer.name }}</div>
       </div>
       <ng-container *ngIf="murdererInfo.clueCard && murdererInfo.meansCard; else selectingCards">

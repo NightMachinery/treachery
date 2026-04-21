@@ -1,6 +1,6 @@
 <div class="player-deck" [class.deck-selected]="deckSelected" [class.deck-dimmed]="deckDimmed">
   <div class="player">
-    <div class="avatar-container"><tg-avatar [uid]="player.uid"></tg-avatar></div>
+    <div class="avatar-container"><tg-avatar [uid]="player.uid" [name]="player.name"></tg-avatar></div>
     <div>
       <div class="name">{{ player.name }}</div>
       <div class="subtitle">Suspect cards</div>

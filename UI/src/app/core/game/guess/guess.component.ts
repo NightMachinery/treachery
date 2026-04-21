@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { ChatApiService } from 'src/app/shared/api/chat/chat-api.service';
 import { GameApiService } from './../../../shared/api/game/game-api.service';
@@ -13,10 +13,15 @@ import { SnackBarService } from 'src/app/shared/api/snack-bar/snack-bar.service'
 })
 export class GuessComponent implements OnInit {
   @Input() guess: TgPartialGuess;
+  @Output() cancelled = new EventEmitter<void>();
 
   constructor(public gameApi: GameApiService, public snack: SnackBarService, public chatApi: ChatApiService) {}
 
   ngOnInit() {}
+
+  cancelGuess() {
+    this.cancelled.emit();
+  }
 
   makeGuess() {
     this.gameApi.guesses$.pipe(take(1)).subscribe(guesses => {

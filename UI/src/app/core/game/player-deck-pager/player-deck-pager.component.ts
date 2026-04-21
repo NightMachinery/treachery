@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { GameApiService } from './../../../shared/api/game/game-api.service';
 import { TgPartialGuess, TgPlayer, TgViewer } from '../../../shared/api/models/models';
@@ -9,7 +9,7 @@ import { TgPartialGuess, TgPlayer, TgViewer } from '../../../shared/api/models/m
   templateUrl: './player-deck-pager.component.html',
   styleUrls: ['./player-deck-pager.component.scss']
 })
-export class PlayerDeckPagerComponent implements OnInit {
+export class PlayerDeckPagerComponent implements OnInit, OnChanges {
   players$: Observable<TgPlayer[]>;
   viewer$: Observable<TgViewer>;
   @Input() guess: TgPartialGuess = {} as TgPartialGuess;
@@ -26,20 +26,35 @@ export class PlayerDeckPagerComponent implements OnInit {
 
   ngOnInit() {}
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.guess) {
+      this.selectedClue = this.guess?.clueCardName || null;
+      this.selectedMeans = this.guess?.meansCardName || null;
+    }
+  }
+
   handleClueChange(player: TgPlayer) {
-    this.guess.murdererUid = player.uid;
     if (!player.meansCards.some(card => card.name === this.selectedMeans)) {
       this.selectedMeans = null;
     }
-    this.guess.meansCardName = this.selectedMeans;
-    this.guess.clueCardName = this.selectedClue;
+    this.syncGuess(player);
   }
 
   handleMeansChange(player: TgPlayer) {
-    this.guess.murdererUid = player.uid;
     if (!player.clueCards.some(card => card.name === this.selectedClue)) {
       this.selectedClue = null;
     }
+    this.syncGuess(player);
+  }
+
+  private syncGuess(player: TgPlayer) {
+    if (!this.selectedMeans && !this.selectedClue) {
+      this.guess.murdererUid = null;
+      this.guess.meansCardName = null;
+      this.guess.clueCardName = null;
+      return;
+    }
+    this.guess.murdererUid = player.uid;
     this.guess.meansCardName = this.selectedMeans;
     this.guess.clueCardName = this.selectedClue;
   }

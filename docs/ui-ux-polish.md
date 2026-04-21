@@ -15,6 +15,7 @@ This pass focused on the main interaction pain points that showed up in live Chr
 - widened suspect-deck image cards, prevented ugly mid-word wrapping, and converted the rows to compact centered grids to reduce wasted empty space
 - made chat start collapsed by default and added an accusation history section after the player's private cards
 - strengthened selected-card states and de-emphasized non-selected suspect cards once a guess target is chosen
+- made clicking an already-selected suspect card toggle it off again and added a cancel action to the accusation panel
 - normalized spacing tokens used across the UI so card/panel spacing is consistent
 
 ## Verified flows

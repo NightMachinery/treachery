@@ -19,6 +19,7 @@
           <ng-container *ngIf="getClueCard(murderer) as clueCard">
             <app-card [card]="clueCard" [means]="false"></app-card>
             <div class="button-container">
+              <button mat-stroked-button type="button" (click)="cancelGuess()">Cancel</button>
               <button mat-raised-button color="accent" (click)="makeGuess()">Make guess</button>
             </div>
           </ng-container>

@@ -162,7 +162,7 @@
               </section>
 
               <section class="guess-section" *ngIf="game.murdererCardsSelected && !game.pendingWitnessSelection">
-                <app-guess [guess]="guess"></app-guess>
+                <app-guess [guess]="guess" (cancelled)="cancelGuess()"></app-guess>
               </section>
 
               <section class="hand-panel surface-panel--soft">

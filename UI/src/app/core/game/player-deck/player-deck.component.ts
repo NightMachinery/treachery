@@ -20,12 +20,12 @@ export class PlayerDeckComponent implements OnInit {
   constructor() {}
 
   clueClick(cardName) {
-    this.selectedClue = cardName;
+    this.selectedClue = this.selectedClue === cardName ? null : cardName;
     this.selectedClueChange.emit(this.selectedClue);
   }
 
   meansClick(cardName) {
-    this.selectedMeans = cardName;
+    this.selectedMeans = this.selectedMeans === cardName ? null : cardName;
     this.selectedMeansChange.emit(this.selectedMeans);
   }
 

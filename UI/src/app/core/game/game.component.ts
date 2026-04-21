@@ -105,6 +105,10 @@ export class GameComponent implements OnInit, OnDestroy {
     }
   }
 
+  cancelGuess() {
+    this.guess = {} as TgPartialGuess;
+  }
+
   sortedGuesses(guesses: TgGuess[]) {
     return [...(guesses || [])].sort((a, b) => {
       const aTime = a.createdTimestamp ? Date.parse(a.createdTimestamp) : 0;

@@ -1,10 +1,12 @@
-.info {
-  background: linear-gradient(135deg, rgba(249, 168, 37, 0.16), rgba(249, 168, 37, 0.1));
-  border: 1px solid rgba(249, 168, 37, 0.34);
-  border-radius: var(--tg-border-radius-16);
-  padding: 0.85rem 1rem;
-  color: var(--tg-info-text);
-  font-weight: var(--tg-info-weight);
-  margin: 0;
-  box-sizing: border-box;
-}
+ .info {
+   background: linear-gradient(135deg, rgba(249, 168, 37, 0.16), rgba(249, 168, 37, 0.1));
+   border: 1px solid rgba(249, 168, 37, 0.34);
+   border-radius: 14px;
+   padding: 0.9rem 1.15rem;
+   color: var(--tg-info-text);
+   font-weight: var(--tg-info-weight);
+   margin: 0;
+   box-sizing: border-box;
+   backdrop-filter: blur(6px);
+   line-height: 1.5;
+ }

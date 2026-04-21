@@ -1,54 +1,68 @@
-:host {
-  display: block;
-  width: 100%;
-}
-
-.copy-container {
-  display: flex;
-  align-items: center;
-  gap: var(--space-8);
-  width: 100%;
-  padding: var(--space-8);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--tg-border-radius-16);
-  box-sizing: border-box;
-  cursor: pointer;
-}
-
-.copy-input {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  min-width: 0;
-  flex: 1 1 auto;
-}
-
-.copy-label {
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
-}
-
-input {
-  width: 100%;
-  min-width: 0;
-  border: none;
-  outline: none;
-  background: transparent;
-  color: inherit;
-  font-size: 1rem;
-  text-overflow: ellipsis;
-}
-
-@media only screen and (max-width: 40rem) {
-  .copy-container {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .copy-container button {
-    width: 100%;
-  }
-}
+ :host {
+   display: block;
+   width: 100%;
+ }
+ 
+ .copy-container {
+   display: flex;
+   justify-content: center;
+   width: 100%;
+ }
+ 
+ .copy-button {
+   position: relative;
+   min-width: 14rem;
+   padding: 0.85rem 1.75rem !important;
+   font-weight: 600 !important;
+   transition: all 0.25s ease !important;
+ }
+ 
+ .copy-button.copied {
+   background: rgba(76, 175, 80, 0.95) !important;
+   border-color: rgba(76, 175, 80, 0.95) !important;
+ }
+ 
+ .button-content {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 0.5rem;
+ }
+ 
+ .icon {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   font-size: 1.1rem;
+   opacity: 0;
+   transform: scale(0.5);
+   transition: all 0.2s ease;
+   position: absolute;
+   left: 1.25rem;
+ }
+ 
+ .icon.show {
+   opacity: 1;
+   transform: scale(1);
+   position: static;
+ }
+ 
+ .icon.checkmark {
+   font-size: 1.3rem;
+   font-weight: bold;
+ }
+ 
+ .label {
+   transition: all 0.2s ease;
+ }
+ 
+ @media only screen and (max-width: 40rem) {
+   .copy-button {
+     width: 100%;
+     min-width: 0;
+   }
+ 
+   .icon {
+     left: 1rem;
+   }
+ }

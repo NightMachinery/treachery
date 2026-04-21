@@ -1,7 +1,17 @@
-<div matRipple class="copy-container" (click)="copyText()">
-  <div class="copy-input">
-    <span class="copy-label">Invite link</span>
-    <input #copyInput [value]="text" readonly />
-  </div>
-  <button mat-stroked-button type="button" (click)="$event.stopPropagation(); copyText()">Copy link</button>
-</div>
+ <div class="copy-container">
+   <input #copyInput [value]="text" readonly style="position: absolute; left: -9999px;" />
+   <button 
+     mat-raised-button 
+     color="accent"
+     type="button" 
+     class="copy-button"
+     [class.copied]="copied"
+     (click)="copyText()"
+   >
+     <span class="button-content">
+       <span class="icon" [class.show]="!copied">📋</span>
+       <span class="icon checkmark" [class.show]="copied">✓</span>
+       <span class="label">{{ copied ? 'Copied!' : 'Copy invite link' }}</span>
+     </span>
+   </button>
+ </div>

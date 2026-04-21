@@ -20,19 +20,20 @@
   gap: var(--space-12);
 }
 
-.forensic-hero {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-12);
-  padding: var(--space-12);
-}
-
-.hero-copy {
-  min-width: 0;
-
-  h2 {
-    margin: var(--space-2) 0 0;
+ .forensic-hero {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: var(--space-12);
+   padding: var(--space-16) var(--space-12);
+ }
+ 
+ .hero-copy {
+   min-width: 0;
+   padding: 0 var(--space-4);
+ 
+   h2 {
+     margin: var(--space-2) 0 0;
     font-size: clamp(1.6rem, 3vw, 2.4rem);
   }
 
@@ -86,42 +87,45 @@ app-chat {
 app-player-deck-pager {
   margin: var(--space-8) 0 0;
 }
-
-.cards-container {
-  flex: 0 0 auto;
-  overflow-x: auto;
-  padding-bottom: var(--space-2);
-  width: 100%;
-  display: flex;
-  gap: var(--space-4);
-}
-
-app-forensic-card {
-  flex: 0 0 auto;
-}
-
-.selection-action,
-.finished-actions {
-  display: flex;
+ 
+ .cards-container {
+   flex: 0 0 auto;
+   overflow-x: auto;
+   padding-bottom: var(--space-2);
+   width: 100%;
+   display: flex;
+   gap: var(--space-6);
+   padding: 0 var(--space-2);
+ }
+ 
+ app-forensic-card {
+   flex: 0 0 auto;
+   min-width: 11rem;
+ }
+ 
+ .selection-action,
+ .finished-actions {
+   display: flex;
   justify-content: center;
   margin: var(--space-4) 0 var(--space-8);
 }
 
 .selection-action button,
 .finished-actions tg-confirmation-button {
-  width: min(100%, 16rem);
-}
-
-.selected-cards-container {
-  margin: var(--space-8) 0 0;
-  padding: var(--space-8);
-
-  h2 {
-    margin: 0 0 var(--space-6);
-  }
-}
-
-.loading-shell {
+   width: min(100%, 16rem);
+ }
+ 
+ .selected-cards-container {
+   margin: var(--space-8) 0 0;
+   padding: var(--space-12) var(--space-10);
+ 
+   h2 {
+     margin: 0 0 var(--space-6);
+     padding: 0 var(--space-2);
+   }
+ }
+ 
+ .loading-shell {
   align-items: center;
   justify-content: center;
   min-height: 18rem;
@@ -170,16 +174,16 @@ app-forensic-card {
 
 @media only screen and (max-width: 40rem) {
   .container {
-    gap: var(--space-8);
-    padding: var(--space-8);
-  }
-
-  .forensic-hero,
-  .selected-cards-container {
-    padding: var(--space-8);
-  }
-
-  .action-button-row {
+   gap: var(--space-8);
+     padding: var(--space-8);
+   }
+ 
+   .forensic-hero,
+   .selected-cards-container {
+     padding: var(--space-12) var(--space-8);
+   }
+ 
+   .action-button-row {
     flex-direction: column;
   }
 

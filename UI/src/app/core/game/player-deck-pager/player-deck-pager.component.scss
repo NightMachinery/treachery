@@ -1,9 +1,10 @@
-.deck-grid {
-  display: grid;
-  gap: var(--space-6);
-  grid-template-columns: repeat(auto-fit, minmax(min(19rem, 100%), 1fr));
-}
-
-.deck-container {
-  min-width: 0;
-}
+ .deck-grid {
+   display: grid;
+   gap: var(--space-8);
+   grid-template-columns: repeat(auto-fit, minmax(min(19rem, 100%), 1fr));
+   padding: 0 var(--space-2);
+ }
+ 
+ .deck-container {
+   min-width: 0;
+ }

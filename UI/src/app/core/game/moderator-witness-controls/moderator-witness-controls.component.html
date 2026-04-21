@@ -6,7 +6,6 @@
           <p class="eyebrow">Live discussion settings</p>
           <h3>Room mods</h3>
         </div>
-        <span class="panel-badge">{{ game.meansCluesTextOnly ? 'Text only' : 'Images on' }}</span>
       </div>
 
       <label class="toggle-row" [class.is-checked]="game.meansCluesTextOnly" [class.is-disabled]="roomModsBusy">
@@ -22,7 +21,9 @@
         </span>
         <span class="toggle-copy">
           <span class="toggle-title">Means/clues text only (hide images)</span>
-          <span class="toggle-description">Applies immediately to everyone in the room.</span>
+          <span class="toggle-description">
+            {{ game.meansCluesTextOnly ? 'Enabled for everyone in the room.' : 'Applies immediately to everyone in the room.' }}
+          </span>
         </span>
       </label>
     </div>

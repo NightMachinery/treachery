@@ -26,6 +26,7 @@ This pass focused on the main interaction pain points that showed up in live Chr
 - removed redundant timer badges and leaned harder on stateful color/glow treatment so paused/running/expired each read visually without extra UI chrome
 - added smooth timer-surface state transitions so border/glow/background changes animate instead of snapping abruptly
 - unified the timer control interaction language so primary, secondary, and stepper buttons all share the same hover/focus/press rhythm instead of feeling mismatched
+- removed the redundant room-mod status badge and made the enabled text-only toggle read as clearly active through the switch/card styling itself
 - normalized spacing tokens used across the UI so card/panel spacing is consistent
 
 ## Verified flows
@@ -41,6 +42,7 @@ Using the remote Chrome workflow in `docs/chrome/README.md`:
 - desktop/mobile follow-up: compact timer + room-mod pass verified after removing the earlier bulky multi-panel treatment
 - desktop/mobile follow-up: refined timer pass verified again after removing redundant badges and adding animated state styling
 - desktop follow-up: verified timer control buttons now react consistently on hover instead of only some controls lifting/highlighting
+- room-mod follow-up: verified the text-only toggle now has a clearer enabled state without relying on a duplicate “Text only” badge
 
 ## Validation notes
 

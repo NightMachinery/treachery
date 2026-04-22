@@ -44,7 +44,37 @@
             <p class="muted-copy">Balance the room before you start the match.</p>
           </div>
 
-          <div class="settings-grid">
+          <div class="settings-grid" *ngIf="cardApi.catalog$ | async as catalog">
+            <label>
+              <span>CrimePack</span>
+              <select name="crimePackId" [(ngModel)]="settings.crimePackId" (ngModelChange)="handleCrimePackChange()">
+                <option *ngFor="let pack of catalog.crimePacks" [ngValue]="pack.id">{{ pack.name }}</option>
+              </select>
+            </label>
+            <label>
+              <span>CrimePack language</span>
+              <select name="crimePackLanguage" [(ngModel)]="settings.crimePackLanguage" (ngModelChange)="handleCrimePackLanguageChange()">
+                <option *ngFor="let language of selectedCrimePack?.languages || []" [ngValue]="language.id">{{ language.name }}</option>
+              </select>
+            </label>
+            <label *ngIf="showCrimeAssetSelector">
+              <span>CrimePack image assets</span>
+              <select name="crimePackAssetSetId" [(ngModel)]="settings.crimePackAssetSetId" (ngModelChange)="handleCrimePackAssetSetChange()">
+                <option *ngFor="let assetSet of selectedCrimePack?.assetSets || []" [ngValue]="assetSet.id">{{ assetSet.name }}</option>
+              </select>
+            </label>
+            <label>
+              <span>HintPack</span>
+              <select name="hintPackId" [(ngModel)]="settings.hintPackId" (ngModelChange)="handleHintPackChange()">
+                <option *ngFor="let pack of catalog.hintPacks" [ngValue]="pack.id">{{ pack.name }}</option>
+              </select>
+            </label>
+            <label>
+              <span>HintPack language</span>
+              <select name="hintPackLanguage" [(ngModel)]="settings.hintPackLanguage" (ngModelChange)="handleHintPackLanguageChange()">
+                <option *ngFor="let language of selectedHintPack?.languages || []" [ngValue]="language.id">{{ language.name }}</option>
+              </select>
+            </label>
             <label>
               <span>Means cards / suspect</span>
               <div class="number-stepper">
@@ -56,15 +86,7 @@
             <label>
               <span>Evidence cards / suspect</span>
               <div class="number-stepper" [class.is-disabled]="settings.linkClueCountToMeans">
-                <button
-                  type="button"
-                  class="stepper-button"
-                  aria-label="Decrease evidence cards per suspect"
-                  [disabled]="settings.linkClueCountToMeans"
-                  (click)="adjustClueCards(-1)"
-                >
-                  −
-                </button>
+                <button type="button" class="stepper-button" aria-label="Decrease evidence cards per suspect" [disabled]="settings.linkClueCountToMeans" (click)="adjustClueCards(-1)">−</button>
                 <input
                   name="clueCardsPerPlayer"
                   type="number"
@@ -73,25 +95,23 @@
                   [(ngModel)]="settings.clueCardsPerPlayer"
                   (ngModelChange)="handleClueCardCountChange()"
                 />
-                <button
-                  type="button"
-                  class="stepper-button"
-                  aria-label="Increase evidence cards per suspect"
-                  [disabled]="settings.linkClueCountToMeans"
-                  (click)="adjustClueCards(1)"
-                >
-                  +
-                </button>
+                <button type="button" class="stepper-button" aria-label="Increase evidence cards per suspect" [disabled]="settings.linkClueCountToMeans" (click)="adjustClueCards(1)">+</button>
               </div>
             </label>
             <label class="checkbox-row wide">
               <input type="checkbox" [(ngModel)]="settings.linkClueCountToMeans" (ngModelChange)="handleLinkClueCountChange()" />
               <span>Keep evidence count synced with means count</span>
             </label>
-            <label class="checkbox-row wide">
+            <label class="checkbox-row wide" *ngIf="showTextOnlyToggle; else forcedTextOnlyRow">
               <input type="checkbox" [(ngModel)]="settings.meansCluesTextOnly" (ngModelChange)="handleMeansCluesTextOnlyChange()" />
               <span>Text-only means/clues cards</span>
             </label>
+            <ng-template #forcedTextOnlyRow>
+              <label class="checkbox-row wide is-disabled">
+                <input type="checkbox" [checked]="true" disabled />
+                <span>Text-only means/clues cards (forced because this CrimePack has no image assets)</span>
+              </label>
+            </ng-template>
             <label>
               <span>Accomplices</span>
               <div class="number-stepper">

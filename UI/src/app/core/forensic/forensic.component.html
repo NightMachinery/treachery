@@ -45,7 +45,7 @@
               A correct guess was made. The murderer team is now choosing {{ game.witnessesToFind }} witness{{ game.witnessesToFind === 1 ? '' : 'es' }}.
             </tg-info>
             <ng-container *ngIf="forensicApi.forensicPrivateData$ | async as privateData">
-              <ng-container *ngIf="privateData.murdererClueCardName && privateData.murdererMeansCardName">
+              <ng-container *ngIf="privateData.murdererClueCardId && privateData.murdererMeansCardId">
                 <ng-container *ngIf="game.startedOn">
                   <ng-container *ngIf="toReplace(game)">
                     <tg-info>Select card to replace</tg-info>
@@ -53,8 +53,8 @@
                       <ng-container *ngFor="let card of game.otherCards">
                         <app-forensic-card
                           [forensicCard]="card"
-                          *ngIf="card.selectedChoice && !card.replaced"
-                          [selected]="card.cardName === replaceCardName"
+                          *ngIf="card.selectedChoiceId && !card.replaced"
+                          [selected]="card.cardId === replaceCardId"
                           (click)="selectReplaceCard(card)"
                         ></app-forensic-card>
                       </ng-container>
@@ -68,9 +68,9 @@
                         <app-forensic-card
                           *ngFor="let card of cards.forensicCards.causeCards"
                           [forensicCard]="card"
-                          [(selectedOptionName)]="selectedCauseCardOption"
+                          [(selectedOptionId)]="selectedCauseCardOptionId"
                           (click)="causeCardClick(card)"
-                          [selected]="card.cardName === selectedCauseCardName"
+                          [selected]="card.cardId === selectedCauseCardId"
                         ></app-forensic-card>
                       </div>
                       <div class="selection-action">
@@ -84,7 +84,7 @@
                         <app-forensic-card
                           *ngFor="let card of cards.forensicCards.locationCards"
                           [forensicCard]="card"
-                          [(selectedOptionName)]="selectedLocationCardOption"
+                          [(selectedOptionId)]="selectedLocationCardOptionId"
                           (click)="locationCardClick(card)"
                           [selected]="card === selectedLocationCard"
                         ></app-forensic-card>
@@ -98,7 +98,7 @@
                       <tg-info>{{ toReplace(game) ? 'Select a card and choose one to replace' : 'Select a card' }}</tg-info>
                       <div class="cards-container">
                         <app-forensic-card
-                          [(selectedOptionName)]="selectedOtherCardOption"
+                          [(selectedOptionId)]="selectedOtherCardOptionId"
                           [forensicCard]="nextCard(game)"
                           [selected]="true"
                         ></app-forensic-card>
@@ -118,7 +118,7 @@
                         <app-forensic-card [forensicCard]="game.causeCard"></app-forensic-card>
                         <app-forensic-card [forensicCard]="game.locationCard"></app-forensic-card>
                         <ng-container *ngFor="let card of game.otherCards">
-                          <app-forensic-card [forensicCard]="card" *ngIf="card.selectedChoice && !card.replaced"></app-forensic-card>
+                          <app-forensic-card [forensicCard]="card" *ngIf="card.selectedChoiceId && !card.replaced"></app-forensic-card>
                         </ng-container>
                       </div>
                     </div>

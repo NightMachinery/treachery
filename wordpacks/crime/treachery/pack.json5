@@ -1,0 +1,14 @@
+{
+  id: "treachery",
+  name: "Treachery",
+  defaultLanguage: "en",
+  defaultAssetSetId: "treachery",
+  fallbackAssetSetId: "treachery",
+  languages: {
+    en: "English",
+    fa: "فارسی",
+  },
+  assetSets: {
+    treachery: "Treachery",
+  },
+}

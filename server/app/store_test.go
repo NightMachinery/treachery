@@ -13,8 +13,8 @@ import (
 func newTestApp(t *testing.T) *App {
 	t.Helper()
 	app, err := New(Config{
-		DataDir:   t.TempDir(),
-		CardsPath: filepath.Join("..", "..", "UI", "src", "assets", "cards.json"),
+		DataDir:      t.TempDir(),
+		WordpacksDir: filepath.Join("..", "..", "wordpacks"),
 	})
 	if err != nil {
 		t.Fatalf("new app: %v", err)

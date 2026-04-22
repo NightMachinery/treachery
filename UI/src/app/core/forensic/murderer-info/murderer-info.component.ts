@@ -21,8 +21,8 @@ export class MurdererInfoComponent implements OnInit {
         if (forensicPrivateData && forensicPrivateData.murderer) {
           return of({
             murderer: forensicPrivateData.murderer,
-            clueCard: findClueCard(forensicPrivateData.murderer, forensicPrivateData.murdererClueCardName),
-            meansCard: findMeansCard(forensicPrivateData.murderer, forensicPrivateData.murdererMeansCardName)
+            clueCard: findClueCard(forensicPrivateData.murderer, forensicPrivateData.murdererClueCardId),
+            meansCard: findMeansCard(forensicPrivateData.murderer, forensicPrivateData.murdererMeansCardId)
           });
         }
 
@@ -34,8 +34,8 @@ export class MurdererInfoComponent implements OnInit {
                   const murderer = players.find(p => p.uid === game.murdererUid);
                   return {
                     murderer,
-                    clueCard: findClueCard(murderer, game.murdererClueCardName),
-                    meansCard: findMeansCard(murderer, game.murdererMeansCardName)
+                    clueCard: findClueCard(murderer, game.murdererClueCardId),
+                    meansCard: findMeansCard(murderer, game.murdererMeansCardId)
                   };
                 })
               );

@@ -1,0 +1,788 @@
+{
+  "causeCards": [
+    {
+      "cardId": "cause-of-death",
+      "cardName": "Cause of Death",
+      "choices": [
+        {
+          "id": "suffocation",
+          "label": "Suffocation"
+        },
+        {
+          "id": "severe-injury",
+          "label": "Severe Injury"
+        },
+        {
+          "id": "loss-of-blood",
+          "label": "Loss of Blood"
+        },
+        {
+          "id": "illness-disease",
+          "label": "Illness/ Disease"
+        },
+        {
+          "id": "poisoning",
+          "label": "Poisoning"
+        },
+        {
+          "id": "accident",
+          "label": "Accident"
+        }
+      ]
+    }
+  ],
+  "locationCards": [
+    {
+      "cardId": "locations-1",
+      "cardName": "Locations",
+      "choices": [
+        {
+          "id": "living-room",
+          "label": "Living Room"
+        },
+        {
+          "id": "bedroom",
+          "label": "Bedroom"
+        },
+        {
+          "id": "storeroom",
+          "label": "Storeroom"
+        },
+        {
+          "id": "bathroom",
+          "label": "Bathroom"
+        },
+        {
+          "id": "kitchen",
+          "label": "Kitchen"
+        },
+        {
+          "id": "balcony",
+          "label": "Balcony"
+        }
+      ]
+    },
+    {
+      "cardId": "locations-2",
+      "cardName": "Locations",
+      "choices": [
+        {
+          "id": "vacation-home",
+          "label": "Vacation Home"
+        },
+        {
+          "id": "park",
+          "label": "Park"
+        },
+        {
+          "id": "supermarket",
+          "label": "Supermarket"
+        },
+        {
+          "id": "school",
+          "label": "School"
+        },
+        {
+          "id": "woods",
+          "label": "Woods"
+        },
+        {
+          "id": "bank",
+          "label": "Bank"
+        }
+      ]
+    },
+    {
+      "cardId": "locations-3",
+      "cardName": "Locations",
+      "choices": [
+        {
+          "id": "pub",
+          "label": "Pub"
+        },
+        {
+          "id": "bookstore",
+          "label": "Bookstore"
+        },
+        {
+          "id": "restaurant",
+          "label": "Restaurant"
+        },
+        {
+          "id": "hotel",
+          "label": "Hotel"
+        },
+        {
+          "id": "hospital",
+          "label": "Hospital"
+        },
+        {
+          "id": "building-site",
+          "label": "Building Site"
+        }
+      ]
+    },
+    {
+      "cardId": "locations-4",
+      "cardName": "Locations",
+      "choices": [
+        {
+          "id": "playground",
+          "label": "Playground"
+        },
+        {
+          "id": "classroom",
+          "label": "Classroom"
+        },
+        {
+          "id": "dormitory",
+          "label": "Dormitory"
+        },
+        {
+          "id": "cafeteria",
+          "label": "Cafeteria"
+        },
+        {
+          "id": "elevator",
+          "label": "Elevator"
+        },
+        {
+          "id": "toilet",
+          "label": "Toilet"
+        }
+      ]
+    }
+  ],
+  "otherCards": [
+    {
+      "cardId": "motive-of-crime",
+      "cardName": "Motive of Crime",
+      "choices": [
+        {
+          "id": "hatred",
+          "label": "Hatred"
+        },
+        {
+          "id": "power",
+          "label": "Power"
+        },
+        {
+          "id": "money",
+          "label": "Money"
+        },
+        {
+          "id": "love",
+          "label": "Love"
+        },
+        {
+          "id": "jealousy",
+          "label": "Jealousy"
+        },
+        {
+          "id": "justice",
+          "label": "Justice"
+        }
+      ]
+    },
+    {
+      "cardId": "weather",
+      "cardName": "Weather",
+      "choices": [
+        {
+          "id": "sunny",
+          "label": "Sunny"
+        },
+        {
+          "id": "stormy",
+          "label": "Stormy"
+        },
+        {
+          "id": "dry",
+          "label": "Dry"
+        },
+        {
+          "id": "humid",
+          "label": "Humid"
+        },
+        {
+          "id": "cold",
+          "label": "Cold"
+        },
+        {
+          "id": "hot",
+          "label": "Hot"
+        }
+      ]
+    },
+    {
+      "cardId": "hint-on-corpse",
+      "cardName": "Hint on Corpse",
+      "choices": [
+        {
+          "id": "head",
+          "label": "Head"
+        },
+        {
+          "id": "chest",
+          "label": "Chest"
+        },
+        {
+          "id": "hand",
+          "label": "Hand"
+        },
+        {
+          "id": "leg",
+          "label": "Leg"
+        },
+        {
+          "id": "partial",
+          "label": "Partial"
+        },
+        {
+          "id": "all-over",
+          "label": "All-over"
+        }
+      ]
+    },
+    {
+      "cardId": "general-impression",
+      "cardName": "General Impression",
+      "choices": [
+        {
+          "id": "common",
+          "label": "Common"
+        },
+        {
+          "id": "creative",
+          "label": "Creative"
+        },
+        {
+          "id": "fishy",
+          "label": "Fishy"
+        },
+        {
+          "id": "cruel",
+          "label": "Cruel"
+        },
+        {
+          "id": "horrible",
+          "label": "Horrible"
+        },
+        {
+          "id": "suspenseful",
+          "label": "Suspenseful"
+        }
+      ]
+    },
+    {
+      "cardId": "corpse-condition",
+      "cardName": "Corpse Condition",
+      "choices": [
+        {
+          "id": "still-warm",
+          "label": "Still Warm"
+        },
+        {
+          "id": "stiff",
+          "label": "Stiff"
+        },
+        {
+          "id": "decayed",
+          "label": "Decayed"
+        },
+        {
+          "id": "incomplete",
+          "label": "Incomplete"
+        },
+        {
+          "id": "intact",
+          "label": "Intact"
+        },
+        {
+          "id": "twisted",
+          "label": "Twisted"
+        }
+      ]
+    },
+    {
+      "cardId": "victim-s-identity",
+      "cardName": "Victim's Identity",
+      "choices": [
+        {
+          "id": "child",
+          "label": "Child"
+        },
+        {
+          "id": "young-adult",
+          "label": "Young Adult"
+        },
+        {
+          "id": "middle-aged",
+          "label": "Middle-Aged"
+        },
+        {
+          "id": "senior",
+          "label": "Senior"
+        },
+        {
+          "id": "male",
+          "label": "Male"
+        },
+        {
+          "id": "female",
+          "label": "Female"
+        }
+      ]
+    },
+    {
+      "cardId": "murderer-s-personality",
+      "cardName": "Murderer's Personality",
+      "choices": [
+        {
+          "id": "arrogant",
+          "label": "Arrogant"
+        },
+        {
+          "id": "despicable",
+          "label": "Despicable"
+        },
+        {
+          "id": "furious",
+          "label": "Furious"
+        },
+        {
+          "id": "greedy",
+          "label": "Greedy"
+        },
+        {
+          "id": "forceful",
+          "label": "Forceful"
+        },
+        {
+          "id": "perverted",
+          "label": "Perverted"
+        }
+      ]
+    },
+    {
+      "cardId": "state-of-the-scene",
+      "cardName": "State of The Scene",
+      "choices": [
+        {
+          "id": "bits-and-pieces",
+          "label": "Bits and Pieces"
+        },
+        {
+          "id": "ashes",
+          "label": "Ashes"
+        },
+        {
+          "id": "water-stain",
+          "label": "Water Stain"
+        },
+        {
+          "id": "cracked",
+          "label": "Cracked"
+        },
+        {
+          "id": "disorderly",
+          "label": "Disorderly"
+        },
+        {
+          "id": "tidy",
+          "label": "Tidy"
+        }
+      ]
+    },
+    {
+      "cardId": "victim-s-build",
+      "cardName": "Victim's Build",
+      "choices": [
+        {
+          "id": "large",
+          "label": "Large"
+        },
+        {
+          "id": "thin",
+          "label": "Thin"
+        },
+        {
+          "id": "tall",
+          "label": "Tall"
+        },
+        {
+          "id": "short",
+          "label": "Short"
+        },
+        {
+          "id": "disfigured",
+          "label": "Disfigured"
+        },
+        {
+          "id": "fit",
+          "label": "Fit"
+        }
+      ]
+    },
+    {
+      "cardId": "victim-s-clothes",
+      "cardName": "Victim's Clothes",
+      "choices": [
+        {
+          "id": "neat",
+          "label": "Neat"
+        },
+        {
+          "id": "untidy",
+          "label": "Untidy"
+        },
+        {
+          "id": "elegant",
+          "label": "Elegant"
+        },
+        {
+          "id": "shabby",
+          "label": "Shabby"
+        },
+        {
+          "id": "bizarre",
+          "label": "Bizarre"
+        },
+        {
+          "id": "naked",
+          "label": "Naked"
+        }
+      ]
+    },
+    {
+      "cardId": "evidence-left-behind",
+      "cardName": "Evidence Left Behind",
+      "choices": [
+        {
+          "id": "natural",
+          "label": "Natural"
+        },
+        {
+          "id": "artistic",
+          "label": "Artistic"
+        },
+        {
+          "id": "written",
+          "label": "Written"
+        },
+        {
+          "id": "synthetic",
+          "label": "Synthetic"
+        },
+        {
+          "id": "personal",
+          "label": "Personal"
+        },
+        {
+          "id": "unrelated",
+          "label": "Unrelated"
+        }
+      ]
+    },
+    {
+      "cardId": "victim-s-expression",
+      "cardName": "Victim's Expression",
+      "choices": [
+        {
+          "id": "peaceful",
+          "label": "Peaceful"
+        },
+        {
+          "id": "struggling",
+          "label": "Struggling"
+        },
+        {
+          "id": "frightened",
+          "label": "Frightened"
+        },
+        {
+          "id": "in-pain",
+          "label": "In Pain"
+        },
+        {
+          "id": "blank",
+          "label": "Blank"
+        },
+        {
+          "id": "angry",
+          "label": "Angry"
+        }
+      ]
+    },
+    {
+      "cardId": "time-of-death",
+      "cardName": "Time of Death",
+      "choices": [
+        {
+          "id": "dawn",
+          "label": "Dawn"
+        },
+        {
+          "id": "morning",
+          "label": "Morning"
+        },
+        {
+          "id": "noon",
+          "label": "Noon"
+        },
+        {
+          "id": "afternoon",
+          "label": "Afternoon"
+        },
+        {
+          "id": "evening",
+          "label": "Evening"
+        },
+        {
+          "id": "midnight",
+          "label": "Midnight"
+        }
+      ]
+    },
+    {
+      "cardId": "duration-of-crime",
+      "cardName": "Duration of Crime",
+      "choices": [
+        {
+          "id": "instanteous",
+          "label": "Instanteous"
+        },
+        {
+          "id": "brief",
+          "label": "Brief"
+        },
+        {
+          "id": "gradual",
+          "label": "Gradual"
+        },
+        {
+          "id": "prolonged",
+          "label": "Prolonged"
+        },
+        {
+          "id": "few-days",
+          "label": "Few Days"
+        },
+        {
+          "id": "unclear",
+          "label": "Unclear"
+        }
+      ]
+    },
+    {
+      "cardId": "trace-at-the-scene",
+      "cardName": "Trace at the Scene",
+      "choices": [
+        {
+          "id": "fingerprint",
+          "label": "Fingerprint"
+        },
+        {
+          "id": "footprint",
+          "label": "Footprint"
+        },
+        {
+          "id": "bruise",
+          "label": "Bruise"
+        },
+        {
+          "id": "blood-stain",
+          "label": "Blood Stain"
+        },
+        {
+          "id": "body-fluid",
+          "label": "Body Fluid"
+        },
+        {
+          "id": "scar",
+          "label": "Scar"
+        }
+      ]
+    },
+    {
+      "cardId": "noticed-by-bystander",
+      "cardName": "Noticed by Bystander",
+      "choices": [
+        {
+          "id": "sudden-sound",
+          "label": "Sudden sound"
+        },
+        {
+          "id": "prolonged-sound",
+          "label": "Prolonged sound"
+        },
+        {
+          "id": "smell",
+          "label": "Smell"
+        },
+        {
+          "id": "visual",
+          "label": "Visual"
+        },
+        {
+          "id": "action",
+          "label": "Action"
+        },
+        {
+          "id": "nothing",
+          "label": "Nothing"
+        }
+      ]
+    },
+    {
+      "cardId": "social-relationship",
+      "cardName": "Social Relationship",
+      "choices": [
+        {
+          "id": "relatives",
+          "label": "Relatives"
+        },
+        {
+          "id": "friends",
+          "label": "Friends"
+        },
+        {
+          "id": "colleagues",
+          "label": "Colleagues"
+        },
+        {
+          "id": "employer-employee",
+          "label": "Employer/ Employee"
+        },
+        {
+          "id": "lovers",
+          "label": "Lovers"
+        },
+        {
+          "id": "strangers",
+          "label": "Strangers"
+        }
+      ]
+    },
+    {
+      "cardId": "victim-s-occupation",
+      "cardName": "Victim's Occupation",
+      "choices": [
+        {
+          "id": "boss",
+          "label": "Boss"
+        },
+        {
+          "id": "professional",
+          "label": "Professional"
+        },
+        {
+          "id": "worker",
+          "label": "Worker"
+        },
+        {
+          "id": "student",
+          "label": "Student"
+        },
+        {
+          "id": "unemployed",
+          "label": "Unemployed"
+        },
+        {
+          "id": "retired",
+          "label": "Retired"
+        }
+      ]
+    },
+    {
+      "cardId": "in-progress",
+      "cardName": "In Progress",
+      "choices": [
+        {
+          "id": "entertainment",
+          "label": "Entertainment"
+        },
+        {
+          "id": "relaxation",
+          "label": "Relaxation"
+        },
+        {
+          "id": "assembly",
+          "label": "Assembly"
+        },
+        {
+          "id": "trading",
+          "label": "Trading"
+        },
+        {
+          "id": "visit",
+          "label": "Visit"
+        },
+        {
+          "id": "dining",
+          "label": "Dining"
+        }
+      ]
+    },
+    {
+      "cardId": "sudden-incident",
+      "cardName": "Sudden Incident",
+      "choices": [
+        {
+          "id": "power-failure",
+          "label": "Power Failure"
+        },
+        {
+          "id": "fire",
+          "label": "Fire"
+        },
+        {
+          "id": "conflict",
+          "label": "Conflict"
+        },
+        {
+          "id": "loss-of-valuables",
+          "label": "Loss of Valuables"
+        },
+        {
+          "id": "scream",
+          "label": "Scream"
+        },
+        {
+          "id": "nothing",
+          "label": "Nothing"
+        }
+      ]
+    },
+    {
+      "cardId": "day-of-crime",
+      "cardName": "Day of Crime",
+      "choices": [
+        {
+          "id": "weekday",
+          "label": "Weekday"
+        },
+        {
+          "id": "weekend",
+          "label": "Weekend"
+        },
+        {
+          "id": "spring",
+          "label": "Spring"
+        },
+        {
+          "id": "summer",
+          "label": "Summer"
+        },
+        {
+          "id": "autumn",
+          "label": "Autumn"
+        },
+        {
+          "id": "winter",
+          "label": "Winter"
+        }
+      ]
+    }
+  ]
+}

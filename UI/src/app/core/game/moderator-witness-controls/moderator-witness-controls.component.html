@@ -1,31 +1,89 @@
 <ng-container *ngIf="(gameApi.game$ | async) as game">
   <ng-container *ngIf="(gameApi.viewer$ | async) as viewer">
     <div class="moderator-panel moderator-panel--room-mods" *ngIf="viewer.isCreator && game.startedOn">
-      <div class="panel-head">
-        <div>
-          <p class="eyebrow">Live discussion settings</p>
-          <h3>Room mods</h3>
-        </div>
-      </div>
+      <ng-container *ngIf="(cardApi.catalog$ | async) as catalog">
+        <ng-container *ngIf="getCrimePack(catalog, game) as crimePack">
+          <ng-container *ngIf="getHintPack(catalog, game) as hintPack">
+            <div class="panel-head">
+              <div>
+                <p class="eyebrow">Live discussion settings</p>
+                <h3>Room mods</h3>
+              </div>
+            </div>
 
-      <label class="toggle-row" [class.is-checked]="game.meansCluesTextOnly" [class.is-disabled]="roomModsBusy">
-        <input
-          class="toggle-input"
-          type="checkbox"
-          [checked]="game.meansCluesTextOnly"
-          [disabled]="roomModsBusy"
-          (change)="setMeansCluesTextOnly($any($event.target).checked, game.meansCluesTextOnly)"
-        />
-        <span class="toggle-visual" aria-hidden="true">
-          <span class="toggle-knob"></span>
-        </span>
-        <span class="toggle-copy">
-          <span class="toggle-title">Means/clues text only (hide images)</span>
-          <span class="toggle-description">
-            {{ game.meansCluesTextOnly ? 'Enabled for everyone in the room.' : 'Applies immediately to everyone in the room.' }}
-          </span>
-        </span>
-      </label>
+            <div class="settings-grid">
+              <label>
+                <div class="subtitle">CrimePack</div>
+                <input type="text" [value]="crimePack.name" disabled />
+              </label>
+
+              <label>
+                <div class="subtitle">CrimePack language</div>
+                <select
+                  [disabled]="roomModsBusy"
+                  [ngModel]="game.crimePackLanguage"
+                  (ngModelChange)="setCrimePackLanguage($event, game.crimePackLanguage)"
+                >
+                  <option *ngFor="let language of crimePack.languages" [ngValue]="language.id">{{ language.name }}</option>
+                </select>
+              </label>
+
+              <label *ngIf="showCrimeAssetSelector(crimePack)">
+                <div class="subtitle">CrimePack image set</div>
+                <select
+                  [disabled]="roomModsBusy"
+                  [ngModel]="game.crimePackAssetSetId"
+                  (ngModelChange)="setCrimePackAssetSetId($event, game.crimePackAssetSetId)"
+                >
+                  <option *ngFor="let assetSet of crimePack.assetSets" [ngValue]="assetSet.id">{{ assetSet.name }}</option>
+                </select>
+              </label>
+
+              <label>
+                <div class="subtitle">HintPack</div>
+                <input type="text" [value]="hintPack.name" disabled />
+              </label>
+
+              <label>
+                <div class="subtitle">HintPack language</div>
+                <select
+                  [disabled]="roomModsBusy"
+                  [ngModel]="game.hintPackLanguage"
+                  (ngModelChange)="setHintPackLanguage($event, game.hintPackLanguage)"
+                >
+                  <option *ngFor="let language of hintPack.languages" [ngValue]="language.id">{{ language.name }}</option>
+                </select>
+              </label>
+            </div>
+
+            <label *ngIf="crimePack.hasAnyImages; else forcedTextOnly" class="toggle-row" [class.is-checked]="game.meansCluesTextOnly" [class.is-disabled]="roomModsBusy">
+              <input
+                class="toggle-input"
+                type="checkbox"
+                [checked]="game.meansCluesTextOnly"
+                [disabled]="roomModsBusy"
+                (change)="setMeansCluesTextOnly($any($event.target).checked, game.meansCluesTextOnly)"
+              />
+              <span class="toggle-visual" aria-hidden="true">
+                <span class="toggle-knob"></span>
+              </span>
+              <span class="toggle-copy">
+                <span class="toggle-title">Means/clues text only (hide images)</span>
+                <span class="toggle-description">
+                  {{ game.meansCluesTextOnly ? 'Enabled for everyone in the room.' : 'Applies immediately to everyone in the room.' }}
+                </span>
+              </span>
+            </label>
+
+            <ng-template #forcedTextOnly>
+              <div class="toggle-copy">
+                <span class="toggle-title">Means/clues text only</span>
+                <span class="toggle-description">This CrimePack has no usable image assets, so text-only mode is always on.</span>
+              </div>
+            </ng-template>
+          </ng-container>
+        </ng-container>
+      </ng-container>
     </div>
     <ng-container *ngIf="viewer.isCreator && game.pendingWitnessSelection && (gameApi.moderatorPrivateData$ | async) as moderatorData">
       <div class="moderator-panel moderator-panel--witness" *ngIf="moderatorData.witnessPromptCandidates.length > 0">

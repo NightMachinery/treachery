@@ -1,0 +1,788 @@
+{
+  "causeCards": [
+    {
+      "cardId": "cause-of-death",
+      "cardName": "علت مرگ",
+      "choices": [
+        {
+          "id": "suffocation",
+          "label": "خفگی"
+        },
+        {
+          "id": "severe-injury",
+          "label": "جراحت شدید"
+        },
+        {
+          "id": "loss-of-blood",
+          "label": "خون‌ریزی"
+        },
+        {
+          "id": "illness-disease",
+          "label": "بیماری"
+        },
+        {
+          "id": "poisoning",
+          "label": "مسمومیت"
+        },
+        {
+          "id": "accident",
+          "label": "حادثه"
+        }
+      ]
+    }
+  ],
+  "locationCards": [
+    {
+      "cardId": "locations-1",
+      "cardName": "مکان‌ها",
+      "choices": [
+        {
+          "id": "living-room",
+          "label": "اتاق نشیمن"
+        },
+        {
+          "id": "bedroom",
+          "label": "اتاق خواب"
+        },
+        {
+          "id": "storeroom",
+          "label": "انباری"
+        },
+        {
+          "id": "bathroom",
+          "label": "حمام"
+        },
+        {
+          "id": "kitchen",
+          "label": "آشپزخانه"
+        },
+        {
+          "id": "balcony",
+          "label": "بالکن"
+        }
+      ]
+    },
+    {
+      "cardId": "locations-2",
+      "cardName": "مکان‌ها",
+      "choices": [
+        {
+          "id": "vacation-home",
+          "label": "ویلای تفریحی"
+        },
+        {
+          "id": "park",
+          "label": "پارک"
+        },
+        {
+          "id": "supermarket",
+          "label": "سوپرمارکت"
+        },
+        {
+          "id": "school",
+          "label": "مدرسه"
+        },
+        {
+          "id": "woods",
+          "label": "جنگل"
+        },
+        {
+          "id": "bank",
+          "label": "بانک"
+        }
+      ]
+    },
+    {
+      "cardId": "locations-3",
+      "cardName": "مکان‌ها",
+      "choices": [
+        {
+          "id": "pub",
+          "label": "بار"
+        },
+        {
+          "id": "bookstore",
+          "label": "کتابفروشی"
+        },
+        {
+          "id": "restaurant",
+          "label": "رستوران"
+        },
+        {
+          "id": "hotel",
+          "label": "هتل"
+        },
+        {
+          "id": "hospital",
+          "label": "بیمارستان"
+        },
+        {
+          "id": "building-site",
+          "label": "کارگاه ساختمانی"
+        }
+      ]
+    },
+    {
+      "cardId": "locations-4",
+      "cardName": "مکان‌ها",
+      "choices": [
+        {
+          "id": "playground",
+          "label": "زمین بازی"
+        },
+        {
+          "id": "classroom",
+          "label": "کلاس درس"
+        },
+        {
+          "id": "dormitory",
+          "label": "خوابگاه"
+        },
+        {
+          "id": "cafeteria",
+          "label": "کافه‌تریا"
+        },
+        {
+          "id": "elevator",
+          "label": "آسانسور"
+        },
+        {
+          "id": "toilet",
+          "label": "دستشویی"
+        }
+      ]
+    }
+  ],
+  "otherCards": [
+    {
+      "cardId": "motive-of-crime",
+      "cardName": "انگیزه جرم",
+      "choices": [
+        {
+          "id": "hatred",
+          "label": "نفرت"
+        },
+        {
+          "id": "power",
+          "label": "قدرت"
+        },
+        {
+          "id": "money",
+          "label": "پول"
+        },
+        {
+          "id": "love",
+          "label": "عشق"
+        },
+        {
+          "id": "jealousy",
+          "label": "حسادت"
+        },
+        {
+          "id": "justice",
+          "label": "عدالت"
+        }
+      ]
+    },
+    {
+      "cardId": "weather",
+      "cardName": "آب‌وهوا",
+      "choices": [
+        {
+          "id": "sunny",
+          "label": "آفتابی"
+        },
+        {
+          "id": "stormy",
+          "label": "طوفانی"
+        },
+        {
+          "id": "dry",
+          "label": "خشک"
+        },
+        {
+          "id": "humid",
+          "label": "مرطوب"
+        },
+        {
+          "id": "cold",
+          "label": "سرد"
+        },
+        {
+          "id": "hot",
+          "label": "گرم"
+        }
+      ]
+    },
+    {
+      "cardId": "hint-on-corpse",
+      "cardName": "نشانه روی جسد",
+      "choices": [
+        {
+          "id": "head",
+          "label": "سر"
+        },
+        {
+          "id": "chest",
+          "label": "سینه"
+        },
+        {
+          "id": "hand",
+          "label": "دست"
+        },
+        {
+          "id": "leg",
+          "label": "پا"
+        },
+        {
+          "id": "partial",
+          "label": "بخشی"
+        },
+        {
+          "id": "all-over",
+          "label": "سراسر بدن"
+        }
+      ]
+    },
+    {
+      "cardId": "general-impression",
+      "cardName": "برداشت کلی",
+      "choices": [
+        {
+          "id": "common",
+          "label": "معمولی"
+        },
+        {
+          "id": "creative",
+          "label": "خلاقانه"
+        },
+        {
+          "id": "fishy",
+          "label": "مشکوک"
+        },
+        {
+          "id": "cruel",
+          "label": "بی‌رحمانه"
+        },
+        {
+          "id": "horrible",
+          "label": "هولناک"
+        },
+        {
+          "id": "suspenseful",
+          "label": "پرتعلیق"
+        }
+      ]
+    },
+    {
+      "cardId": "corpse-condition",
+      "cardName": "وضعیت جسد",
+      "choices": [
+        {
+          "id": "still-warm",
+          "label": "هنوز گرم"
+        },
+        {
+          "id": "stiff",
+          "label": "سفت"
+        },
+        {
+          "id": "decayed",
+          "label": "پوسیده"
+        },
+        {
+          "id": "incomplete",
+          "label": "ناقص"
+        },
+        {
+          "id": "intact",
+          "label": "سالم"
+        },
+        {
+          "id": "twisted",
+          "label": "پیچ‌خورده"
+        }
+      ]
+    },
+    {
+      "cardId": "victim-s-identity",
+      "cardName": "هویت قربانی",
+      "choices": [
+        {
+          "id": "child",
+          "label": "کودک"
+        },
+        {
+          "id": "young-adult",
+          "label": "جوان"
+        },
+        {
+          "id": "middle-aged",
+          "label": "میانسال"
+        },
+        {
+          "id": "senior",
+          "label": "سالمند"
+        },
+        {
+          "id": "male",
+          "label": "مرد"
+        },
+        {
+          "id": "female",
+          "label": "زن"
+        }
+      ]
+    },
+    {
+      "cardId": "murderer-s-personality",
+      "cardName": "شخصیت قاتل",
+      "choices": [
+        {
+          "id": "arrogant",
+          "label": "متکبر"
+        },
+        {
+          "id": "despicable",
+          "label": "نفرت‌انگیز"
+        },
+        {
+          "id": "furious",
+          "label": "خشمگین"
+        },
+        {
+          "id": "greedy",
+          "label": "طماع"
+        },
+        {
+          "id": "forceful",
+          "label": "خشن"
+        },
+        {
+          "id": "perverted",
+          "label": "منحرف"
+        }
+      ]
+    },
+    {
+      "cardId": "state-of-the-scene",
+      "cardName": "وضعیت صحنه",
+      "choices": [
+        {
+          "id": "bits-and-pieces",
+          "label": "تکه‌تکه"
+        },
+        {
+          "id": "ashes",
+          "label": "خاکستر"
+        },
+        {
+          "id": "water-stain",
+          "label": "لکه آب"
+        },
+        {
+          "id": "cracked",
+          "label": "ترک‌خورده"
+        },
+        {
+          "id": "disorderly",
+          "label": "آشفته"
+        },
+        {
+          "id": "tidy",
+          "label": "مرتب"
+        }
+      ]
+    },
+    {
+      "cardId": "victim-s-build",
+      "cardName": "جثه قربانی",
+      "choices": [
+        {
+          "id": "large",
+          "label": "درشت"
+        },
+        {
+          "id": "thin",
+          "label": "لاغر"
+        },
+        {
+          "id": "tall",
+          "label": "قدبلند"
+        },
+        {
+          "id": "short",
+          "label": "کوتاه‌قد"
+        },
+        {
+          "id": "disfigured",
+          "label": "بدشکل"
+        },
+        {
+          "id": "fit",
+          "label": "ورزیده"
+        }
+      ]
+    },
+    {
+      "cardId": "victim-s-clothes",
+      "cardName": "لباس قربانی",
+      "choices": [
+        {
+          "id": "neat",
+          "label": "مرتب"
+        },
+        {
+          "id": "untidy",
+          "label": "نامرتب"
+        },
+        {
+          "id": "elegant",
+          "label": "شیک"
+        },
+        {
+          "id": "shabby",
+          "label": "ژنده"
+        },
+        {
+          "id": "bizarre",
+          "label": "عجیب"
+        },
+        {
+          "id": "naked",
+          "label": "برهنه"
+        }
+      ]
+    },
+    {
+      "cardId": "evidence-left-behind",
+      "cardName": "شواهد به‌جامانده",
+      "choices": [
+        {
+          "id": "natural",
+          "label": "طبیعی"
+        },
+        {
+          "id": "artistic",
+          "label": "هنری"
+        },
+        {
+          "id": "written",
+          "label": "نوشتاری"
+        },
+        {
+          "id": "synthetic",
+          "label": "مصنوعی"
+        },
+        {
+          "id": "personal",
+          "label": "شخصی"
+        },
+        {
+          "id": "unrelated",
+          "label": "بی‌ربط"
+        }
+      ]
+    },
+    {
+      "cardId": "victim-s-expression",
+      "cardName": "حالت چهره قربانی",
+      "choices": [
+        {
+          "id": "peaceful",
+          "label": "آرام"
+        },
+        {
+          "id": "struggling",
+          "label": "در حال تقلا"
+        },
+        {
+          "id": "frightened",
+          "label": "ترسیده"
+        },
+        {
+          "id": "in-pain",
+          "label": "دردکشیده"
+        },
+        {
+          "id": "blank",
+          "label": "بی‌حالت"
+        },
+        {
+          "id": "angry",
+          "label": "عصبانی"
+        }
+      ]
+    },
+    {
+      "cardId": "time-of-death",
+      "cardName": "زمان مرگ",
+      "choices": [
+        {
+          "id": "dawn",
+          "label": "سپیده‌دم"
+        },
+        {
+          "id": "morning",
+          "label": "صبح"
+        },
+        {
+          "id": "noon",
+          "label": "ظهر"
+        },
+        {
+          "id": "afternoon",
+          "label": "بعدازظهر"
+        },
+        {
+          "id": "evening",
+          "label": "عصر"
+        },
+        {
+          "id": "midnight",
+          "label": "نیمه‌شب"
+        }
+      ]
+    },
+    {
+      "cardId": "duration-of-crime",
+      "cardName": "مدت زمان جرم",
+      "choices": [
+        {
+          "id": "instanteous",
+          "label": "آنی"
+        },
+        {
+          "id": "brief",
+          "label": "کوتاه"
+        },
+        {
+          "id": "gradual",
+          "label": "تدریجی"
+        },
+        {
+          "id": "prolonged",
+          "label": "طولانی"
+        },
+        {
+          "id": "few-days",
+          "label": "چند روز"
+        },
+        {
+          "id": "unclear",
+          "label": "نامشخص"
+        }
+      ]
+    },
+    {
+      "cardId": "trace-at-the-scene",
+      "cardName": "رد در صحنه",
+      "choices": [
+        {
+          "id": "fingerprint",
+          "label": "اثر انگشت"
+        },
+        {
+          "id": "footprint",
+          "label": "رد پا"
+        },
+        {
+          "id": "bruise",
+          "label": "کبودی"
+        },
+        {
+          "id": "blood-stain",
+          "label": "لکه خون"
+        },
+        {
+          "id": "body-fluid",
+          "label": "مایع بدن"
+        },
+        {
+          "id": "scar",
+          "label": "جای زخم"
+        }
+      ]
+    },
+    {
+      "cardId": "noticed-by-bystander",
+      "cardName": "آنچه رهگذر متوجه شد",
+      "choices": [
+        {
+          "id": "sudden-sound",
+          "label": "صدای ناگهانی"
+        },
+        {
+          "id": "prolonged-sound",
+          "label": "صدای ممتد"
+        },
+        {
+          "id": "smell",
+          "label": "بو"
+        },
+        {
+          "id": "visual",
+          "label": "مشاهده"
+        },
+        {
+          "id": "action",
+          "label": "حرکت"
+        },
+        {
+          "id": "nothing",
+          "label": "هیچ‌چیز"
+        }
+      ]
+    },
+    {
+      "cardId": "social-relationship",
+      "cardName": "رابطه اجتماعی",
+      "choices": [
+        {
+          "id": "relatives",
+          "label": "بستگان"
+        },
+        {
+          "id": "friends",
+          "label": "دوستان"
+        },
+        {
+          "id": "colleagues",
+          "label": "همکاران"
+        },
+        {
+          "id": "employer-employee",
+          "label": "کارفرما/کارمند"
+        },
+        {
+          "id": "lovers",
+          "label": "عاشقان"
+        },
+        {
+          "id": "strangers",
+          "label": "غریبه‌ها"
+        }
+      ]
+    },
+    {
+      "cardId": "victim-s-occupation",
+      "cardName": "شغل قربانی",
+      "choices": [
+        {
+          "id": "boss",
+          "label": "رئیس"
+        },
+        {
+          "id": "professional",
+          "label": "متخصص"
+        },
+        {
+          "id": "worker",
+          "label": "کارگر"
+        },
+        {
+          "id": "student",
+          "label": "دانشجو"
+        },
+        {
+          "id": "unemployed",
+          "label": "بیکار"
+        },
+        {
+          "id": "retired",
+          "label": "بازنشسته"
+        }
+      ]
+    },
+    {
+      "cardId": "in-progress",
+      "cardName": "در حال انجام",
+      "choices": [
+        {
+          "id": "entertainment",
+          "label": "سرگرمی"
+        },
+        {
+          "id": "relaxation",
+          "label": "استراحت"
+        },
+        {
+          "id": "assembly",
+          "label": "مونتاژ"
+        },
+        {
+          "id": "trading",
+          "label": "معامله"
+        },
+        {
+          "id": "visit",
+          "label": "ملاقات"
+        },
+        {
+          "id": "dining",
+          "label": "غذا خوردن"
+        }
+      ]
+    },
+    {
+      "cardId": "sudden-incident",
+      "cardName": "رخداد ناگهانی",
+      "choices": [
+        {
+          "id": "power-failure",
+          "label": "قطع برق"
+        },
+        {
+          "id": "fire",
+          "label": "آتش"
+        },
+        {
+          "id": "conflict",
+          "label": "درگیری"
+        },
+        {
+          "id": "loss-of-valuables",
+          "label": "گم‌شدن اشیای قیمتی"
+        },
+        {
+          "id": "scream",
+          "label": "جیغ"
+        },
+        {
+          "id": "nothing",
+          "label": "هیچ‌چیز"
+        }
+      ]
+    },
+    {
+      "cardId": "day-of-crime",
+      "cardName": "روز جرم",
+      "choices": [
+        {
+          "id": "weekday",
+          "label": "روز کاری"
+        },
+        {
+          "id": "weekend",
+          "label": "آخر هفته"
+        },
+        {
+          "id": "spring",
+          "label": "بهار"
+        },
+        {
+          "id": "summer",
+          "label": "تابستان"
+        },
+        {
+          "id": "autumn",
+          "label": "پاییز"
+        },
+        {
+          "id": "winter",
+          "label": "زمستان"
+        }
+      ]
+    }
+  ]
+}

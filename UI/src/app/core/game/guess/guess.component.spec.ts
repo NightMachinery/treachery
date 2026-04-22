@@ -25,12 +25,12 @@ describe('GuessComponent', () => {
     name: 'Murderer',
     guessed: false,
     meansCards: [
-      { name: 'Rope', imgUrl: 'rope.jpg', altImgUrl: 'rope-fallback.jpg', guessedBy: [] },
-      { name: 'Knife', imgUrl: 'knife.jpg', altImgUrl: 'knife-fallback.jpg', guessedBy: [] }
+      { id: 'rope', name: 'Rope', imgUrl: 'rope.jpg', altImgUrl: 'rope-fallback.jpg', hasImage: true, guessedBy: [] },
+      { id: 'knife', name: 'Knife', imgUrl: 'knife.jpg', altImgUrl: 'knife-fallback.jpg', hasImage: true, guessedBy: [] }
     ],
     clueCards: [
-      { name: 'Shoes', imgUrl: 'shoes.jpg', altImgUrl: 'shoes-fallback.jpg', guessedBy: [] },
-      { name: 'Watch', imgUrl: 'watch.jpg', altImgUrl: 'watch-fallback.jpg', guessedBy: [] }
+      { id: 'shoes', name: 'Shoes', imgUrl: 'shoes.jpg', altImgUrl: 'shoes-fallback.jpg', hasImage: true, guessedBy: [] },
+      { id: 'watch', name: 'Watch', imgUrl: 'watch.jpg', altImgUrl: 'watch-fallback.jpg', hasImage: true, guessedBy: [] }
     ]
   };
 
@@ -63,7 +63,9 @@ describe('GuessComponent', () => {
     component = fixture.componentInstance;
     component.guess = {
       murdererUid: 'murderer',
+      meansCardId: 'knife',
       meansCardName: 'Knife',
+      clueCardId: 'shoes',
       clueCardName: 'Shoes'
     };
     fixture.detectChanges();
@@ -78,7 +80,9 @@ describe('GuessComponent', () => {
       {
         guessedByUid: 'someone-else',
         murdererUid: 'murderer',
+        meansCardId: 'knife',
         meansCardName: 'Knife',
+        clueCardId: 'shoes',
         clueCardName: 'Shoes',
         correct: false
       }

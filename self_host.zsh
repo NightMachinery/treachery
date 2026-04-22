@@ -22,7 +22,7 @@ SELF_HOST_DIR="$ROOT_DIR/.self_host"
 BINARY_PATH="$SELF_HOST_DIR/bin/treachery-server"
 DATA_DIR="$SELF_HOST_DIR/data"
 DIST_DIR="$ROOT_DIR/UI/dist/deceptiongame"
-CARDS_PATH="$ROOT_DIR/UI/src/assets/cards.json"
+WORDPACKS_DIR="$ROOT_DIR/wordpacks"
 
 PUBLIC_URL=""
 PUBLIC_HOST=""
@@ -78,7 +78,7 @@ SESSION_DEV_UI=$SESSION_DEV_UI
 BINARY_PATH=$BINARY_PATH
 DATA_DIR=$DATA_DIR
 DIST_DIR=$DIST_DIR
-CARDS_PATH=$CARDS_PATH
+WORDPACKS_DIR=$WORDPACKS_DIR
 CONFIG
   say "Wrote $CONFIG_FILE"
 }
@@ -97,7 +97,7 @@ load_config() {
   BINARY_PATH="${BINARY_PATH:-$SELF_HOST_DIR/bin/treachery-server}"
   DATA_DIR="${DATA_DIR:-$SELF_HOST_DIR/data}"
   DIST_DIR="${DIST_DIR:-$ROOT_DIR/UI/dist/deceptiongame}"
-  CARDS_PATH="${CARDS_PATH:-$ROOT_DIR/UI/src/assets/cards.json}"
+  WORDPACKS_DIR="${WORDPACKS_DIR:-$ROOT_DIR/wordpacks}"
 }
 
 ensure_tools() {
@@ -135,12 +135,12 @@ ensure_addr_free() {
 ensure_build_artifacts() {
   [[ -x "$BINARY_PATH" ]] || die "Missing $BINARY_PATH. Run ./self_host.zsh setup or redeploy first."
   [[ -f "$DIST_DIR/index.html" ]] || die "Missing $DIST_DIR/index.html. Run ./self_host.zsh setup or redeploy first."
-  [[ -f "$CARDS_PATH" ]] || die "Missing $CARDS_PATH"
+  [[ -d "$WORDPACKS_DIR" ]] || die "Missing $WORDPACKS_DIR"
 }
 
 ensure_server_artifacts() {
   [[ -x "$BINARY_PATH" ]] || die "Missing $BINARY_PATH. Run ./self_host.zsh setup, redeploy, or dev-start first."
-  [[ -f "$CARDS_PATH" ]] || die "Missing $CARDS_PATH"
+  [[ -d "$WORDPACKS_DIR" ]] || die "Missing $WORDPACKS_DIR"
 }
 
 ensure_ui_dependencies() {
@@ -278,7 +278,7 @@ start_app_session() {
   ensure_addr_free "$APP_ADDR" "App"
   local exports cmd
   exports="$(proxy_exports)"
-  cmd="$exports cd ${(q)ROOT_DIR}; ${(q)BINARY_PATH} -addr ${(q)APP_ADDR} -dist-dir ${(q)DIST_DIR} -data-dir ${(q)DATA_DIR} -cards-path ${(q)CARDS_PATH}"
+  cmd="$exports cd ${(q)ROOT_DIR}; ${(q)BINARY_PATH} -addr ${(q)APP_ADDR} -dist-dir ${(q)DIST_DIR} -data-dir ${(q)DATA_DIR} -wordpacks-dir ${(q)WORDPACKS_DIR}"
   tmuxnew "$SESSION_APP" zsh -lc "$cmd"
   say "Started tmux session $SESSION_APP"
 }

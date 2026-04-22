@@ -10,12 +10,12 @@
   <div class="card-lane means-lane">
     <div class="cards">
       <app-card
-        *ngFor="let card of player.meansCards; trackBy: trackByCardName"
+        *ngFor="let card of player.meansCards; trackBy: trackByCardId"
         [card]="card"
-        [active]="!disableSelectionDisplay && selectedMeans === card.name"
-        [subdued]="shouldSubdueMeans(card.name)"
+        [active]="!disableSelectionDisplay && selectedMeans === card.id"
+        [subdued]="shouldSubdueMeans(card.id)"
         [means]="true"
-        (click)="!disableSelection && meansClick(card.name)"
+        (click)="!disableSelection && meansClick(card.id)"
       ></app-card>
     </div>
   </div>
@@ -23,12 +23,12 @@
   <div class="card-lane clue-lane">
     <div class="cards">
       <app-card
-        *ngFor="let card of player.clueCards; trackBy: trackByCardName"
+        *ngFor="let card of player.clueCards; trackBy: trackByCardId"
         [card]="card"
-        [active]="!disableSelectionDisplay && selectedClue === card.name"
-        [subdued]="shouldSubdueClue(card.name)"
+        [active]="!disableSelectionDisplay && selectedClue === card.id"
+        [subdued]="shouldSubdueClue(card.id)"
         [means]="false"
-        (click)="!disableSelection && clueClick(card.name)"
+        (click)="!disableSelection && clueClick(card.id)"
       ></app-card>
     </div>
   </div>

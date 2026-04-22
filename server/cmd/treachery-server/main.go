@@ -19,13 +19,13 @@ func main() {
 	addr := flag.String("addr", envOrDefault("TREACHERY_ADDR", "127.0.0.1:18083"), "listen address")
 	distDir := flag.String("dist-dir", envOrDefault("TREACHERY_DIST_DIR", filepath.Join(rootDir, "UI", "dist", "deceptiongame")), "path to built UI dist directory")
 	dataDir := flag.String("data-dir", envOrDefault("TREACHERY_DATA_DIR", filepath.Join(rootDir, ".self_host", "data")), "path to runtime data directory")
-	cardsPath := flag.String("cards-path", envOrDefault("TREACHERY_CARDS_PATH", filepath.Join(rootDir, "UI", "src", "assets", "cards.json")), "path to cards resource json")
+	wordpacksDir := flag.String("wordpacks-dir", envOrDefault("TREACHERY_WORDPACKS_DIR", filepath.Join(rootDir, "wordpacks")), "path to wordpacks directory")
 	flag.Parse()
 
 	application, err := app.New(app.Config{
-		DistDir:   *distDir,
-		DataDir:   *dataDir,
-		CardsPath: *cardsPath,
+		DistDir:      *distDir,
+		DataDir:      *dataDir,
+		WordpacksDir: *wordpacksDir,
 	})
 	if err != nil {
 		log.Fatalf("create app: %v", err)

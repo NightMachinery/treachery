@@ -20,7 +20,8 @@ Default origin:
 
 ## Intranet/offline notes
 
-- All runtime card images are committed under `UI/src/assets/cards/`.
+- Runtime CrimePack and HintPack content lives under `wordpacks/`.
+- The default Treachery CrimePack images are committed under `wordpacks/crime/treachery/assets/treachery/`.
 - Roboto fonts are committed under `UI/src/assets/fonts/`.
 - The viewport fix script is local at `UI/src/assets/vh-fix.js`.
 - No Google Fonts, Firebase, reCAPTCHA, or other required external runtime services remain.
@@ -86,6 +87,7 @@ Same as `setup`, but meant for redeploying the latest local code changes. It als
 - config: `.self_host/config.env`
 - binary: `.self_host/bin/treachery-server`
 - data: `.self_host/data/treachery.sqlite`
+- wordpacks: `./wordpacks`
 - tmux sessions: `treachery-self-host` and `treachery-self-host-ui`
 - Caddy block markers:
   - `# BEGIN treachery self-host global`
@@ -113,6 +115,7 @@ Then verify in a browser:
 
 - home page loads on HTTP and HTTPS
 - creating a game works without a transient `/api/games/{id}/snapshot` 404 in the browser console
+- lobby pack selectors load and the default Treachery CrimePack/HintPack can be changed before start
 - joining from another browser/device works
 - started-game links place new arrivals into observer mode instead of rejecting them
 - pre-start role toggles and scientist mark toggles work from the creator account
@@ -121,6 +124,7 @@ Then verify in a browser:
 - migrate-device links preserve the imported room identity across refresh without affecting other rooms
 - selecting the 5th or 6th forensic other card requires choosing a replacement card first
 - selecting a non-first forensic Location card shows that exact card and chosen hint to players/observers
+- switching CrimePack language, CrimePack image set, and HintPack language in **Room mods** updates the active room immediately
 - copy-link works on **HTTP**
 
 ## Troubleshooting

@@ -19,6 +19,10 @@ func (a *App) Handler() http.Handler {
 	mux.HandleFunc("POST /api/session", a.handleCreateSession)
 	mux.HandleFunc("PUT /api/me", a.handleUpdateProfile)
 	mux.HandleFunc("GET /api/healthz", a.handleHealthz)
+	mux.HandleFunc("GET /api/wordpacks/catalog", a.handleWordpackCatalog)
+	mux.HandleFunc("GET /api/wordpacks/crime/{packId}", a.handleCrimePackResource)
+	mux.HandleFunc("GET /api/wordpacks/hint/{packId}", a.handleHintPackResource)
+	mux.HandleFunc("GET /wordpacks/", a.handleWordpackAsset)
 	mux.HandleFunc("GET /api/games", a.handleListGames)
 	mux.HandleFunc("POST /api/games", a.handleCreateGame)
 	mux.HandleFunc("GET /api/games/{gameId}/snapshot", a.handleGameSnapshot)
@@ -108,6 +112,34 @@ func (a *App) handleUpdateProfile(w http.ResponseWriter, r *http.Request) {
 
 func (a *App) handleHealthz(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, map[string]string{"status": "ok"})
+}
+
+func (a *App) handleWordpackCatalog(w http.ResponseWriter, r *http.Request) {
+	writeJSON(w, http.StatusOK, a.GetWordpackCatalog())
+}
+
+func (a *App) handleCrimePackResource(w http.ResponseWriter, r *http.Request) {
+	packID := strings.TrimSpace(r.PathValue("packId"))
+	resource, err := a.GetCrimePackResource(packID, r.URL.Query().Get("language"), r.URL.Query().Get("assetSetId"))
+	if err != nil {
+		writeError(w, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, resource)
+}
+
+func (a *App) handleHintPackResource(w http.ResponseWriter, r *http.Request) {
+	packID := strings.TrimSpace(r.PathValue("packId"))
+	resource, err := a.GetHintPackResource(packID, r.URL.Query().Get("language"))
+	if err != nil {
+		writeError(w, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, resource)
+}
+
+func (a *App) handleWordpackAsset(w http.ResponseWriter, r *http.Request) {
+	a.serveWordpackAsset(w, r)
 }
 
 func (a *App) handleListGames(w http.ResponseWriter, r *http.Request) {
@@ -343,13 +375,13 @@ func (a *App) handleClearRoomTimer(w http.ResponseWriter, r *http.Request) {
 func (a *App) handleSelectMurdererCards(w http.ResponseWriter, r *http.Request) {
 	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
 		var body struct {
-			ClueCardName  string `json:"clueCardName"`
-			MeansCardName string `json:"meansCardName"`
+			ClueCardID  string `json:"clueCardId"`
+			MeansCardID string `json:"meansCardId"`
 		}
 		if err := decodeBody(r, &body); err != nil {
 			return fmt.Errorf("%w: %s", ErrBadInput, err.Error())
 		}
-		return a.SelectMurdererCards(gameID, viewerUID, body.ClueCardName, body.MeansCardName)
+		return a.SelectMurdererCards(gameID, viewerUID, body.ClueCardID, body.MeansCardID)
 	})
 }
 
@@ -410,27 +442,27 @@ func (a *App) handleSelectLocationCard(w http.ResponseWriter, r *http.Request) {
 func (a *App) handleSelectOtherCard(w http.ResponseWriter, r *http.Request) {
 	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
 		var body struct {
-			Card            ForensicCard `json:"card"`
-			ReplaceCardName string       `json:"replaceCardName"`
+			Card          ForensicCard `json:"card"`
+			ReplaceCardID string       `json:"replaceCardId"`
 		}
 		if err := decodeBody(r, &body); err != nil {
 			return fmt.Errorf("%w: %s", ErrBadInput, err.Error())
 		}
-		return a.SelectForensicOtherCard(gameID, viewerUID, body.Card, body.ReplaceCardName)
+		return a.SelectForensicOtherCard(gameID, viewerUID, body.Card, body.ReplaceCardID)
 	})
 }
 
 func (a *App) handleMakeGuess(w http.ResponseWriter, r *http.Request) {
 	a.withGameMutation(w, r, func(viewerUID, gameID string) error {
 		var body struct {
-			MurdererUID   string `json:"murdererUid"`
-			ClueCardName  string `json:"clueCardName"`
-			MeansCardName string `json:"meansCardName"`
+			MurdererUID string `json:"murdererUid"`
+			ClueCardID  string `json:"clueCardId"`
+			MeansCardID string `json:"meansCardId"`
 		}
 		if err := decodeBody(r, &body); err != nil {
 			return fmt.Errorf("%w: %s", ErrBadInput, err.Error())
 		}
-		return a.MakeGuess(gameID, viewerUID, body.MurdererUID, body.ClueCardName, body.MeansCardName)
+		return a.MakeGuess(gameID, viewerUID, body.MurdererUID, body.ClueCardID, body.MeansCardID)
 	})
 }
 

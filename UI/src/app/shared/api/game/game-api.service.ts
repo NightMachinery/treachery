@@ -251,10 +251,10 @@ export class GameApiService {
     return `${window.location.origin}/join/${gameId}?roomAuth=${encodeURIComponent(response.token)}`;
   }
 
-  async selectMurdererCards(clueCardName: string, meansCardName: string) {
+  async selectMurdererCards(clueCardId: string, meansCardId: string) {
     const gameId = this.gameId$.value;
     const response = await firstValueFrom(
-      this.http.post<{ success: boolean }>(`/api/games/${gameId}/murderer-selection`, { clueCardName, meansCardName }, this.getRoomRequestOptions())
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/murderer-selection`, { clueCardId, meansCardId }, this.getRoomRequestOptions())
     );
     if (response.success) {
       await this.refreshSnapshot();
@@ -335,14 +335,20 @@ export class GameApiService {
 
   async makeGuess(guess: TgPartialGuess) {
     const gameId = this.gameId$.value;
-    const response = await firstValueFrom(this.http.post<{ success: boolean }>(`/api/games/${gameId}/guess`, guess, this.getRoomRequestOptions()));
+    const response = await firstValueFrom(
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/guess`, {
+        murdererUid: guess.murdererUid,
+        clueCardId: guess.clueCardId,
+        meansCardId: guess.meansCardId
+      }, this.getRoomRequestOptions())
+    );
     if (response.success) {
       await this.refreshSnapshot();
     }
   }
 
   async selectForensicCauseCard(card: TgForensicCard) {
-    if (!card || !card.selectedChoice) {
+    if (!card || !card.selectedChoiceId) {
       this.snack.error('Please select an option from the cards!');
       return;
     }
@@ -352,7 +358,7 @@ export class GameApiService {
   }
 
   async selectForensicLocationCard(card: TgForensicCard) {
-    if (!card || !card.selectedChoice) {
+    if (!card || !card.selectedChoiceId) {
       this.snack.error('Please select an option from the cards!');
       return;
     }
@@ -362,16 +368,16 @@ export class GameApiService {
   }
 
   countSelectedOtherCards(game: TgGame): number {
-    return game.otherCards.filter(card => card.selectedChoice).length;
+    return game.otherCards.filter(card => card.selectedChoiceId).length;
   }
 
-  async selectNextForensicOtherCard(card: TgForensicCard, replaceCardName?: string) {
-    if (!card || !card.selectedChoice) {
+  async selectNextForensicOtherCard(card: TgForensicCard, replaceCardId?: string) {
+    if (!card || !card.selectedChoiceId) {
       this.snack.error('Please select an option from the card!');
       return;
     }
     const gameId = this.gameId$.value;
-    await firstValueFrom(this.http.post(`/api/games/${gameId}/forensic/other`, { card, replaceCardName }, this.getRoomRequestOptions()));
+    await firstValueFrom(this.http.post(`/api/games/${gameId}/forensic/other`, { card, replaceCardId }, this.getRoomRequestOptions()));
     await this.refreshSnapshot();
   }
 

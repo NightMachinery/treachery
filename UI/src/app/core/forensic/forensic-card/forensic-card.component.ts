@@ -11,18 +11,18 @@ export class ForensicCardComponent implements OnInit {
   @Input() forensicCard: TgForensicCard;
   @Input() disabled: boolean;
   @Input() selected: boolean;
-  @Input() selectedOptionName;
-  @Output() selectedOptionNameChange = new EventEmitter();
+  @Input() selectedOptionId: string;
+  @Output() selectedOptionIdChange = new EventEmitter<string>();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
-  isSelected(choiceName: string) {
-    return choiceName === this.forensicCard.selectedChoice || (this.selected && choiceName === this.selectedOptionName);
+  isSelected(choiceId: string) {
+    return choiceId === this.forensicCard.selectedChoiceId || (this.selected && choiceId === this.selectedOptionId);
   }
 
-  choiceClick(choice: string) {
-    this.selectedOptionNameChange.emit(choice);
+  choiceClick(choiceId: string) {
+    this.selectedOptionIdChange.emit(choiceId);
   }
 }

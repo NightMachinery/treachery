@@ -19,13 +19,13 @@ export class PlayerDeckComponent implements OnInit {
 
   constructor() {}
 
-  clueClick(cardName) {
-    this.selectedClue = this.selectedClue === cardName ? null : cardName;
+  clueClick(cardId: string) {
+    this.selectedClue = this.selectedClue === cardId ? null : cardId;
     this.selectedClueChange.emit(this.selectedClue);
   }
 
-  meansClick(cardName) {
-    this.selectedMeans = this.selectedMeans === cardName ? null : cardName;
+  meansClick(cardId: string) {
+    this.selectedMeans = this.selectedMeans === cardId ? null : cardId;
     this.selectedMeansChange.emit(this.selectedMeans);
   }
 
@@ -39,15 +39,15 @@ export class PlayerDeckComponent implements OnInit {
     return !!this.selectedSuspectUid && this.selectedSuspectUid !== this.player?.uid;
   }
 
-  shouldSubdueMeans(cardName: string) {
-    return this.deckSelected && !!this.selectedMeans && this.selectedMeans !== cardName;
+  shouldSubdueMeans(cardId: string) {
+    return this.deckSelected && !!this.selectedMeans && this.selectedMeans !== cardId;
   }
 
-  shouldSubdueClue(cardName: string) {
-    return this.deckSelected && !!this.selectedClue && this.selectedClue !== cardName;
+  shouldSubdueClue(cardId: string) {
+    return this.deckSelected && !!this.selectedClue && this.selectedClue !== cardId;
   }
 
-  trackByCardName(index: number, card: TgCard) {
-    return card.name;
+  trackByCardId(index: number, card: TgCard) {
+    return card.id || card.name;
   }
 }

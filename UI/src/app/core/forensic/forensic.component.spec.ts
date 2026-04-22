@@ -6,11 +6,14 @@ import { ForensicComponent } from './forensic.component';
 describe('ForensicComponent', () => {
   function buildGame(selectedCount: number) {
     return {
-      causeCard: { cardName: 'Cause', choices: ['A'], selectedChoice: 'A', replaced: false },
-      locationCard: { cardName: 'Location', choices: ['B'], selectedChoice: 'B', replaced: false },
+      causeCard: { cardId: 'cause', cardName: 'Cause', choices: ['A'], choiceIds: ['a'], selectedChoiceId: 'a', selectedChoice: 'A', replaced: false },
+      locationCard: { cardId: 'location', cardName: 'Location', choices: ['B'], choiceIds: ['b'], selectedChoiceId: 'b', selectedChoice: 'B', replaced: false },
       otherCards: Array.from({ length: 6 }, (_, index) => ({
+        cardId: `other-${index + 1}`,
         cardName: `Other ${index + 1}`,
         choices: ['One', 'Two'],
+        choiceIds: ['one', 'two'],
+        selectedChoiceId: index < selectedCount ? 'one' : '',
         selectedChoice: index < selectedCount ? 'One' : '',
         replaced: false
       }))
@@ -19,9 +22,33 @@ describe('ForensicComponent', () => {
 
   function buildLocationCards(): TgForensicCard[] {
     return [
-      { cardName: 'Locations', choices: ['Living Room', 'Bedroom'], selectedChoice: '', replaced: false },
-      { cardName: 'Locations', choices: ['Vacation Home', 'Park'], selectedChoice: '', replaced: false },
-      { cardName: 'Locations', choices: ['Pub', 'Hotel'], selectedChoice: '', replaced: false }
+      {
+        cardId: 'locations-1',
+        cardName: 'Locations',
+        choices: ['Living Room', 'Bedroom'],
+        choiceIds: ['living-room', 'bedroom'],
+        selectedChoiceId: '',
+        selectedChoice: '',
+        replaced: false
+      },
+      {
+        cardId: 'locations-2',
+        cardName: 'Locations',
+        choices: ['Vacation Home', 'Park'],
+        choiceIds: ['vacation-home', 'park'],
+        selectedChoiceId: '',
+        selectedChoice: '',
+        replaced: false
+      },
+      {
+        cardId: 'locations-3',
+        cardName: 'Locations',
+        choices: ['Pub', 'Hotel'],
+        choiceIds: ['pub', 'hotel'],
+        selectedChoiceId: '',
+        selectedChoice: '',
+        replaced: false
+      }
     ];
   }
 
@@ -55,7 +82,7 @@ describe('ForensicComponent', () => {
   it('blocks selecting the next other card when a replacement is required but missing', async () => {
     const game = buildGame(4);
     const { component, gameApi, snack } = createComponent(game);
-    component.selectedOtherCardOption = 'Two';
+    component.selectedOtherCardOptionId = 'two';
 
     await component.selectNextOtherCard();
 
@@ -63,21 +90,23 @@ describe('ForensicComponent', () => {
     expect(gameApi.selectNextForensicOtherCard).not.toHaveBeenCalled();
   });
 
-  it('sends replaceCardName when selecting the next other card after choosing a replacement', async () => {
+  it('sends replaceCardId when selecting the next other card after choosing a replacement', async () => {
     const game = buildGame(4);
     const { component, gameApi, snack } = createComponent(game);
-    component.selectedOtherCardOption = 'Two';
-    component.replaceCardName = 'Other 2';
+    component.selectedOtherCardOptionId = 'two';
+    component.replaceCardId = 'other-2';
 
     await component.selectNextOtherCard();
 
     expect(snack.error).not.toHaveBeenCalled();
     expect(gameApi.selectNextForensicOtherCard).toHaveBeenCalledWith(
       jasmine.objectContaining({
+        cardId: 'other-5',
         cardName: 'Other 5',
+        selectedChoiceId: 'two',
         selectedChoice: 'Two'
       }),
-      'Other 2'
+      'other-2'
     );
   });
 
@@ -87,17 +116,18 @@ describe('ForensicComponent', () => {
     const selectedCard = locationCards[2];
 
     component.locationCardClick(selectedCard);
-    component.selectedLocationCardOption = 'Hotel';
+    component.selectedLocationCardOptionId = 'hotel';
 
     await component.selectLocationCard();
 
     expect(gameApi.selectForensicLocationCard).toHaveBeenCalledTimes(1);
     expect(gameApi.selectForensicLocationCard).toHaveBeenCalledWith({
       ...selectedCard,
+      selectedChoiceId: 'hotel',
       selectedChoice: 'Hotel'
     });
     expect(component.selectedLocationCard).toBeNull();
-    expect(component.selectedLocationCardOption).toBeNull();
+    expect(component.selectedLocationCardOptionId).toBeNull();
   });
 
   it('resets the location option to the clicked card first choice when switching cards with the same name', () => {
@@ -105,11 +135,11 @@ describe('ForensicComponent', () => {
     const { component } = createComponent(buildGame(0));
 
     component.locationCardClick(firstCard);
-    component.selectedLocationCardOption = firstCard.choices[1];
+    component.selectedLocationCardOptionId = firstCard.choiceIds[1];
 
     component.locationCardClick(secondCard);
 
     expect(component.selectedLocationCard).toBe(secondCard);
-    expect(component.selectedLocationCardOption).toBe(secondCard.choices[0]);
+    expect(component.selectedLocationCardOptionId).toBe(secondCard.choiceIds[0]);
   });
 });

@@ -18,12 +18,12 @@ import { copyTextToClipboard } from '../../shared/utils/clipboard';
   styleUrls: ['./forensic.component.scss']
 })
 export class ForensicComponent implements OnInit, OnDestroy {
-  selectedCauseCardName: string;
+  selectedCauseCardId: string;
   selectedLocationCard: TgForensicCard;
-  selectedCauseCardOption: string;
-  selectedLocationCardOption: string;
-  selectedOtherCardOption: string;
-  replaceCardName: string;
+  selectedCauseCardOptionId: string;
+  selectedLocationCardOptionId: string;
+  selectedOtherCardOptionId: string;
+  replaceCardId: string;
   loading = true;
   private subscription = new Subscription();
 
@@ -71,11 +71,11 @@ export class ForensicComponent implements OnInit, OnDestroy {
   }
 
   getChosenMeansCard(privateObj: TgForensicPrivateData) {
-    return privateObj.murderer.clueCards.find((card: TgCard) => card.name === privateObj.murdererClueCardName);
+    return privateObj.murderer.meansCards.find((card: TgCard) => card.id === privateObj.murdererMeansCardId);
   }
 
   getChosenClueCard(privateObj: TgForensicPrivateData) {
-    return privateObj.murderer.meansCards.find((card: TgCard) => card.name === privateObj.murdererMeansCardName);
+    return privateObj.murderer.clueCards.find((card: TgCard) => card.id === privateObj.murdererClueCardId);
   }
 
   startGame() {
@@ -83,38 +83,40 @@ export class ForensicComponent implements OnInit, OnDestroy {
   }
 
   causeCardClick(card: TgForensicCard) {
-    this.selectedCauseCardName = card.cardName;
+    this.selectedCauseCardId = card.cardId;
+    this.selectedCauseCardOptionId = card.choiceIds[0];
   }
 
   locationCardClick(card: TgForensicCard) {
     if (this.selectedLocationCard !== card) {
       this.selectedLocationCard = card;
-      this.selectedLocationCardOption = card.choices[0];
+      this.selectedLocationCardOptionId = card.choiceIds[0];
     }
   }
 
   nextCard(game: TgGame) {
-    return game.otherCards.find(value => !value.selectedChoice);
+    return game.otherCards.find(value => !value.selectedChoiceId);
   }
 
   async selectCauseCard() {
-    this.gameApi.selectForensicCauseCard(await this.cardApi.getCauseCard(this.selectedCauseCardName, this.selectedCauseCardOption));
-    this.selectedCauseCardName = null;
-    this.selectedCauseCardOption = null;
+    await this.gameApi.selectForensicCauseCard(await this.cardApi.getCauseCard(this.selectedCauseCardId, this.selectedCauseCardOptionId));
+    this.selectedCauseCardId = null;
+    this.selectedCauseCardOptionId = null;
   }
 
   async selectLocationCard() {
-    this.gameApi.selectForensicLocationCard({
+    await this.gameApi.selectForensicLocationCard({
       ...this.selectedLocationCard,
-      selectedChoice: this.selectedLocationCardOption
+      selectedChoiceId: this.selectedLocationCardOptionId,
+      selectedChoice: this.selectedLocationCard?.choices?.[this.selectedLocationCard.choiceIds.indexOf(this.selectedLocationCardOptionId)] || ''
     });
     this.selectedLocationCard = null;
-    this.selectedLocationCardOption = null;
+    this.selectedLocationCardOptionId = null;
   }
 
   async selectNextOtherCard() {
     this.gameApi.game$.pipe(take(1)).subscribe(game => {
-      if (this.toReplace(game) && !this.replaceCardName) {
+      if (this.toReplace(game) && !this.replaceCardId) {
         this.snack.error('Please select a card to replace first!');
         return;
       }
@@ -122,33 +124,34 @@ export class ForensicComponent implements OnInit, OnDestroy {
       this.gameApi.selectNextForensicOtherCard(
         {
           ...nextCard,
-          selectedChoice: this.selectedOtherCardOption
+          selectedChoiceId: this.selectedOtherCardOptionId,
+          selectedChoice: nextCard?.choices?.[nextCard.choiceIds.indexOf(this.selectedOtherCardOptionId)] || ''
         },
-        this.replaceCardName
+        this.replaceCardId
       );
-      this.selectedOtherCardOption = null;
-      this.replaceCardName = null;
+      this.selectedOtherCardOptionId = null;
+      this.replaceCardId = null;
     });
   }
 
   selectReplaceCard = (card: TgForensicCard) => {
-    this.replaceCardName = card.cardName;
+    this.replaceCardId = card.cardId;
   };
 
   toReplace(game: TgGame) {
-    return game.otherCards.filter(card => card.selectedChoice).length >= 4 && game.otherCards.filter(card => card.replaced).length < 2;
+    return game.otherCards.filter(card => card.selectedChoiceId).length >= 4 && game.otherCards.filter(card => card.replaced).length < 2;
   }
 
   canSelectNextOtherCard(game: TgGame) {
-    return !!this.selectedOtherCardOption && (!this.toReplace(game) || !!this.replaceCardName);
+    return !!this.selectedOtherCardOptionId && (!this.toReplace(game) || !!this.replaceCardId);
   }
 
   showNextOtherCard(game: TgGame) {
-    return game.causeCard && game.locationCard && game.otherCards.filter(card => card.selectedChoice).length < 6;
+    return game.causeCard && game.locationCard && game.otherCards.filter(card => card.selectedChoiceId).length < 6;
   }
 
   waitingToEnd(game: TgGame) {
-    return game.causeCard && game.locationCard && game.otherCards.filter(card => card.selectedChoice).length >= 6;
+    return game.causeCard && game.locationCard && game.otherCards.filter(card => card.selectedChoiceId).length >= 6;
   }
 
   getResultHeadline(game: TgGame) {

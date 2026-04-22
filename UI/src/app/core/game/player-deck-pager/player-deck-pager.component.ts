@@ -28,20 +28,20 @@ export class PlayerDeckPagerComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.guess) {
-      this.selectedClue = this.guess?.clueCardName || null;
-      this.selectedMeans = this.guess?.meansCardName || null;
+      this.selectedClue = this.guess?.clueCardId || null;
+      this.selectedMeans = this.guess?.meansCardId || null;
     }
   }
 
   handleClueChange(player: TgPlayer) {
-    if (!player.meansCards.some(card => card.name === this.selectedMeans)) {
+    if (!player.meansCards.some(card => card.id === this.selectedMeans)) {
       this.selectedMeans = null;
     }
     this.syncGuess(player);
   }
 
   handleMeansChange(player: TgPlayer) {
-    if (!player.clueCards.some(card => card.name === this.selectedClue)) {
+    if (!player.clueCards.some(card => card.id === this.selectedClue)) {
       this.selectedClue = null;
     }
     this.syncGuess(player);
@@ -50,13 +50,15 @@ export class PlayerDeckPagerComponent implements OnInit, OnChanges {
   private syncGuess(player: TgPlayer) {
     if (!this.selectedMeans && !this.selectedClue) {
       this.guess.murdererUid = null;
-      this.guess.meansCardName = null;
-      this.guess.clueCardName = null;
+      this.guess.meansCardId = null;
+      this.guess.clueCardId = null;
       return;
     }
     this.guess.murdererUid = player.uid;
-    this.guess.meansCardName = this.selectedMeans;
-    this.guess.clueCardName = this.selectedClue;
+    this.guess.meansCardId = this.selectedMeans;
+    this.guess.clueCardId = this.selectedClue;
+    this.guess.meansCardName = player.meansCards.find(card => card.id === this.selectedMeans)?.name || '';
+    this.guess.clueCardName = player.clueCards.find(card => card.id === this.selectedClue)?.name || '';
   }
 
   otherPlayers(players: TgPlayer[], viewer: TgViewer) {

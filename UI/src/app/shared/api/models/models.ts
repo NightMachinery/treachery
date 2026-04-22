@@ -1,13 +1,18 @@
 export interface TgForensicCard {
+  cardId: string;
   cardName: string;
   choices: string[];
+  choiceIds: string[];
+  selectedChoiceId: string;
   selectedChoice: string;
   replaced: boolean;
 }
 
 export interface TgCard {
+  id: string;
   altImgUrl: string;
   guessedBy: string[];
+  hasImage: boolean;
   imgUrl: string;
   name: string;
 }
@@ -37,7 +42,9 @@ export interface TgViewer {
 export interface TgGuess {
   guessedByUid: string;
   murdererUid: string;
+  meansCardId: string;
   meansCardName: string;
+  clueCardId: string;
   clueCardName: string;
   correct: boolean;
   createdTimestamp?: string;
@@ -45,8 +52,10 @@ export interface TgGuess {
 
 export interface TgPartialGuess {
   murdererUid: string;
-  meansCardName: string;
-  clueCardName: string;
+  meansCardId: string;
+  meansCardName?: string;
+  clueCardId: string;
+  clueCardName?: string;
 }
 
 export interface TgPlayer {
@@ -89,7 +98,9 @@ export interface TgGame {
   startedTimestamp: string;
   murdererSelected: boolean;
   murdererCardsSelected: boolean;
+  murdererClueCardId: string;
   murdererClueCardName: string;
+  murdererMeansCardId: string;
   murdererMeansCardName: string;
   murdererUid: string;
   startedOn: string;
@@ -98,6 +109,11 @@ export interface TgGame {
   clueCardsPerPlayer: number;
   linkClueCountToMeans: boolean;
   meansCluesTextOnly: boolean;
+  crimePackId: string;
+  crimePackLanguage: string;
+  crimePackAssetSetId: string;
+  hintPackId: string;
+  hintPackLanguage: string;
   accompliceCount: number;
   witnessCount: number;
   witnessesToFind: number;
@@ -123,31 +139,99 @@ export interface TgWitnessSelectionPromptState {
 
 export interface TgForensicPrivateData {
   murderer: TgPlayer;
+  murdererClueCardId: string;
   murdererClueCardName: string;
+  murdererMeansCardId: string;
   murdererMeansCardName: string;
 }
 
 export interface TgPlayerPrivateData {
   isMurderer: boolean;
+  clueCardId: string;
   clueCardName: string;
+  meansCardId: string;
   meansCardName: string;
   role: TgSecretRole;
   knownMurdererTeam: TgKnownRolePlayer[];
+  knownMurdererClueCardId: string;
   knownMurdererClueCardName: string;
+  knownMurdererMeansCardId: string;
   knownMurdererMeansCardName: string;
   activeWitnessSelectionPrompt: TgWitnessSelectionPromptState;
 }
 
-interface TgForensicCardResource {
+export interface TgForensicCardResource {
   causeCards: TgForensicCard[];
   locationCards: TgForensicCard[];
   otherCards: TgForensicCard[];
 }
 
-export interface TgCardResources {
+export interface TgCrimePackResource {
+  packId: string;
+  packName: string;
+  language: string;
+  assetSetId: string;
+  defaultAssetSetId: string;
+  hasAnyImages: boolean;
+  languages: TgPackLanguageOption[];
+  assetSets: TgPackAssetSetOption[];
+  clueCards: TgCard[];
+  meansCards: TgCard[];
+}
+
+export interface TgHintPackResource {
+  packId: string;
+  packName: string;
+  language: string;
+  languages: TgPackLanguageOption[];
+  forensicCards: TgForensicCardResource;
+}
+
+export interface TgCurrentPackResources {
+  crimePack: TgCrimePackResource;
+  hintPack: TgHintPackResource;
   clueCards: TgCard[];
   meansCards: TgCard[];
   forensicCards: TgForensicCardResource;
+}
+
+export interface TgPackLanguageOption {
+  id: string;
+  name: string;
+}
+
+export interface TgPackAssetSetOption {
+  id: string;
+  name: string;
+  hasAnyImages: boolean;
+}
+
+export interface TgCrimePackCatalogEntry {
+  id: string;
+  name: string;
+  defaultLanguage: string;
+  defaultAssetSetId: string;
+  fallbackAssetSetId?: string;
+  meansCount: number;
+  clueCount: number;
+  hasAnyImages: boolean;
+  languages: TgPackLanguageOption[];
+  assetSets: TgPackAssetSetOption[];
+}
+
+export interface TgHintPackCatalogEntry {
+  id: string;
+  name: string;
+  defaultLanguage: string;
+  causeCount: number;
+  locationCount: number;
+  otherCount: number;
+  languages: TgPackLanguageOption[];
+}
+
+export interface TgWordpackCatalog {
+  crimePacks: TgCrimePackCatalogEntry[];
+  hintPacks: TgHintPackCatalogEntry[];
 }
 
 export interface TgMurdererInfo {
@@ -196,11 +280,19 @@ export interface TgGameSettingsInput {
   clueCardsPerPlayer: number;
   linkClueCountToMeans: boolean;
   meansCluesTextOnly: boolean;
+  crimePackId: string;
+  crimePackLanguage: string;
+  crimePackAssetSetId: string;
+  hintPackId: string;
+  hintPackLanguage: string;
   accompliceCount: number;
   witnessCount: number;
   witnessesToFind: number;
 }
 
 export interface TgGameRoomModsInput {
-  meansCluesTextOnly: boolean;
+  meansCluesTextOnly?: boolean;
+  crimePackLanguage?: string;
+  crimePackAssetSetId?: string;
+  hintPackLanguage?: string;
 }

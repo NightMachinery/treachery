@@ -161,7 +161,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   trackByGuess(index: number, guess: TgGuess) {
-    return `${guess.guessedByUid}-${guess.murdererUid}-${guess.meansCardName}-${guess.clueCardName}-${guess.createdTimestamp || index}`;
+    return `${guess.guessedByUid}-${guess.murdererUid}-${guess.meansCardId}-${guess.clueCardId}-${guess.createdTimestamp || index}`;
   }
 
   private async syncRoute(snapshot: TgGameSnapshot) {

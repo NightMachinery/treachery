@@ -5,7 +5,14 @@ import { AuthService } from './../../shared/api/auth/auth.service';
 import { CardApiService } from './../../shared/api/card/card-api.service';
 import { GameApiService } from '../../shared/api/game/game-api.service';
 import { ForensicApiService } from '../../shared/api/forensic/forensic-api.service';
-import { TgGame, TgGameSettingsInput, TgParticipant } from '../../shared/api/models/models';
+import {
+  TgCrimePackCatalogEntry,
+  TgGame,
+  TgGameSettingsInput,
+  TgHintPackCatalogEntry,
+  TgParticipant,
+  TgWordpackCatalog
+} from '../../shared/api/models/models';
 import { SnackBarService } from '../../shared/api/snack-bar/snack-bar.service';
 import { copyTextToClipboard } from '../../shared/utils/clipboard';
 
@@ -24,8 +31,7 @@ export class JoinGameComponent implements OnInit, OnDestroy {
   settingsDirty = false;
   private subscription = new Subscription();
   private autoJoiningObserver = false;
-  private clueDeckSize = 0;
-  private meansDeckSize = 0;
+  private catalog: TgWordpackCatalog = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,16 +39,11 @@ export class JoinGameComponent implements OnInit, OnDestroy {
     private auth: AuthService,
     public forensicApi: ForensicApiService,
     private snack: SnackBarService,
-    private cardApi: CardApiService
+    public cardApi: CardApiService
   ) {}
 
   ngOnInit() {
-    this.subscription.add(
-      this.cardApi.cards$.subscribe(cards => {
-        this.clueDeckSize = cards.clueCards.length;
-        this.meansDeckSize = cards.meansCards.length;
-      })
-    );
+    this.subscription.add(this.cardApi.catalog$.subscribe(catalog => (this.catalog = catalog)));
 
     this.subscription.add(
       this.route.params.subscribe(async ({ gameId }) => {
@@ -150,6 +151,39 @@ export class JoinGameComponent implements OnInit, OnDestroy {
     this.settingsDirty = true;
   }
 
+  handleCrimePackChange() {
+    this.settingsDirty = true;
+    const pack = this.selectedCrimePack;
+    if (!pack) {
+      return;
+    }
+    this.settings.crimePackLanguage = pack.defaultLanguage;
+    this.settings.crimePackAssetSetId = pack.defaultAssetSetId || pack.assetSets[0]?.id || '';
+    if (!pack.hasAnyImages) {
+      this.settings.meansCluesTextOnly = true;
+    }
+  }
+
+  handleCrimePackLanguageChange() {
+    this.settingsDirty = true;
+  }
+
+  handleCrimePackAssetSetChange() {
+    this.settingsDirty = true;
+  }
+
+  handleHintPackChange() {
+    this.settingsDirty = true;
+    const pack = this.selectedHintPack;
+    if (pack) {
+      this.settings.hintPackLanguage = pack.defaultLanguage;
+    }
+  }
+
+  handleHintPackLanguageChange() {
+    this.settingsDirty = true;
+  }
+
   handleRoleCountChange() {
     this.settingsDirty = true;
     this.settings.accompliceCount = this.normalizeBoundedNumber(this.settings.accompliceCount, 0, 10, 0);
@@ -196,7 +230,11 @@ export class JoinGameComponent implements OnInit, OnDestroy {
       this.handleClueCardCountChange();
     }
     this.handleRoleCountChange();
-    await this.gameApi.updateGameSettings({ ...this.settings });
+    await this.gameApi.updateGameSettings({
+      ...this.settings,
+      meansCluesTextOnly: this.effectiveTextOnly,
+      crimePackAssetSetId: this.settings.crimePackAssetSetId || this.selectedCrimePack?.defaultAssetSetId || ''
+    });
     this.settingsDirty = false;
   }
 
@@ -223,13 +261,34 @@ export class JoinGameComponent implements OnInit, OnDestroy {
     if (game.witnessCount > 0 && (game.witnessesToFind < 1 || game.witnessesToFind > game.witnessCount)) {
       return 'Witnesses to find must be between 1 and the witness count.';
     }
-    if (this.clueDeckSize && suspects * game.clueCardsPerPlayer > this.clueDeckSize) {
+    const crimePack = this.findCrimePack(game.crimePackId);
+    if (crimePack && suspects * game.clueCardsPerPlayer > crimePack.clueCount) {
       return `Not enough clue cards for ${game.clueCardsPerPlayer} evidence cards per suspect.`;
     }
-    if (this.meansDeckSize && suspects * game.meansCardsPerPlayer > this.meansDeckSize) {
+    if (crimePack && suspects * game.meansCardsPerPlayer > crimePack.meansCount) {
       return `Not enough means cards for ${game.meansCardsPerPlayer} means cards per suspect.`;
     }
     return '';
+  }
+
+  get selectedCrimePack(): TgCrimePackCatalogEntry {
+    return this.findCrimePack(this.settings.crimePackId);
+  }
+
+  get selectedHintPack(): TgHintPackCatalogEntry {
+    return this.findHintPack(this.settings.hintPackId);
+  }
+
+  get effectiveTextOnly(): boolean {
+    return this.settings.meansCluesTextOnly || !this.selectedCrimePack?.hasAnyImages;
+  }
+
+  get showTextOnlyToggle(): boolean {
+    return !!this.selectedCrimePack?.hasAnyImages;
+  }
+
+  get showCrimeAssetSelector(): boolean {
+    return (this.selectedCrimePack?.assetSets?.length || 0) > 0 && this.selectedCrimePack?.hasAnyImages;
   }
 
   private defaultSettings(): TgGameSettingsInput {
@@ -238,6 +297,11 @@ export class JoinGameComponent implements OnInit, OnDestroy {
       clueCardsPerPlayer: 4,
       linkClueCountToMeans: true,
       meansCluesTextOnly: false,
+      crimePackId: 'treachery',
+      crimePackLanguage: 'en',
+      crimePackAssetSetId: 'treachery',
+      hintPackId: 'treachery-hints',
+      hintPackLanguage: 'en',
       accompliceCount: 0,
       witnessCount: 0,
       witnessesToFind: 0
@@ -250,10 +314,23 @@ export class JoinGameComponent implements OnInit, OnDestroy {
       clueCardsPerPlayer: game.clueCardsPerPlayer,
       linkClueCountToMeans: game.linkClueCountToMeans,
       meansCluesTextOnly: game.meansCluesTextOnly,
+      crimePackId: game.crimePackId,
+      crimePackLanguage: game.crimePackLanguage,
+      crimePackAssetSetId: game.crimePackAssetSetId,
+      hintPackId: game.hintPackId,
+      hintPackLanguage: game.hintPackLanguage,
       accompliceCount: game.accompliceCount,
       witnessCount: game.witnessCount,
       witnessesToFind: game.witnessesToFind
     };
+  }
+
+  private findCrimePack(id: string) {
+    return this.catalog?.crimePacks?.find(pack => pack.id === id) || null;
+  }
+
+  private findHintPack(id: string) {
+    return this.catalog?.hintPacks?.find(pack => pack.id === id) || null;
   }
 
   private normalizePositiveNumber(value: number, fallback: number) {

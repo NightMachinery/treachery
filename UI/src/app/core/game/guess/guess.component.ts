@@ -28,10 +28,7 @@ export class GuessComponent implements OnInit {
       this.gameApi.playersDict$.pipe(take(1)).subscribe(playersDict => {
         this.gameApi.viewer$.pipe(take(1)).subscribe(viewer => {
           const duplicateGuess = guesses.some(
-            guess =>
-              guess.murdererUid === this.guess.murdererUid &&
-              guess.meansCardName === this.guess.meansCardName &&
-              guess.clueCardName === this.guess.clueCardName
+            guess => guess.murdererUid === this.guess.murdererUid && guess.meansCardId === this.guess.meansCardId && guess.clueCardId === this.guess.clueCardId
           );
           if (duplicateGuess) {
             this.snack.error('That exact guess was already submitted.');
@@ -57,10 +54,10 @@ export class GuessComponent implements OnInit {
   }
 
   getClueCard(murderer: TgPlayer) {
-    return murderer.clueCards.find(card => card.name === this.guess.clueCardName);
+    return murderer.clueCards.find(card => card.id === this.guess.clueCardId);
   }
 
   getMeansCard(murderer: TgPlayer) {
-    return murderer.meansCards.find(card => card.name === this.guess.meansCardName);
+    return murderer.meansCards.find(card => card.id === this.guess.meansCardId);
   }
 }

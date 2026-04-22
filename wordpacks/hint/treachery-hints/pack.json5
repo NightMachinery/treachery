@@ -1,0 +1,9 @@
+{
+  id: "treachery-hints",
+  name: "Treachery Hints",
+  defaultLanguage: "en",
+  languages: {
+    en: "English",
+    fa: "فارسی",
+  },
+}

@@ -6,6 +6,11 @@ This document covers the pre-start lobby settings and the optional hidden-role f
 
 Before the game starts, the creator can configure:
 
+- CrimePack
+- CrimePack language
+- CrimePack image asset set
+- HintPack
+- HintPack language
 - means cards per suspect
 - evidence/clue cards per suspect
 - a checked-by-default toggle that makes evidence count follow means count
@@ -16,6 +21,11 @@ Before the game starts, the creator can configure:
 
 Defaults:
 
+- CrimePack: `treachery`
+- CrimePack language: `en`
+- CrimePack image asset set: `treachery`
+- HintPack: `treachery-hints`
+- HintPack language: `en`
 - means cards per suspect: `4`
 - evidence/clue cards per suspect: `4`
 - evidence follows means: `true`
@@ -31,7 +41,19 @@ The lobby uses the existing **Save settings** flow, so pre-start changes to this
 - Means/clue cards support two room-wide display modes:
   - default image cards
   - text-only cards that hide the means/clue images
-- After the game starts, the creator gets a live **Room mods** toggle for this setting on room screens.
+- CrimePack image resolution now falls back in this order:
+  1. selected asset-set image
+  2. fallback asset-set image
+  3. selected asset-set deck default image
+  4. fallback asset-set deck default image
+  5. no-image text card
+- If the selected CrimePack has no usable images at all, text-only mode is forced on and the toggle is hidden.
+- After the game starts, the creator gets live **Room mods** controls for:
+  - CrimePack language
+  - CrimePack image asset set
+  - HintPack language
+  - means/clues text-only mode
+- CrimePack and HintPack IDs are locked once the game starts.
 - Mid-game room-mod changes apply immediately to everyone in the room, including observers and the forensic scientist.
 - Existing suspect card images stay mounted when new forensic hints arrive, so revealing another hint does not reload the card art.
 - Only means/clue cards are affected; forensic clue cards stay unchanged.
@@ -66,7 +88,7 @@ The lobby uses the existing **Save settings** flow, so pre-start changes to this
 When the creator starts the game:
 
 1. one lobby player becomes the forensic scientist (marked player first, otherwise random)
-2. the remaining suspects receive the configured clue/evidence and means counts
+2. the remaining suspects receive the configured clue/evidence and means counts from the selected CrimePack
 3. secret suspect roles are assigned randomly:
    - exactly 1 murderer
    - the configured number of accomplices
@@ -78,7 +100,7 @@ When the creator starts the game:
 - murderer: knows the full murderer team and selects the murder cards
 - accomplice: knows the full murderer team, including the other accomplices, and sees the murder cards once selected
 - witness: knows the murderer team identities
-- forensic scientist: knows the murderer and the selected murder cards through the existing forensic private view
+- forensic scientist: knows the murderer and the selected murder cards through the existing forensic private view, with hint cards localized from the selected HintPack language
 
 ## Witness-selection resolution
 

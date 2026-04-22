@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 import concurrent.futures
-import hashlib
 import html
-import json
 import mimetypes
 import os
 import re
@@ -13,8 +11,13 @@ from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
-CARDS_JSON = ROOT / 'UI' / 'src' / 'assets' / 'cards.json'
-CARDS_DIR = ROOT / 'UI' / 'src' / 'assets' / 'cards'
+CRIME_PACK_DIR = ROOT / 'wordpacks' / 'crime' / 'treachery'
+ASSET_SET_ID = 'treachery'
+MEANS_IDS = CRIME_PACK_DIR / 'means' / 'ids.txt'
+MEANS_EN = CRIME_PACK_DIR / 'means' / 'languages' / 'en.txt'
+CLUES_IDS = CRIME_PACK_DIR / 'clues' / 'ids.txt'
+CLUES_EN = CRIME_PACK_DIR / 'clues' / 'languages' / 'en.txt'
+ASSETS_DIR = CRIME_PACK_DIR / 'assets' / ASSET_SET_ID
 FONTS_DIR = ROOT / 'UI' / 'src' / 'assets' / 'fonts'
 FONTS_SCSS = ROOT / 'UI' / 'src' / '_fonts.scss'
 USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0 Safari/537.36'
@@ -70,50 +73,43 @@ def placeholder_svg(card_name: str, section: str) -> bytes:
 </svg>"""
     return svg.encode('utf-8')
 
+def load_lines(path: Path) -> list[str]:
+    return [line.strip() for line in path.read_text(encoding='utf-8').splitlines() if line.strip()]
 
-def download_card_image(section: str, index: int, card: dict) -> Tuple[str, str]:
-    slug = slugify(card['name'])
-    out_dir = CARDS_DIR / section
+
+def iter_pack_cards(deck: str) -> list[tuple[str, str]]:
+    if deck == 'means':
+        ids = load_lines(MEANS_IDS)
+        labels = load_lines(MEANS_EN)
+    else:
+        ids = load_lines(CLUES_IDS)
+        labels = load_lines(CLUES_EN)
+    if len(ids) != len(labels):
+        raise RuntimeError(f'{deck}: ids/labels length mismatch')
+    return list(zip(ids, labels))
+
+
+def ensure_pack_image(deck: str, card_id: str, label: str) -> tuple[str, str]:
+    out_dir = ASSETS_DIR / deck
     out_dir.mkdir(parents=True, exist_ok=True)
-    base_name = f"{index + 1:03d}-{slug}"
-
-    for candidate_url in [card.get('imgUrl', ''), card.get('altImgUrl', '')]:
-        if not candidate_url:
-            continue
-        try:
-            data, content_type = fetch_bytes(candidate_url)
-            if not content_type.startswith('image/'):
-                continue
-            ext = extension_for(candidate_url, content_type)
-            out_path = out_dir / f"{base_name}{ext}"
-            out_path.write_bytes(data)
-            rel = out_path.relative_to(ROOT / 'UI' / 'src').as_posix()
-            return rel, candidate_url
-        except Exception as exc:
-            print(f"warn: failed {candidate_url}: {exc}", file=sys.stderr)
-            continue
-
-    out_path = out_dir / f"{base_name}.svg"
-    out_path.write_bytes(placeholder_svg(card['name'], section))
-    rel = out_path.relative_to(ROOT / 'UI' / 'src').as_posix()
-    return rel, 'placeholder'
+    matches = sorted(out_dir.glob(f'{card_id}.*'))
+    if matches:
+        return matches[0].relative_to(ROOT).as_posix(), 'existing'
+    out_path = out_dir / f'{card_id}.svg'
+    out_path.write_bytes(placeholder_svg(label, deck))
+    return out_path.relative_to(ROOT).as_posix(), 'placeholder'
 
 
 def vendor_cards() -> None:
-    data = json.loads(CARDS_JSON.read_text())
     jobs = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
-        for section in ['clueCards', 'meansCards']:
-            for index, card in enumerate(data[section]):
-                jobs.append((section, index, card, executor.submit(download_card_image, section.replace('Cards', ''), index, card)))
+        for deck in ['clues', 'means']:
+            for card_id, label in iter_pack_cards(deck):
+                jobs.append((deck, card_id, label, executor.submit(ensure_pack_image, deck, card_id, label)))
 
-        for section, index, card, future in jobs:
+        for deck, card_id, _label, future in jobs:
             rel_path, source = future.result()
-            card['imgUrl'] = rel_path
-            card['altImgUrl'] = rel_path
-            print(f"card {section}[{index}] -> {rel_path} ({source})")
-
-    CARDS_JSON.write_text(json.dumps(data, indent=2) + '\n')
+            print(f'card {deck}/{card_id} -> {rel_path} ({source})')
 
 
 def fetch_text(url: str, accept: Optional[str] = None) -> str:

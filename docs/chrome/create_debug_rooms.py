@@ -5,8 +5,8 @@ The script creates two 4-player games:
 - one in normal image-card mode
 - one in text-only means/clues mode
 
-It also auto-selects murderer cards and enough forensic clues to make the
-in-game UI useful for screenshots and layout debugging.
+It auto-selects murderer cards plus enough hint cards to make the in-game UI
+useful for screenshots and layout debugging.
 """
 
 from __future__ import annotations
@@ -21,7 +21,6 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass
-from pathlib import Path
 from typing import Any
 
 DEFAULT_PLAYER_NAMES = ["Alpha", "Bravo", "Charlie", "Delta"]
@@ -100,13 +99,6 @@ class ApiClient:
         _, payload = self._request(client.opener, method, path, data)
         return payload
 
-
-def load_card_resources() -> dict[str, Any]:
-    repo_root = Path(__file__).resolve().parents[2]
-    cards_path = repo_root / "UI" / "src" / "assets" / "cards.json"
-    return json.loads(cards_path.read_text(encoding="utf-8"))
-
-
 def build_init_script(token: str, display_name: str) -> str:
     return (
         "(() => { "
@@ -132,17 +124,27 @@ def select_murderer_cards(api: ApiClient, murderer: SessionClient, game_id: str)
         "POST",
         f"/api/games/{game_id}/murderer-selection",
         {
-            "clueCardName": my_player["clueCards"][0]["name"],
-            "meansCardName": my_player["meansCards"][0]["name"],
+            "clueCardId": my_player["clueCards"][0]["id"],
+            "meansCardId": my_player["meansCards"][0]["id"],
         },
     )
 
 
-def reveal_forensic_cards(api: ApiClient, scientist: SessionClient, game_id: str, cards: dict[str, Any], selected_other_count: int) -> None:
-    cause_card = dict(cards["forensicCards"]["causeCards"][0])
+def reveal_forensic_cards(api: ApiClient, scientist: SessionClient, game_id: str, selected_other_count: int) -> None:
+    snapshot = api.request(scientist, "GET", f"/api/games/{game_id}/snapshot")
+    game = snapshot["game"]
+    hint_pack = api.request(
+        scientist,
+        "GET",
+        f"/api/wordpacks/hint/{urllib.parse.quote(game['hintPackId'])}?language={urllib.parse.quote(game['hintPackLanguage'])}",
+    )
+
+    cause_card = dict(hint_pack["forensicCards"]["causeCards"][0])
+    cause_card["selectedChoiceId"] = cause_card["choiceIds"][0]
     cause_card["selectedChoice"] = cause_card["choices"][0]
 
-    location_card = dict(cards["forensicCards"]["locationCards"][0])
+    location_card = dict(hint_pack["forensicCards"]["locationCards"][0])
+    location_card["selectedChoiceId"] = location_card["choiceIds"][0]
     location_card["selectedChoice"] = location_card["choices"][0]
 
     api.request(scientist, "POST", f"/api/games/{game_id}/forensic/cause", {"card": cause_card})
@@ -153,20 +155,16 @@ def reveal_forensic_cards(api: ApiClient, scientist: SessionClient, game_id: str
     for card in snapshot["game"]["otherCards"]:
         if chosen >= selected_other_count:
             break
-        payload = {
-            key: card[key]
-            for key in ("cardName", "choices", "selectedChoice", "replaced")
-            if key in card
-        }
-        if not payload.get("selectedChoice"):
+        payload = dict(card)
+        if not payload.get("selectedChoiceId"):
+            payload["selectedChoiceId"] = payload["choiceIds"][0]
             payload["selectedChoice"] = payload["choices"][0]
-        api.request(scientist, "POST", f"/api/games/{game_id}/forensic/other", {"card": payload, "replaceCardName": ""})
+        api.request(scientist, "POST", f"/api/games/{game_id}/forensic/other", {"card": payload, "replaceCardId": ""})
         chosen += 1
 
 
 def create_seeded_game(
     api: ApiClient,
-    cards: dict[str, Any],
     game_label: str,
     player_names: list[str],
     text_only: bool,
@@ -192,7 +190,7 @@ def create_seeded_game(
     scientist = next(client for client, snap in snapshots if snap["viewer"].get("isScientist"))
 
     select_murderer_cards(api, murderer, game_id)
-    reveal_forensic_cards(api, scientist, game_id, cards, selected_other_count)
+    reveal_forensic_cards(api, scientist, game_id, selected_other_count)
 
     result_players: list[dict[str, Any]] = []
     for client in sessions:
@@ -266,15 +264,13 @@ def main() -> int:
         public_origin=args.public_origin,
         host_header=args.host_header,
     )
-    cards = load_card_resources()
-
     result = {
         "publicOrigin": api.public_origin,
         "connectOrigin": api.connect_origin,
         "hostHeader": api.host_header,
         "games": {
-            "image": create_seeded_game(api, cards, "Desktop/image-card debug room", args.players, False, args.selected_other_count),
-            "textOnly": create_seeded_game(api, cards, "Text-only means/clues debug room", args.players, True, args.selected_other_count),
+            "image": create_seeded_game(api, "Desktop/image-card debug room", args.players, False, args.selected_other_count),
+            "textOnly": create_seeded_game(api, "Text-only means/clues debug room", args.players, True, args.selected_other_count),
         },
     }
 

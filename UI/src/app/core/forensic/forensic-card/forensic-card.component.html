@@ -2,7 +2,7 @@
   <div class="card" [ngClass]="[disabled ? 'disabled-card' : '', selected ? 'selected-card' : '']">
     <div class="card-header">
       <p class="eyebrow">Forensic clue</p>
-      <h4>{{ forensicCard.cardName }}</h4>
+      <h4 dir="auto">{{ forensicCard.cardName }}</h4>
     </div>
 
     <div class="options">
@@ -10,9 +10,10 @@
         mat-flat-button
         type="button"
         class="option"
-        [ngClass]="[!disabled && isSelected(choice) ? 'option-selected' : 'option-not-selected']"
-        *ngFor="let choice of forensicCard.choices"
-        (click)="choiceClick(choice)"
+        [ngClass]="[!disabled && isSelected(forensicCard.choiceIds[index]) ? 'option-selected' : 'option-not-selected']"
+        *ngFor="let choice of forensicCard.choices; let index = index"
+        (click)="choiceClick(forensicCard.choiceIds[index])"
+        dir="auto"
       >
         {{ choice }}
       </button>

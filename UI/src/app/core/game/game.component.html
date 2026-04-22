@@ -144,7 +144,7 @@
               <app-forensic-card *ngIf="game.causeCard" [forensicCard]="game.causeCard"></app-forensic-card>
               <app-forensic-card *ngIf="game.locationCard" [forensicCard]="game.locationCard"></app-forensic-card>
               <ng-container *ngFor="let card of game.otherCards">
-                <app-forensic-card *ngIf="card.selectedChoice && !card.replaced" [forensicCard]="card"></app-forensic-card>
+                <app-forensic-card *ngIf="card.selectedChoiceId && !card.replaced" [forensicCard]="card"></app-forensic-card>
               </ng-container>
             </div>
           </section>
@@ -201,7 +201,7 @@
                   <app-forensic-card *ngIf="game.causeCard" [forensicCard]="game.causeCard"></app-forensic-card>
                   <app-forensic-card *ngIf="game.locationCard" [forensicCard]="game.locationCard"></app-forensic-card>
                   <ng-container *ngFor="let card of game.otherCards">
-                    <app-forensic-card *ngIf="card.selectedChoice && !card.replaced" [forensicCard]="card"></app-forensic-card>
+                    <app-forensic-card *ngIf="card.selectedChoiceId && !card.replaced" [forensicCard]="card"></app-forensic-card>
                   </ng-container>
                 </div>
               </section>
@@ -232,8 +232,8 @@
                 <app-player-deck
                   [player]="player"
                   [disableSelection]="true"
-                  [selectedClue]="(gameApi.playerPrivateData$ | async)?.clueCardName"
-                  [selectedMeans]="(gameApi.playerPrivateData$ | async)?.meansCardName"
+                  [selectedClue]="(gameApi.playerPrivateData$ | async)?.clueCardId"
+                  [selectedMeans]="(gameApi.playerPrivateData$ | async)?.meansCardId"
                 ></app-player-deck>
               </section>
 

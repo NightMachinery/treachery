@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
+import { CardApiService } from '../../../shared/api/card/card-api.service';
 import { GameApiService } from '../../../shared/api/game/game-api.service';
-import { TgGame, TgModeratorPrivateData, TgViewer } from '../../../shared/api/models/models';
+import { TgCrimePackCatalogEntry, TgGame, TgHintPackCatalogEntry, TgModeratorPrivateData, TgViewer, TgWordpackCatalog } from '../../../shared/api/models/models';
 
 import { ModeratorWitnessControlsComponent } from './moderator-witness-controls.component';
 
@@ -15,11 +17,52 @@ describe('ModeratorWitnessControlsComponent', () => {
     viewer$: BehaviorSubject<TgViewer>;
     moderatorPrivateData$: BehaviorSubject<TgModeratorPrivateData>;
   };
+  let cardApi: { catalog$: BehaviorSubject<TgWordpackCatalog> };
+
+  const crimePack = {
+    id: 'treachery',
+    name: 'Treachery',
+    defaultLanguage: 'en',
+    defaultAssetSetId: 'treachery',
+    meansCount: 90,
+    clueCount: 200,
+    hasAnyImages: true,
+    languages: [
+      { id: 'en', name: 'English' },
+      { id: 'fa', name: 'فارسی' }
+    ],
+    assetSets: [
+      { id: 'treachery', name: 'Treachery', hasAnyImages: true },
+      { id: 'sketch', name: 'Sketch', hasAnyImages: true }
+    ]
+  } as TgCrimePackCatalogEntry;
+
+  const hintPack = {
+    id: 'treachery-hints',
+    name: 'Treachery Hints',
+    defaultLanguage: 'en',
+    causeCount: 1,
+    locationCount: 4,
+    otherCount: 24,
+    languages: [
+      { id: 'en', name: 'English' },
+      { id: 'fa', name: 'فارسی' }
+    ]
+  } as TgHintPackCatalogEntry;
 
   beforeEach(
     waitForAsync(() => {
       gameApi = Object.assign(jasmine.createSpyObj<GameApiService>('GameApiService', ['showWitnessSelectionPrompt', 'updateRoomMods']), {
-        game$: new BehaviorSubject<TgGame>({ pendingWitnessSelection: true, startedOn: '2026-04-20T00:00:00Z', meansCluesTextOnly: false } as TgGame),
+        game$: new BehaviorSubject<TgGame>({
+          pendingWitnessSelection: true,
+          startedOn: '2026-04-20T00:00:00Z',
+          meansCluesTextOnly: false,
+          crimePackId: crimePack.id,
+          crimePackLanguage: 'en',
+          crimePackAssetSetId: 'treachery',
+          hintPackId: hintPack.id,
+          hintPackLanguage: 'en'
+        } as TgGame),
         viewer$: new BehaviorSubject<TgViewer>({ isCreator: true } as TgViewer),
         moderatorPrivateData$: new BehaviorSubject<TgModeratorPrivateData>({
           witnessPromptCandidates: [
@@ -30,11 +73,20 @@ describe('ModeratorWitnessControlsComponent', () => {
       });
       gameApi.showWitnessSelectionPrompt.and.returnValue(Promise.resolve());
       gameApi.updateRoomMods.and.returnValue(Promise.resolve());
+      cardApi = {
+        catalog$: new BehaviorSubject<TgWordpackCatalog>({
+          crimePacks: [crimePack],
+          hintPacks: [hintPack]
+        })
+      };
 
       TestBed.configureTestingModule({
-        imports: [CommonModule],
+        imports: [CommonModule, FormsModule],
         declarations: [ModeratorWitnessControlsComponent],
-        providers: [{ provide: GameApiService, useValue: gameApi }]
+        providers: [
+          { provide: GameApiService, useValue: gameApi },
+          { provide: CardApiService, useValue: cardApi }
+        ]
       }).compileComponents();
     })
   );
@@ -49,6 +101,8 @@ describe('ModeratorWitnessControlsComponent', () => {
     const panelText = fixture.nativeElement.textContent;
 
     expect(panelText).toContain('Room mods');
+    expect(panelText).toContain('CrimePack language');
+    expect(panelText).toContain('HintPack language');
     expect(panelText).toContain('Means/clues text only');
     expect(panelText).toContain('Witness prompt controls');
     expect(panelText).toContain('Creator');
@@ -75,5 +129,21 @@ describe('ModeratorWitnessControlsComponent', () => {
     await fixture.whenStable();
 
     expect(gameApi.updateRoomMods).toHaveBeenCalledWith({ meansCluesTextOnly: true });
+  });
+
+  it('should send live language and asset changes', async () => {
+    const selects = fixture.debugElement.queryAll(By.css('.settings-grid select'));
+
+    selects[0].nativeElement.value = selects[0].nativeElement.options[1].value;
+    selects[0].nativeElement.dispatchEvent(new Event('change'));
+    selects[1].nativeElement.value = selects[1].nativeElement.options[1].value;
+    selects[1].nativeElement.dispatchEvent(new Event('change'));
+    selects[2].nativeElement.value = selects[2].nativeElement.options[1].value;
+    selects[2].nativeElement.dispatchEvent(new Event('change'));
+    await fixture.whenStable();
+
+    expect(gameApi.updateRoomMods).toHaveBeenCalledWith({ crimePackLanguage: 'fa' });
+    expect(gameApi.updateRoomMods).toHaveBeenCalledWith({ crimePackAssetSetId: 'sketch' });
+    expect(gameApi.updateRoomMods).toHaveBeenCalledWith({ hintPackLanguage: 'fa' });
   });
 });

@@ -6,6 +6,7 @@ Treachery stores a local anonymous auth identity per browser and keeps the chose
 
 - Players without a custom avatar use a generated SVG avatar.
 - The generator is deterministic, so the same identity data always renders the same avatar.
+- The UI now renders those SVGs through the normal pnpm package `@nice-avatar-svg/preact`, with a small local wrapper that hashes the seed into a stable config.
 - The seed is built with the user ID prepended to the display name:
   - `"<uid>:<displayName>"` when both exist
   - `uid` when only the user ID exists

@@ -35,9 +35,18 @@ dependencies:
   '@angular/router':
     specifier: ^20.3.19
     version: 20.3.19(@angular/common@20.3.19)(@angular/core@20.3.19)(@angular/platform-browser@20.3.19)(rxjs@7.8.2)
+  '@nice-avatar-svg/preact':
+    specifier: ^0.0.3
+    version: 0.0.3(preact@10.29.1)
   color-hash:
     specifier: ^1.0.3
     version: 1.1.1
+  preact:
+    specifier: ^10.29.1
+    version: 10.29.1
+  preact-render-to-string:
+    specifier: ^6.6.7
+    version: 6.6.7(preact@10.29.1)
   rxjs:
     specifier: ^7.8.2
     version: 7.8.2
@@ -3394,6 +3403,14 @@ packages:
       typescript: 5.9.3
       webpack: 5.105.0(esbuild@0.28.0)
     dev: true
+
+  /@nice-avatar-svg/preact@0.0.3(preact@10.29.1):
+    resolution: {integrity: sha512-ZuUnoV2kBVZvfpdqDFEBNRgzq2+bYNHt6Euu1P5xJq9QPebg06alfZ7vq1uBirK9S+ayzC2o+ol82XuaYNEKGA==}
+    peerDependencies:
+      preact: '>=10.0.0'
+    dependencies:
+      preact: 10.29.1
+    dev: false
 
   /@nodelib/fs.scandir@2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -7680,6 +7697,18 @@ packages:
       picocolors: 1.1.1
       source-map-js: 1.2.1
     dev: true
+
+  /preact-render-to-string@6.6.7(preact@10.29.1):
+    resolution: {integrity: sha512-3XdbsX3+vn9dQW+jJI/FsI9rlkgl6dbeUpqLsChak6jp3j3auFqBCkno7VChbMFs5Q8ylBj6DrUkKRwtVN3nvw==}
+    peerDependencies:
+      preact: '>=10 || >= 11.0.0-0'
+    dependencies:
+      preact: 10.29.1
+    dev: false
+
+  /preact@10.29.1:
+    resolution: {integrity: sha512-gQCLc/vWroE8lIpleXtdJhTFDogTdZG9AjMUpVkDf2iTCNwYNWA+u16dL41TqUDJO4gm2IgrcMv3uTpjd4Pwmg==}
+    dev: false
 
   /prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}

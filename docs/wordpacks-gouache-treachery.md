@@ -79,3 +79,22 @@ Generated and validated the next ten means-card images with ImageMagick `identif
 | `assets/gouache-treachery/means/023-drill.png` | 1049x1499 | 0.699800 |
 
 All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`.
+
+### 2026-04-24 checkpoint 4
+
+Generated and validated the next ten means-card images with ImageMagick `identify`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/means/024-drown.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/025-dumbbell.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/026-e-bike.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/027-electric-baton.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/028-electric-current.png` | 1050x1498 | 0.700935 |
+| `assets/gouache-treachery/means/029-explosives.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/030-folding-chair.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/031-gunpowder.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/032-hammer.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/033-hook.png` | 1049x1499 | 0.699800 |
+
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`.

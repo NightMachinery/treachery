@@ -205,3 +205,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: curled wood shavings, loose screw, dark puncture mark in scrap wood.
 - Mood/setting: precise, mechanical, threatening; shadowed maintenance room or workshop.
 - Palette/lighting/composition: muted teal, graphite, cool steel, dusty tan, warm amber highlights; focused desk-lamp beam; low diagonal three-quarter close-up.
+
+### means/024-drown.png — Drown
+
+- Gameplay function: Means card; communicates drowning through a water-filled basin without graphic body imagery.
+- Main subject: deep porcelain or utility basin filled with dark water, submerged pale cloth, bubbles and ripples.
+- Supporting cues: dripping faucet, wet tile reflections, overturned cup.
+- Mood/setting: intimate, suffocating, ominous; dim tiled bathroom or washroom.
+- Palette/lighting/composition: slate blues, storm grays, ivory porcelain, brass accent; cold overhead bathroom light; slight top-down close-up centered on the basin.
+
+### means/025-dumbbell.png — Dumbbell
+
+- Gameplay function: Means card; presents a dumbbell as a heavy improvised blunt weapon.
+- Main subject: dark iron dumbbell angled diagonally on a polished gym floor.
+- Supporting cues: chalk smear, torn towel, blurred locker-room stripes.
+- Mood/setting: tense, sterile, after-hours; empty fitness room.
+- Palette/lighting/composition: charcoal iron, cool blue-gray floor, mint highlights, rusty scuff accent; harsh fluorescent overhead; low three-quarter close-up.
+
+### means/026-e-bike.png — E-bike
+
+- Gameplay function: Means card; reads as a modern vehicle-impact method through a fallen electric bicycle.
+- Main subject: sleek black e-bike on its side with thick frame battery and bent front wheel.
+- Supporting cues: blinking rear light, delivery-bag strap, rain-slick pavement.
+- Mood/setting: urgent, urban, nocturnal; wet alley or curbside.
+- Palette/lighting/composition: charcoal, navy, asphalt gray, electric cyan reflections, red tail-light accent; streetlamp rim light; diagonal three-quarter view.
+
+### means/027-electric-baton.png — Electric Baton
+
+- Gameplay function: Means card; makes an electric baton instantly readable as a compact shock weapon.
+- Main subject: black telescoping baton with metal prongs and restrained blue-white spark halo.
+- Supporting cues: coiled wrist strap, rubber grip texture, reflected blue light on tabletop.
+- Mood/setting: official, sterile, threatening; security or forensic evidence room.
+- Palette/lighting/composition: black rubber, gunmetal, slate blue, cyan accent, beige tabletop; narrow side rim light; iconic diagonal close-up.
+
+### means/028-electric-current.png — Electric Current
+
+- Gameplay function: Means card; communicates electrocution danger through live exposed wires.
+- Main subject: frayed electrical cables with exposed copper nearly touching and a bright arc.
+- Supporting cues: outlet plate, puddle reflection, scorch marks.
+- Mood/setting: hazardous, damp, tense; basement utility wall or maintenance room.
+- Palette/lighting/composition: charcoal, concrete gray, copper, green-black shadows, cyan-white glow; arc as key light; close-up convergence above center.
+
+### means/029-explosives.png — Explosives
+
+- Gameplay function: Means card; depicts explosives as a volatile fictional evidence object without instructional detail.
+- Main subject: tied bundle of red paper-wrapped demolition charges with a coiled fuse.
+- Supporting cues: dust, wordless caution-tape shapes, scattered gravel.
+- Mood/setting: clandestine, volatile; warehouse floor or construction-site crate.
+- Palette/lighting/composition: brick red, charcoal, dirty ochre, smoky violet-brown, cream highlights; low warm side light; centered close-up still life.
+
+### means/030-folding-chair.png — Folding Chair
+
+- Gameplay function: Means card; presents a folding chair as an improvised blunt weapon.
+- Main subject: half-collapsed lightweight metal folding chair with bent tubular frame and dented seat.
+- Supporting cues: scuffed linoleum, fallen plastic cup, dramatic wall shadow.
+- Mood/setting: tense aftermath; community hall, interrogation room, or back-room venue.
+- Palette/lighting/composition: cool gray metal, dull beige vinyl, greenish shadows, dusty floor marks; hard side light; low-angle diagonal close-up.
+
+### means/031-gunpowder.png — Gunpowder
+
+- Gameplay function: Means card; communicates volatile powder as dangerous evidence without usable technical detail.
+- Main subject: unlabeled metal powder tin tipped over with a dark granular spill.
+- Supporting cues: brass measuring scoop, scorch ring, dust motes.
+- Mood/setting: secretive, antique, dangerous; evidence bench or old workshop table.
+- Palette/lighting/composition: black powder, aged pewter, walnut brown, dusty ochre, violet shadows; warm desk-lamp beam; slight top-down still life.
+
+### means/032-hammer.png — Hammer
+
+- Gameplay function: Means card; makes a hammer immediately readable as a blunt murder weapon.
+- Main subject: heavy claw hammer with steel head and wooden handle on a workbench.
+- Supporting cues: bent nails, cracked scrap board, sawdust.
+- Mood/setting: practical, shadowed, ominous; maintenance workshop.
+- Palette/lighting/composition: steel gray, aged wood, dusty tan, olive-black shadows, rust-red accent; focused desk-lamp beam; low diagonal close-up.
+
+### means/033-hook.png — Hook
+
+- Gameplay function: Means card; presents a large hook as a sharp industrial implement.
+- Main subject: curved metal hook hanging from a short chain with a bright pointed tip.
+- Supporting cues: condensation, rope coil, blurred tiled wall or hanging shadow.
+- Mood/setting: cold, ominous, industrial; storage room, butcher back room, or dockside service area.
+- Palette/lighting/composition: cold steel, blue-black shadows, icy highlights, concrete beige, rust accent; narrow overhead industrial light; frontal iconic close-up.

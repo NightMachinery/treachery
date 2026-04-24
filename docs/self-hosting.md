@@ -99,6 +99,7 @@ Same as `setup`, but meant for redeploying the latest local code changes. It als
 
 `self_host.zsh` does **not** hardcode proxy settings.
 If proxy variables such as `ALL_PROXY`, `HTTP_PROXY`, `HTTPS_PROXY`, `npm_config_proxy`, or `npm_config_https_proxy` are present in the environment, the script uses them for builds and passes them through to the tmux session.
+Those tmux-managed sessions now receive proxy values as literal environment entries, so `NO_PROXY` lists such as `127.0.0.1,localhost,::1` do not depend on shell quoting.
 
 ## Verification checklist
 

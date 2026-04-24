@@ -29,8 +29,27 @@ PUBLIC_HOST=""
 RUN_MODE="prod"
 
 tmuxnew() {
-  tmux kill-session -t "$1" &> /dev/null || true
-  tmux new -d -s "$@"
+  local session="$1"
+  shift
+
+  tmux kill-session -t "$session" &> /dev/null || true
+  tmux new-session -d -s "$session" "$@"
+}
+
+tmuxnew_with_env() {
+  local session="$1"
+  shift
+  local command="$1"
+  shift
+  local -a tmux_args=(-d -s "$session")
+  local env_assignment
+
+  for env_assignment in "$@"; do
+    tmux_args+=(-e "$env_assignment")
+  done
+
+  tmux kill-session -t "$session" &> /dev/null || true
+  tmux new-session "${tmux_args[@]}" "$command"
 }
 
 say() {
@@ -112,13 +131,13 @@ load_node() {
   nvm use "$NODE_VERSION"
 }
 
-proxy_exports() {
+proxy_env_assignments() {
   local names=(ALL_PROXY all_proxy http_proxy https_proxy HTTP_PROXY HTTPS_PROXY npm_config_proxy npm_config_https_proxy NO_PROXY no_proxy)
   local name value
   for name in $names; do
     if (( ${+parameters[$name]} )); then
       value="${(P)name}"
-      print -r -- "export $name=${(q)value};"
+      print -r -- "$name=$value"
     fi
   done
 }
@@ -276,19 +295,23 @@ reload_or_start_caddy() {
 
 start_app_session() {
   ensure_addr_free "$APP_ADDR" "App"
-  local exports cmd
-  exports="$(proxy_exports)"
-  cmd="$exports cd ${(q)ROOT_DIR}; ${(q)BINARY_PATH} -addr ${(q)APP_ADDR} -dist-dir ${(q)DIST_DIR} -data-dir ${(q)DATA_DIR} -wordpacks-dir ${(q)WORDPACKS_DIR}"
-  tmuxnew "$SESSION_APP" zsh -lc "$cmd"
+  local -a env_assignments=()
+  local env_assignment
+  while IFS= read -r env_assignment; do
+    [[ -n "$env_assignment" ]] && env_assignments+=("$env_assignment")
+  done < <(proxy_env_assignments)
+  tmuxnew_with_env "$SESSION_APP" "zsh -lc 'cd ${(q)ROOT_DIR}; ${(q)BINARY_PATH} -addr ${(q)APP_ADDR} -dist-dir ${(q)DIST_DIR} -data-dir ${(q)DATA_DIR} -wordpacks-dir ${(q)WORDPACKS_DIR}'" "${env_assignments[@]}"
   say "Started tmux session $SESSION_APP"
 }
 
 start_dev_ui_session() {
   ensure_addr_free "$DEV_UI_ADDR" "Dev UI"
-  local exports cmd
-  exports="$(proxy_exports)"
-  cmd="$exports cd ${(q)ROOT_DIR}/UI; nvm-load; nvm use ${(q)NODE_VERSION}; pnpm exec ng serve --host 127.0.0.1 --port ${DEV_UI_ADDR##*:} --allowed-hosts ${(q)PUBLIC_HOST}"
-  tmuxnew "$SESSION_DEV_UI" zsh -lc "$cmd"
+  local -a env_assignments=()
+  local env_assignment
+  while IFS= read -r env_assignment; do
+    [[ -n "$env_assignment" ]] && env_assignments+=("$env_assignment")
+  done < <(proxy_env_assignments)
+  tmuxnew_with_env "$SESSION_DEV_UI" "zsh -lc 'cd ${(q)ROOT_DIR}/UI; nvm-load; nvm use ${(q)NODE_VERSION}; pnpm exec ng serve --host 127.0.0.1 --port ${DEV_UI_ADDR##*:} --allowed-hosts ${(q)PUBLIC_HOST}'" "${env_assignments[@]}"
   say "Started tmux session $SESSION_DEV_UI"
 }
 

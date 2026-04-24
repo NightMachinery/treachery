@@ -30,7 +30,7 @@ Both ship with:
 
 - English (`en`)
 - Persian (`fa`)
-- Treachery also includes a selectable Storybook Cel fallback art asset set: `storybook-cel`
+- Treachery also includes selectable supplemental art asset sets: `gouache-treachery` and `storybook-cel`
 
 ## CrimePack layout
 
@@ -66,8 +66,22 @@ Image lookup falls back from the selected asset set to the pack fallback asset s
 - Gameplay cards currently render images with centered cover-crop:
   - `object-fit: cover`
   - `object-position: center`
-- The `storybook-cel` art is mastered at **7:10 portrait** (`1050x1500`, with a few-pixel tolerance) to match the current card slot best across layouts.
+- The `storybook-cel` and `gouache-treachery` art is mastered at **7:10 portrait** (`1050x1500`, with a few-pixel tolerance) to match the current card slot best across layouts.
 - Because the card title overlay sits near the bottom edge, important subject detail should stay centered and slightly above center.
+
+## Gouache Treachery asset set
+
+- CrimePack: `treachery`
+- Asset set id: `gouache-treachery`
+- Display name: `Gouache Treachery`
+- Default/fallback behavior is unchanged:
+  - default asset set stays `treachery`
+  - pack fallback asset set stays `treachery`
+- The pack has its own deck-level gouache fallback art:
+  - means: `assets/gouache-treachery/means/default.png`
+  - clues: `assets/gouache-treachery/clues/default.png`
+- Card-specific art should be generated from `PE/image-gouache-1-template.md`, requested at 7:10 portrait (`1050x1500`), and validated with `identify` before committing.
+- See `docs/wordpacks-gouache-treachery.md` for the asset-set notes and progress log.
 
 ## Storybook Cel asset set
 

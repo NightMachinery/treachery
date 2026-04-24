@@ -9,6 +9,7 @@
     fa: "فارسی",
   },
   assetSets: {
+    "gouache-treachery": "Gouache Treachery",
     "storybook-cel": "Storybook Cel",
     treachery: "Treachery",
   },

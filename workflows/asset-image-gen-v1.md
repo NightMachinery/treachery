@@ -21,7 +21,7 @@ For each asset in the batch, record:
 - card id or `default`
 - card label, if card-specific
 - destination path under the asset pack
-- handcrafted prompt derived from the active meta-prompt, for example `PE/image-gouache-1-template.md`
+- handcrafted prompt derived from the active meta-prompt, for example `PE/image-gouache-V1.1-template.md`
 
 Keep prompt notes in a project file such as `PE/<asset-pack>-prompts.md`, and update any relevant docs under `docs/` when the asset pack behavior or process changes.
 
@@ -32,41 +32,67 @@ Keep prompt notes in a project file such as `PE/<asset-pack>-prompts.md`, and up
 3. Take the next `N=10` missing assets in deterministic order.
 4. Include any assets removed for bad aspect ratio in a future batch automatically because their destination files no longer exist.
 
-Example pending-set helper for a Treachery-style pack:
+Use a TSV manifest as the batch source of truth. It keeps the deck, id, human prompt label, and destination path together for prompting, copying, validation, docs, and cleanup.
+
+Example manifest helper for a Treachery-style pack:
 
 ```bash
+mkdir -p tmp
 asset_set="gouache-treachery"
 pack="wordpacks/crime/treachery"
+expected_tsv="tmp/asset-image-expected.tsv"
+batch_tsv="tmp/asset-image-batch.tsv"
+batch_paths="tmp/asset-image-batch.txt"
+
+slug_label() {
+  # Converts `024-drown` -> `drown`, `027-electric-baton` -> `electric baton`.
+  local id="$1"
+  id="${id#???-}"
+  printf '%s' "${id//-/ }"
+}
 
 {
-  printf '%s\n' "$pack/assets/$asset_set/means/default.png"
-  printf '%s\n' "$pack/assets/$asset_set/clues/default.png"
-  sed 's#^#'"$pack"'/assets/'"$asset_set"'/means/#; s#$#.png#' "$pack/means/ids.txt"
-  sed 's#^#'"$pack"'/assets/'"$asset_set"'/clues/#; s#$#.png#' "$pack/clues/ids.txt"
-} | while read -r path; do
-  [ -e "$path" ] || printf '%s\n' "$path"
-done | head -10
+  printf 'means\tdefault\tmeans fallback\t%s/assets/%s/means/default.png\n' "$pack" "$asset_set"
+  printf 'clues\tdefault\tclues fallback\t%s/assets/%s/clues/default.png\n' "$pack" "$asset_set"
+  while read -r id; do
+    printf 'means\t%s\t%s\t%s/assets/%s/means/%s.png\n' "$id" "$(slug_label "$id")" "$pack" "$asset_set" "$id"
+  done < "$pack/means/ids.txt"
+  while read -r id; do
+    printf 'clues\t%s\t%s\t%s/assets/%s/clues/%s.png\n' "$id" "$(slug_label "$id")" "$pack" "$asset_set" "$id"
+  done < "$pack/clues/ids.txt"
+} > "$expected_tsv"
+
+: > "$batch_tsv"
+count=0
+while IFS=$'\t' read -r deck id label path; do
+  if [ ! -e "$path" ]; then
+    printf '%s\t%s\t%s\t%s\n' "$deck" "$id" "$label" "$path" >> "$batch_tsv"
+    count=$((count + 1))
+    [ "$count" -ge 10 ] && break
+  fi
+done < "$expected_tsv"
+
+cut -f4 "$batch_tsv" > "$batch_paths"
+column -t -s $'\t' "$batch_tsv"
 ```
 
 ## Generate the batch
 
-For each of the 10 pending assets:
+For each row in `tmp/asset-image-batch.tsv`:
 
-1. Handcraft the prompt from the meta-prompt and the card label/role.
+1. Handcraft the prompt from the meta-prompt and the row's card label/role.
 2. Request `1050x1500`, 7:10 portrait, full-bleed illustration-only output.
-3. Copy the generated image from `$CODEX_HOME/generated_images/<session>/<image_id>.png` into the intended project path.
-4. Do not run `identify` yet unless you need to debug a generation failure; keep generating until all 10 project files have been copied.
+3. Copy the generated image from `$CODEX_HOME/generated_images/<session>/<image_id>.png` into the row's destination path.
+4. Keep a short source-to-destination mapping in your working notes while copying. This makes it easy to audit the batch if a generated file must be inspected later.
+5. Do not run `identify` yet unless you need to debug a generation failure; keep generating until all 10 project files have been copied.
 
 The built-in image tool may still require one generation call per distinct asset. The batching improvement is that validation and cleanup happen once per 10 copied outputs instead of interrupting generation after each image.
 
 ## Validate all 10 at once
 
-Save the batch destination paths in a file, for example `tmp/asset-image-batch.txt`, then run:
+Save the batch destination paths in `tmp/asset-image-batch.txt` from the manifest helper, then run:
 
 ```bash
-mkdir -p tmp
-# tmp/asset-image-batch.txt should contain one project asset path per line.
-
 while read -r path; do
   identify -format '%w %h %[fx:w/h] %i\n' "$path"
 done < tmp/asset-image-batch.txt
@@ -97,6 +123,17 @@ while read -r path; do
 done < tmp/asset-image-batch.txt | wc -l
 ```
 
+Generate ready-to-paste progress-log rows for retained images:
+
+```bash
+while read -r path; do
+  [ -e "$path" ] || continue
+  read -r width height ratio name < <(identify -format '%w %h %[fx:w/h] %i\n' "$path")
+  short="${name#wordpacks/crime/treachery/}"
+  printf '| `%s` | %sx%s | %.6f |\n' "$short" "$width" "$height" "$ratio"
+done < tmp/asset-image-batch.txt
+```
+
 If the count is less than 10, continue with a later pending batch. The removed images will be selected again because their destination files are missing.
 
 ## Update records
@@ -104,8 +141,8 @@ If the count is less than 10, continue with a later pending batch. The removed i
 After validation:
 
 1. Append concise prompt summaries to `PE/<asset-pack>-prompts.md`.
-2. Update the asset-pack progress log in `docs/` with paths, dimensions, and ratios for retained images.
-3. Keep `tmp/asset-image-batch.txt` uncommitted or delete it.
+2. Update the asset-pack progress log in `docs/` with paths, dimensions, ratios, batch size, and the active meta-prompt version if it changed.
+3. Keep `tmp/asset-image-expected.tsv`, `tmp/asset-image-batch.tsv`, and `tmp/asset-image-batch.txt` uncommitted or delete them.
 
 ## Commit checkpoint
 

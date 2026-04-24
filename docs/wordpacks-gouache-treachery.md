@@ -15,7 +15,7 @@
 
 ## Image generation direction
 
-- Source meta-prompt: `PE/image-gouache-1-template.md`.
+- Source meta-prompt: `PE/image-gouache-V1.1-template.md` for current batches; earlier seed images used the original gouache template before the V1.1 refinement.
 - Target aspect ratio: **7:10 portrait** (`1050x1500` requested), with a few-pixel tolerance accepted after generation.
 - Prompting should keep the lower 20 percent calmer for the card title overlay.
 - Outputs are checked with `identify`; if an image lands outside the 7:10 ratio tolerance, remove it and regenerate rather than locally cropping/resizing.
@@ -24,7 +24,7 @@
 
 ## Progress log
 
-- 2026-04-24: Created the asset set metadata and directories; started generating gouache fallback and card-specific art in five-image checkpoints.
+- 2026-04-24: Created the asset set metadata and directories; started generating gouache fallback and card-specific art; current workflow uses ten-image validation checkpoints.
 
 ## Generated image checkpoints
 

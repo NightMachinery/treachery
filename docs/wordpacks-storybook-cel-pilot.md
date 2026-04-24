@@ -8,7 +8,8 @@ This document records the current Treachery pilot art pack added as a new select
 - asset set id: `storybook-cel`
 - asset set name: `Storybook Cel`
 - status: in-progress pilot subset
-- master image size: `1400x2000`
+- target image size: `1050x1500`
+- accepted ratio-compatible size: `1400x2000`
 - render assumption in the UI: centered `cover` crop
 
 ## Art direction
@@ -33,6 +34,8 @@ Style/medium: Studio Ghibli animation cel. Maximize high contrast, bold silhouet
 Composition/framing: 7:10 portrait card illustration, subject centered and slightly above center, minimal background clutter, bottom area visually calm for overlaid label
 Constraints: no text, no watermark, no border, highly legible at thumbnail size
 ```
+
+Saved as repo template: `PE/image-ghibli-1-template.md`
 
 ## Current generated pilot cards
 
@@ -62,5 +65,8 @@ Constraints: no text, no watermark, no border, highly legible at thumbnail size
 ## Notes
 
 - The existing `treachery` art remains the default selected asset set.
-- Missing `storybook-cel` cards intentionally fall back to the existing `treachery` asset set.
-- No `default.*` fallback image is provided in `storybook-cel`; per-card fallback uses the existing pack art instead.
+- Missing `storybook-cel` cards should first use Storybook Cel deck defaults, then fall back to the existing `treachery` asset set.
+- Storybook Cel now has its own fallback default cards:
+  - `assets/storybook-cel/means/default.png`
+  - `assets/storybook-cel/clues/default.png`
+- Aspect-ratio validation should be tolerant of a few pixels mismatch as long as the generated image remains effectively `7:10`.

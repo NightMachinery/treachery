@@ -61,7 +61,7 @@ func TestStorybookCelAssetSetAppearsInCatalog(t *testing.T) {
 	}
 }
 
-func TestStorybookCelResourceUsesPilotArtAndFallsBackToTreachery(t *testing.T) {
+func TestStorybookCelResourceUsesDeckDefaultsAndFallsBackToTreachery(t *testing.T) {
 	app := newTestApp(t)
 	defer app.Close()
 
@@ -74,27 +74,27 @@ func TestStorybookCelResourceUsesPilotArtAndFallsBackToTreachery(t *testing.T) {
 		t.Fatalf("expected storybook-cel resource, got %q", resource.AssetSetID)
 	}
 
-	pilotMeans := findCardByID(t, resource.MeansCards, "006-bamboo-tip")
-	if !strings.Contains(pilotMeans.ImgURL, "/assets/storybook-cel/means/006-bamboo-tip.png") {
-		t.Fatalf("expected pilot means art, got %q", pilotMeans.ImgURL)
+	defaultMeans := findCardByID(t, resource.MeansCards, "006-bamboo-tip")
+	if !strings.Contains(defaultMeans.ImgURL, "/assets/storybook-cel/means/default.png") {
+		t.Fatalf("expected storybook means default art, got %q", defaultMeans.ImgURL)
 	}
-	if !strings.Contains(pilotMeans.AltImgURL, "/assets/treachery/means/006-bamboo-tip") {
-		t.Fatalf("expected treachery fallback alt image, got %q", pilotMeans.AltImgURL)
-	}
-
-	pilotClue := findCardByID(t, resource.ClueCards, "015-briefs")
-	if !strings.Contains(pilotClue.ImgURL, "/assets/storybook-cel/clues/015-briefs.png") {
-		t.Fatalf("expected pilot clue art, got %q", pilotClue.ImgURL)
-	}
-	if !strings.Contains(pilotClue.AltImgURL, "/assets/treachery/clues/015-briefs") {
-		t.Fatalf("expected treachery fallback alt image, got %q", pilotClue.AltImgURL)
+	if !strings.Contains(defaultMeans.AltImgURL, "/assets/treachery/means/006-bamboo-tip") {
+		t.Fatalf("expected treachery fallback alt image, got %q", defaultMeans.AltImgURL)
 	}
 
-	fallbackClue := findCardByID(t, resource.ClueCards, "101-lock")
-	if strings.Contains(fallbackClue.ImgURL, "/assets/storybook-cel/") {
-		t.Fatalf("expected fallback clue art, got storybook image %q", fallbackClue.ImgURL)
+	defaultClue := findCardByID(t, resource.ClueCards, "015-briefs")
+	if !strings.Contains(defaultClue.ImgURL, "/assets/storybook-cel/clues/default.png") {
+		t.Fatalf("expected storybook clue default art, got %q", defaultClue.ImgURL)
 	}
-	if !strings.Contains(fallbackClue.ImgURL, "/assets/treachery/clues/101-lock") {
-		t.Fatalf("expected treachery fallback clue image, got %q", fallbackClue.ImgURL)
+	if !strings.Contains(defaultClue.AltImgURL, "/assets/treachery/clues/015-briefs") {
+		t.Fatalf("expected treachery fallback alt image, got %q", defaultClue.AltImgURL)
+	}
+
+	anotherClue := findCardByID(t, resource.ClueCards, "101-lock")
+	if !strings.Contains(anotherClue.ImgURL, "/assets/storybook-cel/clues/default.png") {
+		t.Fatalf("expected storybook clue default art, got %q", anotherClue.ImgURL)
+	}
+	if !strings.Contains(anotherClue.AltImgURL, "/assets/treachery/clues/101-lock") {
+		t.Fatalf("expected treachery fallback alt image, got %q", anotherClue.AltImgURL)
 	}
 }

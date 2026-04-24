@@ -1,13 +1,13 @@
-# Storybook Cel pilot asset set
+# Storybook Cel asset set
 
-This document records the current Treachery pilot art pack added as a new selectable CrimePack asset set.
+This document records the Treachery Storybook Cel art pack added as a selectable CrimePack asset set.
 
 ## Asset set
 
 - pack: `treachery`
 - asset set id: `storybook-cel`
 - asset set name: `Storybook Cel`
-- status: in-progress pilot subset
+- status: default-only fallback set
 - target image size: `1050x1500`
 - accepted ratio-compatible size: `1400x2000`
 - render assumption in the UI: centered `cover` crop
@@ -37,36 +37,23 @@ Constraints: no text, no watermark, no border, highly legible at thumbnail size
 
 Saved as repo template: `PE/image-ghibli-1-template.md`
 
-## Current generated pilot cards
+## Current generated cards
+
+The pack is intentionally default-only. Older card-specific pilot images were removed.
 
 ### Means
 
-- `006-bamboo-tip`
-- `007-bat`
-- `025-dumbbell`
-- `029-explosives`
-- `037-kerosene`
-- `042-locked-room`
-- `055-pistol`
-- `057-plastic-bag`
-- `064-radiation`
-- `070-smoke`
-- `081-unarmed`
-- `088-wire`
+- `default.png` — generic hidden-method evidence tray
 
 ### Clues
 
-- `015-briefs`
-- `019-cake`
-- `065-flyer`
-- `074-handcuffs`
-- `093-juice`
+- `default.png` — generic magnifying-glass clue evidence
 
 ## Notes
 
 - The existing `treachery` art remains the default selected asset set.
-- Missing `storybook-cel` cards should first use Storybook Cel deck defaults, then fall back to the existing `treachery` asset set.
-- Storybook Cel now has its own fallback default cards:
+- All `storybook-cel` cards first use the Storybook Cel deck default, then expose existing `treachery` card art as the alternate fallback image.
+- Storybook Cel has its own fallback default cards:
   - `assets/storybook-cel/means/default.png`
   - `assets/storybook-cel/clues/default.png`
 - Aspect-ratio validation should be tolerant of a few pixels mismatch as long as the generated image remains effectively `7:10`.

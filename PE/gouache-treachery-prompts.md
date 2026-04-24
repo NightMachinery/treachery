@@ -285,3 +285,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: condensation, rope coil, blurred tiled wall or hanging shadow.
 - Mood/setting: cold, ominous, industrial; storage room, butcher back room, or dockside service area.
 - Palette/lighting/composition: cold steel, blue-black shadows, icy highlights, concrete beige, rust accent; narrow overhead industrial light; frontal iconic close-up.
+
+### means/034-ice-skates.png — Ice Skates
+
+- Gameplay function: Means card; makes ice skates readable as a sharp cutting implement.
+- Main subject: single white figure skate tipped on its side with polished blade catching light.
+- Supporting cues: melting ice chips, frayed lace, blurred rink barrier.
+- Mood/setting: cold, deserted, uncanny; ice rink locker area.
+- Palette/lighting/composition: ivory leather, cold steel, ice blue, navy shadows, crimson-brown scuff; cool overhead rink light; low blade-forward diagonal close-up.
+
+### means/035-illegal-drug.png — Illegal Drug
+
+- Gameplay function: Means card; communicates illicit drugs as stylized crime evidence without glamor or instructions.
+- Main subject: translucent evidence-style bag containing pale tablets and powdery residue.
+- Supporting cues: tiny metal spoon shape, torn foil corner, blurred neon reflection.
+- Mood/setting: decadent, uneasy, shadowed; nightclub back room or police evidence bench.
+- Palette/lighting/composition: smoky violet, cold teal, off-white tablets, charcoal, magenta accent; oblique glint on plastic; slight top-down close-up.
+
+### means/036-injection.png — Injection
+
+- Gameplay function: Means card; reads as injection or poisoning by needle through a sterile syringe.
+- Main subject: glass-and-steel syringe on a shallow metal tray with capped needle and amber droplet.
+- Supporting cues: folded gauze, tiny unlabeled vial, cool tray reflections.
+- Mood/setting: clinical, quiet, menacing; examination room after hours.
+- Palette/lighting/composition: blue-gray metal, clear glass, cool white, amber accent, teal shadows; cold surgical overhead light; diagonal top-down close-up.
+
+### means/037-kerosene.png — Kerosene
+
+- Gameplay function: Means card; communicates flammable accelerant and arson implication.
+- Main subject: dented kerosene can tipped slightly with dark spout and oily fuel puddle.
+- Supporting cues: old rag, dusty floorboards, warm doorway glow.
+- Mood/setting: grimy, tense; shed or storage room.
+- Palette/lighting/composition: weathered blue-gray, oily amber, umber floorboards, green shadows, orange highlight; low side light; centered medium close-up.
+
+### means/038-kick.png — Kick
+
+- Gameplay function: Means card; depicts blunt physical violence symbolically without a victim.
+- Main subject: heavy black boot in mid-kick with sole forward and scuffed tread.
+- Supporting cues: dust plume, overturned object, hard concrete shadow.
+- Mood/setting: urgent, confrontational; dim alley or stairwell.
+- Palette/lighting/composition: black leather, concrete gray, dusty ochre, blue-violet shadows, red-brown scuff; harsh side light; dynamic low-angle close-up.
+
+### means/039-knife-and-fork.png — Knife and Fork
+
+- Gameplay function: Means card; turns paired dining utensils into an elegant threat.
+- Main subject: sharp dinner knife and polished fork crossed on dark linen.
+- Supporting cues: cracked porcelain plate edge, spilled wine droplet, candle reflection.
+- Mood/setting: luxurious, decadent, unsettling; restaurant table after service.
+- Palette/lighting/composition: cool silver, plum-black linen, cream porcelain, burgundy accent; candlelit side glow; iconic top-down close-up.
+
+### means/040-lighter.png — Lighter
+
+- Gameplay function: Means card; makes a lighter instantly readable as an ignition source.
+- Main subject: open metal flip-top lighter with compact orange flame.
+- Supporting cues: singed blank paper corner, smoke curl, dark stone tabletop.
+- Mood/setting: intimate, suspenseful; shadowed tabletop or alley ledge.
+- Palette/lighting/composition: chrome gray, blackened blue shadows, warm orange flame, brass interior, smoky umber; flame as key light; centered vertical close-up.
+
+### means/041-liquid-drug.png — Liquid Drug
+
+- Gameplay function: Means card; communicates a dangerous liquid drug without labels or instructions.
+- Main subject: clear glass vial filled with amber-purple liquid, tilted beside a stopper.
+- Supporting cues: tiny pipette silhouette, vapor wisp, glossy spill mark.
+- Mood/setting: elegant, toxic, clandestine; lab bench or nightclub back-room table.
+- Palette/lighting/composition: deep teal, smoky plum, amber liquid glow, glass blue, charcoal; cool overhead light with warm internal reflection; slight top-down close-up.
+
+### means/042-locked-room.png — Locked Room
+
+- Gameplay function: Means card; conveys lethal confinement, entrapment, and secrecy.
+- Main subject: sturdy old door with large deadbolt, chain lock, and dark keyhole.
+- Supporting cues: light under door, dropped key, scratched wood near lock.
+- Mood/setting: claustrophobic, domestic, ominous; locked interior room.
+- Palette/lighting/composition: dark walnut, tarnished brass, smoky blue shadows, warm under-door light; grazing side light; frontal hardware-focused close-up.
+
+### means/043-machete.png — Machete
+
+- Gameplay function: Means card; presents a broad machete as a heavy cutting weapon.
+- Main subject: long machete with chipped steel blade and worn wooden handle.
+- Supporting cues: cut leaves, muddy ground, hanging vine shadow.
+- Mood/setting: humid, ominous; tropical garden edge, overgrown yard, or rural tool shed.
+- Palette/lighting/composition: jungle green, wet umber, cool steel, muted ochre, rusty nick; overcast diffuse light with blade rim; low diagonal close-up.

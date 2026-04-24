@@ -60,3 +60,22 @@ Generated and validated the next ten means-card images with ImageMagick `identif
 | `assets/gouache-treachery/means/013-brick.png` | 1049x1499 | 0.699800 |
 
 All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`.
+
+### 2026-04-24 checkpoint 3
+
+Generated and validated the next ten means-card images with ImageMagick `identify`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/means/014-bury.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/015-candlestick.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/016-chainsaw.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/017-chemicals.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/018-cleaver.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/019-crutch.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/020-dagger.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/021-dirty-water.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/022-dismember.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/023-drill.png` | 1049x1499 | 0.699800 |
+
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`.

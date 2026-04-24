@@ -125,3 +125,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: scattered chips, dark wet stain, blurred puddle reflection.
 - Mood/setting: gritty, urban, heavy; rain-slick Hong Kong back alley.
 - Palette/lighting/composition: terracotta against blue-black pavement with muted violet/teal reflections; low raking streetlamp light; low close-up rectangular silhouette.
+
+### means/014-bury.png — Bury
+
+- Gameplay function: Means card; communicates concealment or killing by burial through a fresh grave and tool.
+- Main subject: mud-caked spade beside a dark rectangular burial pit in damp earth.
+- Supporting cues: loose soil mound, torn fabric scrap, exposed roots.
+- Mood/setting: clandestine, hushed, ominous; secluded night garden or construction edge.
+- Palette/lighting/composition: cold blue-black shadows, wet umber soil, moss green, rusty accent; narrow lantern side light; slight top-down diagonal pit with upright shovel.
+
+### means/015-candlestick.png — Candlestick
+
+- Gameplay function: Means card; makes a heavy candlestick readable as an elegant improvised blunt weapon.
+- Main subject: tarnished brass candlestick with half-melted candle tilted on a polished side table.
+- Supporting cues: spilled wax, faint red-brown mark, blurred antique mirror shape.
+- Mood/setting: decadent, theatrical, sinister; dim parlor interior.
+- Palette/lighting/composition: tarnished gold and cream wax against aubergine, smoky brown, muted blue; candlelit side glow; straight-on iconic close-up.
+
+### means/016-chainsaw.png — Chainsaw
+
+- Gameplay function: Means card; communicates a loud mechanical killing instrument.
+- Main subject: battered orange-and-steel chainsaw with toothed bar and chain facing forward.
+- Supporting cues: sawdust curl, oil spots, blurred hanging tool shadow.
+- Mood/setting: urgent, mechanical, grimy; back-room utility workshop.
+- Palette/lighting/composition: industrial orange, steel gray, charcoal, dirty cream, greenish shadows; harsh overhead fluorescent light; low diagonal close-up.
+
+### means/017-chemicals.png — Chemicals
+
+- Gameplay function: Means card; reads as poisoning or chemical harm through unlabeled lab vessels.
+- Main subject: glass reagent bottles and tipped beaker with toxic green, amber, and clear liquids.
+- Supporting cues: corrosion mark, tiny metal spoon, faint vapor curl.
+- Mood/setting: sterile, controlled, menacing; improvised lab bench or storage room.
+- Palette/lighting/composition: acid green accent, smoky teal shadows, amber warmth, glass blue; cold under-shelf light; slight top-down clustered still life.
+
+### means/018-cleaver.png — Cleaver
+
+- Gameplay function: Means card; makes a heavy kitchen cleaver immediately readable as a lethal cutting weapon.
+- Main subject: broad rectangular steel cleaver planted blade-down in a worn chopping block.
+- Supporting cues: onion skins, faint red-brown smear, blurred tiled wall.
+- Mood/setting: severe, intimate, culinary menace; dim restaurant prep area.
+- Palette/lighting/composition: stainless blue-gray, warm butcher-block ochre, dark walnut, restrained red-brown; hard task light above-left; frontal close-up.
+
+### means/019-crutch.png — Crutch
+
+- Gameplay function: Means card; shows a medical crutch as an improvised blunt weapon.
+- Main subject: single aluminum forearm crutch lying diagonally on a hospital corridor floor, slightly bent.
+- Supporting cues: rubber tip mark, dropped bandage, fluorescent linoleum reflections.
+- Mood/setting: sterile, unsettling, clinical; quiet medical hallway.
+- Palette/lighting/composition: pale hospital green, cool white, aluminum gray, blue shadows, muted red-brown accent; fluorescent overhead light; top-down diagonal composition.
+
+### means/020-dagger.png — Dagger
+
+- Gameplay function: Means card; presents a compact stabbing blade with ceremonial menace.
+- Main subject: ornate short dagger with narrow bright blade and dark carved handle on deep cloth.
+- Supporting cues: folded silk, tiny sheath edge, faint red-brown droplet near blade tip.
+- Mood/setting: elegant, private, ominous; evidence tabletop or refined interior.
+- Palette/lighting/composition: deep indigo, black plum, cool silver, aged brass, restrained crimson; narrow cool spotlight; iconic close-up diagonal.
+
+### means/021-dirty-water.png — Dirty Water
+
+- Gameplay function: Means card; communicates contaminated water as poisoning or drowning-related method.
+- Main subject: cloudy glass jar filled with murky brown-green water and suspended grit.
+- Supporting cues: rusted faucet, puddle stain, floating particles near jar rim.
+- Mood/setting: grim, urban, unhealthy; damp tenement sink or alley utility basin.
+- Palette/lighting/composition: murky olive, brown umber, tarnished gray, sickly yellow, blue-black shadows; weak overhead utility light; centered close-up still life.
+
+### means/022-dismember.png — Dismember
+
+- Gameplay function: Means card; communicates dismemberment symbolically without graphic body imagery.
+- Main subject: clean metal hand saw with neatly cut mannequin-like wooden limb segments on dark forensic tarp.
+- Supporting cues: folded plastic sheet, blank evidence tabs, faint red-brown tarp-edge stain.
+- Mood/setting: clinical, disturbing, restrained; cold evidence-processing room.
+- Palette/lighting/composition: sterile blue-gray, charcoal, pale wood, dull steel, off-white, dark red-brown accent; cool overhead forensic light; top-down triangular grouping.
+
+### means/023-drill.png — Drill
+
+- Gameplay function: Means card; makes an electric drill readable as a dangerous tool weapon.
+- Main subject: scuffed cordless power drill with long metal bit on a dusty workbench.
+- Supporting cues: curled wood shavings, loose screw, dark puncture mark in scrap wood.
+- Mood/setting: precise, mechanical, threatening; shadowed maintenance room or workshop.
+- Palette/lighting/composition: muted teal, graphite, cool steel, dusty tan, warm amber highlights; focused desk-lamp beam; low diagonal three-quarter close-up.

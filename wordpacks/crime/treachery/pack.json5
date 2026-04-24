@@ -9,6 +9,7 @@
     fa: "فارسی",
   },
   assetSets: {
+    "storybook-cel": "Storybook Cel",
     treachery: "Treachery",
   },
 }

@@ -30,6 +30,7 @@ Both ship with:
 
 - English (`en`)
 - Persian (`fa`)
+- Treachery also includes a selectable in-progress art pilot asset set: `storybook-cel`
 
 ## CrimePack layout
 
@@ -59,6 +60,28 @@ wordpacks/crime/treachery/
 ```
 
 Image lookup falls back from the selected asset set to the pack fallback asset set, then to deck-default art, and finally to a no-image text card.
+
+## Card image framing
+
+- Gameplay cards currently render images with centered cover-crop:
+  - `object-fit: cover`
+  - `object-position: center`
+- The new `storybook-cel` pilot art is mastered at **7:10 portrait** (`1400x2000`) to match the current card slot best across layouts.
+- Because the card title overlay sits near the bottom edge, important subject detail should stay centered and slightly above center.
+
+## Storybook Cel pilot
+
+- CrimePack: `treachery`
+- Asset set id: `storybook-cel`
+- Display name: `Storybook Cel`
+- Default/fallback behavior is unchanged:
+  - default asset set stays `treachery`
+  - fallback asset set stays `treachery`
+- Current generated pilot cards:
+  - means: `006-bamboo-tip`, `007-bat`, `025-dumbbell`, `029-explosives`, `037-kerosene`, `042-locked-room`, `055-pistol`, `057-plastic-bag`, `064-radiation`, `070-smoke`, `081-unarmed`, `088-wire`
+  - clues: `015-briefs`, `019-cake`, `065-flyer`, `074-handcuffs`, `093-juice`
+- Cards not yet present in `storybook-cel` fall back to the existing `treachery` art automatically.
+- See `docs/wordpacks-storybook-cel-pilot.md` for the pilot art direction and prompt template.
 
 ## HintPack layout
 

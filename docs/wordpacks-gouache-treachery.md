@@ -41,3 +41,22 @@ Generated and validated the first five images with ImageMagick `identify`:
 | `assets/gouache-treachery/means/002-amoeba.png` | 1049x1499 | 0.699800 |
 
 All are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`.
+
+### 2026-04-24 checkpoint 2
+
+Generated and validated the next ten means-card images with ImageMagick `identify`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/means/004-arson.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/005-axe.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/006-bamboo-tip.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/007-bat.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/008-belt.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/009-bite-and-tear.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/010-blender.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/011-blood-release.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/012-box-cutter.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/013-brick.png` | 1049x1499 | 0.699800 |
+
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`.

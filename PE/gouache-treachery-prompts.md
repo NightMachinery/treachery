@@ -43,3 +43,85 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: glass slide edge, tiny out-of-focus microbe dots, cool microscope vignette.
 - Mood/setting: clinical, sterile, quietly threatening laboratory macro world.
 - Palette/lighting/composition: pale aqua and milky green against indigo-black shadows; luminous transmitted under-light; centered circular microscope composition.
+
+## 2026-04-24 checkpoint 2
+
+### means/004-arson.png — Arson
+
+- Gameplay function: Means card; communicates deliberate fire-setting as a killing method.
+- Main subject: struck match and accelerant pool igniting across dark wooden floorboards.
+- Supporting cues: toppled unlabeled fuel can, scorched floorboards, faint smoke trail.
+- Mood/setting: urgent, dangerous, intimate; dim older apartment interior.
+- Palette/lighting/composition: hot orange/yellow flames against smoky umber, charcoal, muted teal; fire-lit from below; low-angle close-up with diagonal fuel trail.
+
+### means/005-axe.png — Axe
+
+- Gameplay function: Means card; makes a heavy axe readable as a lethal method.
+- Main subject: weathered steel axe with dark wooden handle leaning diagonally against a chopping block.
+- Supporting cues: red-brown flecks, split wood grain, evidence-like floor shadow.
+- Mood/setting: brutal, quiet, foreboding; dim utility room or back-alley workshop.
+- Palette/lighting/composition: cold steel blue, slate gray, raw umber, restrained rusty red; narrow cool side light; strong diagonal medium close-up.
+
+### means/006-bamboo-tip.png — Bamboo Tip
+
+- Gameplay function: Means card; shows sharpened bamboo as an improvised piercing weapon.
+- Main subject: pale bamboo spear tip cut to a needle point with fibrous edges and visible nodes.
+- Supporting cues: split bamboo shavings, faint dark stain, subtle botanical shadows.
+- Mood/setting: stealthy, ritualistic, tense; humid courtyard or back-room wall.
+- Palette/lighting/composition: straw yellow, olive, moss gray, muted jade; dappled side light; vertical diagonal close-up.
+
+### means/007-bat.png — Bat
+
+- Gameplay function: Means card; makes a baseball bat readable as a blunt-force weapon.
+- Main subject: worn dark wooden bat lying diagonally across a dim tiled floor.
+- Supporting cues: faint smear, small splinters, cracked tile, distant corridor shadows.
+- Mood/setting: gritty, tense aftermath; urban service corridor or sports backroom.
+- Palette/lighting/composition: walnut and black umber against cool gray-blue tile; hard overhead strip light; low top-down diagonal view.
+
+### means/008-belt.png — Belt
+
+- Gameplay function: Means card; implies strangulation through a tightened belt loop without a victim.
+- Main subject: black leather belt coiled into a tense oval noose shape on a dark dresser.
+- Supporting cues: leather crease marks, lacquer reflection, fallen shirt button.
+- Mood/setting: intimate, sinister, claustrophobic; dim bedroom or hotel room.
+- Palette/lighting/composition: black leather, graphite gray, burgundy-brown shadows, brass highlight; warm bedside-lamp side light; centered quiet still life.
+
+### means/009-bite-and-tear.png — Bite and Tear
+
+- Gameplay function: Means card; visualizes an animalistic bite-and-tear method while avoiding gore.
+- Main subject: torn dark fabric or leather strap with crescent bite marks and ragged edges.
+- Supporting cues: scattered fibers, tooth-shaped punctures, abstract animal-like background shadow.
+- Mood/setting: feral, unnerving, primal; dim forensic tabletop or alley evidence surface.
+- Palette/lighting/composition: charcoal, deep brown, desaturated indigo, bone fibers, muted red-brown accent; forensic top-left lamp; close-up top-down jagged diagonal.
+
+### means/010-blender.png — Blender
+
+- Gameplay function: Means card; makes a kitchen blender readable as a dangerous appliance weapon.
+- Main subject: clear glass blender jar with exposed silver blades, lid off, viewed slightly from above.
+- Supporting cues: unplugged cord, droplets inside jar, small fruit peel or ice chips.
+- Mood/setting: sterile, domestic, uncanny; modern apartment kitchen counter at night.
+- Palette/lighting/composition: icy glass blues, stainless gray, off-white counter, acid yellow-green accent; cold under-cabinet light; centered product-like still life.
+
+### means/011-blood-release.png — Blood Release
+
+- Gameplay function: Means card; communicates deliberate bloodletting through clinical drainage evidence.
+- Main subject: clear medical drainage tube connected to a glass collection vessel with dark red liquid.
+- Supporting cues: metal tray reflection, white gauze pad, tiny tube clamp.
+- Mood/setting: clinical, cold, sinister; improvised medical or laboratory surface.
+- Palette/lighting/composition: sterile whites and cool blue grays with deep red focal accent; cold surgical overhead light; elegant S-curve tube composition.
+
+### means/012-box-cutter.png — Box Cutter
+
+- Gameplay function: Means card; makes a retractable utility knife readable as a sharp cutting weapon.
+- Main subject: scuffed metal box cutter with short exposed trapezoid blade on a dark workbench.
+- Supporting cues: curled cardboard shaving, torn packing tape, faint red-brown speck.
+- Mood/setting: precise, utilitarian, cold; warehouse packing table or maintenance room.
+- Palette/lighting/composition: industrial gray, dull cardboard orange, black-green shadows, rust-red accent; desk-lamp spotlight; asymmetrical diagonal close-up.
+
+### means/013-brick.png — Brick
+
+- Gameplay function: Means card; makes a brick readable as a blunt improvised weapon.
+- Main subject: cracked red clay brick with chipped corners on wet alley pavement.
+- Supporting cues: scattered chips, dark wet stain, blurred puddle reflection.
+- Mood/setting: gritty, urban, heavy; rain-slick Hong Kong back alley.
+- Palette/lighting/composition: terracotta against blue-black pavement with muted violet/teal reflections; low raking streetlamp light; low close-up rectangular silhouette.

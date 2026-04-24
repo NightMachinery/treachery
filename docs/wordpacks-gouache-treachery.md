@@ -20,6 +20,7 @@
 - Prompting should keep the lower 20 percent calmer for the card title overlay.
 - Outputs are checked with `identify`; if an image lands outside the 7:10 ratio tolerance, remove it and regenerate rather than locally cropping/resizing.
 - No local Python postprocessing is part of this pass.
+- Batched generation/validation workflow: `workflows/asset-image-gen-v1.md`.
 
 ## Progress log
 

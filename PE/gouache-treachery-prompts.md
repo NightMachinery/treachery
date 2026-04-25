@@ -485,3 +485,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: faint industrial pipes and a small hazard-colored cloth scrap without symbols.
 - Mood/setting: eerie, industrial, suffocating; basement or utility space.
 - Palette/lighting/composition: murky green vapor against charcoal and rust shadows; eerie backlight; vertical plume composition.
+
+### means/059-poisonous-needle.png — Poisonous Needle
+
+- Gameplay function: Means card; makes a hypodermic needle read as a precise poisoning tool.
+- Main subject: glass syringe with sharp metal needle and amber poison bead.
+- Supporting cues: softened evidence markers and small dark vial on sterile tabletop.
+- Mood/setting: cold, clinical, forensic, deliberate.
+- Palette/lighting/composition: blue-gray shadows with sickly amber accent; sharp side light; diagonal close-up.
+
+### means/060-potted-plant.png — Potted Plant
+
+- Gameplay function: Means card; turns a domestic houseplant into a suspicious hazard.
+- Main subject: leafy plant in a heavy chipped ceramic pot with dark soil.
+- Supporting cues: fallen leaf and spilled soil trail in a dim apartment corner.
+- Mood/setting: quiet, domestic, uncanny, secretive.
+- Palette/lighting/composition: botanical greens, clay neutrals, lavender-gray shadows; diffuse side window light; straight-on iconic view.
+
+### means/061-powder-drug.png — Powder Drug
+
+- Gameplay function: Means card; presents illicit powder as a lethal contraband threat.
+- Main subject: pale powder mound on a dark glass surface.
+- Supporting cues: torn packet, tiny measuring spoon, and faint dust trail.
+- Mood/setting: tense, secretive, sterile, grim; clandestine tabletop.
+- Palette/lighting/composition: charcoal, bone white, muted teal-gray with acidic packet accent; overhead spotlight; top-down close-up.
+
+### means/062-punch.png — Punch
+
+- Gameplay function: Means card; communicates blunt-force violence through a single attacking gesture.
+- Main subject: large foreshortened clenched fist driving forward.
+- Supporting cues: abstract dark room, motion shards, and disturbed dust.
+- Mood/setting: urgent, brutal, kinetic.
+- Palette/lighting/composition: warm skin and rust shadows against deep blue-black; cool rim plus amber knuckle highlight; dynamic low-angle close-up.
+
+### means/063-push.png — Push
+
+- Gameplay function: Means card; depicts a fatal shove without gore or a second focal character.
+- Main subject: tense hands pressing into a silhouetted torso near an edge.
+- Supporting cues: blurred railings and a sliver of open drop.
+- Mood/setting: suspenseful, vertiginous, urgent; stairwell or rooftop ledge.
+- Palette/lighting/composition: slate blues and concrete grays with warm hand light; dramatic side light; diagonal thrust composition.
+
+### means/064-radiation.png — Radiation
+
+- Gameplay function: Means card; visualizes invisible radiation through a sealed industrial source.
+- Main subject: heavy cylindrical radiation canister with latch, handle, and toxic glow.
+- Supporting cues: softened lab pipes and a small Geiger-counter silhouette.
+- Mood/setting: sterile, uncanny, quietly catastrophic; laboratory storage.
+- Palette/lighting/composition: industrial grays and olive shadows with vivid green-yellow glow; eerie underlight; frontal iconic view.
+
+### means/065-razor-blade.png — Razor Blade
+
+- Gameplay function: Means card; makes a small blade read as an intimate sharp threat.
+- Main subject: enlarged double-edge razor blade on dark tile.
+- Supporting cues: softened tile seams, faint water smear, and tiny reflected highlight.
+- Mood/setting: intimate, dangerous, austere; bathroom or utility surface.
+- Palette/lighting/composition: cold silver-gray against indigo and porcelain tones; narrow cool spotlight; top-down close-up.
+
+### means/066-rope.png — Rope
+
+- Gameplay function: Means card; turns rope into a restrained strangulation or binding threat.
+- Main subject: thick natural-fiber rope coiled into a tense loop with frayed end.
+- Supporting cues: softened wooden planks and faint metal hook.
+- Mood/setting: ominous, rustic, restrained; storage-room or dockside floor.
+- Palette/lighting/composition: hemp ochres and umbers against cool blue-gray shadows; amber raking side light; centered loop still life.
+
+### means/067-scarf.png — Scarf
+
+- Gameplay function: Means card; shows an elegant fabric object as a sinister soft weapon.
+- Main subject: long silk scarf twisted into a taut loop with trailing ends.
+- Supporting cues: softened chair back and dim mirror glow.
+- Mood/setting: intimate, elegant, decadent, threatening; vintage dressing room or coatroom.
+- Palette/lighting/composition: deep burgundy, mauve shadows, champagne highlights, charcoal background; theatrical side light; vertical close-up.
+
+### means/068-scissors.png — Scissors
+
+- Gameplay function: Means card; frames open scissors as a sharp domestic danger.
+- Main subject: open steel scissors lying diagonally with pointed blade tips.
+- Supporting cues: softened scrap of cloth and faint thread line.
+- Mood/setting: tense, precise, domestic, ominous; tailor table or kitchen drawer surface.
+- Palette/lighting/composition: steel blues, graphite shadows, muted ivory cloth, warm brass pivot; narrow side light; slight top-down diagonal composition.

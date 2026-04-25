@@ -150,3 +150,22 @@ Generated and validated the next ten means-card images with ImageMagick `identif
 | `assets/gouache-treachery/means/058-poisonous-gas.png` | 1049x1499 | 0.699800 |
 
 All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/means/059-poisonous-needle.png`.
+
+### 2026-04-25 checkpoint 8
+
+Generated and validated the next ten means-card images with ImageMagick `identify` using `PE/image-gouache-V1.1-template.md`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/means/059-poisonous-needle.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/060-potted-plant.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/061-powder-drug.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/062-punch.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/063-push.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/064-radiation.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/065-razor-blade.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/066-rope.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/067-scarf.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/068-scissors.png` | 1049x1499 | 0.699800 |
+
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/means/069-seafood.png`.

@@ -893,3 +893,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: torn packing tape, dust trail, shadowy shelf shape.
 - Mood/setting: utilitarian storage-room secrecy.
 - Palette/lighting/composition: kraft browns, warm tan planes, cool blue-gray shadows, dusty olive, off-white tape accent; narrow warehouse side light; low three-quarter close-up.
+
+### clues/023-cassette-tape.png — Cassette tape
+
+- Gameplay function: Clue card; makes analog audio media read as suspicious recorded evidence or a hidden message.
+- Main subject: scuffed black cassette tape with dark reels and a loop of tangled magnetic ribbon.
+- Supporting cues: dusty tabletop, torn paper corner, blank muted label accent.
+- Mood/setting: intimate analog-era interior unease.
+- Palette/lighting/composition: charcoal, warm beige, tobacco brown, desaturated teal, dull red accent; low side light; close-up slight top-down diagonal.
+
+### clues/024-cat.png — Cat
+
+- Gameplay function: Clue card; presents a living witness-like presence that suggests something observed in secret.
+- Main subject: lean dark gray short-haired alley cat with luminous eyes, curled tail, and alert ears.
+- Supporting cues: tiled threshold, small tipped food dish, back-alley shadow.
+- Mood/setting: uncanny urban Hong Kong alley at night.
+- Palette/lighting/composition: blue-gray, smoky violet, concrete beige, amber eye accents; doorway rim light; medium low-angle portrait.
+
+### clues/025-certificate.png — Certificate
+
+- Gameplay function: Clue card; turns a formal document into evidence of status, proof, forgery, or motive.
+- Main subject: aged official certificate with creased paper, curled corner, red ribbon, and blank embossed seal.
+- Supporting cues: polished desk surface, brass stamp silhouette, institutional interior tone.
+- Mood/setting: elegant ceremonial suspicion.
+- Palette/lighting/composition: ivory, umber, deep green-black, muted burgundy; soft window light; straight-on slightly top-down iconic view.
+
+### clues/026-chalk.png — Chalk
+
+- Gameplay function: Clue card; signals powdery trace evidence, classroom context, marking, or planning.
+- Main subject: broken white chalk sticks with snapped ends and scattered chalk dust on dark slate.
+- Supporting cues: faint erased chalk line, soft blackboard shadow, powder field.
+- Mood/setting: quiet institutional room with sterile tension.
+- Palette/lighting/composition: black-green slate, chalk white, cool gray, faint ochre; diffuse overhead light; top-down diagonal close-up.
+
+### clues/027-cigar.png — Cigar
+
+- Gameplay function: Clue card; suggests a decadent suspect presence through distinctive smoking evidence.
+- Main subject: half-smoked cigar with thick wrapper, gray ash cone, and curled ember in a shallow ashtray.
+- Supporting cues: cut-crystal glass glint, faint smoke veil, broad ashtray shadow.
+- Mood/setting: luxurious private-room menace.
+- Palette/lighting/composition: espresso brown, tobacco ochre, blue-black shadows, pearly ash, ember orange; warm low spotlight; diagonal close-up.
+
+### clues/028-cigarette-ash.png — Cigarette ash
+
+- Gameplay function: Clue card; isolates a fragile trace as forensic evidence of recent smoking.
+- Main subject: collapsed ridge of gray-white cigarette ash with black cinder flecks and powdery fallout.
+- Supporting cues: faint ashtray ghost mark, tiny smear trail, sparse tabletop.
+- Mood/setting: sterile interrogation-room evidence.
+- Palette/lighting/composition: smoky monochrome, bone white, charcoal, cool blue shadows, muted ember speck; narrow top light; macro slight top-down view.
+
+### clues/029-cigarette-butt.png — Cigarette butt
+
+- Gameplay function: Clue card; reads as discarded trace evidence tied to presence, habit, or timeline.
+- Main subject: crushed cigarette butt with tan filter, white paper, and dark burned end on damp pavement.
+- Supporting cues: puddle reflection, ash specks, rainy curbside texture.
+- Mood/setting: seedy urban curbside intimacy.
+- Palette/lighting/composition: asphalt blue-gray, nicotine tan, off-white, black char, sickly yellow reflection; raking streetlight; low oblique close-up.
+
+### clues/030-cleaning-cloth.png — Cleaning cloth
+
+- Gameplay function: Clue card; suggests cleanup, concealment, or wiped-away evidence.
+- Main subject: crumpled off-white cotton cleaning cloth with damp reddish-brown stain absorbed into folds.
+- Supporting cues: wet tile streaks, blurred bucket rim, utility-room surfaces.
+- Mood/setting: sterile back-room aftermath.
+- Palette/lighting/composition: porcelain gray, dirty cream, muted rust-brown, pale blue, greenish fluorescent cast; diffuse overhead light; slight top-down close-up.
+
+### clues/031-cockroach.png — Cockroach
+
+- Gameplay function: Clue card; signals grime, neglect, hidden spaces, and an unsettling trace of the scene.
+- Main subject: single enlarged cockroach from above with long antennae, segmented oval body, and spindly legs.
+- Supporting cues: grimy tile seam, faint crumb, cabinet shadow.
+- Mood/setting: damp neglected kitchen-corner furtiveness.
+- Palette/lighting/composition: deep umber, burnt sienna, green-gray tile, black crevice shadows, sickly yellow accent; under-cabinet side light; macro top-down portrait.
+
+### clues/032-coffee.png — Coffee
+
+- Gameplay function: Clue card; makes an everyday drink read as timeline evidence, meeting trace, or suspicious cup.
+- Main subject: white ceramic coffee cup with nearly black coffee on a saucer, crescent spill, and ring stain.
+- Supporting cues: spoon glint, blurred paper edge, simplified tabletop shadow.
+- Mood/setting: late-night cafe or office-desk tension.
+- Palette/lighting/composition: porcelain white, espresso brown, amber tabletop, blue-violet shadows, cream highlight; soft upper-left lamp light; quiet slight top-down still life.

@@ -245,4 +245,23 @@ Generated and validated one batch of ten clues-card images with ImageMagick `ide
 | `assets/gouache-treachery/clues/021-candy.png` | 1049x1499 | 0.699800 |
 | `assets/gouache-treachery/clues/022-carton.png` | 1049x1499 | 0.699800 |
 
-All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/023-cash.png`.
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/023-cassette-tape.png`.
+
+### 2026-04-25 checkpoint 13
+
+Generated and validated one batch of ten clues-card images with ImageMagick `identify` using `PE/image-gouache-V1.1-template.md`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/clues/023-cassette-tape.png` | 1050x1498 | 0.700935 |
+| `assets/gouache-treachery/clues/024-cat.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/025-certificate.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/026-chalk.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/027-cigar.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/028-cigarette-ash.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/029-cigarette-butt.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/030-cleaning-cloth.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/031-cockroach.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/032-coffee.png` | 1049x1499 | 0.699800 |
+
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/033-coins.png`.

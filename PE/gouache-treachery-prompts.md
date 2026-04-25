@@ -365,3 +365,43 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: cut leaves, muddy ground, hanging vine shadow.
 - Mood/setting: humid, ominous; tropical garden edge, overgrown yard, or rural tool shed.
 - Palette/lighting/composition: jungle green, wet umber, cool steel, muted ochre, rusty nick; overcast diffuse light with blade rim; low diagonal close-up.
+
+### means/044-machine.png — Machine
+
+- Gameplay function: Means card; makes an industrial machine readable as a crushing mechanical threat.
+- Main subject: heavy factory press with crushing jaws, grease-darkened rollers, and red emergency stop button.
+- Supporting cues: warning stripe, torn work glove, dim workshop atmosphere.
+- Mood/setting: tense, mechanical, ominous; industrial workshop.
+- Palette/lighting/composition: graphite and oxidized teal shadows with red accent; hard side light; slight low-angle frontal machine close-up.
+
+### means/045-mad-dog.png — Mad Dog
+
+- Gameplay function: Means card; communicates an uncontrolled animal attack threat without gore.
+- Main subject: snarling dog with bristling fur, bared teeth, tense lowered stance, and broken trailing collar.
+- Supporting cues: deserted alley, knocked-over tin bowl, torn leash in shadow.
+- Mood/setting: urgent, feral, dangerous; nighttime alley.
+- Palette/lighting/composition: amber streetlamp against blue-violet shadows; rim-lit fur; low three-quarter close-up.
+
+### means/046-match.png — Match
+
+- Gameplay function: Means card; turns a small match into a fatal ignition source.
+- Main subject: single wooden match held diagonally with blackened tip, bright flame, ember glow, and smoke curl.
+- Supporting cues: dark tabletop, a few blurred unlit matches, faint scorched paper edge.
+- Mood/setting: intimate, suspenseful; shadowed tabletop.
+- Palette/lighting/composition: orange flame against indigo-brown shadows; flame as key light; extreme diagonal close-up.
+
+### means/047-mercury.png — Mercury
+
+- Gameplay function: Means card; communicates mercury as elegant toxic evidence.
+- Main subject: broken antique thermometer spilling bright silver mercury beads across dark ceramic.
+- Supporting cues: cracked glass, porcelain dish, small crimson thread accent.
+- Mood/setting: sterile, uncanny, clinical-vintage; tabletop evidence scene.
+- Palette/lighting/composition: cold blue-gray neutrals, liquid silver highlights, crimson accent; cool window glints; slight top-down close-up.
+
+### means/048-metal-chain.png — Metal Chain
+
+- Gameplay function: Means card; makes a heavy chain readable as restraint and blunt weapon.
+- Main subject: thick steel chain looped into a threatening coil with scratched worn links.
+- Supporting cues: damp concrete floor, rust stain, torn fabric scrap beneath a link.
+- Mood/setting: grim, forensic, heavy; concrete utility space.
+- Palette/lighting/composition: slate and iron grays with rusty umber accents; overhead strip light; iconic slight top-down chain close-up.

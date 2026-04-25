@@ -117,3 +117,17 @@ Generated and validated the next ten means-card images with ImageMagick `identif
 | `assets/gouache-treachery/means/043-machete.png` | 1049x1499 | 0.699800 |
 
 All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`.
+
+### 2026-04-25 partial checkpoint 6
+
+Generation was interrupted by operator request after five images. The five copied project assets were validated with ImageMagick `identify` and retained as a natural endpoint:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/means/044-machine.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/045-mad-dog.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/046-match.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/047-mercury.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/048-metal-chain.png` | 1049x1499 | 0.699800 |
+
+All five are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/means/049-metal-wire.png`.

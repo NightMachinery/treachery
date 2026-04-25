@@ -565,3 +565,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: softened scrap of cloth and faint thread line.
 - Mood/setting: tense, precise, domestic, ominous; tailor table or kitchen drawer surface.
 - Palette/lighting/composition: steel blues, graphite shadows, muted ivory cloth, warm brass pivot; narrow side light; slight top-down diagonal composition.
+
+### means/069-sculpture.png — Sculpture
+
+- Gameplay function: Means card; makes a heavy art object read as an improvised blunt weapon.
+- Main subject: toppled pale marble classical bust with chipped impact edge.
+- Supporting cues: cracked pedestal, scattered marble flakes, faint floor scuff.
+- Mood/setting: elegant, ominous, gallery-like, tense.
+- Palette/lighting/composition: cool pearl whites and blue-gray shadows with burgundy-brown accents; narrow side spotlight; low-angle close-up.
+
+### means/070-smoke.png — Smoke
+
+- Gameplay function: Means card; communicates lethal inhalation through a dangerous smoke plume.
+- Main subject: thick gray smoke column curling upward in a bold S-shaped silhouette.
+- Supporting cues: blurred vent grille, tiled wall, tiny ember glow.
+- Mood/setting: choking, shadowy, abstract, hazardous.
+- Palette/lighting/composition: smoky blue-grays and charcoal with orange accent; soft backlight; vertical centered close-up.
+
+### means/071-sniper.png — Sniper
+
+- Gameplay function: Means card; frames a hidden firearm as a precise long-distance threat.
+- Main subject: scoped rifle resting across a dark windowsill in side profile.
+- Supporting cues: blurred city lights, folded cloth, single brass cartridge.
+- Mood/setting: cold, controlled, urban, clandestine.
+- Palette/lighting/composition: indigo, charcoal, cold steel, muted sodium gold; cool window rim light; asymmetrical diagonal medium close-up.
+
+### means/072-starvation.png — Starvation
+
+- Gameplay function: Means card; visualizes deprivation and fatal neglect without showing a body.
+- Main subject: empty ceramic bowl with thin spoon and hollow interior shadow.
+- Supporting cues: dry bread crust, withered leaf, faint window-bar shadows.
+- Mood/setting: bleak, intimate, sparse, domestic.
+- Palette/lighting/composition: desaturated warm grays, bone white, faded ochre, cool violet shadows; diffuse window light; slight top-down still life.
+
+### means/073-steel-tube.png — Steel Tube
+
+- Gameplay function: Means card; presents an industrial pipe as a blunt improvised weapon.
+- Main subject: dented steel tube with open circular end and cold metallic shaft.
+- Supporting cues: rust flakes, floor seam, faint wet reflection.
+- Mood/setting: industrial, quiet, dangerous; service corridor or maintenance room.
+- Palette/lighting/composition: gunmetal grays, slate blue shadows, concrete beige, rusty orange accent; overhead strip light; diagonal close-up.
+
+### means/074-stone.png — Stone
+
+- Gameplay function: Means card; makes a rough rock read as a primitive blunt weapon.
+- Main subject: jagged dark river stone with chipped facets and blunt striking edge.
+- Supporting cues: puddle reflection, crushed leaves, grit.
+- Mood/setting: rain-damp, grim, nocturnal; alley or garden path.
+- Palette/lighting/composition: moss greens, wet charcoal, cool slate, muted amber highlight; low raking side light; ground-level close-up.
+
+### means/075-sulfuric-acid.png — Sulfuric Acid
+
+- Gameplay function: Means card; depicts a corrosive chemical as an unmistakable lethal hazard.
+- Main subject: thick glass laboratory bottle filled with pale yellow acid and faint vapor.
+- Supporting cues: etched metal tray, glass dropper, storage-shelf haze.
+- Mood/setting: sterile, tense, chemical, ominous.
+- Palette/lighting/composition: sickly yellow and pale green against blue-gray shadows and umber accents; top-left lab light; straight-on iconic close-up.
+
+### means/076-surgery.png — Surgery
+
+- Gameplay function: Means card; turns clinical tools into a sterile operating-room threat.
+- Main subject: crossed scalpel and forceps on a blue surgical drape.
+- Supporting cues: blurred surgical lights, folded gauze, faint monitor glow.
+- Mood/setting: clinical, precise, controlled, unsettling.
+- Palette/lighting/composition: surgical teal and blue-green with silver highlights and violet shadows; overhead operating light; slight top-down close-up.
+
+### means/077-throat-slit.png — Throat Slit
+
+- Gameplay function: Means card; conveys a lethal cut symbolically without gore.
+- Main subject: open straight razor beside a cleanly severed crimson ribbon.
+- Supporting cues: blurred oval mirror, porcelain dish, narrow reflected light.
+- Mood/setting: intimate, vintage, ominous; dressing room or washstand.
+- Palette/lighting/composition: black-browns, ivory, pewter, restrained crimson accent; warm side light; asymmetrical diagonal still life.
+
+### means/078-towel.png — Towel
+
+- Gameplay function: Means card; turns an ordinary towel into a quiet suffocation threat.
+- Main subject: damp white towel twisted into a thick coil on a bathroom floor.
+- Supporting cues: shallow puddle, sink-base reflection, loosened thread.
+- Mood/setting: humid, intimate, unsettling; tiled bathroom.
+- Palette/lighting/composition: porcelain whites, gray-blue shadows, muted green tile notes; soft overhead bathroom light; slight top-down close-up.

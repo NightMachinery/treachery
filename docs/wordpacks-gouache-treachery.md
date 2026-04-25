@@ -169,3 +169,22 @@ Generated and validated the next ten means-card images with ImageMagick `identif
 | `assets/gouache-treachery/means/068-scissors.png` | 1049x1499 | 0.699800 |
 
 All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/means/069-seafood.png`.
+
+### 2026-04-25 checkpoint 9
+
+Generated and validated the next ten means-card images with ImageMagick `identify` using `PE/image-gouache-V1.1-template.md`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/means/069-sculpture.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/070-smoke.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/071-sniper.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/072-starvation.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/073-steel-tube.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/074-stone.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/075-sulfuric-acid.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/076-surgery.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/077-throat-slit.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/078-towel.png` | 1049x1499 | 0.699800 |
+
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/means/079-trophy.png`.

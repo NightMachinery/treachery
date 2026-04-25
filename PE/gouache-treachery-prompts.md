@@ -813,3 +813,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: dust halo, key-shaped shadow, faint paper stack.
 - Mood/setting: secretive scholarly study, intimate and suspenseful.
 - Palette/lighting/composition: bottle green, tan page edges, walnut brown, blue-black shadows, crimson bookmark accent; soft window light; three-quarter close-up from above.
+
+### clues/013-bracelet.png — Bracelet
+
+- Gameplay function: Clue card; turns personal jewelry into intimate evidence of presence, struggle, or motive.
+- Main subject: delicate open metal bracelet with small clasp and distinctive charm on a tabletop.
+- Supporting cues: powder smudge, jewelry-box shadow, tiny loose bead.
+- Mood/setting: elegant private dressing-table unease.
+- Palette/lighting/composition: pearl gray, champagne metal, dusty rose shadows, teal accent; soft vanity side light; slight top-down close-up.
+
+### clues/014-bread.png — Bread
+
+- Gameplay function: Clue card; makes a domestic food item read as suspicious evidence.
+- Main subject: crusty torn loaf with one broken slice and scattered crumbs.
+- Supporting cues: butter-knife silhouette, folded cloth edge, deliberate crumb trail.
+- Mood/setting: ordinary kitchen-table intimacy with faint menace.
+- Palette/lighting/composition: ochre crust, cream interior, cool blue-gray shadows, red-brown accent; diffuse window light; three-quarter close-up.
+
+### clues/015-briefs.png — Briefs
+
+- Gameplay function: Clue card; signals awkward personal evidence and private context.
+- Main subject: neatly crumpled plain white briefs with readable waistband and leg openings.
+- Supporting cues: tiled floor, small clothing tag, laundry-basket shadow.
+- Mood/setting: intimate laundry-room or bedroom investigation.
+- Palette/lighting/composition: ivory whites, slate-blue gray shadows, lavender undertones, pale tan accent; soft overhead domestic light; centered overhead close-up.
+
+### clues/016-broom.png — Broom
+
+- Gameplay function: Clue card; suggests cleanup, concealment, or ordinary utility evidence.
+- Main subject: old broom with worn wooden handle and fanned straw bristles.
+- Supporting cues: small dust pile, faint wet streak, wall-corner shadow.
+- Mood/setting: dim utility closet, mundane but secretive.
+- Palette/lighting/composition: straw ochre, weathered brown, cement gray, dusty blue, muted green accent; door-slit side light; vertical diagonal framing.
+
+### clues/017-bullet.png — Bullet
+
+- Gameplay function: Clue card; provides direct forensic evidence of violence or threat.
+- Main subject: single brass cartridge with copper-toned bullet tip on dark evidence surface.
+- Supporting cues: powder smudge, tiny metal scratch, abstract evidence-marker shape.
+- Mood/setting: cold procedural tabletop danger.
+- Palette/lighting/composition: brass and copper against charcoal blue, graphite, smoky olive; tight raking forensic side light; macro diagonal close-up.
+
+### clues/018-button.png — Button
+
+- Gameplay function: Clue card; suggests a torn garment, struggle, or trace evidence.
+- Main subject: large round coat button with four holes and a short attached thread.
+- Supporting cues: torn thread strand, faint seam line, cloth-fold shadows.
+- Mood/setting: intimate tailor-shop or bedroom evidence.
+- Palette/lighting/composition: dark horn brown, muted indigo fabric, beige thread, violet shadows; soft focused window light; macro view from above.
+
+### clues/019-cake.png — Cake
+
+- Gameplay function: Clue card; turns a celebration dessert into deceptively pleasant evidence.
+- Main subject: triangular frosted cake slice with visible layers and a missing fork mark.
+- Supporting cues: fork silhouette, crumbs, smudged icing streak.
+- Mood/setting: sweet domestic celebration made suspicious.
+- Palette/lighting/composition: vanilla cream, buttery yellow, raspberry accent, blue-gray plate shadows; soft side light; three-quarter close-up.
+
+### clues/020-calender.png — Calender
+
+- Gameplay function: Clue card; points to timing, appointment, deadline, or alibi.
+- Main subject: tear-off wall calendar page with abstract grid and one circled square, no readable numbers.
+- Supporting cues: hanging nail shadow, curled paper corner, faint pencil mark.
+- Mood/setting: modest office or kitchen wall, anticipatory and procedural.
+- Palette/lighting/composition: off-white paper, green-gray wall, graphite shadows, dull red circle accent; cool window light; straight-on iconic portrait framing.
+
+### clues/021-candy.png — Candy
+
+- Gameplay function: Clue card; makes a small sweet read as tempting but suspicious evidence.
+- Main subject: one wrapped hard candy with twisted translucent wrapper ends and glossy oval center.
+- Supporting cues: sugar crystals, torn wrapper scrap, soft childlike color echo.
+- Mood/setting: uncanny tabletop evidence with deceptive sweetness.
+- Palette/lighting/composition: jewel red candy, mint-gray table, lavender shadows, amber accent; focused overhead spot; centered close-up.
+
+### clues/022-carton.png — Carton
+
+- Gameplay function: Clue card; suggests storage, delivery, concealment, or mundane trace evidence.
+- Main subject: plain scuffed cardboard carton with bent open flaps.
+- Supporting cues: torn packing tape, dust trail, shadowy shelf shape.
+- Mood/setting: utilitarian storage-room secrecy.
+- Palette/lighting/composition: kraft browns, warm tan planes, cool blue-gray shadows, dusty olive, off-white tape accent; narrow warehouse side light; low three-quarter close-up.

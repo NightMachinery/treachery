@@ -973,3 +973,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: spoon glint, blurred paper edge, simplified tabletop shadow.
 - Mood/setting: late-night cafe or office-desk tension.
 - Palette/lighting/composition: porcelain white, espresso brown, amber tabletop, blue-violet shadows, cream highlight; soft upper-left lamp light; quiet slight top-down still life.
+
+### clues/040-cotton.png — Cotton
+
+- Gameplay function: Clue card; turns a soft everyday fiber into delicate trace evidence.
+- Main subject: torn white cotton wad with wispy fibers and a clear pillowy silhouette.
+- Supporting cues: dark bedside or evidence surface, stray thread, muted glass jar silhouette.
+- Mood/setting: intimate domestic suspicion.
+- Palette/lighting/composition: warm ivory against cool slate, umber, and muted violet; soft side-window light; close-up slight top-down view.
+
+### clues/041-cup.png — Cup
+
+- Gameplay function: Clue card; makes an ordinary drinking cup read as a suspicious object left behind.
+- Main subject: white porcelain teacup with handle, visible lip, dark liquid, and faint rim stain.
+- Supporting cues: blurred saucer edge, small tea spill, sparse table surface.
+- Mood/setting: quiet café or apartment-table tension.
+- Palette/lighting/composition: cream porcelain, smoky brown, teal-gray shadows, amber highlight; narrow overhead glow; medium close-up slight top-down.
+
+### clues/042-curtains.png — Curtains
+
+- Gameplay function: Clue card; suggests concealment, a hidden witness, or a threshold to a secret space.
+- Main subject: heavy dark velvet curtains parted by a thin sliver of cold light.
+- Supporting cues: brass curtain ring, soft floor shadow, old hotel or theatrical apartment atmosphere.
+- Mood/setting: secretive and ominous interior.
+- Palette/lighting/composition: deep wine, smoky indigo, muted brown, icy blue accent; backlit rim glow; frontal vertical iconic view.
+
+### clues/043-dentures.png — Dentures
+
+- Gameplay function: Clue card; presents an uncanny personal object as intimate evidence.
+- Main subject: pair of dentures with pink gum base and ivory teeth, resting slightly open.
+- Supporting cues: sterile counter or evidence tray, cloudy water glass, faint reflection.
+- Mood/setting: eerie clinical bathroom or bedside scene.
+- Palette/lighting/composition: pale ivory, muted rose, porcelain gray, green-blue shadows; sharp cabinet light; close-up three-quarter view.
+
+### clues/044-diamond.png — Diamond
+
+- Gameplay function: Clue card; signals wealth, theft, greed, or motive through a single precious object.
+- Main subject: large faceted cut diamond with angular crown, pavilion, and restrained prismatic glint.
+- Supporting cues: dark velvet or jewelry tray, faint open-safe shadow, sparse dust sparkle.
+- Mood/setting: elegant, cold, luxurious suspicion.
+- Palette/lighting/composition: crystal whites and pale cyan against charcoal, plum, and midnight blue; hard narrow spotlight; iconic slightly low close-up.
+
+### clues/045-diary.png — Diary
+
+- Gameplay function: Clue card; implies hidden thoughts, private timelines, and personal motive.
+- Main subject: closed clothbound diary with small lock, ribbon marker, and worn corners.
+- Supporting cues: half-seen key, soft envelope shape, dim bedside table.
+- Mood/setting: intimate, secretive, melancholy room.
+- Palette/lighting/composition: faded green or burgundy, amber highlights, brown shadows, cool blue night tones; bedside lamp; slight top-down diagonal.
+
+### clues/046-dice.png — Dice
+
+- Gameplay function: Clue card; suggests chance, gambling risk, and possible debt.
+- Main subject: two ivory dice with bold dark pips, one upright and one tilted.
+- Supporting cues: dark green felt, blurred betting chips, hard-edged shadow.
+- Mood/setting: tense decadent gambling-table atmosphere.
+- Palette/lighting/composition: ivory, black, emerald, burgundy, muted gold; casino-style spotlight; low-angle close-up with diagonal energy.
+
+### clues/047-dictionary.png — Dictionary
+
+- Gameplay function: Clue card; points to definitions, coded language, or hidden meanings.
+- Main subject: thick hardcover dictionary, slightly open, with dense page edges and index tabs but no readable words.
+- Supporting cues: study desk, magnifying glass, bookmark ribbon.
+- Mood/setting: scholarly, suspicious, cerebral interior.
+- Palette/lighting/composition: aged cream, muted navy, walnut brown, cool gray, brass accent; diffuse library window light; slight top-down medium close-up.
+
+### clues/048-dirt.png — Dirt
+
+- Gameplay function: Clue card; reads as trace evidence connecting a person to a place.
+- Main subject: dark soil mound and smear with gritty clumps plus a partial muddy footprint edge.
+- Supporting cues: pale tile floor, scattered pebbles, faint shoe-edge impression.
+- Mood/setting: forensic and quietly accusatory entryway.
+- Palette/lighting/composition: rich umber and charcoal against cool off-white tile, muted green-gray shadows; diffuse doorway light; slight top-down close-up.
+
+### clues/049-documents.png — Documents
+
+- Gameplay function: Clue card; turns paperwork into incriminating records or bureaucratic secrets.
+- Main subject: clipped stack of papers with slightly askew corners and no readable text.
+- Supporting cues: black redaction-like bar shape, paperclip, muted stamp pad silhouette.
+- Mood/setting: procedural, secretive, urgent office or evidence-table scene.
+- Palette/lighting/composition: warm off-white, graphite, manila, navy-gray, restrained red accent; hard desk lamp; slight top-down diagonal.

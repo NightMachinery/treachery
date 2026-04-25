@@ -265,3 +265,29 @@ Generated and validated one batch of ten clues-card images with ImageMagick `ide
 | `assets/gouache-treachery/clues/032-coffee.png` | 1049x1499 | 0.699800 |
 
 All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/033-coins.png`.
+
+### 2026-04-25 checkpoint 14
+
+Validated seven pre-existing clues-card images, then generated and validated one batch of ten additional clues-card images with ImageMagick `identify` using `PE/image-gouache-V1.1-template.md`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/clues/033-coins.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/034-comics.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/035-computer.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/036-computer-disk.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/037-computer-mouse.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/038-confidential-letter.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/039-cosmetic-mask.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/040-cotton.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/041-cup.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/042-curtains.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/043-dentures.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/044-diamond.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/045-diary.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/046-dice.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/047-dictionary.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/048-dirt.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/049-documents.png` | 1049x1499 | 0.699800 |
+
+All listed images are within the accepted few-pixel 7:10 tolerance. Prompt briefs for the generated batch are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/050-dust.png`.

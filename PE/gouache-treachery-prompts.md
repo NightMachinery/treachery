@@ -1133,3 +1133,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: thermal-paper curl, red indicator dot, blurred venetian-blind shadow.
 - Mood/setting: late-night bureaucratic office tension.
 - Palette/lighting/composition: beige-gray plastic, off-white paper, muted navy shadows, tobacco-brown desk, red accent; cold fluorescent and dim desk lamp mix; three-quarter close-up from slightly above.
+
+### clues/060-fiber-optics.png — Fiber optics
+
+- Gameplay function: Clue card; presents delicate digital infrastructure as trace evidence of hidden communication or technical tampering.
+- Main subject: glowing fan of translucent fiber optic strands emerging from a cut black cable sleeve.
+- Supporting cues: metal workbench, unplugged connector, dim forensic tech-room atmosphere.
+- Mood/setting: cool, precise, secretive investigative tension.
+- Palette/lighting/composition: blue-black shadows with cyan and violet light accents; narrow side key light and rim glow; slight top-down close-up with luminous cable tips as focal anchor.
+
+### clues/061-fingernails.png — Fingernails
+
+- Gameplay function: Clue card; turns intimate body traces into clinical forensic evidence.
+- Main subject: pale fingernail clippings and one jagged torn nail fragment in an evidence tray.
+- Supporting cues: tweezers, translucent evidence sleeve, sterile investigation table.
+- Mood/setting: intimate, clinical, uneasy, accusatory.
+- Palette/lighting/composition: warm ivory nails against cool slate and pale green-gray; diffuse forensic top-left lamp; macro overhead tray composition.
+
+### clues/062-flashlight.png — Flashlight
+
+- Gameplay function: Clue card; signals nighttime searching, discovery, and investigation in darkness.
+- Main subject: heavy metal flashlight with glowing lens and a strong cone of light.
+- Supporting cues: dark hallway floorboards, dust motes, tiny debris glint in the beam.
+- Mood/setting: tense, nocturnal, investigative quiet.
+- Palette/lighting/composition: charcoal blue shadows, pewter metal, warm off-white beam; flashlight as key light; low close-up diagonal composition.
+
+### clues/063-flip-flop.png — Flip flop
+
+- Gameplay function: Clue card; suggests casual presence, movement, or abandonment through everyday footwear.
+- Main subject: single worn rubber flip-flop with clear Y-shaped strap, scuffs, and bent sole.
+- Supporting cues: tiled threshold, damp footprint, faint puddle reflection.
+- Mood/setting: mundane, suspicious, humid, quietly unsettling.
+- Palette/lighting/composition: faded coral or teal against gray-green tile; diffuse overhead fluorescent light; slight overhead centered sandal composition.
+
+### clues/064-flute.png — Flute
+
+- Gameplay function: Clue card; uses elegant personal or performance-object evidence to imply refinement and suspicion.
+- Main subject: polished concert flute with crisp keys and mouthpiece lying on dark velvet.
+- Supporting cues: folded velvet cloth, non-readable sheet-music shape, fingerprint smudge.
+- Mood/setting: refined backstage or music-room secrecy.
+- Palette/lighting/composition: cool silver and pearl highlights against deep plum-black velvet; narrow side spotlight; diagonal close-up.
+
+### clues/065-flyer.png — Flyer
+
+- Gameplay function: Clue card; points to public invitations, street notices, or event evidence without relying on readable text.
+- Main subject: crumpled torn paper flyer with blank graphic blocks, tape residue, and torn corners.
+- Supporting cues: urban noticeboard scraps, staple marks, curling tape.
+- Mood/setting: streetwise, urgent, secretive, slightly grimy.
+- Palette/lighting/composition: weathered cream paper with faded mustard and blue-gray blocks; raking side light; frontal tilted close-up.
+
+### clues/066-food-ingredients.png — Food ingredients
+
+- Gameplay function: Clue card; suggests preparation, contamination, or a last meal through kitchen evidence.
+- Main subject: compact still life of garlic cloves, sliced chili, cracked eggshell, herbs, and coarse salt.
+- Supporting cues: dark cutting board, partial knife handle, suspicious powder dusting.
+- Mood/setting: culinary, intimate, domestic, quietly dangerous.
+- Palette/lighting/composition: earthy creams, red chili accent, muted greens, charcoal walnut; warm window side light; slight overhead still life.
+
+### clues/067-gear.png — Gear
+
+- Gameplay function: Clue card; indicates machinery, mechanism, sabotage, or industrial evidence.
+- Main subject: large worn steel cog gear with bold teeth and central hole.
+- Supporting cues: oil smears, loose bolt, soft machinery silhouettes.
+- Mood/setting: mechanical, cold, secretive, ominous.
+- Palette/lighting/composition: gunmetal gray, blue-black shadows, muted rust, pale silver; hard side rim light; low three-quarter iconic close-up.
+
+### clues/068-gift.png — Gift
+
+- Gameplay function: Clue card; turns concealed generosity into suspicious evidence of hidden intent.
+- Main subject: square wrapped gift box with ribbon bow and a slightly torn corner revealing darkness.
+- Supporting cues: dim tabletop, sparse confetti, curling ribbon tail.
+- Mood/setting: elegant, secretive, ceremonial, uneasy.
+- Palette/lighting/composition: rich emerald or burgundy wrapping, cream ribbon, smoky brown shadows, gold accent; warm candle-like side light; centered frontal still life.
+
+### clues/069-gloves.png — Gloves
+
+- Gameplay function: Clue card; signals concealment, careful handling, and possible avoidance of fingerprints.
+- Main subject: crossed pair of dark leather gloves on a pale evidence cloth.
+- Supporting cues: faint key-ring shadow, powder near one cuff, quiet forensic table.
+- Mood/setting: secretive, methodical, elegant, incriminating.
+- Palette/lighting/composition: black-brown leather with blue-violet shadows, warm ivory cloth, muted brass; soft window side light; slight top-down X-shaped close-up.

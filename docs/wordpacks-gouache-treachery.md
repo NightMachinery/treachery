@@ -309,4 +309,23 @@ Generated and validated one batch of ten clues-card images with ImageMagick `ide
 | `assets/gouache-treachery/clues/058-fan.png` | 1049x1499 | 0.699800 |
 | `assets/gouache-treachery/clues/059-fax.png` | 1049x1499 | 0.699800 |
 
-All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/060-feather.png`.
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/060-fiber-optics.png`.
+
+### 2026-04-25 checkpoint 16
+
+Generated and validated one batch of ten clues-card images with ImageMagick `identify` using `PE/image-gouache-V1.1-template.md`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/clues/060-fiber-optics.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/061-fingernails.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/062-flashlight.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/063-flip-flop.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/064-flute.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/065-flyer.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/066-food-ingredients.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/067-gear.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/068-gift.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/069-gloves.png` | 1049x1499 | 0.699800 |
+
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/070-glue.png`.

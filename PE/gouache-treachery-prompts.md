@@ -645,3 +645,91 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: shallow puddle, sink-base reflection, loosened thread.
 - Mood/setting: humid, intimate, unsettling; tiled bathroom.
 - Palette/lighting/composition: porcelain whites, gray-blue shadows, muted green tile notes; soft overhead bathroom light; slight top-down close-up.
+
+### means/079-trophy.png — Trophy
+
+- Gameplay function: Means card; presents a heavy award as an improvised blunt weapon.
+- Main subject: gleaming trophy cup or statuette with a weighty base and readable striking silhouette.
+- Supporting cues: presentation plinth or shelf, scattered metallic glints, subtle impact scuff.
+- Mood/setting: ceremonial, elegant, ominous; trophy-room or award-display atmosphere.
+- Palette/lighting/composition: polished golds with cool shadows and restrained dark accents; spotlighted still life; iconic close-up.
+
+### means/080-trowel.png — Trowel
+
+- Gameplay function: Means card; makes a garden hand tool read as an improvised sharp weapon.
+- Main subject: mud-stained metal garden trowel with dark wooden handle and pointed scoop.
+- Supporting cues: damp soil, broken terracotta shard, faint greenhouse window shape.
+- Mood/setting: tense, domestic-garden, ominous.
+- Palette/lighting/composition: earthy umbers, moss greens, blue-gray metal, muted rust-red accent; diffuse window light; slight top-down diagonal close-up.
+
+### means/081-unarmed.png — Unarmed
+
+- Gameplay function: Means card; communicates bodily violence without showing a weapon.
+- Main subject: pair of bare adult hands, open but tense, with scraped knuckles and curled fingers.
+- Supporting cues: floor scuff, soft sleeve cuff, distant shadow smear.
+- Mood/setting: intimate, forensic, psychologically threatening.
+- Palette/lighting/composition: warm skin ochres against violet-gray shadows with burgundy abrasions; narrow side light; centered medium close-up.
+
+### means/082-venomous-scorpion.png — Venomous Scorpion
+
+- Gameplay function: Means card; depicts a dangerous animal and its venom as a lethal threat.
+- Main subject: dark glossy scorpion with open pincers and arched segmented tail.
+- Supporting cues: cracked amber vial, sparse sand grains, soft tile seam.
+- Mood/setting: dry, uncanny, hazardous, forensic.
+- Palette/lighting/composition: charcoal, umber, warm limestone, amber accent; oblique spotlight; low close-up with stinger silhouette.
+
+### means/083-venomous-snake.png — Venomous Snake
+
+- Gameplay function: Means card; makes a coiled snake instantly readable as a poisonous danger.
+- Main subject: patterned viper-like snake in an S-shaped coil with raised triangular head.
+- Supporting cues: tipped woven basket, soft warning-tag shape, dust.
+- Mood/setting: elegant, ominous, quiet storage-room danger.
+- Palette/lighting/composition: olive browns, smoky charcoal, clay, teal-gray shadows, yellow-green eye accent; lantern-like rim light; low-angle close-up.
+
+### means/084-video-game-console.png — Video Game Console
+
+- Gameplay function: Means card; turns modern electronics into an ominous indirect means.
+- Main subject: compact black console and controller with a cable curling like a trap.
+- Supporting cues: faint TV glow, abstract game-case rectangles, small red standby light.
+- Mood/setting: contemporary domestic unease in a dark entertainment room.
+- Palette/lighting/composition: electric blues, charcoal, dust-browns, red LED accent; screen glow; straight-on close-up still life.
+
+### means/085-virus.png — Virus
+
+- Gameplay function: Means card; visualizes invisible infection as a lethal biological agent.
+- Main subject: enlarged spherical virus particle with radiating spike proteins and glowing core.
+- Supporting cues: petri dish arcs, glass slide edge, tiny floating particles.
+- Mood/setting: sterile, uncanny, microscopic-forensic.
+- Palette/lighting/composition: sickly teal, smoky indigo, luminous lime accent; cool backlight; centered macro icon.
+
+### means/086-whip.png — Whip
+
+- Gameplay function: Means card; frames a leather whip as elegant but brutal violence.
+- Main subject: dark braided leather whip, partly coiled with handle angled upward.
+- Supporting cues: velvet surface, brass hook, faint wall shadow echo.
+- Mood/setting: decadent, theatrical, ominous vintage interior.
+- Palette/lighting/composition: espresso browns, plum-black shadows, brass highlights, wine-red accent; warm spotlight; asymmetrical close-up.
+
+### means/087-wine.png — Wine
+
+- Gameplay function: Means card; suggests poisoned wine as a concealed lethal means.
+- Main subject: tall glass of deep red wine before a dark bottle with a subtle dissolved swirl.
+- Supporting cues: folded napkin, candle glow, faint spill ring.
+- Mood/setting: intimate, decadent, suspicious dinner-table atmosphere.
+- Palette/lighting/composition: ruby reds, black cherry shadows, ivory, smoky umber, golden accent; candle side light; vertical close-up still life.
+
+### means/088-wire.png — Wire
+
+- Gameplay function: Means card; makes a thin wire read as a garrote-like threat.
+- Main subject: taut loop of bare metallic wire with twisted ends and dark cloth handles.
+- Supporting cues: coil shadow, tiny metal spool, scratched tabletop.
+- Mood/setting: cold, forensic, minimal workshop tension.
+- Palette/lighting/composition: blue-gray steel, slate shadows, tan wood, cold white highlight; narrow overhead light; slight top-down close-up.
+
+### means/089-work.png — Work
+
+- Gameplay function: Means card; visualizes overwork and exhaustion as a fatal pressure.
+- Main subject: oppressive office desk with slumped chair, towering papers, glowing laptop, and fallen tie.
+- Supporting cues: blurred wall clock, unreadable sticky-note shapes, fluorescent reflections.
+- Mood/setting: sterile late-night corporate dread, lonely and suffocating.
+- Palette/lighting/composition: desaturated grays, paper ivory, bruised blue shadows, toxic green monitor accent; cold overhead light; slight high-angle still life.

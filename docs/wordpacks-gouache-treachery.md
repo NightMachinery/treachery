@@ -188,3 +188,23 @@ Generated and validated the next ten means-card images with ImageMagick `identif
 | `assets/gouache-treachery/means/078-towel.png` | 1049x1499 | 0.699800 |
 
 All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/means/079-trophy.png`.
+
+### 2026-04-25 checkpoint 10
+
+Validated the pre-existing next pending asset and generated/validated the next ten means-card images with ImageMagick `identify` using `PE/image-gouache-V1.1-template.md`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/means/079-trophy.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/080-trowel.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/081-unarmed.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/082-venomous-scorpion.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/083-venomous-snake.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/084-video-game-console.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/085-virus.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/086-whip.png` | 1049x1500 | 0.699333 |
+| `assets/gouache-treachery/means/087-wine.png` | 1049x1500 | 0.699333 |
+| `assets/gouache-treachery/means/088-wire.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/089-work.png` | 1049x1499 | 0.699800 |
+
+All listed images are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/means/090-wrench.png`.

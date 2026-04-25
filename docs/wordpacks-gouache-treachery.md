@@ -291,3 +291,22 @@ Validated seven pre-existing clues-card images, then generated and validated one
 | `assets/gouache-treachery/clues/049-documents.png` | 1049x1499 | 0.699800 |
 
 All listed images are within the accepted few-pixel 7:10 tolerance. Prompt briefs for the generated batch are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/050-dust.png`.
+
+### 2026-04-25 checkpoint 15
+
+Generated and validated one batch of ten clues-card images with ImageMagick `identify` using `PE/image-gouache-V1.1-template.md`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/clues/050-dog-fur.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/051-dust.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/052-earrings.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/053-eggs.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/054-electric-circuit.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/055-envelope.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/056-exam-paper.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/057-express-courier.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/058-fan.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/059-fax.png` | 1049x1499 | 0.699800 |
+
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/060-feather.png`.

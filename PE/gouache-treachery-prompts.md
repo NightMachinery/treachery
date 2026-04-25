@@ -1053,3 +1053,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: black redaction-like bar shape, paperclip, muted stamp pad silhouette.
 - Mood/setting: procedural, secretive, urgent office or evidence-table scene.
 - Palette/lighting/composition: warm off-white, graphite, manila, navy-gray, restrained red accent; hard desk lamp; slight top-down diagonal.
+
+### clues/050-dog-fur.png — Dog fur
+
+- Gameplay function: Clue card; presents animal hair as delicate forensic trace evidence.
+- Main subject: loose tan, cream, and gray dog-fur clump caught on a dark fabric edge.
+- Supporting cues: upholstery seam, tiny lint speck, soft sofa or coat shadow.
+- Mood/setting: quiet domestic forensic tension.
+- Palette/lighting/composition: warm cream and sandy fur against cool charcoal-blue fabric and muted brown shadows; narrow side-window light; close-up slight top-down view.
+
+### clues/051-dust.png — Dust
+
+- Gameplay function: Clue card; makes neglect and disturbance readable as trace evidence.
+- Main subject: thick gray dust layer with a wiped finger streak and powder ridges.
+- Supporting cues: cobweb strand, faint footprint edge, blurred baseboard shadow.
+- Mood/setting: stale abandoned crime-scene corner.
+- Palette/lighting/composition: smoky gray, warm taupe, cool slate, dim umber, pale dusty highlight; raking flashlight beam; macro slight top-down view.
+
+### clues/052-earrings.png — Earrings
+
+- Gameplay function: Clue card; suggests wealth, intimacy, theft, or motive through personal jewelry.
+- Main subject: pair of pearl-and-gold drop earrings resting on dark velvet.
+- Supporting cues: open clasp, powder smudge, soft vanity-mirror glow.
+- Mood/setting: luxurious, private, suspicious jewelry-tray atmosphere.
+- Palette/lighting/composition: creamy pearls and muted gold against deep plum, charcoal, cool blue shadows; small vanity spotlight; iconic close-up three-quarter view.
+
+### clues/053-eggs.png — Eggs
+
+- Gameplay function: Clue card; turns an everyday kitchen object into fragile domestic evidence.
+- Main subject: cluster of pale eggs with one cracked shell and spilling yolk.
+- Supporting cues: shell fragments, flour dusting, blurred mixing-bowl rim.
+- Mood/setting: quiet kitchen aftermath.
+- Palette/lighting/composition: warm ivory, golden yolk, cool blue-gray shadows, muted terracotta; diffuse morning window light; slight top-down still life.
+
+### clues/054-electric-circuit.png — Electric circuit
+
+- Gameplay function: Clue card; signals technical tampering, sabotage, or device evidence.
+- Main subject: compact green circuit board with copper traces, solder points, and a scorched broken connection.
+- Supporting cues: loose red wire, tiny screw, faint multimeter silhouette.
+- Mood/setting: sterile workshop-forensic tension.
+- Palette/lighting/composition: oxidized green, copper orange, matte black scorch, cool gray bench, red accent; crisp inspection light; straight-on close-up with slight top-down tilt.
+
+### clues/055-envelope.png — Envelope
+
+- Gameplay function: Clue card; implies private communication, secrets, or incriminating correspondence.
+- Main subject: cream envelope with broken wax seal and slightly lifted flap, with no readable writing.
+- Supporting cues: brass letter opener, coffee ring, soft drawer shadow.
+- Mood/setting: secretive desk-at-night atmosphere.
+- Palette/lighting/composition: ivory paper, burgundy wax, walnut brown, cool indigo shadows, restrained gold; narrow amber desk lamp; slight top-down diagonal still life.
+
+### clues/056-exam-paper.png — Exam paper
+
+- Gameplay function: Clue card; suggests academic pressure, fraud, or a timeline clue.
+- Main subject: exam sheet with abstract check marks, empty answer boxes, and non-readable red grading marks.
+- Supporting cues: pencil, eraser crumbs, faint clock shadow.
+- Mood/setting: sterile classroom or office-desk tension.
+- Palette/lighting/composition: cool white paper, graphite, muted red, institutional green shadows, warm wood; flat fluorescent overhead light; slight top-down diagonal view.
+
+### clues/057-express-courier.png — Express courier
+
+- Gameplay function: Clue card; ties delivery evidence to timing, movement, or a suspicious package.
+- Main subject: taped cardboard parcel with blank courier-label area.
+- Supporting cues: packing tape, non-readable delivery slip shape, blurred door-threshold shadow.
+- Mood/setting: urgent urban doorstep or lobby atmosphere.
+- Palette/lighting/composition: kraft brown, amber tape, cool concrete gray, deep doorway blue, red-orange accent; raking hallway side light; low oblique close-up.
+
+### clues/058-fan.png — Fan
+
+- Gameplay function: Clue card; turns an ordinary room appliance into suspicious scene evidence.
+- Main subject: small metal desk fan with circular cage, three blades, and a slightly bent grille.
+- Supporting cues: dust on cage, loose cord, faint curtain movement.
+- Mood/setting: humid apartment-room tension.
+- Palette/lighting/composition: aged teal, cool gray, dusty cream, ochre room tones, deep blue shadows; slanted window light; straight-on slight low-angle close-up.
+
+### clues/059-fax.png — Fax
+
+- Gameplay function: Clue card; points to secret or outdated office communication evidence.
+- Main subject: compact gray fax machine with paper slot and curling blank page.
+- Supporting cues: thermal-paper curl, red indicator dot, blurred venetian-blind shadow.
+- Mood/setting: late-night bureaucratic office tension.
+- Palette/lighting/composition: beige-gray plastic, off-white paper, muted navy shadows, tobacco-brown desk, red accent; cold fluorescent and dim desk lamp mix; three-quarter close-up from slightly above.

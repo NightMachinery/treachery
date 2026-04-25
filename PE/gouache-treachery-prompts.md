@@ -733,3 +733,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: blurred wall clock, unreadable sticky-note shapes, fluorescent reflections.
 - Mood/setting: sterile late-night corporate dread, lonely and suffocating.
 - Palette/lighting/composition: desaturated grays, paper ivory, bruised blue shadows, toxic green monitor accent; cold overhead light; slight high-angle still life.
+
+### means/090-wrench.png — Wrench
+
+- Gameplay function: Means card; frames a common tool as a blunt improvised weapon.
+- Main subject: heavy adjustable steel wrench with open jaws, scratches, oil smudges, and worn grip.
+- Supporting cues: stained concrete, loose bolt, dark oil crescent.
+- Mood/setting: industrial maintenance-room tension, practical and ominous.
+- Palette/lighting/composition: blue-gray steel, charcoal shadows, beige concrete, rust-brown and oily-black accents; narrow overhead work light; slight top-down diagonal close-up.
+
+### clues/004-apple.png — Apple
+
+- Gameplay function: Clue card; makes an ordinary fruit read as suspicious evidence.
+- Main subject: polished red apple with slight bruise, dark stem, and a neat bite mark.
+- Supporting cues: fallen leaf, porcelain plate edge, tiny moisture bead.
+- Mood/setting: intimate domestic unease, deceptively ordinary.
+- Palette/lighting/composition: crimson and scarlet against cream, sage-gray, brown neutrals, cool violet shadow; diffuse window light; straight-on iconic close-up.
+
+### clues/005-badge.png — Badge
+
+- Gameplay function: Clue card; suggests official authority, investigation, or compromised credentials.
+- Main subject: tarnished shield-shaped brass detective badge, worn and slightly bent, with unreadable raised detail.
+- Supporting cues: leather wallet corner, fingerprint-powder smudge, paperclip-like glint.
+- Mood/setting: procedural desk evidence, solemn and suspicious.
+- Palette/lighting/composition: tarnished gold, olive-brown, charcoal blue, dusty black, muted teal shadow; desk-lamp side light; frontal top-down close-up.
+
+### clues/006-bandage.png — Bandage
+
+- Gameplay function: Clue card; points to treatment, injury evidence, or staged medical cleanup without graphic content.
+- Main subject: rolled white gauze bandage partly unwound, with fibrous edges and a small rusty-red stain.
+- Supporting cues: antiseptic bottle silhouette, metal tray edge, sterile tile lines.
+- Mood/setting: clinical, hushed, forensic, slightly alarming.
+- Palette/lighting/composition: chalk whites, warm ivory, pale blue-gray, desaturated mint, dried-red accent; diffuse fluorescent light; slight top-down close-up.
+
+### clues/007-banknote.png — Banknote
+
+- Gameplay function: Clue card; communicates money, bribery, debt, or financial motive.
+- Main subject: folded and creased banknote with abstract security patterns and no readable denomination.
+- Supporting cues: envelope corner, binder clip, concealment shadow.
+- Mood/setting: corrupt, secretive, elegant investigative tabletop.
+- Palette/lighting/composition: muted jade, dull cream, smoky umber, graphite shadows, copper accent; warm desk-lamp grazing light; diagonal overhead close-up.
+
+### clues/008-bell.png — Bell
+
+- Gameplay function: Clue card; suggests a summons, hotel desk, or call for attention at a suspicious moment.
+- Main subject: tarnished brass service bell with black base and raised button.
+- Supporting cues: key-tag silhouette, counter edge, dusty fingerprint.
+- Mood/setting: expectant, theatrical, uneasy reception-desk atmosphere.
+- Palette/lighting/composition: brass golds, ochres, deep teal-black shadows, mahogany, ivory glint; warm focused spotlight; low frontal close-up.
+
+### clues/009-betting-chips.png — Betting Chips
+
+- Gameplay function: Clue card; signals gambling, risk, debt, or dangerous stakes.
+- Main subject: stack of casino betting chips with tilted chips at the base and crisp ring patterns.
+- Supporting cues: dark velvet table, playing-card corner, dice-like pale cube silhouette, faint spilled drink ring.
+- Mood/setting: decadent, risky, nocturnal, suspicious.
+- Palette/lighting/composition: emerald felt, ivory chips, crimson and navy accents, black-violet shadows, amber highlight; warm casino overhead light; slight low-angle close-up.
+
+### clues/010-blood.png — Blood
+
+- Gameplay function: Clue card; gives an immediate forensic trace without depicting injury or gore.
+- Main subject: single dark red droplet and short smear on pale tile.
+- Supporting cues: tile grout cross, cotton swab silhouette, evidence-light reflection.
+- Mood/setting: sterile, tense, quiet, investigative.
+- Palette/lighting/composition: burgundy and oxblood on cold gray tile with blue shadow and white highlight; cool overhead forensic light; overhead macro close-up.
+
+### clues/011-bone.png — Bone
+
+- Gameplay function: Clue card; suggests remains, buried evidence, or forensic discovery without graphic detail.
+- Main subject: pale weathered long bone fragment with rounded ends, small cracks, and chalky texture.
+- Supporting cues: earth-and-stone surface, evidence brush, torn marker shape, soil grains.
+- Mood/setting: archaeological-forensic, somber and unsettling.
+- Palette/lighting/composition: warm ivory, dusty umber, cool slate shadows, muted ochre, sienna accent; low raking side light; top-down diagonal close-up.
+
+### clues/012-book.png — Book
+
+- Gameplay function: Clue card; suggests hidden knowledge, records, or a secret.
+- Main subject: worn old hardcover book with cloth cover, rounded spine, frayed corners, and bookmark ribbon.
+- Supporting cues: dust halo, key-shaped shadow, faint paper stack.
+- Mood/setting: secretive scholarly study, intimate and suspenseful.
+- Palette/lighting/composition: bottle green, tan page edges, walnut brown, blue-black shadows, crimson bookmark accent; soft window light; three-quarter close-up from above.

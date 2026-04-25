@@ -208,3 +208,22 @@ Validated the pre-existing next pending asset and generated/validated the next t
 | `assets/gouache-treachery/means/089-work.png` | 1049x1499 | 0.699800 |
 
 All listed images are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/means/090-wrench.png`.
+
+### 2026-04-25 checkpoint 11
+
+Generated and validated one batch of ten images with ImageMagick `identify` using `PE/image-gouache-V1.1-template.md`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/means/090-wrench.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/004-apple.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/005-badge.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/006-bandage.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/007-banknote.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/008-bell.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/009-betting-chips.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/010-blood.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/011-bone.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/012-book.png` | 1049x1499 | 0.699800 |
+
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/013-bottle.png`.

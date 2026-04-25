@@ -131,3 +131,22 @@ Generation was interrupted by operator request after five images. The five copie
 | `assets/gouache-treachery/means/048-metal-chain.png` | 1049x1499 | 0.699800 |
 
 All five are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/means/049-metal-wire.png`.
+
+### 2026-04-25 checkpoint 7
+
+Generated and validated the next ten means-card images with ImageMagick `identify` using `PE/image-gouache-V1.1-template.md`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/means/049-metal-wire.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/050-overdose.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/051-packing-tape.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/052-pesticide.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/053-pill.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/054-pillow.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/055-pistol.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/056-plague.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/057-plastic-bag.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/means/058-poisonous-gas.png` | 1049x1499 | 0.699800 |
+
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/means/059-poisonous-needle.png`.

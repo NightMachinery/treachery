@@ -405,3 +405,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: damp concrete floor, rust stain, torn fabric scrap beneath a link.
 - Mood/setting: grim, forensic, heavy; concrete utility space.
 - Palette/lighting/composition: slate and iron grays with rusty umber accents; overhead strip light; iconic slight top-down chain close-up.
+
+### means/049-metal-wire.png — Metal Wire
+
+- Gameplay function: Means card; turns thin wire into a covert garrote-like threat.
+- Main subject: taut silvery metal wire loop with sharp kinks and cold glints.
+- Supporting cues: plier silhouettes and scraped metal filings in a dim workshop.
+- Mood/setting: ominous, urban, clandestine; toolbench or workshop surface.
+- Palette/lighting/composition: graphite and blue-gray shadows with cold highlights; hard side light; iconic close-up loop silhouette.
+
+### means/050-overdose.png — Overdose
+
+- Gameplay function: Means card; communicates fatal overdose without depicting a body.
+- Main subject: tipped amber medicine bottle and scattered pale tablets.
+- Supporting cues: dim water glass and blurred bedside clock shapes.
+- Mood/setting: lonely, sterile, tragic; nightstand in a dark bedroom.
+- Palette/lighting/composition: amber, cream, bruised violet shadows; weak bedside lamp; slight top-down diagonal close-up.
+
+### means/051-packing-tape.png — Packing Tape
+
+- Gameplay function: Means card; presents adhesive packing tape as restraint or concealment.
+- Main subject: large roll of clear packing tape with a pulled twisted strip.
+- Supporting cues: softened cardboard box edges and distant utility-knife silhouette.
+- Mood/setting: tense, mundane, claustrophobic; storage-room atmosphere.
+- Palette/lighting/composition: tan cardboard, smoky teal-gray shadows, pale adhesive highlights; overhead light; centered circular still life.
+
+### means/052-pesticide.png — Pesticide
+
+- Gameplay function: Means card; communicates a lethal garden chemical hazard.
+- Main subject: unbranded pesticide sprayer bottle with curled hose and threatening nozzle.
+- Supporting cues: wilted leaves, greenhouse mist, subtle droplets.
+- Mood/setting: damp, toxic, uneasy; greenhouse corner.
+- Palette/lighting/composition: sickly yellow-green accents with earth browns and cool gray shadows; diffuse greenhouse light with nozzle rim; medium close-up.
+
+### means/053-pill.png — Pill
+
+- Gameplay function: Means card; turns a single small pill into a deceptively lethal focal object.
+- Main subject: oversized split-color capsule with powder dust.
+- Supporting cues: clinical tabletop void, faint measuring cup shadow, powder grains.
+- Mood/setting: sterile, minimal, unnerving; medical tabletop.
+- Palette/lighting/composition: porcelain white and muted coral against cool blue-gray; soft clinical top-left light; quiet frontal macro.
+
+### means/054-pillow.png — Pillow
+
+- Gameplay function: Means card; suggests smothering through an ordinary bedroom object.
+- Main subject: large white pillow compressed and creased by implied pressure.
+- Supporting cues: rumpled sheet folds and faint bedside shadow.
+- Mood/setting: intimate, silent, ominous; dim bedroom.
+- Palette/lighting/composition: warm ivory fabric with indigo and mauve shadows; narrow moonlit window glow; centered close-up.
+
+### means/055-pistol.png — Pistol
+
+- Gameplay function: Means card; makes a handgun immediately readable as a murder weapon.
+- Main subject: unbranded dark pistol with clear barrel and trigger silhouette.
+- Supporting cues: spent casing and slatted window-blind shadow.
+- Mood/setting: noir, tense, forensic; polished interior tabletop.
+- Palette/lighting/composition: charcoal metal, muted brass, tobacco brown; sharp slatted side light; low diagonal close-up.
+
+### means/056-plague.png — Plague
+
+- Gameplay function: Means card; communicates invisible contagion through a recognizable disease symbol.
+- Main subject: black plague-doctor mask with round glass eye lenses.
+- Supporting cues: smoky motes and a small wilted herb bundle.
+- Mood/setting: historical, uncanny, sickroom dread.
+- Palette/lighting/composition: ashen gray, bone beige, desaturated black, muted sickly green accent; soft top light; centered frontal icon.
+
+### means/057-plastic-bag.png — Plastic Bag
+
+- Gameplay function: Means card; turns a crumpled bag into a suffocation threat.
+- Main subject: translucent plastic bag with open mouth and twisted handles.
+- Supporting cues: water droplets and a blurred drain shape on tiled floor.
+- Mood/setting: stark, cold, domestic; bathroom or kitchen floor.
+- Palette/lighting/composition: milky whites and pale blue-gray with cyan highlight; overhead fluorescent light; top-down close-up.
+
+### means/058-poisonous-gas.png — Poisonous Gas
+
+- Gameplay function: Means card; depicts lethal gas as a readable toxic plume.
+- Main subject: dense greenish gas cloud curling from a small unbranded metal canister.
+- Supporting cues: faint industrial pipes and a small hazard-colored cloth scrap without symbols.
+- Mood/setting: eerie, industrial, suffocating; basement or utility space.
+- Palette/lighting/composition: murky green vapor against charcoal and rust shadows; eerie backlight; vertical plume composition.

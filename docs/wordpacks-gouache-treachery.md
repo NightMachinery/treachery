@@ -347,4 +347,33 @@ Generated and validated one batch of ten clues-card images with ImageMagick `ide
 | `assets/gouache-treachery/clues/078-helmet.png` | 1049x1499 | 0.699800 |
 | `assets/gouache-treachery/clues/079-herbal-medicine.png` | 1049x1499 | 0.699800 |
 
-All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/080-honey.png`.
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending tracked gap before this checkpoint was `assets/gouache-treachery/clues/080-high-heel.png`.
+
+### 2026-04-29 checkpoint 18
+
+
+Four existing local clues-card images were also validated and included in this checkpoint so the committed pack remains contiguous:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/clues/080-high-heel.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/081-hourglass.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/082-ice.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/083-id-card.png` | 1049x1499 | 0.699800 |
+
+Generated and validated one batch of ten clues-card images with ImageMagick `identify` using `PE/image-gouache-V1.1-template.md`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/clues/084-ink.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/085-insect.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/086-internet-cable.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/087-invitation-card.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/088-iou-note.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/089-iron.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/090-iv-bag.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/091-jacket.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/092-jewelry.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/093-juice.png` | 1049x1499 | 0.699800 |
+
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/094-key.png`.

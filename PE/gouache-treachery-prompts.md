@@ -1293,3 +1293,115 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: apothecary tabletop, soft mortar silhouette, paper packet shape.
 - Mood/setting: ceremonial, old-world, suspicious, intimate.
 - Palette/lighting/composition: sage greens, ochre roots, warm clay ceramic, deep umber shadows, vivid red-thread accent; lantern-like side light; slight top-down still life.
+
+### clues/080-high-heel.png — High heel
+
+- Gameplay function: Clue card; suggests an absent wearer, sudden movement, or personal trace evidence.
+- Main subject: single elegant high-heel shoe tipped on its side with a sharp silhouette.
+- Supporting cues: polished floor, faint scuff mark, soft dressing-room or hallway shadow.
+- Mood/setting: stylish, intimate, suspicious.
+- Palette/lighting/composition: deep lacquered shoe tones with warm floor highlights and cool shadows; side light; close-up diagonal still life.
+
+### clues/081-hourglass.png — Hourglass
+
+- Gameplay function: Clue card; turns time pressure into a readable object clue.
+- Main subject: glass hourglass with sand caught mid-flow.
+- Supporting cues: quiet tabletop, small shadow pool, faint dust motes.
+- Mood/setting: ceremonial, tense, time-suspended.
+- Palette/lighting/composition: amber sand and warm glass highlights against muted cool shadows; rim light; centered vertical iconic view.
+
+### clues/082-ice.png — Ice
+
+- Gameplay function: Clue card; suggests cold storage, melting evidence, or a fleeting trace.
+- Main subject: large translucent ice cube or shard with meltwater pooling beneath it.
+- Supporting cues: condensation beads, pale tabletop reflection, faint cool mist.
+- Mood/setting: sterile, quiet, temporary, forensic.
+- Palette/lighting/composition: icy blue whites with gray-violet shadows and small bright highlights; cool overhead light; macro close-up.
+
+### clues/083-id-card.png — ID card
+
+- Gameplay function: Clue card; points to identity, access, disguise, or a misplaced credential without readable text.
+- Main subject: blank ID badge card with a simple portrait placeholder shape and lanyard clip.
+- Supporting cues: clipped corner, soft plastic sheen, blurred office or security-desk surface.
+- Mood/setting: procedural, modern, suspicious.
+- Palette/lighting/composition: cool institutional neutrals with muted blue accent; fluorescent side light; slight top-down rectangular still life.
+
+### clues/084-ink.png — Ink
+
+- Gameplay function: Clue card; turns spilled writing fluid into evidence of concealment, altered records, or a hurried message.
+- Main subject: tipped glass inkwell with a bold black ink pool spreading across pale paper.
+- Supporting cues: blurred fountain pen nib, stained paper corner, subtle fingertip-like smudges.
+- Mood/setting: intimate desk still life, elegant, ominous, forensic.
+- Palette/lighting/composition: ivory paper and charcoal-black ink with blue-violet accents; warm side light and cool shadows; slight top-down diagonal close-up.
+
+### clues/085-insect.png — Insect
+
+- Gameplay function: Clue card; makes a small overlooked creature read as trace evidence from a scene.
+- Main subject: enlarged dark beetle-like insect on its back with sharply silhouetted legs and iridescent shell accents.
+- Supporting cues: sterile floor or windowsill, tiny crumb or fiber, faint evidence-marker shape in soft focus.
+- Mood/setting: uncanny, clinical, suspicious.
+- Palette/lighting/composition: warm stone neutrals with emerald-violet shell accents; cool rim light; centered macro top-down composition.
+
+### clues/086-internet-cable.png — Internet cable
+
+- Gameplay function: Clue card; signals interrupted communication, sabotage, or a cut digital trail.
+- Main subject: severed blue ethernet cable with exposed copper wires fanning from the cut end.
+- Supporting cues: dim office floor, distant router glow, soft subordinate cord tangle.
+- Mood/setting: modern, technological, tense, forensic.
+- Palette/lighting/composition: slate and graphite neutrals with cobalt cable and amber router accent; hard desk-lamp spotlight; diagonal close-up.
+
+### clues/087-invitation-card.png — Invitation card
+
+- Gameplay function: Clue card; suggests a formal meeting, planned encounter, or social motive without relying on readable writing.
+- Main subject: cream invitation card with blank sealed envelope and wax seal.
+- Supporting cues: torn ribbon, polished tabletop, soft glass edge in the background.
+- Mood/setting: refined, suspicious, ceremonial.
+- Palette/lighting/composition: champagne, burgundy, ivory, and cool gray-green shadows; soft window light; quiet frontal top-down still life.
+
+### clues/088-iou-note.png — IOU note
+
+- Gameplay function: Clue card; turns debt into a visible motive while avoiding readable text.
+- Main subject: folded debt note implied by simple blank line marks, pinned beneath a heavy coin or paperweight.
+- Supporting cues: scattered coins, torn ledger edge, shadowed back-room tabletop.
+- Mood/setting: morally compromised, intimate, tense.
+- Palette/lighting/composition: smoky umber, tarnished brass, dull cream, and teal shadows; warm overhead pool of light; diagonal paper close-up.
+
+### clues/089-iron.png — Iron
+
+- Gameplay function: Clue card; makes an ordinary domestic appliance feel potentially dangerous or evidentiary.
+- Main subject: heavy vintage steam iron standing upright with visible hot soleplate and faint scorch mark.
+- Supporting cues: curled power cord, small wisp of steam, quiet laundry surface.
+- Mood/setting: domestic, still, subtly threatening.
+- Palette/lighting/composition: desaturated powder blue, cream cloth, charcoal shadows, rusty orange scorch accent; sharp side light; low-angle iconic close-up.
+
+### clues/090-iv-bag.png — IV bag
+
+- Gameplay function: Clue card; suggests treatment, poison, hospitalization, or vulnerability through a clinical object.
+- Main subject: translucent IV fluid bag hanging from a metal hook with drip chamber and tube descending.
+- Supporting cues: blurred bed rail, pale curtain, sparse clinic corner.
+- Mood/setting: sterile, quiet, ominous.
+- Palette/lighting/composition: mint whites, blue-gray shadows, lavender undertones, clinical green accent; diffuse fluorescent backlight; straight-on vertical framing.
+
+### clues/091-jacket.png — Jacket
+
+- Gameplay function: Clue card; points to an absent owner, hurried departure, or personal identity evidence.
+- Main subject: dark tailored jacket draped over a chair, one sleeve hanging limp and pocket slightly open.
+- Supporting cues: blurred coat hook, faint pocket glint, dim hotel-room or lounge background.
+- Mood/setting: intimate, noir, suspicious.
+- Palette/lighting/composition: deep bottle green or charcoal fabric with amber-brown room tones; cool moonlit rim and warm lamp glow; eye-level medium shot.
+
+### clues/092-jewelry.png — Jewelry
+
+- Gameplay function: Clue card; frames wealth, theft, or betrayal through a valuable personal object.
+- Main subject: broken pearl necklace and gemstone ring arranged on dark velvet.
+- Supporting cues: torn clasp, soft mirror glint, luxurious dressing-table or evidence-tray atmosphere.
+- Mood/setting: decadent, elegant, ominous.
+- Palette/lighting/composition: ivory pearls, plum velvet, antique gold, cool gem accent; narrow theatrical spotlight; slight top-down close-up.
+
+### clues/093-juice.png — Juice
+
+- Gameplay function: Clue card; turns an ordinary drink into suspicious tabletop evidence.
+- Main subject: clear tumbler of orange juice with straw and a small spill ring.
+- Supporting cues: orange wedge, condensation trail, quiet breakfast or hotel table.
+- Mood/setting: everyday freshness with forensic unease.
+- Palette/lighting/composition: vivid amber-orange against cool blue-gray shadows and cream highlights; morning window light; centered close-up still life.

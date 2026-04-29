@@ -329,3 +329,22 @@ Generated and validated one batch of ten clues-card images with ImageMagick `ide
 | `assets/gouache-treachery/clues/069-gloves.png` | 1049x1499 | 0.699800 |
 
 All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/070-glue.png`.
+
+### 2026-04-29 checkpoint 17
+
+Generated and validated one batch of ten clues-card images with ImageMagick `identify` using `PE/image-gouache-V1.1-template.md`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/clues/070-glue.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/071-graffiti.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/072-hair.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/073-hairpin.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/074-handcuffs.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/075-hanger.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/076-hat.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/077-headset.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/078-helmet.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/079-herbal-medicine.png` | 1049x1499 | 0.699800 |
+
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/080-honey.png`.

@@ -1213,3 +1213,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: faint key-ring shadow, powder near one cuff, quiet forensic table.
 - Mood/setting: secretive, methodical, elegant, incriminating.
 - Palette/lighting/composition: black-brown leather with blue-violet shadows, warm ivory cloth, muted brass; soft window side light; slight top-down X-shaped close-up.
+
+### clues/070-glue.png — Glue
+
+- Gameplay function: Clue card; turns a common adhesive into sticky trace evidence of tampering, repair, or concealment.
+- Main subject: tipped clear glue bottle with white cap, squeezed slightly beside a glossy puddle and thin glue trails.
+- Supporting cues: workroom tabletop, subordinate paper scraps, faint fingerprint caught in adhesive.
+- Mood/setting: intimate, forensic, quiet, suspicious.
+- Palette/lighting/composition: milky whites and cream against smoky blue-gray with amber accent; cool side light; slight top-down diagonal close-up.
+
+### clues/071-graffiti.png — Graffiti
+
+- Gameplay function: Clue card; suggests illicit marking, public warning, or street evidence without relying on readable text.
+- Main subject: bold abstract spray-painted tag shape on a worn city wall.
+- Supporting cues: capped spray can, damp concrete, faint paint drips, torn poster remnant.
+- Mood/setting: nocturnal urban alley, grimy, tense, streetwise.
+- Palette/lighting/composition: charcoal concrete neutrals with vivid teal and rust-orange accents; grazing streetlamp side light; straight-on wall view.
+
+### clues/072-hair.png — Hair
+
+- Gameplay function: Clue card; makes a tiny personal trace feel decisive as forensic evidence.
+- Main subject: single curled dark human hair enlarged and isolated on pale evidence paper.
+- Supporting cues: tweezer tip for scale, faint evidence bag edge, powdery dust specks.
+- Mood/setting: sterile, clinical, intimate, accusatory.
+- Palette/lighting/composition: warm ivory and beige with cool blue-gray shadows and dark umber focal line; diffuse overhead lab light; macro top-down spiral composition.
+
+### clues/073-hairpin.png — Hairpin
+
+- Gameplay function: Clue card; presents an elegant personal accessory as evidence with hidden menace.
+- Main subject: ornate metal hairpin with sharp pointed tip and small jade-like bead ornament.
+- Supporting cues: soft fabric fold and faint powder compact circle on a dressing table.
+- Mood/setting: intimate, decadent, restrained, mysterious.
+- Palette/lighting/composition: tarnished silver, deep green accent, mauve-gray shadows, warm cream highlights; window side light; close-up three-quarter vertical diagonal.
+
+### clues/074-handcuffs.png — Handcuffs
+
+- Gameplay function: Clue card; signals restraint, pursuit, custody, or coercion.
+- Main subject: open steel handcuffs on a dark tabletop, one cuff open and one closed, linked by chain.
+- Supporting cues: sparse interview-room tabletop, faint scratch marks, small key.
+- Mood/setting: tense, procedural, methodical.
+- Palette/lighting/composition: cool gunmetal and blue-black shadows with warm brass accent; hard overhead lamp; slight top-down oval close-up.
+
+### clues/075-hanger.png — Hanger
+
+- Gameplay function: Clue card; uses an empty hanger to imply absence, removed clothing, or concealment.
+- Main subject: single bent wire hanger hanging from a closet rail.
+- Supporting cues: dim closet interior, soft fabric shadows, dust motes in a narrow light shaft.
+- Mood/setting: domestic, intimate, uneasy, quiet.
+- Palette/lighting/composition: muted taupe, deep plum shadows, cool silvery wire, warm closet-light sliver; quiet frontal centered composition.
+
+### clues/076-hat.png — Hat
+
+- Gameplay function: Clue card; suggests an absent owner and personal trace evidence.
+- Main subject: dark felt fedora on a polished wooden chair seat, brim tilted and crown dent visible.
+- Supporting cues: hallway or lounge corner, faint coat-rack shadow, dust line beneath chair.
+- Mood/setting: elegant noir, subdued, suspicious.
+- Palette/lighting/composition: walnut browns and muted ochre against cool blue-black felt shadows; soft window side light; slight low-angle medium close-up.
+
+### clues/077-headset.png — Headset
+
+- Gameplay function: Clue card; points to communication, surveillance, or recorded contact.
+- Main subject: black over-ear headset with padded earcups and slim boom microphone on a desk.
+- Supporting cues: cable curve, soft monitor glow, blurred notepad shape.
+- Mood/setting: dim surveillance office or call-center desk, technological, suspicious.
+- Palette/lighting/composition: graphite blacks and cool cyan-blue shadows with warm desk highlight; side screen glow; three-quarter close-up with strong oval silhouette.
+
+### clues/078-helmet.png — Helmet
+
+- Gameplay function: Clue card; suggests protection, collision, pursuit, or aftermath through damaged gear.
+- Main subject: scuffed motorcycle helmet with partly raised visor and visible side crack.
+- Supporting cues: rain-dark pavement or garage floor, faint reflection, small visor shard.
+- Mood/setting: urgent, aftermath, nocturnal garage or street edge.
+- Palette/lighting/composition: deep navy, charcoal, muted red stripe accent, pale silver highlights; hard doorway side light; low three-quarter close-up.
+
+### clues/079-herbal-medicine.png — Herbal medicine
+
+- Gameplay function: Clue card; frames traditional remedies as evidence of treatment, ritual, or poisoning.
+- Main subject: tied bundle of dried herbs beside an open ceramic jar and loose roots.
+- Supporting cues: apothecary tabletop, soft mortar silhouette, paper packet shape.
+- Mood/setting: ceremonial, old-world, suspicious, intimate.
+- Palette/lighting/composition: sage greens, ochre roots, warm clay ceramic, deep umber shadows, vivid red-thread accent; lantern-like side light; slight top-down still life.

@@ -1645,3 +1645,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: desk-lamp setting, pen or pencil shadow, wax crumb, fingerprint smudge.
 - Mood/setting: intimate, ominous, and confidential bedside or desk scene.
 - Palette/lighting/composition: warm parchment, smoky umber, blue-gray shadows, crimson accent; focused upper-left lamp glow; quiet top-down close-up.
+
+### clues/124-notebook.png — Notebook
+
+- Gameplay function: Clue card; presents a private investigative notebook as compact written evidence.
+- Main subject: scuffed dark notebook with cream page edges, cloth spine, pencil under elastic band, and bent corners.
+- Supporting cues: coffee ring, brass paperclip, evidence-sleeve corner.
+- Mood/setting: intimate, forensic, and secretive modern apartment desk.
+- Palette/lighting/composition: charcoal and ink blue with warm ivory and umber; soft side window light; slight top-down diagonal close-up.
+
+### clues/125-numbers.png — Numbers
+
+- Gameplay function: Clue card; makes coded figures and accounting traces feel suspicious and legible.
+- Main subject: torn accounting slip with large abstract numeral-like marks and column shapes, pinned by a small metal weight.
+- Supporting cues: calculator edge, red pencil slash, grid-paper fragments.
+- Mood/setting: analytical, tense, and coded forensic desk.
+- Palette/lighting/composition: warm ivory, graphite gray, cool slate, muted red accent; narrow desk-lamp spotlight; slight top-down close-up.
+
+### clues/126-office-supplies.png — Office supplies
+
+- Gameplay function: Clue card; turns ordinary corporate desk tools into suspicious physical evidence.
+- Main subject: black stapler as focal object with binder clips, rubber bands, and capped red pen.
+- Supporting cues: memo corner without text, tape strip, faint paper-shadow grid.
+- Mood/setting: sterile, corporate, and uneasy after-hours desk.
+- Palette/lighting/composition: cool grays, blue-black metal, beige paper, red accent; fluorescent overhead light; low-angle close-up.
+
+### clues/127-oil-painting.png — Oil painting
+
+- Gameplay function: Clue card; presents framed artwork as a hidden or symbolic evidence object.
+- Main subject: small ornate framed oil portrait leaning askew, blurred face, chipped tarnished gold frame.
+- Supporting cues: dust line, torn hanging wire, faint varnish reflection.
+- Mood/setting: upscale gallery-like interior, ominous and hushed.
+- Palette/lighting/composition: tarnished gold, burgundy shadows, olive-black background; warm picture light from above; frontal iconic view.
+
+### clues/128-oil-stain.png — Oil stain
+
+- Gameplay function: Clue card; makes a floor stain read as physical trace evidence.
+- Main subject: dark irregular iridescent oil puddle spreading across pale concrete.
+- Supporting cues: metal drip-pan edge, tiny bolt, tire-dust marks.
+- Mood/setting: grimy, suspicious service corridor or garage floor.
+- Palette/lighting/composition: concrete gray, charcoal, violet/teal/amber iridescence; low raking light; top-down graphic composition.
+
+### clues/129-paint.png — Paint
+
+- Gameplay function: Clue card; presents paint as a trace, disguise, or altered-surface clue.
+- Main subject: open glass jar of thick paint with loaded brush across the rim and a vivid drip.
+- Supporting cues: stained rag, palette knife edge, abstract paint smears.
+- Mood/setting: quiet artist worktable with forensic unease.
+- Palette/lighting/composition: studio neutrals with saturated cadmium red, cool blue-gray shadows; soft north-window light; close-up top-down angle.
+
+### clues/130-panties.png — Panties
+
+- Gameplay function: Clue card; presents an intimate garment as sensitive personal evidence without sensationalism.
+- Main subject: folded pale silk panties with soft fabric folds and clear elastic waistband.
+- Supporting cues: pearl button, drawer-shadow line, non-readable fabric tag.
+- Mood/setting: private bedroom drawer or dressing-table setting, intimate and uneasy.
+- Palette/lighting/composition: warm ivory, blush, smoky plum-brown, muted wood; diffuse bedside lamp; gentle top-down close-up.
+
+### clues/131-peanut.png — Peanut
+
+- Gameplay function: Clue card; makes a tiny food object read as an overlooked trace.
+- Main subject: cracked peanut shell split open with two kernels and rough shell texture.
+- Supporting cues: salt grains, torn napkin corner, faint glass mark.
+- Mood/setting: quiet restaurant tabletop or bar counter with subtle danger.
+- Palette/lighting/composition: warm ochre, cream, deep teal-brown shadows, amber highlight; low warm side light; macro close-up.
+
+### clues/132-perfume.png — Perfume
+
+- Gameplay function: Clue card; presents fragrance as intimate, decadent, and potentially suspicious evidence.
+- Main subject: elegant faceted glass perfume bottle with stopper, pale liquid, and atomizer-style neck.
+- Supporting cues: powder puff silhouette, blurred mirror edge, spilled droplet.
+- Mood/setting: upscale vanity table, secretive and decadent.
+- Palette/lighting/composition: pale rose, smoky lavender, emerald-gray, warm gold highlights; rim light and soft reflected glow; frontal three-quarter close-up.
+
+### clues/133-photograph.png — Photograph
+
+- Gameplay function: Clue card; presents a printed image as nostalgic evidence or proof.
+- Main subject: old instant photograph with white border, dark abstract image area, torn corner, and fingerprint smudge.
+- Supporting cues: magnifying-glass rim, paper envelope corner, dust specks.
+- Mood/setting: tense evidence table, nostalgic and suspicious.
+- Palette/lighting/composition: cool black-and-white tones, warm sepia paper, blue-gray shadows, silver highlight; desk-lamp beam; slight top-down diagonal close-up.

@@ -435,3 +435,22 @@ Generated and validated one batch of ten clues-card images with ImageMagick `ide
 | `assets/gouache-treachery/clues/123-note.png` | 1049x1500 | 0.699333 |
 
 All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/124-notebook.png`.
+
+### 2026-04-29 checkpoint 22
+
+Generated and validated one batch of ten clues-card images with ImageMagick `identify` using `PE/image-gouache-V1.1-template.md`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/clues/124-notebook.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/125-numbers.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/126-office-supplies.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/127-oil-painting.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/128-oil-stain.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/129-paint.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/130-panties.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/131-peanut.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/132-perfume.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/133-photograph.png` | 1049x1499 | 0.699800 |
+
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/134-pill.png`.

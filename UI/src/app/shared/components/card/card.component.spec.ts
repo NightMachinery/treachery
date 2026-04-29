@@ -16,14 +16,21 @@ describe('CardComponent', () => {
     TestBed.configureTestingModule({
       declarations: [CardComponent],
       providers: [{ provide: GameApiService, useValue: { game$ } }],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CardComponent);
     component = fixture.componentInstance;
-    component.card = { name: 'שלום world', imgUrl: 'card.jpg', altImgUrl: 'fallback.jpg', guessedBy: [] };
+    component.card = {
+      id: 'card-1',
+      name: 'שלום world',
+      imgUrl: 'card.jpg',
+      altImgUrl: 'fallback.jpg',
+      guessedBy: [],
+      hasImage: true,
+    };
     fixture.detectChanges();
   });
 

@@ -15,7 +15,7 @@ import { copyTextToClipboard } from '../../shared/utils/clipboard';
   selector: 'app-forensic',
   standalone: false,
   templateUrl: './forensic.component.html',
-  styleUrls: ['./forensic.component.scss']
+  styleUrls: ['./forensic.component.scss'],
 })
 export class ForensicComponent implements OnInit, OnDestroy {
   selectedCauseCardId: string;
@@ -34,7 +34,7 @@ export class ForensicComponent implements OnInit, OnDestroy {
     public gameApi: GameApiService,
     public auth: AuthService,
     public chatApi: ChatApiService,
-    private snack: SnackBarService
+    private snack: SnackBarService,
   ) {}
 
   ngOnInit() {
@@ -46,23 +46,23 @@ export class ForensicComponent implements OnInit, OnDestroy {
         const roomAuth = this.route.snapshot.queryParamMap.get('roomAuth') || null;
         this.gameApi.setGameContext(gameId, roomAuth);
         await this.gameApi.refreshSnapshot();
-      })
+      }),
     );
     this.subscription.add(
-      this.route.queryParams.subscribe(params => {
+      this.route.queryParams.subscribe((params) => {
         const roomAuth = params.roomAuth || null;
         if (this.gameApi.gameId$.value) {
           this.gameApi.setGameContext(this.gameApi.gameId$.value, roomAuth);
         }
-      })
+      }),
     );
     this.subscription.add(
-      this.gameApi.snapshot$.subscribe(snapshot => {
+      this.gameApi.snapshot$.subscribe((snapshot) => {
         if (!snapshot || !snapshot.game) {
           return;
         }
-        this.syncRoute(snapshot).catch(error => console.warn('Failed to sync forensic route', error));
-      })
+        this.syncRoute(snapshot).catch((error) => console.warn('Failed to sync forensic route', error));
+      }),
     );
   }
 
@@ -83,8 +83,10 @@ export class ForensicComponent implements OnInit, OnDestroy {
   }
 
   causeCardClick(card: TgForensicCard) {
-    this.selectedCauseCardId = card.cardId;
-    this.selectedCauseCardOptionId = card.choiceIds[0];
+    if (this.selectedCauseCardId !== card.cardId) {
+      this.selectedCauseCardId = card.cardId;
+      this.selectedCauseCardOptionId = card.choiceIds[0];
+    }
   }
 
   locationCardClick(card: TgForensicCard) {
@@ -95,7 +97,7 @@ export class ForensicComponent implements OnInit, OnDestroy {
   }
 
   nextCard(game: TgGame) {
-    return game.otherCards.find(value => !value.selectedChoiceId);
+    return game.otherCards.find((value) => !value.selectedChoiceId);
   }
 
   async selectCauseCard() {
@@ -108,14 +110,15 @@ export class ForensicComponent implements OnInit, OnDestroy {
     await this.gameApi.selectForensicLocationCard({
       ...this.selectedLocationCard,
       selectedChoiceId: this.selectedLocationCardOptionId,
-      selectedChoice: this.selectedLocationCard?.choices?.[this.selectedLocationCard.choiceIds.indexOf(this.selectedLocationCardOptionId)] || ''
+      selectedChoice:
+        this.selectedLocationCard?.choices?.[this.selectedLocationCard.choiceIds.indexOf(this.selectedLocationCardOptionId)] || '',
     });
     this.selectedLocationCard = null;
     this.selectedLocationCardOptionId = null;
   }
 
   async selectNextOtherCard() {
-    this.gameApi.game$.pipe(take(1)).subscribe(game => {
+    this.gameApi.game$.pipe(take(1)).subscribe((game) => {
       if (this.toReplace(game) && !this.replaceCardId) {
         this.snack.error('Please select a card to replace first!');
         return;
@@ -125,9 +128,9 @@ export class ForensicComponent implements OnInit, OnDestroy {
         {
           ...nextCard,
           selectedChoiceId: this.selectedOtherCardOptionId,
-          selectedChoice: nextCard?.choices?.[nextCard.choiceIds.indexOf(this.selectedOtherCardOptionId)] || ''
+          selectedChoice: nextCard?.choices?.[nextCard.choiceIds.indexOf(this.selectedOtherCardOptionId)] || '',
         },
-        this.replaceCardId
+        this.replaceCardId,
       );
       this.selectedOtherCardOptionId = null;
       this.replaceCardId = null;
@@ -139,7 +142,9 @@ export class ForensicComponent implements OnInit, OnDestroy {
   };
 
   toReplace(game: TgGame) {
-    return game.otherCards.filter(card => card.selectedChoiceId).length >= 4 && game.otherCards.filter(card => card.replaced).length < 2;
+    return (
+      game.otherCards.filter((card) => card.selectedChoiceId).length >= 4 && game.otherCards.filter((card) => card.replaced).length < 2
+    );
   }
 
   canSelectNextOtherCard(game: TgGame) {
@@ -147,11 +152,11 @@ export class ForensicComponent implements OnInit, OnDestroy {
   }
 
   showNextOtherCard(game: TgGame) {
-    return game.causeCard && game.locationCard && game.otherCards.filter(card => card.selectedChoiceId).length < 6;
+    return game.causeCard && game.locationCard && game.otherCards.filter((card) => card.selectedChoiceId).length < 6;
   }
 
   waitingToEnd(game: TgGame) {
-    return game.causeCard && game.locationCard && game.otherCards.filter(card => card.selectedChoiceId).length >= 6;
+    return game.causeCard && game.locationCard && game.otherCards.filter((card) => card.selectedChoiceId).length >= 6;
   }
 
   getResultHeadline(game: TgGame) {

@@ -10,6 +10,7 @@ This pass focused on the main interaction pain points that showed up in live Chr
 - tightened the text-only means/clues cards so they are easier to scan at a glance
 - centered and padded card labels more aggressively so text stays clear near rounded corners
 - fixed forensic option buttons so long labels like `Suffocation` wrap/fit inside the selected chip instead of overflowing
+- fixed the forensic scientist's first clue card so choosing a non-first hint option no longer snaps back to the first option
 - hid the empty accusation helper panel until a player actually starts composing a guess
 - removed redundant per-row means/clues labels inside suspect decks, added stronger row styling, centered card wrapping, and improved image-card text readability with a translucent title plate
 - widened suspect-deck image cards, prevented ugly mid-word wrapping, and converted the rows to compact centered grids to reduce wasted empty space

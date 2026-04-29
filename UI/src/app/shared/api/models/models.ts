@@ -109,6 +109,7 @@ export interface TgGame {
   clueCardsPerPlayer: number;
   linkClueCountToMeans: boolean;
   meansCluesTextOnly: boolean;
+  randomMurdererCardSelection: boolean;
   crimePackId: string;
   crimePackLanguage: string;
   crimePackAssetSetId: string;
@@ -280,6 +281,7 @@ export interface TgGameSettingsInput {
   clueCardsPerPlayer: number;
   linkClueCountToMeans: boolean;
   meansCluesTextOnly: boolean;
+  randomMurdererCardSelection: boolean;
   crimePackId: string;
   crimePackLanguage: string;
   crimePackAssetSetId: string;

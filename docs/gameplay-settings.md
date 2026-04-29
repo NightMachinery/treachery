@@ -15,6 +15,7 @@ Before the game starts, the creator can configure:
 - evidence/clue cards per suspect
 - a checked-by-default toggle that makes evidence count follow means count
 - a saved toggle that makes means/clue cards text-only and hides their images
+- a saved toggle that randomly selects the murderer's clue and means cards at game start
 - accomplice count (`0-10`)
 - witness count (`0-10`)
 - how many witnesses the murderer team must identify to win the witness reversal
@@ -30,6 +31,7 @@ Defaults:
 - evidence/clue cards per suspect: `4`
 - evidence follows means: `true`
 - means/clues text only: `false`
+- random murderer clue/means selection: `false`
 - accomplices: `0`
 - witnesses: `0`
 - witnesses to find: `0`
@@ -97,7 +99,7 @@ When the creator starts the game:
 
 ## Private information
 
-- murderer: knows the full murderer team and selects the murder cards
+- murderer: knows the full murderer team and selects the murder cards, unless the lobby enabled random murderer clue/means selection
 - accomplice: knows the full murderer team, including the other accomplices, and sees the murder cards once selected
 - witness: knows the murderer team identities
 - forensic scientist: knows the murderer and the selected murder cards through the existing forensic private view, with hint cards localized from the selected HintPack language
@@ -130,3 +132,8 @@ Once the game ends, the UI shows:
 
 - Every suspect still gets only one submitted guess per game.
 - Exact duplicate full guesses are rejected room-wide, so the same suspect + clue + means combination cannot be submitted twice.
+
+## Murderer card selection
+
+- By default, the murderer selects one clue and one means from their own private hand inline on the game board, so they can keep other suspect decks visible while deciding.
+- If **Random Clue and Means Selection for Murderer** is enabled in lobby settings, the server randomly selects valid cards from the murderer's dealt hand as soon as the game starts and the room skips the manual murderer-selection wait.

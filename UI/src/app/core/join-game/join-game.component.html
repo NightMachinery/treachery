@@ -106,6 +106,10 @@
               <input type="checkbox" [(ngModel)]="settings.meansCluesTextOnly" (ngModelChange)="handleMeansCluesTextOnlyChange()" />
               <span>Text-only means/clues cards</span>
             </label>
+            <label class="checkbox-row wide">
+              <input type="checkbox" [(ngModel)]="settings.randomMurdererCardSelection" (ngModelChange)="handleRandomMurdererCardSelectionChange()" />
+              <span>Random Clue and Means Selection for Murderer</span>
+            </label>
             <ng-template #forcedTextOnlyRow>
               <label class="checkbox-row wide is-disabled">
                 <input type="checkbox" [checked]="true" disabled />

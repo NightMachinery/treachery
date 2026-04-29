@@ -17,6 +17,8 @@ import { copyTextToClipboard } from '../../shared/utils/clipboard';
 })
 export class GameComponent implements OnInit, OnDestroy {
   guess: TgPartialGuess = {} as TgPartialGuess;
+  murdererSelectedClue: string;
+  murdererSelectedMeans: string;
   loading = true;
   private subscription = new Subscription();
 
@@ -142,6 +144,22 @@ export class GameComponent implements OnInit, OnDestroy {
 
   cancelGuess() {
     this.guess = {} as TgPartialGuess;
+  }
+
+  handleMurdererClueChange(clueCardId: string) {
+    this.murdererSelectedClue = clueCardId;
+  }
+
+  handleMurdererMeansChange(meansCardId: string) {
+    this.murdererSelectedMeans = meansCardId;
+  }
+
+  async submitMurdererCards() {
+    if (!this.murdererSelectedClue || !this.murdererSelectedMeans) {
+      this.snack.error('Select one clue and one means card.');
+      return;
+    }
+    await this.gameApi.selectMurdererCards(this.murdererSelectedClue, this.murdererSelectedMeans);
   }
 
   sortedGuesses(guesses: TgGuess[]) {

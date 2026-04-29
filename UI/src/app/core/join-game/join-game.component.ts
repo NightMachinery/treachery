@@ -151,6 +151,10 @@ export class JoinGameComponent implements OnInit, OnDestroy {
     this.settingsDirty = true;
   }
 
+  handleRandomMurdererCardSelectionChange() {
+    this.settingsDirty = true;
+  }
+
   handleCrimePackChange() {
     this.settingsDirty = true;
     const pack = this.selectedCrimePack;
@@ -297,6 +301,7 @@ export class JoinGameComponent implements OnInit, OnDestroy {
       clueCardsPerPlayer: 4,
       linkClueCountToMeans: true,
       meansCluesTextOnly: false,
+      randomMurdererCardSelection: false,
       crimePackId: 'treachery',
       crimePackLanguage: 'en',
       crimePackAssetSetId: 'treachery',
@@ -314,6 +319,7 @@ export class JoinGameComponent implements OnInit, OnDestroy {
       clueCardsPerPlayer: game.clueCardsPerPlayer,
       linkClueCountToMeans: game.linkClueCountToMeans,
       meansCluesTextOnly: game.meansCluesTextOnly,
+      randomMurdererCardSelection: game.randomMurdererCardSelection,
       crimePackId: game.crimePackId,
       crimePackLanguage: game.crimePackLanguage,
       crimePackAssetSetId: game.crimePackAssetSetId,

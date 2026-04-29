@@ -164,10 +164,6 @@
         <ng-template #activePlayerView>
           <ng-container *ngIf="gameApi.me$ | async as player">
             <ng-container *ngIf="gameApi.playerPrivateData$ | async as privateData">
-              <div *ngIf="privateData.isMurderer && !game.murdererCardsSelected">
-                <app-murderer-select-dialog [player]="player"></app-murderer-select-dialog>
-              </div>
-
               <app-witness-selection-prompt></app-witness-selection-prompt>
 
               <div class="status-stack">
@@ -225,16 +221,29 @@
                 <div class="section-head compact">
                   <div>
                     <p class="eyebrow">Private hand</p>
-                    <h3>Your cards</h3>
+                    <h3>{{ privateData.isMurderer && !game.murdererCardsSelected ? 'Choose your murder cards' : 'Your cards' }}</h3>
                   </div>
-                  <p class="muted-copy">Keep your own evidence visible while you study the table.</p>
+                  <p class="muted-copy">
+                    {{
+                      privateData.isMurderer && !game.murdererCardsSelected
+                        ? 'Select one means and one clue from your own hand, then submit when ready.'
+                        : 'Keep your own evidence visible while you study the table.'
+                    }}
+                  </p>
                 </div>
                 <app-player-deck
                   [player]="player"
-                  [disableSelection]="true"
-                  [selectedClue]="(gameApi.playerPrivateData$ | async)?.clueCardId"
-                  [selectedMeans]="(gameApi.playerPrivateData$ | async)?.meansCardId"
+                  [disableSelection]="!(privateData.isMurderer && !game.murdererCardsSelected)"
+                  [selectedClue]="privateData.isMurderer && !game.murdererCardsSelected ? murdererSelectedClue : privateData.clueCardId"
+                  (selectedClueChange)="handleMurdererClueChange($event)"
+                  [selectedMeans]="privateData.isMurderer && !game.murdererCardsSelected ? murdererSelectedMeans : privateData.meansCardId"
+                  (selectedMeansChange)="handleMurdererMeansChange($event)"
                 ></app-player-deck>
+                <div class="murderer-card-selection-actions" *ngIf="privateData.isMurderer && !game.murdererCardsSelected">
+                  <button mat-raised-button color="accent" type="button" (click)="submitMurdererCards()" [disabled]="!murdererSelectedClue || !murdererSelectedMeans">
+                    Submit selected cards
+                  </button>
+                </div>
               </section>
 
               <section class="history-panel surface-panel--soft" *ngIf="gameApi.guesses$ | async as guesses">

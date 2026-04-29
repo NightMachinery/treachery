@@ -138,6 +138,12 @@
    display: block;
 }
 
+.murderer-card-selection-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-6);
+}
+
 
 .result-hero-banner {
   display: grid;

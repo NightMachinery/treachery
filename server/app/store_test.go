@@ -564,10 +564,58 @@ func TestUpdateGameSettingsAndDealConfiguredCounts(t *testing.T) {
 	if snapshot.Game.MeansCardsPerPlayer != 5 || snapshot.Game.ClueCardsPerPlayer != 3 || !snapshot.Game.MeansCluesTextOnly {
 		t.Fatalf("unexpected settings on game: %+v", snapshot.Game)
 	}
+	if snapshot.Game.RandomMurdererCardSelection {
+		t.Fatalf("expected random murderer card selection to default off")
+	}
 	for _, player := range snapshot.Players {
 		if len(player.MeansCards) != 5 || len(player.ClueCards) != 3 {
 			t.Fatalf("unexpected dealt counts for %s: %d means, %d clue", player.UID, len(player.MeansCards), len(player.ClueCards))
 		}
+	}
+}
+
+func TestRandomMurdererCardSelectionOnStart(t *testing.T) {
+	app := newTestApp(t)
+	defer app.Close()
+
+	setProfile(t, app, "creator", "Creator")
+	if err := app.CreateGame("creator", "RAND"); err != nil {
+		t.Fatalf("create game: %v", err)
+	}
+	joinPlayers(t, app, "RAND", "p1", "p2", "p3")
+
+	if err := app.UpdateGameSettings("RAND", "creator", GameSettingsInput{
+		MeansCardsPerPlayer:         4,
+		ClueCardsPerPlayer:          4,
+		LinkClueCountToMeans:        true,
+		MeansCluesTextOnly:          false,
+		RandomMurdererCardSelection: true,
+		AccompliceCount:             0,
+		WitnessCount:                0,
+		WitnessesToFind:             0,
+	}); err != nil {
+		t.Fatalf("update settings: %v", err)
+	}
+	if err := app.StartGame("RAND", "creator"); err != nil {
+		t.Fatalf("start game: %v", err)
+	}
+
+	snapshot, err := app.GetSnapshot("RAND", "creator")
+	if err != nil {
+		t.Fatalf("snapshot: %v", err)
+	}
+	if !snapshot.Game.RandomMurdererCardSelection || !snapshot.Game.MurdererCardsSelected {
+		t.Fatalf("expected random murderer card selection to complete on start, got %+v", snapshot.Game)
+	}
+	if snapshot.Game.MurdererClueCardID == "" || snapshot.Game.MurdererMeansCardID == "" {
+		t.Fatalf("expected selected murderer card ids, got %+v", snapshot.Game)
+	}
+	murderer := findPlayer(snapshot.Players, snapshot.Game.MurdererUID)
+	if murderer == nil {
+		t.Fatalf("expected murderer player %q in snapshot", snapshot.Game.MurdererUID)
+	}
+	if !hasCard(murderer.ClueCards, snapshot.Game.MurdererClueCardID) || !hasCard(murderer.MeansCards, snapshot.Game.MurdererMeansCardID) {
+		t.Fatalf("expected random cards to belong to murderer, got clue=%q means=%q murderer=%+v", snapshot.Game.MurdererClueCardID, snapshot.Game.MurdererMeansCardID, murderer)
 	}
 }
 

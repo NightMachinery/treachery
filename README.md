@@ -22,7 +22,7 @@ A web app for a board game based on Deception: Murder in Hong Kong
 
 4. **Start the game**: You now need at least four lobby players total so one can become the forensic scientist and three suspects remain. When the game starts, the selected forensic scientist stays visible in the room roster but does not receive cards, cannot guess, and cannot chat during the active game.
 
-5. **Wait for murderer to select their cards**: The game distributes cards among the remaining suspect players randomly using the configured lobby counts. One suspect is selected to be the murderer. Optional accomplices and witnesses are also assigned randomly. The murderer is prompted to select one clue card and one means card from the cards they were dealt. These prompts can now be minimized while the player looks at the board. Means/clue cards also support RTL text labels and can be switched room-wide to text-only mode by the moderator.
+5. **Wait for murderer to select their cards**: The game distributes cards among the remaining suspect players randomly using the configured lobby counts. One suspect is selected to be the murderer. Optional accomplices and witnesses are also assigned randomly. The murderer selects one clue card and one means card inline from their private hand, or the server randomly selects those cards immediately if the lobby enabled random murderer clue/means selection. Means/clue cards also support RTL text labels and can be switched room-wide to text-only mode by the moderator.
 
 ![1](screenshots/forensic/3.png)
 
@@ -72,7 +72,7 @@ A web app for a board game based on Deception: Murder in Hong Kong
 
 ## Murderer
 
-1. **You are the murderer**: You will be prompted to select a clue card and a means card. The forensic scientist will give out clues based on these selections, so select wisely. Once the room starts, the forensic scientist does not get cards; only the suspect players do.
+1. **You are the murderer**: You select a clue card and a means card directly on your private hand card view, unless the lobby enabled random murderer clue/means selection. The forensic scientist will give out clues based on these selections, so select wisely. Once the room starts, the forensic scientist does not get cards; only the suspect players do.
 
 ![1](screenshots/murderer/0.png)
 

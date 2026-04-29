@@ -416,3 +416,22 @@ Generated and validated one batch of ten clues-card images with ImageMagick `ide
 | `assets/gouache-treachery/clues/113-mirror.png` | 1049x1499 | 0.699800 |
 
 All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/114-mop.png`.
+
+### 2026-04-29 checkpoint 21
+
+Generated and validated one batch of ten clues-card images with ImageMagick `identify` using `PE/image-gouache-V1.1-template.md`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/clues/114-mobile-phone.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/115-model.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/116-mosquito.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/117-mosquito-coil.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/118-nail.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/119-name-card.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/120-necklace.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/121-needle-and-thread.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/122-newspaper.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/123-note.png` | 1049x1500 | 0.699333 |
+
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/124-notebook.png`.

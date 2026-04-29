@@ -1565,3 +1565,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: dim vanity or hallway shelf, fallen powder brush, dust motes.
 - Mood/setting: elegant and haunted.
 - Palette/lighting/composition: tarnished silver, blue-gray glass, umber shadows, moonlit highlights, subdued violet accent; vertical still life.
+
+### clues/114-mobile-phone.png — Mobile phone
+
+- Gameplay function: Clue card; presents a modern personal device as private digital evidence.
+- Main subject: angled smartphone with dark glass, cracked corner, subtle notification glow without readable text, and fingerprint smudge.
+- Supporting cues: dim tabletop, loose charging cable, late-night reflection.
+- Mood/setting: intimate, tense, and secretive modern interior.
+- Palette/lighting/composition: blue-black graphite with teal reflections and amber accent; narrow side light; slightly top-down close-up.
+
+### clues/115-model.png — Model
+
+- Gameplay function: Clue card; makes a mannequin/model form feel like an uncanny witness or identity clue.
+- Main subject: faceless dress-form mannequin with plaster-like head, pinned measuring tape, and draped dark garment.
+- Supporting cues: backstage fabric shapes, blurred mirror edge, silver pins and loose thread.
+- Mood/setting: theatrical, sterile, and uncanny tailor or dressing-room space.
+- Palette/lighting/composition: ivory, charcoal, dusty mauve, desaturated brass; soft rim-lit frontal medium close-up.
+
+### clues/116-mosquito.png — Mosquito
+
+- Gameplay function: Clue card; turns a tiny insect into a readable biological trace or threat.
+- Main subject: enlarged mosquito with delicate legs, translucent wings, striped abdomen, and needlelike proboscis.
+- Supporting cues: faint bite mark, lens-like vignette, humid night atmosphere.
+- Mood/setting: clinical, uneasy, and quietly dangerous macro view.
+- Palette/lighting/composition: pale warm neutrals, cool green-gray shadows, dark red accent; diffuse top-side macro lighting.
+
+### clues/117-mosquito-coil.png — Mosquito coil
+
+- Gameplay function: Clue card; uses a smoldering domestic object as atmospheric evidence.
+- Main subject: green spiral mosquito coil in a small metal holder, glowing ember, and rising smoke.
+- Supporting cues: ash trail, matchstick, blurred window bars or city lights.
+- Mood/setting: humid, toxic, languid, and ominous night interior.
+- Palette/lighting/composition: herbal green, smoky violet-gray, warm brown, orange ember; lantern-like side light; slight top-down spiral.
+
+### clues/118-nail.png — Nail
+
+- Gameplay function: Clue card; focuses on a sharp industrial object as physical trace evidence.
+- Main subject: bent scuffed iron nail with flat head, sharp point, and rust-stained surface.
+- Supporting cues: rough wood, scratch line, dust specks.
+- Mood/setting: grimy, tense, and forensic workbench or floorboard.
+- Palette/lighting/composition: cold iron gray, rust brown, muted umber, ochre highlight; hard side-lit diagonal close-up.
+
+### clues/119-name-card.png — Name card
+
+- Gameplay function: Clue card; suggests identity, social contact, or a formal connection.
+- Main subject: elegant business/name card with abstract non-readable print, creased corner, and thumbprint.
+- Supporting cues: polished desk, blurred pen, glass rim, envelope edge.
+- Mood/setting: elegant, secretive, and forensic office or restaurant-table atmosphere.
+- Palette/lighting/composition: warm ivory, espresso, slate, burgundy shadows; soft upper-left window light; quiet top-down view.
+
+### clues/120-necklace.png — Necklace
+
+- Gameplay function: Clue card; presents personal jewelry as intimate evidence.
+- Main subject: delicate necklace chain looping around a dark pendant, slightly tangled with broken clasp.
+- Supporting cues: velvet surface, powder smear, faint vanity mirror reflection.
+- Mood/setting: intimate, decadent, and suspicious.
+- Palette/lighting/composition: deep plum, midnight blue, muted gold, jewel accent; warm focused spotlight; asymmetrical close-up.
+
+### clues/121-needle-and-thread.png — Needle and thread
+
+- Gameplay function: Clue card; implies repair, concealment, or a delicate sharp trace.
+- Main subject: sewing needle threaded with dark thread piercing folded fabric, thread forming a clear loop.
+- Supporting cues: loose stitches, small fabric tear, blurred pin.
+- Mood/setting: intimate, meticulous, and tense sewing-table still life.
+- Palette/lighting/composition: cream fabric, cool gray metal, indigo thread, rose-brown shadows; diffuse window light; top-down diagonal close-up.
+
+### clues/122-newspaper.png — Newspaper
+
+- Gameplay function: Clue card; suggests public information, printed evidence, or a clue left in plain sight.
+- Main subject: folded creased newspaper with abstract unreadable column and headline marks.
+- Supporting cues: wet tabletop, coffee ring, rain droplet trail.
+- Mood/setting: noir, investigative, and urgent rainy urban atmosphere.
+- Palette/lighting/composition: cool gray newsprint, inky blue shadows, muted tan, red-brown coffee accent; overcast top glow; slight top-down close-up.
+
+### clues/123-note.png — Note
+
+- Gameplay function: Clue card; presents a private written message as fragile evidence.
+- Main subject: folded partly unfolded note with abstract non-readable handwriting marks, crease, and torn edge.
+- Supporting cues: desk-lamp setting, pen or pencil shadow, wax crumb, fingerprint smudge.
+- Mood/setting: intimate, ominous, and confidential bedside or desk scene.
+- Palette/lighting/composition: warm parchment, smoky umber, blue-gray shadows, crimson accent; focused upper-left lamp glow; quiet top-down close-up.

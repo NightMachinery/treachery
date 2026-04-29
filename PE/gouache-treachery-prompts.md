@@ -1485,3 +1485,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: perfume stain, loose ribbon, soft window-blind shadow.
 - Mood/setting: hushed bedside table or writing desk, elegant and uneasy.
 - Palette/lighting/composition: ivory, muted rose, dusty plum, deep brown, crimson accent; soft moonlit window light; slight top-down close-up.
+
+### clues/104-luggage.png — Luggage
+
+- Gameplay function: Clue card; suggests an abandoned possession, travel trail, or concealed contents.
+- Main subject: battered upright hard-sided suitcase with scuffed leather corners, bent brass latches, torn travel tag, and dark stain near the handle.
+- Supporting cues: dim transit-station corner, distant departing-figure shadow, scattered paper scraps.
+- Mood/setting: secretive and ominous, with a deserted station atmosphere.
+- Palette/lighting/composition: tobacco browns, blue-gray shadows, dull brass; cool overhead glow with warm rim light; straight-on iconic framing.
+
+### clues/105-lunch-box.png — Lunch box
+
+- Gameplay function: Clue card; turns an ordinary meal container into evidence of personal routine disrupted.
+- Main subject: dented metal lunch box with half-open clasp, wax-paper wrapper, and red smear on one corner.
+- Supporting cues: locker-room bench, forgotten thermos silhouette, small crumbs.
+- Mood/setting: intimate workplace unease.
+- Palette/lighting/composition: faded enamel blue and cream, violet shadows, rusty red accent; diffuse window light; slight top-down three-quarter view.
+
+### clues/106-magazine.png — Magazine
+
+- Gameplay function: Clue card; suggests printed evidence, hidden media, or a removed page.
+- Main subject: glossy open magazine with curled pages, a torn-out rectangle, and dark fingerprint smudge.
+- Supporting cues: waiting-room table, reading glasses, clipped page fragment.
+- Mood/setting: elegant but suspicious.
+- Palette/lighting/composition: ivory paper, ink-black shadows, teal backdrop, crimson abstract accent; cool side light; diagonal close-up.
+
+### clues/107-mahjong-tiles.png — Mahjong tiles
+
+- Gameplay function: Clue card; connects a tense social game, local setting, and trace evidence.
+- Main subject: scattered ivory mahjong tiles with green and red engraved suit symbols, plus a face-down tile and nearby dark stain.
+- Supporting cues: polished wooden tabletop, blurred tea cup, soft cigarette haze.
+- Mood/setting: refined Hong Kong game-room tension.
+- Palette/lighting/composition: ivory, jade, cinnabar, deep umber; low lantern light; slight overhead tile cluster.
+
+### clues/108-map.png — Map
+
+- Gameplay function: Clue card; makes route planning, location evidence, or pursuit immediately visible.
+- Main subject: folded city map with worn creases, red route line, sharp pin, and small dark blot.
+- Supporting cues: detective desk, pencil stub, faint coffee ring.
+- Mood/setting: investigative, tense, and quiet.
+- Palette/lighting/composition: aged cream, slate gray, muted ochre, red route accent; cool desk-lamp spotlight; top-down angled map.
+
+### clues/109-mark.png — Mark
+
+- Gameplay function: Clue card; shows trace evidence left behind by a person or contact event.
+- Main subject: dark fingerprint and smeared handprint on pale painted plaster with a scratch-like scoring line.
+- Supporting cues: sterile corridor wall, dust particles, faint measuring shadow.
+- Mood/setting: forensic and unsettling.
+- Palette/lighting/composition: chalky off-white, charcoal mark, green-gray shadows, amber edge glow; frontal asymmetrical close-up.
+
+### clues/110-mask.png — Mask
+
+- Gameplay function: Clue card; signals disguise, concealment, performance, or hidden identity.
+- Main subject: cracked pale porcelain half-mask with dark ribbon ties and red tear-like accent.
+- Supporting cues: backstage dressing-table atmosphere, blurred vanity bulb glow, folded black glove.
+- Mood/setting: elegant, uncanny, and secretive.
+- Palette/lighting/composition: porcelain white, black ribbon, plum shadows, vermilion accent; warm vanity side light; frontal still life.
+
+### clues/111-maze.png — Maze
+
+- Gameplay function: Clue card; suggests entrapment, pursuit, or a deliberately confusing path.
+- Main subject: worn wooden labyrinth puzzle with dark grooves, metal ball near center, and cracked corner.
+- Supporting cues: sparse study table, tiny key, faint dust trail.
+- Mood/setting: cerebral and ominous.
+- Palette/lighting/composition: walnut browns, graphite grooves, blue-black shadows, silver ball highlight; narrow spotlight; near top-down diagonal framing.
+
+### clues/112-menu.png — Menu
+
+- Gameplay function: Clue card; points to dining evidence, a meeting place, or a suspicious restaurant encounter.
+- Main subject: folded cream restaurant menu with singed corner, red wine ring, and dagger-like letter opener; no readable words.
+- Supporting cues: restaurant table, blurred chopsticks, small candle glow.
+- Mood/setting: decadent and tense.
+- Palette/lighting/composition: ivory paper, burgundy stain, charcoal shadows, muted gold accents; intimate low side light; three-quarter diagonal close-up.
+
+### clues/113-mirror.png — Mirror
+
+- Gameplay function: Clue card; suggests reflection, deception, hidden witness, or distorted truth.
+- Main subject: antique oval hand mirror with tarnished silver frame and cracked glass reflecting a dark doorway and faint distorted silhouette.
+- Supporting cues: dim vanity or hallway shelf, fallen powder brush, dust motes.
+- Mood/setting: elegant and haunted.
+- Palette/lighting/composition: tarnished silver, blue-gray glass, umber shadows, moonlit highlights, subdued violet accent; vertical still life.

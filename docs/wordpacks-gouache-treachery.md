@@ -396,4 +396,23 @@ Generated and validated one batch of ten clues-card images with ImageMagick `ide
 | `assets/gouache-treachery/clues/102-lottery-ticket.png` | 1049x1499 | 0.699800 |
 | `assets/gouache-treachery/clues/103-love-letter.png` | 1049x1499 | 0.699800 |
 
-All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/104-magazine.png`.
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/104-luggage.png`.
+
+### 2026-04-29 checkpoint 20
+
+Generated and validated one batch of ten clues-card images with ImageMagick `identify` using `PE/image-gouache-V1.1-template.md`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/clues/104-luggage.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/105-lunch-box.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/106-magazine.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/107-mahjong-tiles.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/108-map.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/109-mark.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/110-mask.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/111-maze.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/112-menu.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/113-mirror.png` | 1049x1499 | 0.699800 |
+
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/114-mop.png`.

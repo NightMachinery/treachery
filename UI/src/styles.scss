@@ -67,8 +67,9 @@ $dark-bg-lighter-10: color.adjust($dark-background, $lightness: 10%);
   --tg-border-radius-16: 16px;
   --tg-border-radius-24: 24px;
   --tg-border-size: 1px;
-  --tg-card-height: 6rem;
+  --tg-card-aspect-ratio: 7 / 10;
   --tg-card-width: 4.2rem;
+  --tg-card-height: calc(var(--tg-card-width) * 10 / 7);
   --tg-card-background-color: rgba(255, 255, 255, 0.045);
   --tg-dark-bg-lighter-5: #{$dark-bg-lighter-5};
   --tg-dark-bg-lighter-10: #{$dark-bg-lighter-10};
@@ -117,39 +118,39 @@ a {
   color: #d7c7ff;
 }
 
- button,
- input,
- textarea {
-   font: inherit;
- }
- 
- .mat-typography {
-   color: inherit;
- }
- 
- .mat-mdc-raised-button,
- .mat-mdc-outlined-button,
- .mat-mdc-button,
- .mat-raised-button,
- .mat-stroked-button,
- .mat-flat-button {
-   border-radius: 999px !important;
-   letter-spacing: 0.01em;
-   font-weight: 600 !important;
-   transition: all 0.2s ease !important;
- }
- 
- .mat-mdc-raised-button:not(:disabled),
- .mat-raised-button:not(:disabled) {
-   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
- 
-   &:hover {
-     box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
-     transform: translateY(-1px);
-   }
- }
- 
- .mat-mdc-outlined-button:not(:disabled),
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+.mat-typography {
+  color: inherit;
+}
+
+.mat-mdc-raised-button,
+.mat-mdc-outlined-button,
+.mat-mdc-button,
+.mat-raised-button,
+.mat-stroked-button,
+.mat-flat-button {
+  border-radius: 999px !important;
+  letter-spacing: 0.01em;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+}
+
+.mat-mdc-raised-button:not(:disabled),
+.mat-raised-button:not(:disabled) {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
+
+  &:hover {
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+    transform: translateY(-1px);
+  }
+}
+
+.mat-mdc-outlined-button:not(:disabled),
 .mat-stroked-button:not(:disabled) {
   color: #f4f7fb !important;
   border-color: rgba(255, 255, 255, 0.14) !important;
@@ -170,51 +171,51 @@ mat-card {
   margin: 0 auto;
   padding: var(--space-16) 0 var(--space-24);
   box-sizing: border-box;
- }
- 
- .surface-panel {
-   background: var(--tg-panel-background);
-   border: 1px solid var(--tg-panel-border);
-   border-radius: var(--tg-border-radius-24);
-   box-shadow: var(--tg-shadow-strong);
-   backdrop-filter: blur(14px);
- }
- 
- .surface-panel--soft {
-   background: var(--tg-panel-background-strong);
-   border-radius: var(--tg-border-radius-16);
-   border: 1px solid rgba(255, 255, 255, 0.07);
-   box-shadow: var(--tg-shadow-soft);
-   backdrop-filter: blur(10px);
- }
- 
- .eyebrow {
+}
+
+.surface-panel {
+  background: var(--tg-panel-background);
+  border: 1px solid var(--tg-panel-border);
+  border-radius: var(--tg-border-radius-24);
+  box-shadow: var(--tg-shadow-strong);
+  backdrop-filter: blur(14px);
+}
+
+.surface-panel--soft {
+  background: var(--tg-panel-background-strong);
+  border-radius: var(--tg-border-radius-16);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: var(--tg-shadow-soft);
+  backdrop-filter: blur(10px);
+}
+
+.eyebrow {
   margin: 0;
-   text-transform: uppercase;
-   letter-spacing: 0.16em;
-   font-size: 0.74rem;
-   font-weight: 700;
-   color: #d4b8ff;
-   opacity: 0.9;
- }
- 
- .muted-copy {
-   color: var(--tg-text-muted);
- }
- 
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #d4b8ff;
+  opacity: 0.9;
+}
+
+.muted-copy {
+  color: var(--tg-text-muted);
+}
+
 .heading-container {
-   display: flex;
-   align-items: center;
-   justify-content: space-between;
-   flex-wrap: wrap;
-   gap: var(--space-4);
-   min-width: 0;
-   padding: 0 var(--space-2);
- 
-   h2 {
-     margin: 0;
-     overflow-wrap: anywhere;
- }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  min-width: 0;
+  padding: 0 var(--space-2);
+
+  h2 {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
 }
 
 .number-stepper {
@@ -227,11 +228,16 @@ mat-card {
   border-radius: 16px;
   border: 1.5px solid rgba(255, 255, 255, 0.14);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 
   &:focus-within {
     border-color: rgba(138, 99, 210, 0.7);
-    box-shadow: 0 0 0 2px rgba(138, 99, 210, 0.22), 0 6px 18px rgba(138, 99, 210, 0.12);
+    box-shadow:
+      0 0 0 2px rgba(138, 99, 210, 0.22),
+      0 6px 18px rgba(138, 99, 210, 0.12);
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.06));
   }
 
@@ -277,7 +283,10 @@ mat-card {
   font-weight: 700;
   line-height: 1;
   cursor: pointer;
-  transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease;
 
   &:hover:not(:disabled) {
     background: rgba(255, 255, 255, 0.13);
@@ -325,7 +334,6 @@ mat-card {
 ::-webkit-scrollbar-corner {
   background: transparent;
 }
-
 
 .tg-confirm-dialog .mat-dialog-container,
 .tg-confirm-dialog .mat-mdc-dialog-surface {

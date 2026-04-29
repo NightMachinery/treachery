@@ -40,6 +40,7 @@ describe('CardComponent', () => {
 
   it('should render the image in normal mode', () => {
     expect(fixture.nativeElement.querySelector('img')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('.card').classList).toContain('image-card');
     expect(fixture.nativeElement.querySelector('.card-name').getAttribute('dir')).toBe('auto');
   });
 

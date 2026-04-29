@@ -4,7 +4,7 @@ Treachery stores a local anonymous auth identity per browser and keeps the chose
 
 ## Generated fallback avatars
 
-- Players without a custom avatar use a generated SVG avatar.
+- Participants without a custom avatar use a generated SVG avatar, including observers.
 - The generator is deterministic, so the same identity data always renders the same avatar.
 - The UI now renders those SVGs through the normal pnpm package `@nice-avatar-svg/preact`, with a small local wrapper that hashes the seed into a stable config.
 - The seed is built with the user ID prepended to the display name:
@@ -21,5 +21,6 @@ Why this matters:
 ## Current scope
 
 - This repo currently uses generated fallback avatars only.
+- Observers use the same generated fallback as players in participant lists, chat attribution, and the navbar identity display.
 - There is no persisted custom-avatar upload/storage flow yet.
 - The fallback is entirely local to the UI and does not require any backend or schema changes.

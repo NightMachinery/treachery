@@ -1,5 +1,12 @@
 # UI/UX polish notes
 
+## April 29, 2026 pass
+
+- locked means/clue cards to a 7:10 card aspect ratio and kept image cards center-cropped for source art with other ratios
+- converted suspect deck card sizing to width-based clamps so the fixed ratio stays consistent on desktop and mobile
+- refreshed the favicon with an imagegen-created detective badge mark
+- clarified that observers use the same deterministic generated avatar treatment as players
+
 ## April 21, 2026 pass
 
 This pass focused on the main interaction pain points that showed up in live Chrome debugging:

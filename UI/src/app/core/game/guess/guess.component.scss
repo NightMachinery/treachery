@@ -1,54 +1,54 @@
- :host {
-   display: block;
- }
- 
- .wrapper {
-   padding: var(--space-12) var(--space-10);
-   font-weight: var(--tg-info-weight);
- }
- 
- .guess-copy {
-   margin-bottom: var(--space-6);
-   padding: 0 var(--space-2);
- 
-   h3 {
-     margin: var(--space-2) 0;
-   }
- 
-   p:last-child {
-     margin-bottom: 0;
-   }
- }
- 
- .container {
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   flex-wrap: wrap;
-   gap: var(--space-4);
-   padding: var(--space-4) 0;
- }
- 
- .murderer {
-   justify-content: center;
-   align-items: center;
-   display: flex;
-   flex-direction: column;
-   text-align: center;
-   padding-right: var(--space-4);
-   min-width: 8rem;
- }
- 
+:host {
+  display: block;
+}
+
+.wrapper {
+  padding: var(--space-12) var(--space-10);
+  font-weight: var(--tg-info-weight);
+}
+
+.guess-copy {
+  margin-bottom: var(--space-6);
+  padding: 0 var(--space-2);
+
+  h3 {
+    margin: var(--space-2) 0;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  padding: var(--space-4) 0;
+}
+
+.murderer {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding-right: var(--space-4);
+  min-width: 8rem;
+}
+
 .subtitle,
 .think {
   color: var(--tg-text-muted);
 }
- 
- .name {
-   margin-top: var(--space-3);
-   font-weight: 700;
- }
- 
+
+.name {
+  margin-top: var(--space-3);
+  font-weight: 700;
+}
+
 .button-container {
   display: flex;
   flex-direction: column;
@@ -58,8 +58,8 @@
 }
 
 .selection-placeholder {
-  min-height: var(--tg-card-height);
   width: var(--tg-card-width);
+  aspect-ratio: var(--tg-card-aspect-ratio, 7 / 10);
   display: flex;
   flex-direction: column;
   align-items: center;

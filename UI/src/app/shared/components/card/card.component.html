@@ -4,19 +4,19 @@
     active ? 'selected' : 'not-selected',
     subdued ? 'subdued' : '',
     means ? 'means' : 'clue',
-    ((textOnlyMode$ | async) || shouldShowTextOnly) ? 'text-only' : 'image-card'
+    (textOnlyMode$ | async) || shouldShowTextOnly ? 'text-only' : 'image-card',
   ]"
   class="card"
   [class.mat-elevation-z2]="true"
 >
   <ng-container *ngIf="(textOnlyMode$ | async) || shouldShowTextOnly; else imageMode">
     <div class="text-only-body" dir="auto">
-      <div class="card-name" dir="auto">{{ card.name }}</div>
+      <div #cardName class="card-name" [class.card-name--compressed]="labelCompressed" dir="auto">{{ card.name }}</div>
     </div>
   </ng-container>
 
   <ng-template #imageMode>
     <img class="main-img" [src]="card.imgUrl" [alt]="card.name" loading="lazy" (error)="onImageError($event)" />
-    <div class="card-name" dir="auto">{{ card.name }}</div>
+    <div #cardName class="card-name" [class.card-name--compressed]="labelCompressed" dir="auto">{{ card.name }}</div>
   </ng-template>
 </div>

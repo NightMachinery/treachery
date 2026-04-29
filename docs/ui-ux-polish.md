@@ -70,3 +70,9 @@ Using the remote Chrome workflow in `docs/chrome/README.md`:
 - add visual density options for very large suspect decks
 - consider a dedicated modal or toast for migrate-device links when copy fails entirely
 - consider screenshot-based regression checks for the lobby, game, and forensic layouts
+
+## April 29, 2026 card noir follow-up
+
+- changed means/clue image cards to sharper rectangular noir cards with square edges, harder borders, darker vignettes, and more restrained deck-color accents
+- replaced the floating rounded title chips with semi-transparent edge-to-edge bottom label panels connected to the card edges
+- added automatic card-label fit logic so long labels shrink inside their panels instead of clipping horizontally

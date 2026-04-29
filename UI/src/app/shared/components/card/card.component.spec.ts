@@ -53,4 +53,21 @@ describe('CardComponent', () => {
     expect(fixture.nativeElement.querySelector('.text-only-body').getAttribute('dir')).toBe('auto');
     expect(fixture.nativeElement.querySelector('.card-name').getAttribute('dir')).toBe('auto');
   });
+
+  it('shrinks long labels with the fit-text hook instead of overflowing', () => {
+    const label = fixture.nativeElement.querySelector('.card-name') as HTMLElement;
+    component.card = { ...component.card, name: 'Prescription' };
+    component.cardNameElement = { nativeElement: label } as any;
+    Object.defineProperty(label, 'clientWidth', { configurable: true, value: 80 });
+    Object.defineProperty(label, 'clientHeight', { configurable: true, value: 36 });
+    spyOn<any>(component, 'labelFits').and.callFake(() => {
+      const scale = Number(label.style.getPropertyValue('--tg-card-name-scale') || 1);
+      return scale <= 0.76;
+    });
+
+    component.fitCardLabel();
+
+    expect(Number(label.style.getPropertyValue('--tg-card-name-scale'))).toBeLessThan(1);
+    expect(label.classList).toContain('card-name--compressed');
+  });
 });

@@ -454,3 +454,22 @@ Generated and validated one batch of ten clues-card images with ImageMagick `ide
 | `assets/gouache-treachery/clues/133-photograph.png` | 1049x1499 | 0.699800 |
 
 All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/134-pill.png`.
+
+### 2026-04-30 checkpoint 23
+
+Generated and validated one batch of ten clues-card images with ImageMagick `identify` using `PE/image-gouache-V1.1-template.md`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/clues/134-plant.png` | 1050x1498 | 0.700935 |
+| `assets/gouache-treachery/clues/135-plastic.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/136-playing-cards.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/137-pocket-watch.png` | 1049x1500 | 0.699333 |
+| `assets/gouache-treachery/clues/138-postal-stamp.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/139-powder.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/140-prescription.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/141-puppet.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/142-push-pin.png` | 1049x1500 | 0.699333 |
+| `assets/gouache-treachery/clues/143-puzzle.png` | 1049x1499 | 0.699800 |
+
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/144-raincoat.png`.

@@ -1725,3 +1725,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: magnifying-glass rim, paper envelope corner, dust specks.
 - Mood/setting: tense evidence table, nostalgic and suspicious.
 - Palette/lighting/composition: cool black-and-white tones, warm sepia paper, blue-gray shadows, silver highlight; desk-lamp beam; slight top-down diagonal close-up.
+
+### clues/134-plant.png — Plant
+
+- Gameplay function: Clue card; makes an ordinary houseplant read as overlooked physical evidence hiding in plain sight.
+- Main subject: lush potted houseplant in a heavy ceramic pot, with broad curled leaves, torn leaf, and visible dark soil.
+- Supporting cues: spilled soil, clipped stem, dim window shape.
+- Mood/setting: quiet modern apartment corner, domestic and subtly forensic.
+- Palette/lighting/composition: deep greens, smoky blue-gray shadows, warm ochre highlights; diffuse side window light; close three-quarter iconic view.
+
+### clues/135-plastic.png — Plastic
+
+- Gameplay function: Clue card; presents discarded plastic as suspicious trace material.
+- Main subject: translucent plastic bag or sheet twisted into a knot-like crumpled form with glossy creases.
+- Supporting cues: blurred tile shapes, textless evidence-marker shape.
+- Mood/setting: sterile back-room evidence-table mood, discarded yet unnaturally clean.
+- Palette/lighting/composition: milky whites and cool grays with teal shadows and amber glint; sharp overhead forensic light; close slightly top-down view.
+
+### clues/136-playing-cards.png — Playing cards
+
+- Gameplay function: Clue card; uses a fan of cards to suggest risk, deception, and private games.
+- Main subject: five worn playing cards spread in a shallow arc, with backs and simple pips but no readable letters or numbers.
+- Supporting cues: dropped token, faint glass ring.
+- Mood/setting: smoky private-club tabletop, elegant and suspicious.
+- Palette/lighting/composition: warm ivory, oxblood, tobacco brown, cool violet shadows; low amber lamp; slight top-down diagonal fan.
+
+### clues/137-pocket-watch.png — Pocket watch
+
+- Gameplay function: Clue card; makes time and timing feel like decisive evidence.
+- Main subject: antique brass pocket watch with broken chain and open face, using suggested tick marks without readable numbers.
+- Supporting cues: dust halo, folded dark cloth, tiny reflected glint.
+- Mood/setting: vintage desk or bedside surface, hushed and ominous.
+- Palette/lighting/composition: aged brass, cream, umber shadows, peacock-blue accents; narrow rim light; iconic close-up with slight top-down tilt.
+
+### clues/138-postal-stamp.png — Postal stamp
+
+- Gameplay function: Clue card; enlarges a small postal stamp into a significant archival clue.
+- Main subject: oversized vintage stamp, slightly curled, with perforated edges and a simplified emblem without readable text.
+- Supporting cues: envelope paper shapes, soft red wax smear.
+- Mood/setting: intimate archival desk, quiet and secretive.
+- Palette/lighting/composition: dusty rose, faded indigo, parchment beige, charcoal shadows; museum-case spotlight; macro tilted close-up.
+
+### clues/139-powder.png — Powder
+
+- Gameplay function: Clue card; presents loose powder as dangerous trace evidence.
+- Main subject: pale powder spill on dark tabletop, with a conical mound, scattered grains, and one dragged line.
+- Supporting cues: torn paper packet, soft brush mark, faint dust particles.
+- Mood/setting: tense forensic tabletop atmosphere.
+- Palette/lighting/composition: chalk white and bone against graphite, mauve shadows, cold blue rim; hard narrow beam; close macro slight top-down view.
+
+### clues/140-prescription.png — Prescription
+
+- Gameplay function: Clue card; frames a medical document as evidence of hidden intent or access.
+- Main subject: pale prescription slip on a pharmacy counter, partly folded, with non-readable scribble-like marks.
+- Supporting cues: blurred amber pill-bottle silhouettes, cool reflection line.
+- Mood/setting: sterile late-night clinic, clinical and uneasy.
+- Palette/lighting/composition: clinical whites, seafoam gray, amber glow, deep navy shadows; fluorescent overhead light; large centered top-down paper shape.
+
+### clues/141-puppet.png — Puppet
+
+- Gameplay function: Clue card; suggests manipulation through an uncanny theatrical object.
+- Main subject: small wooden marionette slumped upright with jointed limbs, crossed strings, and simplified eerie painted face.
+- Supporting cues: faint curtain folds, small pool of stage dust.
+- Mood/setting: dim backstage or old theater, uncanny and controlled.
+- Palette/lighting/composition: muted ochre wood, faded crimson, dusty plum shadows; pale overhead spotlight; frontal medium close-up with slight low angle.
+
+### clues/142-push-pin.png — Push pin
+
+- Gameplay function: Clue card; turns a tiny office object into a sharp investigative clue.
+- Main subject: single red push pin stuck into a dark corkboard at an angle, with round plastic head and metal point.
+- Supporting cues: blurred paper corners, crossing thread shadow.
+- Mood/setting: investigative board atmosphere, focused and tense.
+- Palette/lighting/composition: saturated red against warm cork browns and cool charcoal; sharp desk-lamp side light; macro close-up.
+
+### clues/143-puzzle.png — Puzzle
+
+- Gameplay function: Clue card; communicates missing connections and incomplete evidence.
+- Main subject: cluster of large jigsaw puzzle pieces with one clear central empty gap.
+- Supporting cues: faint lamp glow, one isolated missing piece in shadow.
+- Mood/setting: quiet study-table mystery.
+- Palette/lighting/composition: cream, moss green, dusty blue, walnut shadows, warm gold light strip; slightly top-down asymmetrical arrangement.

@@ -378,3 +378,22 @@ Generated and validated one batch of ten clues-card images with ImageMagick `ide
 | `assets/gouache-treachery/clues/093-juice.png` | 1049x1499 | 0.699800 |
 
 All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/094-key.png`.
+
+### 2026-04-29 checkpoint 19
+
+Generated and validated one batch of ten clues-card images with ImageMagick `identify` using `PE/image-gouache-V1.1-template.md`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/clues/094-key.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/095-leaf.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/096-leather-bag.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/097-leather-shoe.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/098-lens.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/099-light-bulb.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/100-lipstick.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/101-lock.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/102-lottery-ticket.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/103-love-letter.png` | 1049x1499 | 0.699800 |
+
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/104-magazine.png`.

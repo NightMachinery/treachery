@@ -1405,3 +1405,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: orange wedge, condensation trail, quiet breakfast or hotel table.
 - Mood/setting: everyday freshness with forensic unease.
 - Palette/lighting/composition: vivid amber-orange against cool blue-gray shadows and cream highlights; morning window light; centered close-up still life.
+
+### clues/094-key.png — Key
+
+- Gameplay function: Clue card; makes access, concealment, or a locked-room implication immediately visible.
+- Main subject: oversized tarnished antique brass key with round bow and simple toothed bit.
+- Supporting cues: dust outline, broken red thread, blurred document shapes.
+- Mood/setting: tense investigative tabletop, elegant and ominous.
+- Palette/lighting/composition: warm brass against umber and deep teal shadows with a subtle red accent; narrow side light; diagonal close-up.
+
+### clues/095-leaf.png — Leaf
+
+- Gameplay function: Clue card; turns a fragile outdoor trace into evidence of passage or scene location.
+- Main subject: curled brittle leaf with visible veins, jagged missing edge, and small dark moisture stain.
+- Supporting cues: water beads, faint muddy footprint edge, scattered grit.
+- Mood/setting: damp urban stone after rain, quiet and forensic.
+- Palette/lighting/composition: olive, burnt sienna, and cool blue-gray; diffuse overcast glow; slight top-down close-up.
+
+### clues/096-leather-bag.png — Leather bag
+
+- Gameplay function: Clue card; suggests an abandoned possession, concealed contents, or hurried departure.
+- Main subject: slumped brown leather shoulder bag with brass buckle, creased flap, and scuffed corners.
+- Supporting cues: trailing strap, dustless rectangle, blurred door threshold.
+- Mood/setting: intimate hotel-room floor, ominous and private.
+- Palette/lighting/composition: cognac leather, charcoal shadows, dull brass accents; warm lamp side light with cool ambient shadow; low three-quarter close-up.
+
+### clues/097-leather-shoe.png — Leather shoe
+
+- Gameplay function: Clue card; signals an abandoned personal item from a hurried or violent incident.
+- Main subject: single black leather dress shoe tipped on its side with loose curling lace.
+- Supporting cues: street grit, fading wet footprint, blurred stair shadows.
+- Mood/setting: dim corridor or stair landing, tense and deserted.
+- Palette/lighting/composition: deep black-brown, slate shadows, muted cream highlights; narrow overhead light; low three-quarter close-up.
+
+### clues/098-lens.png — Lens
+
+- Gameplay function: Clue card; suggests observation, hidden detail, or forensic scrutiny.
+- Main subject: round magnifying or optical lens tilted on its rim with distorted surface texture seen through glass.
+- Supporting cues: crescent shadow, reflected window shape, blurred evidence-paper corner without text.
+- Mood/setting: quiet forensic worktable, precise and investigative.
+- Palette/lighting/composition: smoky grays and blue-green shadows with ivory highlights and violet glass accent; crisp side light; iconic centered close-up.
+
+### clues/099-light-bulb.png — Light bulb
+
+- Gameplay function: Clue card; symbolizes illumination, electricity, and sudden revelation.
+- Main subject: pear-shaped clear bulb hanging from a short dark socket cord with a faint glowing filament.
+- Supporting cues: wall halo, dust in the light cone, subtle ceiling shadow.
+- Mood/setting: dark interrogation-room atmosphere, isolated and suspenseful.
+- Palette/lighting/composition: warm amber against indigo, charcoal, and muted olive; bulb-as-key-light glow; straight-on iconic framing.
+
+### clues/100-lipstick.png — Lipstick
+
+- Gameplay function: Clue card; frames glamour, identity, intimacy, or incriminating trace evidence.
+- Main subject: open black-lacquer lipstick tube with deep crimson used tip.
+- Supporting cues: powder smear, mirror glint, small crimson tabletop mark.
+- Mood/setting: decadent vanity still life, elegant and suspect.
+- Palette/lighting/composition: crimson and black lacquer against blush, mauve, and warm gray; focused vanity light; three-quarter close-up.
+
+### clues/101-lock.png — Lock
+
+- Gameplay function: Clue card; makes secrecy, containment, or hidden access visually explicit.
+- Main subject: aged steel padlock with thick shackle, scratched face, and centered dark keyhole.
+- Supporting cues: metal hasp, rust speckles, blurred vertical bars.
+- Mood/setting: shadowed cabinet or gate, tense and concealed.
+- Palette/lighting/composition: gunmetal, slate blue, muted rust, pale metal highlight; hard side rim light; straight-on symmetrical close-up.
+
+### clues/102-lottery-ticket.png — Lottery ticket
+
+- Gameplay function: Clue card; suggests chance, money, motive, or a hidden fortune without readable text.
+- Main subject: torn curled lottery ticket with abstract non-readable number marks.
+- Supporting cues: center crease, coffee-ring stain, blurred scattered coins.
+- Mood/setting: dim convenience-store or back-room table, lucky and dangerous.
+- Palette/lighting/composition: faded cream, muted teal, warm brown shadows, dull gold accent; low overhead light; diagonal top-down close-up.
+
+### clues/103-love-letter.png — Love letter
+
+- Gameplay function: Clue card; points to romantic secrets, betrayal, or intimate motive.
+- Main subject: folded cream love letter partly opened over a sealed envelope with crimson wax seal.
+- Supporting cues: perfume stain, loose ribbon, soft window-blind shadow.
+- Mood/setting: hushed bedside table or writing desk, elegant and uneasy.
+- Palette/lighting/composition: ivory, muted rose, dusty plum, deep brown, crimson accent; soft moonlit window light; slight top-down close-up.

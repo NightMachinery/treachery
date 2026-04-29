@@ -69,45 +69,46 @@ func TestStorybookCelAssetSetAppearsInCatalog(t *testing.T) {
 	}
 }
 
-func TestStorybookCelResourceUsesDeckDefaultsAndFallsBackToTreachery(t *testing.T) {
-	app := newTestApp(t)
-	defer app.Close()
-
-	resource, err := app.GetCrimePackResource("treachery", "en", "storybook-cel")
-	if err != nil {
-		t.Fatalf("get crime pack resource: %v", err)
+func TestCrimePackResolveImageURLsUsesSelectedDefaultsBeforeFallbackAssetSet(t *testing.T) {
+	pack := &crimePack{
+		fallbackAssetSet: "fallback",
+		assetSets: map[string]*crimeAssetSet{
+			"selected": {
+				means:        map[string]string{"generated": "/selected/means/generated.png"},
+				clues:        map[string]string{},
+				meansDefault: "/selected/means/default.png",
+				cluesDefault: "/selected/clues/default.png",
+			},
+			"selected-no-default": {
+				means: map[string]string{},
+				clues: map[string]string{},
+			},
+			"fallback": {
+				means:        map[string]string{"missing": "/fallback/means/missing.png"},
+				clues:        map[string]string{"missing": "/fallback/clues/missing.png"},
+				meansDefault: "/fallback/means/default.png",
+				cluesDefault: "/fallback/clues/default.png",
+			},
+		},
 	}
 
-	if resource.AssetSetID != "storybook-cel" {
-		t.Fatalf("expected storybook-cel resource, got %q", resource.AssetSetID)
+	primary, secondary := pack.resolveImageURLs("means", "generated", "selected")
+	if primary != "/selected/means/generated.png" || secondary != "/selected/means/default.png" {
+		t.Fatalf("expected selected means art then selected default, got primary=%q secondary=%q", primary, secondary)
 	}
 
-	defaultMeans := findCardByID(t, resource.MeansCards, "006-bamboo-tip")
-	if !strings.Contains(defaultMeans.ImgURL, "/assets/storybook-cel/means/default.png") {
-		t.Fatalf("expected storybook means default art, got %q", defaultMeans.ImgURL)
-	}
-	if !strings.Contains(defaultMeans.AltImgURL, "/assets/treachery/means/006-bamboo-tip") {
-		t.Fatalf("expected treachery fallback alt image, got %q", defaultMeans.AltImgURL)
+	primary, secondary = pack.resolveImageURLs("clues", "missing", "selected")
+	if primary != "/selected/clues/default.png" || secondary != "/fallback/clues/missing.png" {
+		t.Fatalf("expected selected clue default then fallback art, got primary=%q secondary=%q", primary, secondary)
 	}
 
-	defaultClue := findCardByID(t, resource.ClueCards, "015-briefs")
-	if !strings.Contains(defaultClue.ImgURL, "/assets/storybook-cel/clues/default.png") {
-		t.Fatalf("expected storybook clue default art, got %q", defaultClue.ImgURL)
-	}
-	if !strings.Contains(defaultClue.AltImgURL, "/assets/treachery/clues/015-briefs") {
-		t.Fatalf("expected treachery fallback alt image, got %q", defaultClue.AltImgURL)
-	}
-
-	anotherClue := findCardByID(t, resource.ClueCards, "101-lock")
-	if !strings.Contains(anotherClue.ImgURL, "/assets/storybook-cel/clues/default.png") {
-		t.Fatalf("expected storybook clue default art, got %q", anotherClue.ImgURL)
-	}
-	if !strings.Contains(anotherClue.AltImgURL, "/assets/treachery/clues/101-lock") {
-		t.Fatalf("expected treachery fallback alt image, got %q", anotherClue.AltImgURL)
+	primary, secondary = pack.resolveImageURLs("means", "missing", "selected-no-default")
+	if primary != "/fallback/means/missing.png" || secondary != "/fallback/means/default.png" {
+		t.Fatalf("expected fallback means art then fallback default, got primary=%q secondary=%q", primary, secondary)
 	}
 }
 
-func TestGouacheTreacheryResourceUsesOwnDefaultsAndFallsBackToTreachery(t *testing.T) {
+func TestGouacheTreacheryResourceUsesGeneratedImagesAndOwnDefaults(t *testing.T) {
 	app := newTestApp(t)
 	defer app.Close()
 
@@ -136,11 +137,4 @@ func TestGouacheTreacheryResourceUsesOwnDefaultsAndFallsBackToTreachery(t *testi
 		t.Fatalf("expected gouache clue default alt image, got %q", generatedClue.AltImgURL)
 	}
 
-	defaultClue := findCardByID(t, resource.ClueCards, "101-lock")
-	if !strings.Contains(defaultClue.ImgURL, "/assets/gouache-treachery/clues/default.png") {
-		t.Fatalf("expected gouache clue default art, got %q", defaultClue.ImgURL)
-	}
-	if !strings.Contains(defaultClue.AltImgURL, "/assets/treachery/clues/101-lock") {
-		t.Fatalf("expected treachery fallback alt image, got %q", defaultClue.AltImgURL)
-	}
 }

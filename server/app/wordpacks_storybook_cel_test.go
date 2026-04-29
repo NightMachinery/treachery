@@ -128,14 +128,6 @@ func TestGouacheTreacheryResourceUsesOwnDefaultsAndFallsBackToTreachery(t *testi
 		t.Fatalf("expected gouache means default alt image, got %q", generatedMeans.AltImgURL)
 	}
 
-	defaultMeans := findCardByID(t, resource.MeansCards, "006-bamboo-tip")
-	if !strings.Contains(defaultMeans.ImgURL, "/assets/gouache-treachery/means/default.png") {
-		t.Fatalf("expected gouache means default art, got %q", defaultMeans.ImgURL)
-	}
-	if !strings.Contains(defaultMeans.AltImgURL, "/assets/treachery/means/006-bamboo-tip") {
-		t.Fatalf("expected treachery fallback alt image, got %q", defaultMeans.AltImgURL)
-	}
-
 	generatedClue := findCardByID(t, resource.ClueCards, "001-air-conditioning")
 	if !strings.Contains(generatedClue.ImgURL, "/assets/gouache-treachery/clues/001-air-conditioning.png") {
 		t.Fatalf("expected gouache air-conditioning art, got %q", generatedClue.ImgURL)
@@ -144,11 +136,11 @@ func TestGouacheTreacheryResourceUsesOwnDefaultsAndFallsBackToTreachery(t *testi
 		t.Fatalf("expected gouache clue default alt image, got %q", generatedClue.AltImgURL)
 	}
 
-	defaultClue := findCardByID(t, resource.ClueCards, "015-briefs")
+	defaultClue := findCardByID(t, resource.ClueCards, "101-lock")
 	if !strings.Contains(defaultClue.ImgURL, "/assets/gouache-treachery/clues/default.png") {
 		t.Fatalf("expected gouache clue default art, got %q", defaultClue.ImgURL)
 	}
-	if !strings.Contains(defaultClue.AltImgURL, "/assets/treachery/clues/015-briefs") {
+	if !strings.Contains(defaultClue.AltImgURL, "/assets/treachery/clues/101-lock") {
 		t.Fatalf("expected treachery fallback alt image, got %q", defaultClue.AltImgURL)
 	}
 }

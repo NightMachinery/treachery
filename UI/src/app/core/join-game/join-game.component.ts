@@ -11,7 +11,7 @@ import {
   TgGameSettingsInput,
   TgHintPackCatalogEntry,
   TgParticipant,
-  TgWordpackCatalog
+  TgWordpackCatalog,
 } from '../../shared/api/models/models';
 import { SnackBarService } from '../../shared/api/snack-bar/snack-bar.service';
 import { copyTextToClipboard } from '../../shared/utils/clipboard';
@@ -20,7 +20,7 @@ import { copyTextToClipboard } from '../../shared/utils/clipboard';
   selector: 'app-join-game',
   standalone: false,
   templateUrl: './join-game.component.html',
-  styleUrls: ['./join-game.component.scss']
+  styleUrls: ['./join-game.component.scss'],
 })
 export class JoinGameComponent implements OnInit, OnDestroy {
   gameId: string;
@@ -29,6 +29,13 @@ export class JoinGameComponent implements OnInit, OnDestroy {
   missingGame = false;
   settings: TgGameSettingsInput = this.defaultSettings();
   settingsDirty = false;
+  settingsSaving = false;
+  settingsSaveError = '';
+  settingsSaved = false;
+  private readonly settingsAutoSaveDelayMs = 500;
+  private readonly settingsRetryDelayMs = 1500;
+  private settingsSaveTimer: ReturnType<typeof setTimeout> = null;
+  private settingsChangeVersion = 0;
   private subscription = new Subscription();
   private autoJoiningObserver = false;
   private catalog: TgWordpackCatalog = null;
@@ -39,11 +46,11 @@ export class JoinGameComponent implements OnInit, OnDestroy {
     private auth: AuthService,
     public forensicApi: ForensicApiService,
     private snack: SnackBarService,
-    public cardApi: CardApiService
+    public cardApi: CardApiService,
   ) {}
 
   ngOnInit() {
-    this.subscription.add(this.cardApi.catalog$.subscribe(catalog => (this.catalog = catalog)));
+    this.subscription.add(this.cardApi.catalog$.subscribe((catalog) => (this.catalog = catalog)));
 
     this.subscription.add(
       this.route.params.subscribe(async ({ gameId }) => {
@@ -56,32 +63,33 @@ export class JoinGameComponent implements OnInit, OnDestroy {
         if (!this.missingGame) {
           await this.gameApi.refreshSnapshot();
         }
-      })
+      }),
     );
 
     this.subscription.add(
-      this.route.queryParams.subscribe(params => {
+      this.route.queryParams.subscribe((params) => {
         this.roomAuth = params.roomAuth || null;
         if (this.gameId) {
           this.gameApi.setGameContext(this.gameId, this.roomAuth);
         }
-      })
+      }),
     );
 
     this.subscription.add(
-      this.gameApi.snapshot$.subscribe(snapshot => {
+      this.gameApi.snapshot$.subscribe((snapshot) => {
         if (!snapshot || !snapshot.game) {
           return;
         }
-        if (!snapshot.game.startedOn && !this.settingsDirty) {
+        if (!snapshot.game.startedOn && !this.hasSettingsAutoSaveWork) {
           this.syncSettingsFromGame(snapshot.game);
         }
-        this.handleSnapshot(snapshot).catch(error => console.warn('Failed to handle join snapshot', error));
-      })
+        this.handleSnapshot(snapshot).catch((error) => console.warn('Failed to handle join snapshot', error));
+      }),
     );
   }
 
   ngOnDestroy(): void {
+    this.clearSettingsSaveTimer();
     this.subscription.unsubscribe();
   }
 
@@ -103,6 +111,10 @@ export class JoinGameComponent implements OnInit, OnDestroy {
   async startGame() {
     const snapshot = this.gameApi.getCurrentSnapshot();
     if (!snapshot || !snapshot.game) {
+      return;
+    }
+    if (this.hasSettingsAutoSaveWork) {
+      this.snack.error('Lobby settings are still saving.');
       return;
     }
     const validation = this.getStartValidationMessage(snapshot.game, snapshot.participants);
@@ -128,35 +140,37 @@ export class JoinGameComponent implements OnInit, OnDestroy {
   }
 
   handleMeansCardCountChange() {
-    this.settingsDirty = true;
     this.settings.meansCardsPerPlayer = this.normalizePositiveNumber(this.settings.meansCardsPerPlayer, 4);
     if (this.settings.linkClueCountToMeans) {
       this.settings.clueCardsPerPlayer = this.settings.meansCardsPerPlayer;
     }
+    this.markSettingsChanged();
   }
 
   handleClueCardCountChange() {
-    this.settingsDirty = true;
-    this.settings.clueCardsPerPlayer = this.normalizePositiveNumber(this.settings.clueCardsPerPlayer, this.settings.meansCardsPerPlayer || 4);
+    this.settings.clueCardsPerPlayer = this.normalizePositiveNumber(
+      this.settings.clueCardsPerPlayer,
+      this.settings.meansCardsPerPlayer || 4,
+    );
+    this.markSettingsChanged();
   }
 
   handleLinkClueCountChange() {
-    this.settingsDirty = true;
     if (this.settings.linkClueCountToMeans) {
       this.settings.clueCardsPerPlayer = this.settings.meansCardsPerPlayer;
     }
+    this.markSettingsChanged();
   }
 
   handleMeansCluesTextOnlyChange() {
-    this.settingsDirty = true;
+    this.markSettingsChanged();
   }
 
   handleRandomMurdererCardSelectionChange() {
-    this.settingsDirty = true;
+    this.markSettingsChanged();
   }
 
   handleCrimePackChange() {
-    this.settingsDirty = true;
     const pack = this.selectedCrimePack;
     if (!pack) {
       return;
@@ -166,37 +180,32 @@ export class JoinGameComponent implements OnInit, OnDestroy {
     if (!pack.hasAnyImages) {
       this.settings.meansCluesTextOnly = true;
     }
+    this.markSettingsChanged();
   }
 
   handleCrimePackLanguageChange() {
-    this.settingsDirty = true;
+    this.markSettingsChanged();
   }
 
   handleCrimePackAssetSetChange() {
-    this.settingsDirty = true;
+    this.markSettingsChanged();
   }
 
   handleHintPackChange() {
-    this.settingsDirty = true;
     const pack = this.selectedHintPack;
     if (pack) {
       this.settings.hintPackLanguage = pack.defaultLanguage;
     }
+    this.markSettingsChanged();
   }
 
   handleHintPackLanguageChange() {
-    this.settingsDirty = true;
+    this.markSettingsChanged();
   }
 
   handleRoleCountChange() {
-    this.settingsDirty = true;
-    this.settings.accompliceCount = this.normalizeBoundedNumber(this.settings.accompliceCount, 0, 10, 0);
-    this.settings.witnessCount = this.normalizeBoundedNumber(this.settings.witnessCount, 0, 10, 0);
-    if (this.settings.witnessCount === 0) {
-      this.settings.witnessesToFind = 0;
-    } else {
-      this.settings.witnessesToFind = this.normalizeBoundedNumber(this.settings.witnessesToFind, 1, this.settings.witnessCount, 1);
-    }
+    this.normalizeRoleSettings();
+    this.markSettingsChanged();
   }
 
   adjustMeansCards(delta: number) {
@@ -228,27 +237,47 @@ export class JoinGameComponent implements OnInit, OnDestroy {
     this.handleRoleCountChange();
   }
 
-  async saveSettings() {
-    this.handleMeansCardCountChange();
-    if (!this.settings.linkClueCountToMeans) {
-      this.handleClueCardCountChange();
+  async flushSettingsAutoSave() {
+    this.clearSettingsSaveTimer();
+    if (!this.settingsDirty || this.settingsSaving) {
+      return;
     }
-    this.handleRoleCountChange();
-    await this.gameApi.updateGameSettings({
-      ...this.settings,
-      meansCluesTextOnly: this.effectiveTextOnly,
-      crimePackAssetSetId: this.settings.crimePackAssetSetId || this.selectedCrimePack?.defaultAssetSetId || ''
-    });
-    this.settingsDirty = false;
+    const saveVersion = this.settingsChangeVersion;
+    this.settingsSaving = true;
+    this.settingsSaveError = '';
+    try {
+      await this.gameApi.updateGameSettings(this.getNormalizedSettingsPayload());
+      if (this.settingsChangeVersion === saveVersion) {
+        this.settingsDirty = false;
+        this.settingsSaved = true;
+      }
+    } catch (error) {
+      console.warn('Failed to auto-save lobby settings', error);
+      if (this.settingsChangeVersion === saveVersion) {
+        this.settingsDirty = true;
+        this.settingsSaved = false;
+        this.settingsSaveError = 'Settings could not be saved. Retrying…';
+      }
+    } finally {
+      this.settingsSaving = false;
+      if (this.settingsDirty) {
+        this.scheduleSettingsAutoSave(this.settingsSaveError ? this.settingsRetryDelayMs : this.settingsAutoSaveDelayMs);
+      }
+    }
   }
 
   async resetSettings(game: TgGame) {
+    this.clearSettingsSaveTimer();
     this.syncSettingsFromGame(game);
     this.settingsDirty = false;
+    this.settingsSaving = false;
+    this.settingsSaveError = '';
+    this.settingsSaved = false;
+    this.settingsChangeVersion++;
   }
 
   getStartValidationMessage(game: TgGame, participants: TgParticipant[]): string {
-    const playerCount = (participants || []).filter(participant => participant.role === 'player').length;
+    const playerCount = (participants || []).filter((participant) => participant.role === 'player').length;
     if (playerCount < 4) {
       return 'Need at least 4 lobby players to start.';
     }
@@ -295,6 +324,60 @@ export class JoinGameComponent implements OnInit, OnDestroy {
     return (this.selectedCrimePack?.assetSets?.length || 0) > 0 && this.selectedCrimePack?.hasAnyImages;
   }
 
+  get hasSettingsAutoSaveWork(): boolean {
+    return this.settingsDirty || this.settingsSaving || !!this.settingsSaveTimer;
+  }
+
+  private markSettingsChanged() {
+    this.settingsDirty = true;
+    this.settingsSaved = false;
+    this.settingsSaveError = '';
+    this.settingsChangeVersion++;
+    this.scheduleSettingsAutoSave();
+  }
+
+  private scheduleSettingsAutoSave(delayMs = this.settingsAutoSaveDelayMs) {
+    this.clearSettingsSaveTimer();
+    this.settingsSaveTimer = setTimeout(() => {
+      this.flushSettingsAutoSave().catch((error) => console.warn('Failed to flush lobby settings', error));
+    }, delayMs);
+  }
+
+  private clearSettingsSaveTimer() {
+    if (this.settingsSaveTimer) {
+      clearTimeout(this.settingsSaveTimer);
+      this.settingsSaveTimer = null;
+    }
+  }
+
+  private getNormalizedSettingsPayload(): TgGameSettingsInput {
+    this.settings.meansCardsPerPlayer = this.normalizePositiveNumber(this.settings.meansCardsPerPlayer, 4);
+    if (this.settings.linkClueCountToMeans) {
+      this.settings.clueCardsPerPlayer = this.settings.meansCardsPerPlayer;
+    } else {
+      this.settings.clueCardsPerPlayer = this.normalizePositiveNumber(
+        this.settings.clueCardsPerPlayer,
+        this.settings.meansCardsPerPlayer || 4,
+      );
+    }
+    this.normalizeRoleSettings();
+    return {
+      ...this.settings,
+      meansCluesTextOnly: this.effectiveTextOnly,
+      crimePackAssetSetId: this.settings.crimePackAssetSetId || this.selectedCrimePack?.defaultAssetSetId || '',
+    };
+  }
+
+  private normalizeRoleSettings() {
+    this.settings.accompliceCount = this.normalizeBoundedNumber(this.settings.accompliceCount, 0, 10, 0);
+    this.settings.witnessCount = this.normalizeBoundedNumber(this.settings.witnessCount, 0, 10, 0);
+    if (this.settings.witnessCount === 0) {
+      this.settings.witnessesToFind = 0;
+    } else {
+      this.settings.witnessesToFind = this.normalizeBoundedNumber(this.settings.witnessesToFind, 1, this.settings.witnessCount, 1);
+    }
+  }
+
   private defaultSettings(): TgGameSettingsInput {
     return {
       meansCardsPerPlayer: 4,
@@ -303,13 +386,13 @@ export class JoinGameComponent implements OnInit, OnDestroy {
       meansCluesTextOnly: false,
       randomMurdererCardSelection: false,
       crimePackId: 'treachery',
-      crimePackLanguage: 'en',
-      crimePackAssetSetId: 'treachery',
+      crimePackLanguage: 'fa',
+      crimePackAssetSetId: 'gouache-treachery',
       hintPackId: 'treachery-hints',
-      hintPackLanguage: 'en',
+      hintPackLanguage: 'fa',
       accompliceCount: 0,
       witnessCount: 0,
-      witnessesToFind: 0
+      witnessesToFind: 0,
     };
   }
 
@@ -327,16 +410,16 @@ export class JoinGameComponent implements OnInit, OnDestroy {
       hintPackLanguage: game.hintPackLanguage,
       accompliceCount: game.accompliceCount,
       witnessCount: game.witnessCount,
-      witnessesToFind: game.witnessesToFind
+      witnessesToFind: game.witnessesToFind,
     };
   }
 
   private findCrimePack(id: string) {
-    return this.catalog?.crimePacks?.find(pack => pack.id === id) || null;
+    return this.catalog?.crimePacks?.find((pack) => pack.id === id) || null;
   }
 
   private findHintPack(id: string) {
-    return this.catalog?.hintPacks?.find(pack => pack.id === id) || null;
+    return this.catalog?.hintPacks?.find((pack) => pack.id === id) || null;
   }
 
   private normalizePositiveNumber(value: number, fallback: number) {

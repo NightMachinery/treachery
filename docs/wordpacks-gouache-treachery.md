@@ -7,7 +7,8 @@
 - CrimePack: `treachery`
 - Asset set id: `gouache-treachery`
 - Display name: `Gouache Treachery`
-- Default CrimePack asset set remains `treachery`.
+- Default language for Treachery crime and hint packs is `fa` (Persian).
+- Default CrimePack asset set is `gouache-treachery`.
 - Pack fallback asset set remains `treachery`.
 - The gouache set has its own deck-level fallback cards instead of reusing another non-default art set:
   - means: `wordpacks/crime/treachery/assets/gouache-treachery/means/default.png`

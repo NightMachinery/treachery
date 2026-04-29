@@ -45,8 +45,8 @@ func TestStorybookCelAssetSetAppearsInCatalog(t *testing.T) {
 	catalog := app.GetWordpackCatalog()
 	pack := findCatalogCrimePackByID(t, catalog, "treachery")
 
-	if pack.DefaultAssetSetID != "treachery" {
-		t.Fatalf("expected treachery default asset set, got %q", pack.DefaultAssetSetID)
+	if pack.DefaultAssetSetID != "gouache-treachery" {
+		t.Fatalf("expected gouache-treachery default asset set, got %q", pack.DefaultAssetSetID)
 	}
 	if pack.FallbackAssetSet != "treachery" {
 		t.Fatalf("expected treachery fallback asset set, got %q", pack.FallbackAssetSet)

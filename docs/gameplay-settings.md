@@ -23,10 +23,10 @@ Before the game starts, the creator can configure:
 Defaults:
 
 - CrimePack: `treachery`
-- CrimePack language: `en`
-- CrimePack image asset set: `treachery`
+- CrimePack language: `fa`
+- CrimePack image asset set: `gouache-treachery`
 - HintPack: `treachery-hints`
-- HintPack language: `en`
+- HintPack language: `fa`
 - means cards per suspect: `4`
 - evidence/clue cards per suspect: `4`
 - evidence follows means: `true`
@@ -36,7 +36,7 @@ Defaults:
 - witnesses: `0`
 - witnesses to find: `0`
 
-The lobby uses the existing **Save settings** flow, so pre-start changes to this toggle do not apply until saved.
+Lobby settings auto-save after a short debounce; the start button stays disabled while changes are pending or saving.
 
 ## Means/clues display mode
 

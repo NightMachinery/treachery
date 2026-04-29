@@ -1,8 +1,8 @@
 {
   id: "treachery",
   name: "Treachery",
-  defaultLanguage: "en",
-  defaultAssetSetId: "treachery",
+  defaultLanguage: "fa",
+  defaultAssetSetId: "gouache-treachery",
   fallbackAssetSetId: "treachery",
   languages: {
     en: "English",

@@ -82,6 +82,30 @@ func TestCreateGameAutoJoinsCreator(t *testing.T) {
 	}
 }
 
+func TestCreateGameUsesPackDefaults(t *testing.T) {
+	app := newTestApp(t)
+	defer app.Close()
+
+	setProfile(t, app, "creator", "Creator")
+	if err := app.CreateGame("creator", "DFLT"); err != nil {
+		t.Fatalf("create game: %v", err)
+	}
+
+	snapshot, err := app.GetSnapshot("DFLT", "creator")
+	if err != nil {
+		t.Fatalf("snapshot: %v", err)
+	}
+	if snapshot.Game.CrimePackLanguage != "fa" {
+		t.Fatalf("expected Persian crime pack language, got %q", snapshot.Game.CrimePackLanguage)
+	}
+	if snapshot.Game.CrimePackAssetSetID != "gouache-treachery" {
+		t.Fatalf("expected gouache asset set, got %q", snapshot.Game.CrimePackAssetSetID)
+	}
+	if snapshot.Game.HintPackLanguage != "fa" {
+		t.Fatalf("expected Persian hint pack language, got %q", snapshot.Game.HintPackLanguage)
+	}
+}
+
 func TestStartGameBuildsSnapshotWithScientist(t *testing.T) {
 	app := newTestApp(t)
 	defer app.Close()

@@ -133,10 +133,10 @@ func (a *App) migrate() error {
 			means_clues_text_only INTEGER NOT NULL DEFAULT 0,
 			random_murderer_card_selection INTEGER NOT NULL DEFAULT 0,
 			crime_pack_id TEXT NOT NULL DEFAULT 'treachery',
-			crime_pack_language TEXT NOT NULL DEFAULT 'en',
-			crime_pack_asset_set_id TEXT NOT NULL DEFAULT 'treachery',
+			crime_pack_language TEXT NOT NULL DEFAULT 'fa',
+			crime_pack_asset_set_id TEXT NOT NULL DEFAULT 'gouache-treachery',
 			hint_pack_id TEXT NOT NULL DEFAULT 'treachery-hints',
-			hint_pack_language TEXT NOT NULL DEFAULT 'en',
+			hint_pack_language TEXT NOT NULL DEFAULT 'fa',
 			accomplice_count INTEGER NOT NULL DEFAULT 0,
 			witness_count INTEGER NOT NULL DEFAULT 0,
 			witnesses_to_find INTEGER NOT NULL DEFAULT 0,
@@ -236,10 +236,10 @@ func (a *App) migrate() error {
 		`ALTER TABLE games ADD COLUMN means_clues_text_only INTEGER NOT NULL DEFAULT 0;`,
 		`ALTER TABLE games ADD COLUMN random_murderer_card_selection INTEGER NOT NULL DEFAULT 0;`,
 		`ALTER TABLE games ADD COLUMN crime_pack_id TEXT NOT NULL DEFAULT 'treachery';`,
-		`ALTER TABLE games ADD COLUMN crime_pack_language TEXT NOT NULL DEFAULT 'en';`,
-		`ALTER TABLE games ADD COLUMN crime_pack_asset_set_id TEXT NOT NULL DEFAULT 'treachery';`,
+		`ALTER TABLE games ADD COLUMN crime_pack_language TEXT NOT NULL DEFAULT 'fa';`,
+		`ALTER TABLE games ADD COLUMN crime_pack_asset_set_id TEXT NOT NULL DEFAULT 'gouache-treachery';`,
 		`ALTER TABLE games ADD COLUMN hint_pack_id TEXT NOT NULL DEFAULT 'treachery-hints';`,
-		`ALTER TABLE games ADD COLUMN hint_pack_language TEXT NOT NULL DEFAULT 'en';`,
+		`ALTER TABLE games ADD COLUMN hint_pack_language TEXT NOT NULL DEFAULT 'fa';`,
 		`ALTER TABLE games ADD COLUMN accomplice_count INTEGER NOT NULL DEFAULT 0;`,
 		`ALTER TABLE games ADD COLUMN witness_count INTEGER NOT NULL DEFAULT 0;`,
 		`ALTER TABLE games ADD COLUMN witnesses_to_find INTEGER NOT NULL DEFAULT 0;`,
@@ -451,6 +451,27 @@ func (a *App) applyRoomMods(game *Game, input GameRoomModsInput) error {
 	return nil
 }
 
+func (a *App) defaultCrimePackLanguage() string {
+	if pack := a.getCrimePack(defaultCrimePackID); pack != nil && strings.TrimSpace(pack.defaultLanguage) != "" {
+		return pack.defaultLanguage
+	}
+	return "fa"
+}
+
+func (a *App) defaultCrimePackAssetSetID() string {
+	if pack := a.getCrimePack(defaultCrimePackID); pack != nil && strings.TrimSpace(pack.defaultAssetSetID) != "" {
+		return pack.defaultAssetSetID
+	}
+	return "gouache-treachery"
+}
+
+func (a *App) defaultHintPackLanguage() string {
+	if pack := a.getHintPack(defaultHintPackID); pack != nil && strings.TrimSpace(pack.defaultLanguage) != "" {
+		return pack.defaultLanguage
+	}
+	return "fa"
+}
+
 func (a *App) EnsureSession(existingToken string) (*Session, error) {
 	if existingToken != "" {
 		session, err := a.GetSession(existingToken)
@@ -543,7 +564,8 @@ func (a *App) CreateGame(creatorUID, gameID string) error {
 	}
 	createdAt := nowTimestamp(a.timeNow())
 	return a.withTx(context.Background(), func(tx *sql.Tx) error {
-		_, err := tx.Exec(`INSERT INTO games(game_id, creator_uid, created_timestamp, other_cards_json, finished, murderer_cards_selected) VALUES (?, ?, ?, '[]', 0, 0)`, gameID, creatorUID, createdAt)
+		_, err := tx.Exec(`INSERT INTO games(game_id, creator_uid, created_timestamp, other_cards_json, finished, murderer_cards_selected, crime_pack_id, crime_pack_language, crime_pack_asset_set_id, hint_pack_id, hint_pack_language) VALUES (?, ?, ?, '[]', 0, 0, ?, ?, ?, ?, ?)`,
+			gameID, creatorUID, createdAt, defaultCrimePackID, a.defaultCrimePackLanguage(), a.defaultCrimePackAssetSetID(), defaultHintPackID, a.defaultHintPackLanguage())
 		if err != nil {
 			if strings.Contains(err.Error(), "UNIQUE") {
 				return fmt.Errorf("%w: game already exists", ErrBadInput)
@@ -758,7 +780,7 @@ func (a *App) ListGames() ([]Game, error) {
 
 	var games []Game
 	for rows.Next() {
-		game, err := scanGame(rows)
+		game, err := a.scanGame(rows)
 		if err != nil {
 			return nil, err
 		}
@@ -1718,7 +1740,7 @@ func (a *App) checkAndEndGameTx(tx *sql.Tx, game *Game) error {
 
 func (a *App) getGame(gameID string) (*Game, error) {
 	row := a.db.QueryRow(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished, means_cards_per_player, clue_cards_per_player, link_clue_count_to_means, means_clues_text_only, random_murderer_card_selection, crime_pack_id, crime_pack_language, crime_pack_asset_set_id, hint_pack_id, hint_pack_language, accomplice_count, witness_count, witnesses_to_find, pending_witness_selection, winner, finished_reason, result_message, room_timer_duration_seconds, room_timer_expires_at, room_timer_paused_remaining_seconds, room_timer_run_id FROM games WHERE game_id = ?`, gameID)
-	game, err := scanGame(row)
+	game, err := a.scanGame(row)
 	if err != nil {
 		return nil, err
 	}
@@ -1727,7 +1749,7 @@ func (a *App) getGame(gameID string) (*Game, error) {
 
 func (a *App) getGameTx(tx *sql.Tx, gameID string) (*Game, error) {
 	row := tx.QueryRow(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished, means_cards_per_player, clue_cards_per_player, link_clue_count_to_means, means_clues_text_only, random_murderer_card_selection, crime_pack_id, crime_pack_language, crime_pack_asset_set_id, hint_pack_id, hint_pack_language, accomplice_count, witness_count, witnesses_to_find, pending_witness_selection, winner, finished_reason, result_message, room_timer_duration_seconds, room_timer_expires_at, room_timer_paused_remaining_seconds, room_timer_run_id FROM games WHERE game_id = ?`, gameID)
-	game, err := scanGame(row)
+	game, err := a.scanGame(row)
 	if err != nil {
 		return nil, err
 	}
@@ -1738,7 +1760,7 @@ type rowScanner interface {
 	Scan(dest ...any) error
 }
 
-func scanGame(scanner rowScanner) (*Game, error) {
+func (a *App) scanGame(scanner rowScanner) (*Game, error) {
 	var (
 		gameID, creatorUID, createdTimestamp                                string
 		startedOn, murdererUID, murdererClueCardName, murdererMeansCardName sql.NullString
@@ -1841,16 +1863,16 @@ func scanGame(scanner rowScanner) (*Game, error) {
 		game.CrimePackID = defaultCrimePackID
 	}
 	if strings.TrimSpace(game.CrimePackLanguage) == "" {
-		game.CrimePackLanguage = "en"
+		game.CrimePackLanguage = a.defaultCrimePackLanguage()
 	}
 	if strings.TrimSpace(game.CrimePackAssetSetID) == "" {
-		game.CrimePackAssetSetID = defaultCrimePackID
+		game.CrimePackAssetSetID = a.defaultCrimePackAssetSetID()
 	}
 	if strings.TrimSpace(game.HintPackID) == "" {
 		game.HintPackID = defaultHintPackID
 	}
 	if strings.TrimSpace(game.HintPackLanguage) == "" {
-		game.HintPackLanguage = "en"
+		game.HintPackLanguage = a.defaultHintPackLanguage()
 	}
 	if otherCardsJSON != "" {
 		if err := json.Unmarshal([]byte(otherCardsJSON), &game.OtherCards); err != nil {

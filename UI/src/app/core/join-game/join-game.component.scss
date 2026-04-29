@@ -159,10 +159,17 @@
  
  .settings-actions {
    display: flex;
+   align-items: center;
    justify-content: flex-end;
    gap: var(--space-4);
    padding: 0 var(--space-2);
  }
+
+.settings-save-status {
+  min-height: 1.25rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.9rem;
+}
  
  .start-button-container {
    display: flex;

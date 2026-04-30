@@ -155,6 +155,7 @@ func (a *App) migrate() error {
 			name TEXT NOT NULL,
 			role TEXT NOT NULL,
 			joined_timestamp TEXT NOT NULL,
+			is_bot INTEGER NOT NULL DEFAULT 0,
 			PRIMARY KEY (game_id, uid),
 			FOREIGN KEY (game_id) REFERENCES games(game_id) ON DELETE CASCADE
 		);`,
@@ -251,6 +252,7 @@ func (a *App) migrate() error {
 		`ALTER TABLE games ADD COLUMN room_timer_expires_at TEXT;`,
 		`ALTER TABLE games ADD COLUMN room_timer_paused_remaining_seconds INTEGER NOT NULL DEFAULT 0;`,
 		`ALTER TABLE games ADD COLUMN room_timer_run_id INTEGER NOT NULL DEFAULT 0;`,
+		`ALTER TABLE participants ADD COLUMN is_bot INTEGER NOT NULL DEFAULT 0;`,
 	}
 	for _, stmt := range legacyAlterStatements {
 		_, _ = a.db.Exec(stmt)
@@ -733,6 +735,76 @@ func (a *App) ToggleScientistMark(gameID, actorUID, targetUID string) error {
 	})
 }
 
+func (a *App) AddBots(gameID, creatorUID string, count int) (int, error) {
+	gameID = strings.ToUpper(strings.TrimSpace(gameID))
+	var botsAdded int
+	err := a.withTx(context.Background(), func(tx *sql.Tx) error {
+		game, err := a.getGameTx(tx, gameID)
+		if err != nil {
+			return err
+		}
+		if game.CreatorUID != creatorUID {
+			return fmt.Errorf("%w: only the creator can add bots", ErrForbidden)
+		}
+		if game.StartedOn != "" {
+			return fmt.Errorf("%w: game already started", ErrBadInput)
+		}
+
+		participants, err := a.getParticipantsTx(tx, gameID)
+		if err != nil {
+			return err
+		}
+
+		playerCount := 0
+		maxBotNumber := 0
+		for _, p := range participants {
+			if p.Role == ParticipantRolePlayer {
+				playerCount++
+			}
+			if p.IsBot && strings.HasPrefix(p.Name, "Bot ") {
+				var num int
+				if _, err := fmt.Sscanf(p.Name, "Bot %d", &num); err == nil && num > maxBotNumber {
+					maxBotNumber = num
+				}
+			}
+		}
+
+		// If count not specified or invalid, calculate how many needed to reach 4 players
+		if count <= 0 {
+			count = 4 - playerCount
+		}
+
+		// Safety limit
+		if count > 10 {
+			count = 10
+		}
+
+		// Don't add more than needed
+		if count <= 0 {
+			botsAdded = 0
+			return nil
+		}
+
+		nowTime := nowTimestamp(a.timeNow())
+		for i := 0; i < count; i++ {
+			botUID, err := randomToken(16)
+			if err != nil {
+				return err
+			}
+			botName := fmt.Sprintf("Bot %d", maxBotNumber+i+1)
+			_, err = tx.Exec(`INSERT INTO participants(game_id, uid, name, role, joined_timestamp, is_bot) VALUES (?, ?, ?, ?, ?, ?)`,
+				gameID, botUID, botName, string(ParticipantRolePlayer), nowTime, 1)
+			if err != nil {
+				return err
+			}
+			botsAdded++
+		}
+
+		return nil
+	})
+	return botsAdded, err
+}
+
 func (a *App) CreateOrGetRoomAuthToken(gameID, uid string) (*RoomAuthToken, error) {
 	gameID = strings.ToUpper(strings.TrimSpace(gameID))
 	row := a.db.QueryRow(`SELECT token, game_id, uid, created_timestamp FROM room_auth_tokens WHERE game_id = ? AND uid = ?`, gameID, uid)
@@ -929,7 +1001,7 @@ func (a *App) StartGame(gameID, creatorUID string) error {
 			return fmt.Errorf("%w: unknown hint pack %q", ErrBadInput, game.HintPackID)
 		}
 		hintLanguage := hintPack.mustLanguage(game.HintPackLanguage)
-		if len(hintLanguage.otherCards) < 6 {
+		if len(hintLanguage.causeCards) == 0 || len(hintLanguage.locationCards) == 0 || len(hintLanguage.otherCards) < 6 {
 			return fmt.Errorf("%w: missing forensic cards", ErrBadInput)
 		}
 
@@ -986,6 +1058,10 @@ func (a *App) StartGame(gameID, creatorUID string) error {
 		game.MurdererMeansCardID = ""
 		game.MurdererMeansCardName = ""
 		startMessage := "Game started! The forensic scientist has been chosen. Murderer, select your cards without revealing them."
+		if scientist.IsBot {
+			a.selectInitialBotScientistHints(game, hintPack, hintLanguage)
+			startMessage = "Game started! A bot forensic scientist has revealed random hints. Murderer, select your cards without revealing them."
+		}
 		if game.RandomMurdererCardSelection {
 			murdererPlayer, err := a.getPlayerTx(tx, gameID, murderer.UID)
 			if err != nil {
@@ -996,7 +1072,11 @@ func (a *App) StartGame(gameID, creatorUID string) error {
 			game.MurdererMeansCardID = cardSelectionID(murdererPlayer.MeansCards[a.rand.Intn(len(murdererPlayer.MeansCards))])
 			game.MurdererMeansCardName = game.MurdererMeansCardID
 			game.MurdererCardsSelected = true
-			startMessage = "Game started! The forensic scientist has been chosen. The murderer's cards were randomly selected."
+			if scientist.IsBot {
+				startMessage = "Game started! A bot forensic scientist has revealed random hints. The murderer's cards were randomly selected."
+			} else {
+				startMessage = "Game started! The forensic scientist has been chosen. The murderer's cards were randomly selected."
+			}
 		}
 		clearRoomTimer(game)
 		if err := a.saveGameTx(tx, game); err != nil {
@@ -1005,8 +1085,123 @@ func (a *App) StartGame(gameID, creatorUID string) error {
 		if err := a.sendForensicMessageTx(tx, gameID, startMessage); err != nil {
 			return err
 		}
+
+		// Schedule bot murderer card selection if murderer is a bot and cards not already selected
+		if !game.MurdererCardsSelected && murderer.IsBot {
+			go a.scheduleBotMurdererSelection(gameID, murderer.UID)
+		}
+
 		return nil
 	})
+}
+
+func (a *App) scheduleBotMurdererSelection(gameID, botUID string) {
+	// Random delay between 10-30 seconds
+	delaySeconds := 10 + a.rand.Intn(21)
+	delay := time.Duration(delaySeconds) * time.Second
+
+	time.Sleep(delay)
+
+	// Fetch bot's player cards
+	player, err := a.getPlayer(gameID, botUID)
+	if err != nil {
+		// Bot may have been removed or game ended, silently return
+		return
+	}
+
+	if len(player.ClueCards) == 0 || len(player.MeansCards) == 0 {
+		// Invalid state, silently return
+		return
+	}
+
+	// Select random cards
+	clueCard := player.ClueCards[a.rand.Intn(len(player.ClueCards))]
+	meansCard := player.MeansCards[a.rand.Intn(len(player.MeansCards))]
+
+	// Submit selection
+	err = a.SelectMurdererCards(gameID, botUID, clueCard.ID, meansCard.ID)
+	if err != nil {
+		// Log error but don't crash
+		// In production, you might want proper logging here
+		_ = err
+		return
+	}
+	a.hub.Publish(gameID)
+}
+
+func (a *App) selectInitialBotScientistHints(game *Game, hintPack *hintPack, hintLanguage *hintPackLanguage) {
+	causeCards := hintPack.resolveCards(hintLanguage.causeCards)
+	causeCard := causeCards[a.rand.Intn(len(causeCards))]
+	a.selectRandomForensicChoice(&causeCard)
+	game.CauseCard = &causeCard
+
+	locationCards := hintPack.resolveCards(hintLanguage.locationCards)
+	locationCard := locationCards[a.rand.Intn(len(locationCards))]
+	a.selectRandomForensicChoice(&locationCard)
+	game.LocationCard = &locationCard
+
+	cardIndexes := a.rand.Perm(len(game.OtherCards))
+	for i := 0; i < 4 && i < len(cardIndexes); i++ {
+		card := game.OtherCards[cardIndexes[i]]
+		a.selectRandomForensicChoice(&card)
+		game.OtherCards[cardIndexes[i]] = card
+	}
+}
+
+func (a *App) replaceBotScientistHintAfterGuessTx(tx *sql.Tx, game *Game) error {
+	if game.ScientistUID == "" || game.Finished || game.PendingWitnessSelection {
+		return nil
+	}
+	scientist, err := a.getParticipantTx(tx, game.GameID, game.ScientistUID)
+	if err != nil {
+		return err
+	}
+	if !scientist.IsBot {
+		return nil
+	}
+
+	activeIndexes := []int{}
+	availableIndexes := []int{}
+	for i, card := range game.OtherCards {
+		selected := card.SelectedChoiceID != "" || card.SelectedChoice != ""
+		if selected && !card.Replaced {
+			activeIndexes = append(activeIndexes, i)
+		}
+		if !selected && !card.Replaced {
+			availableIndexes = append(availableIndexes, i)
+		}
+	}
+	if len(activeIndexes) == 0 || len(availableIndexes) == 0 {
+		return nil
+	}
+
+	replacedIndex := activeIndexes[a.rand.Intn(len(activeIndexes))]
+	newIndex := availableIndexes[a.rand.Intn(len(availableIndexes))]
+	game.OtherCards[replacedIndex].Replaced = true
+	newCard := game.OtherCards[newIndex]
+	a.selectRandomForensicChoice(&newCard)
+	game.OtherCards[newIndex] = newCard
+	if err := a.saveGameTx(tx, game); err != nil {
+		return err
+	}
+	return a.sendForensicMessageTx(tx, game.GameID, "The bot forensic scientist replaced one hint after that guess.")
+}
+
+func (a *App) selectRandomForensicChoice(card *ForensicCard) {
+	if card == nil {
+		return
+	}
+	if len(card.ChoiceIDs) > 0 {
+		index := a.rand.Intn(len(card.ChoiceIDs))
+		card.SelectedChoiceID = card.ChoiceIDs[index]
+		if index < len(card.Choices) {
+			card.SelectedChoice = card.Choices[index]
+		}
+		return
+	}
+	if len(card.Choices) > 0 {
+		card.SelectedChoice = card.Choices[a.rand.Intn(len(card.Choices))]
+	}
 }
 
 func (a *App) selectScientist(game *Game, playerParticipants []Participant) Participant {
@@ -1342,7 +1537,10 @@ func (a *App) MakeGuess(gameID, uid, murdererUID, clueCardID, meansCardID string
 		if correct {
 			return a.handleCorrectGuessTx(tx, game)
 		}
-		return a.checkAndEndGameTx(tx, game)
+		if err := a.checkAndEndGameTx(tx, game); err != nil {
+			return err
+		}
+		return a.replaceBotScientistHintAfterGuessTx(tx, game)
 	})
 }
 
@@ -1905,7 +2103,7 @@ func (a *App) scanGame(scanner rowScanner) (*Game, error) {
 }
 
 func (a *App) getParticipants(gameID string) ([]Participant, error) {
-	rows, err := a.db.Query(`SELECT p.uid, p.name, p.role, g.creator_uid, g.scientist_uid, g.marked_scientist_uid
+	rows, err := a.db.Query(`SELECT p.uid, p.name, p.role, p.is_bot, g.creator_uid, g.scientist_uid, g.marked_scientist_uid
 		FROM participants p
 		JOIN games g ON g.game_id = p.game_id
 		WHERE p.game_id = ?
@@ -1918,7 +2116,7 @@ func (a *App) getParticipants(gameID string) ([]Participant, error) {
 }
 
 func (a *App) getParticipantsTx(tx *sql.Tx, gameID string) ([]Participant, error) {
-	rows, err := tx.Query(`SELECT p.uid, p.name, p.role, g.creator_uid, g.scientist_uid, g.marked_scientist_uid
+	rows, err := tx.Query(`SELECT p.uid, p.name, p.role, p.is_bot, g.creator_uid, g.scientist_uid, g.marked_scientist_uid
 		FROM participants p
 		JOIN games g ON g.game_id = p.game_id
 		WHERE p.game_id = ?
@@ -1934,8 +2132,9 @@ func scanParticipants(rows *sql.Rows) ([]Participant, error) {
 	participants := []Participant{}
 	for rows.Next() {
 		var uid, name, role, creatorUID string
+		var isBot int
 		var scientistUID, markedScientistUID sql.NullString
-		if err := rows.Scan(&uid, &name, &role, &creatorUID, &scientistUID, &markedScientistUID); err != nil {
+		if err := rows.Scan(&uid, &name, &role, &isBot, &creatorUID, &scientistUID, &markedScientistUID); err != nil {
 			return nil, err
 		}
 		participants = append(participants, Participant{
@@ -1945,21 +2144,23 @@ func scanParticipants(rows *sql.Rows) ([]Participant, error) {
 			IsCreator:         uid == creatorUID,
 			IsScientist:       scientistUID.Valid && scientistUID.String == uid,
 			IsMarkedScientist: markedScientistUID.Valid && markedScientistUID.String == uid,
+			IsBot:             isBot == 1,
 		})
 	}
 	return participants, rows.Err()
 }
 
 func (a *App) getParticipantTx(tx *sql.Tx, gameID, uid string) (*Participant, error) {
-	row := tx.QueryRow(`SELECT p.uid, p.name, p.role, g.creator_uid, g.scientist_uid, g.marked_scientist_uid
+	row := tx.QueryRow(`SELECT p.uid, p.name, p.role, p.is_bot, g.creator_uid, g.scientist_uid, g.marked_scientist_uid
 		FROM participants p
 		JOIN games g ON g.game_id = p.game_id
 		WHERE p.game_id = ? AND p.uid = ?`, gameID, uid)
 
 	var participant Participant
 	var role, creatorUID string
+	var isBot int
 	var scientistUID, markedScientistUID sql.NullString
-	if err := row.Scan(&participant.UID, &participant.Name, &role, &creatorUID, &scientistUID, &markedScientistUID); err != nil {
+	if err := row.Scan(&participant.UID, &participant.Name, &role, &isBot, &creatorUID, &scientistUID, &markedScientistUID); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, ErrNotFound
 		}
@@ -1969,6 +2170,7 @@ func (a *App) getParticipantTx(tx *sql.Tx, gameID, uid string) (*Participant, er
 	participant.IsCreator = participant.UID == creatorUID
 	participant.IsScientist = scientistUID.Valid && scientistUID.String == participant.UID
 	participant.IsMarkedScientist = markedScientistUID.Valid && markedScientistUID.String == participant.UID
+	participant.IsBot = isBot == 1
 	return &participant, nil
 }
 
@@ -2028,6 +2230,28 @@ func scanPlayers(rows *sql.Rows) ([]Player, error) {
 
 func (a *App) getPlayerTx(tx *sql.Tx, gameID, uid string) (*Player, error) {
 	row := tx.QueryRow(`SELECT uid, name, clue_cards_json, means_cards_json FROM players WHERE game_id = ? AND uid = ?`, gameID, uid)
+	var (
+		scannedUID, name              string
+		clueCardsJSON, meansCardsJSON string
+	)
+	if err := row.Scan(&scannedUID, &name, &clueCardsJSON, &meansCardsJSON); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, ErrNotFound
+		}
+		return nil, err
+	}
+	player := &Player{Name: name, UID: scannedUID}
+	if err := json.Unmarshal([]byte(clueCardsJSON), &player.ClueCards); err != nil {
+		return nil, err
+	}
+	if err := json.Unmarshal([]byte(meansCardsJSON), &player.MeansCards); err != nil {
+		return nil, err
+	}
+	return player, nil
+}
+
+func (a *App) getPlayer(gameID, uid string) (*Player, error) {
+	row := a.db.QueryRow(`SELECT uid, name, clue_cards_json, means_cards_json FROM players WHERE game_id = ? AND uid = ?`, gameID, uid)
 	var (
 		scannedUID, name              string
 		clueCardsJSON, meansCardsJSON string

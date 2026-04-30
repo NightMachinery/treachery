@@ -58,6 +58,7 @@ type Participant struct {
 	IsCreator         bool            `json:"isCreator,omitempty"`
 	IsScientist       bool            `json:"isScientist,omitempty"`
 	IsMarkedScientist bool            `json:"isMarkedScientist,omitempty"`
+	IsBot             bool            `json:"isBot,omitempty"`
 }
 
 type Viewer struct {

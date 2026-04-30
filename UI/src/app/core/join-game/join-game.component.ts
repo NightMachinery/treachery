@@ -32,6 +32,8 @@ export class JoinGameComponent implements OnInit, OnDestroy {
   settingsSaving = false;
   settingsSaveError = '';
   settingsSaved = false;
+  devModeEnabled = false;
+  addingBots = false;
   private readonly settingsAutoSaveDelayMs = 500;
   private readonly settingsRetryDelayMs = 1500;
   private settingsSaveTimer: ReturnType<typeof setTimeout> = null;
@@ -137,6 +139,40 @@ export class JoinGameComponent implements OnInit, OnDestroy {
       return;
     }
     this.snack.error('Could not copy the migrate-device link.');
+  }
+
+  async addBots() {
+    const snapshot = this.gameApi.getCurrentSnapshot();
+    if (!snapshot || !snapshot.game) {
+      return;
+    }
+    const playerCount = (snapshot.participants || []).filter((p) => p.role === 'player').length;
+    const count = Math.max(0, 4 - playerCount);
+    
+    if (count <= 0) {
+      this.snack.success('Already have enough players to start.');
+      return;
+    }
+    
+    this.addingBots = true;
+    try {
+      await this.gameApi.addBots(count);
+      this.snack.success(`Added ${count} bot${count > 1 ? 's' : ''} to the lobby.`);
+    } catch (error) {
+      this.snack.error('Failed to add bots.');
+      console.error('Error adding bots:', error);
+    } finally {
+      this.addingBots = false;
+    }
+  }
+
+  canAddBots(): boolean {
+    const snapshot = this.gameApi.getCurrentSnapshot();
+    if (!snapshot || !snapshot.game || !snapshot.viewer) {
+      return false;
+    }
+    const playerCount = (snapshot.participants || []).filter((p) => p.role === 'player').length;
+    return this.devModeEnabled && snapshot.viewer.isCreator && !snapshot.game.startedOn && playerCount < 4;
   }
 
   handleMeansCardCountChange() {

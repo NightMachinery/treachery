@@ -209,6 +209,19 @@
             </label>
           </div>
 
+          <div class="dev-mode-section">
+            <label class="dev-mode-checkbox">
+              <input type="checkbox" [(ngModel)]="devModeEnabled" />
+              <span>Dev mode</span>
+            </label>
+          </div>
+
+          <div class="dev-actions" *ngIf="canAddBots()">
+            <button mat-stroked-button type="button" (click)="addBots()" [disabled]="addingBots">
+              {{ addingBots ? 'Adding bots…' : 'Add Bots' }}
+            </button>
+          </div>
+
           <div class="settings-actions">
             <span class="settings-save-status" aria-live="polite">
               {{

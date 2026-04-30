@@ -219,6 +219,16 @@ export class GameApiService {
     }
   }
 
+  async addBots(count?: number) {
+    const gameId = this.gameId$.value;
+    const response = await firstValueFrom(
+      this.http.post<{ success: boolean; botsAdded: number }>(`/api/games/${gameId}/bots/add`, { count }, this.getRoomRequestOptions())
+    );
+    if (response.success) {
+      await this.refreshSnapshot();
+    }
+  }
+
   async updateGameSettings(settings: TgGameSettingsInput) {
     const gameId = this.gameId$.value;
     const response = await firstValueFrom(

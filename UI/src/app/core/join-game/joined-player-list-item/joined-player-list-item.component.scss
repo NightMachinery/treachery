@@ -64,6 +64,10 @@
   background: rgba(245, 173, 64, 0.24);
 }
 
+.bot {
+  background: rgba(150, 150, 150, 0.24);
+}
+
 @media only screen and (max-width: 40rem) {
   .name-row {
     flex-direction: column;

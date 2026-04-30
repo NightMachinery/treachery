@@ -100,9 +100,11 @@ When the creator starts the game:
 ## Private information
 
 - murderer: knows the full murderer team and selects the murder cards, unless the lobby enabled random murderer clue/means selection
+- bot murderer: if murderer card selection is not randomized by room settings, picks random murder cards automatically after a short delay and notifies connected clients
 - accomplice: knows the full murderer team, including the other accomplices, and sees the murder cards once selected
 - witness: knows the murderer team identities
 - forensic scientist: knows the murderer and the selected murder cards through the existing forensic private view, with hint cards localized from the selected HintPack language
+- bot forensic scientist: immediately reveals random cause, location, and four other hints, then replaces one active other hint with a random unused hint after each wrong guess until no unused hints remain
 
 ## Witness-selection resolution
 

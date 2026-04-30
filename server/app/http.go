@@ -30,6 +30,7 @@ func (a *App) Handler() http.Handler {
 	mux.HandleFunc("POST /api/games/{gameId}/join", a.handleJoinGame)
 	mux.HandleFunc("POST /api/games/{gameId}/participants/{uid}/role", a.handleSetParticipantRole)
 	mux.HandleFunc("POST /api/games/{gameId}/scientist/toggle", a.handleToggleScientist)
+	mux.HandleFunc("POST /api/games/{gameId}/bots/add", a.handleAddBots)
 	mux.HandleFunc("POST /api/games/{gameId}/settings", a.handleUpdateGameSettings)
 	mux.HandleFunc("POST /api/games/{gameId}/room-mods", a.handleUpdateRoomMods)
 	mux.HandleFunc("POST /api/games/{gameId}/migrate-device", a.handleCreateRoomAuth)
@@ -278,6 +279,37 @@ func (a *App) handleToggleScientist(w http.ResponseWriter, r *http.Request) {
 			return fmt.Errorf("%w: %s", ErrBadInput, err.Error())
 		}
 		return a.ToggleScientistMark(gameID, viewerUID, body.UID)
+	})
+}
+
+func (a *App) handleAddBots(w http.ResponseWriter, r *http.Request) {
+	session, err := a.requireSession(r)
+	if err != nil {
+		writeError(w, err)
+		return
+	}
+	var body struct {
+		Count int `json:"count"`
+	}
+	if err := decodeBody(r, &body); err != nil {
+		writeError(w, fmt.Errorf("%w: %s", ErrBadInput, err.Error()))
+		return
+	}
+	gameID := strings.ToUpper(strings.TrimSpace(r.PathValue("gameId")))
+	viewerUID, err := a.resolveEffectiveUID(r, gameID, session.UID)
+	if err != nil {
+		writeError(w, err)
+		return
+	}
+	botsAdded, err := a.AddBots(gameID, viewerUID, body.Count)
+	if err != nil {
+		writeError(w, err)
+		return
+	}
+	a.hub.Publish(gameID)
+	writeJSON(w, http.StatusOK, map[string]interface{}{
+		"success":   true,
+		"botsAdded": botsAdded,
 	})
 }
 

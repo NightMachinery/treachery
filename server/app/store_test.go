@@ -45,6 +45,26 @@ func joinPlayers(t *testing.T, app *App, gameID string, uids ...string) {
 	}
 }
 
+func activeOtherHintCount(cards []ForensicCard) int {
+	count := 0
+	for _, card := range cards {
+		if !card.Replaced && (card.SelectedChoiceID != "" || card.SelectedChoice != "") {
+			count++
+		}
+	}
+	return count
+}
+
+func replacedOtherHintCount(cards []ForensicCard) int {
+	count := 0
+	for _, card := range cards {
+		if card.Replaced {
+			count++
+		}
+	}
+	return count
+}
+
 func startTestGame(t *testing.T, app *App, gameID, creator string, otherUIDs ...string) {
 	t.Helper()
 	setProfile(t, app, creator, "Creator")
@@ -183,6 +203,157 @@ func TestMarkedScientistSelectedOnStart(t *testing.T) {
 	}
 	if snapshot.Game.ScientistUID != "p2" {
 		t.Fatalf("expected marked scientist p2, got %s", snapshot.Game.ScientistUID)
+	}
+}
+
+func TestMigrationAddsParticipantBotColumn(t *testing.T) {
+	dataDir := t.TempDir()
+	db, err := sql.Open("sqlite3", filepath.Join(dataDir, "treachery.sqlite"))
+	if err != nil {
+		t.Fatalf("open legacy db: %v", err)
+	}
+	if _, err := db.Exec(`
+		CREATE TABLE games (
+			game_id TEXT PRIMARY KEY,
+			creator_uid TEXT NOT NULL,
+			created_timestamp TEXT NOT NULL,
+			other_cards_json TEXT NOT NULL DEFAULT '[]',
+			finished INTEGER NOT NULL DEFAULT 0
+		);
+		CREATE TABLE participants (
+			game_id TEXT NOT NULL,
+			uid TEXT NOT NULL,
+			name TEXT NOT NULL,
+			role TEXT NOT NULL,
+			joined_timestamp TEXT NOT NULL,
+			PRIMARY KEY (game_id, uid)
+		);
+		INSERT INTO games(game_id, creator_uid, created_timestamp) VALUES ('OLD1', 'creator', '2026-01-01T00:00:00Z');
+		INSERT INTO participants(game_id, uid, name, role, joined_timestamp) VALUES ('OLD1', 'creator', 'Creator', 'player', '2026-01-01T00:00:00Z');
+	`); err != nil {
+		t.Fatalf("create legacy schema: %v", err)
+	}
+	if err := db.Close(); err != nil {
+		t.Fatalf("close legacy db: %v", err)
+	}
+
+	app, err := New(Config{
+		DataDir:      dataDir,
+		WordpacksDir: filepath.Join("..", "..", "wordpacks"),
+	})
+	if err != nil {
+		t.Fatalf("new app with legacy db: %v", err)
+	}
+	defer app.Close()
+
+	participants, err := app.getParticipants("OLD1")
+	if err != nil {
+		t.Fatalf("get participants after migration: %v", err)
+	}
+	if len(participants) != 1 || participants[0].IsBot {
+		t.Fatalf("unexpected migrated participants: %+v", participants)
+	}
+}
+
+func TestBotScientistRevealsAndReplacesHints(t *testing.T) {
+	app := newTestApp(t)
+	defer app.Close()
+
+	creator := "creator"
+	setProfile(t, app, creator, "Creator")
+	if err := app.CreateGame(creator, "BSCI"); err != nil {
+		t.Fatalf("create game: %v", err)
+	}
+	joinPlayers(t, app, "BSCI", "p1", "p2", "p3")
+	if added, err := app.AddBots("BSCI", creator, 1); err != nil {
+		t.Fatalf("add bot: %v", err)
+	} else if added != 1 {
+		t.Fatalf("expected one bot, got %d", added)
+	}
+	beforeStart, err := app.GetSnapshot("BSCI", creator)
+	if err != nil {
+		t.Fatalf("snapshot before start: %v", err)
+	}
+	var botUID string
+	for _, participant := range beforeStart.Participants {
+		if participant.IsBot {
+			botUID = participant.UID
+			break
+		}
+	}
+	if botUID == "" {
+		t.Fatalf("expected bot participant: %+v", beforeStart.Participants)
+	}
+	if err := app.ToggleScientistMark("BSCI", creator, botUID); err != nil {
+		t.Fatalf("mark bot scientist: %v", err)
+	}
+	if err := app.StartGame("BSCI", creator); err != nil {
+		t.Fatalf("start game: %v", err)
+	}
+
+	started, err := app.GetSnapshot("BSCI", creator)
+	if err != nil {
+		t.Fatalf("snapshot after start: %v", err)
+	}
+	if started.Game.ScientistUID != botUID {
+		t.Fatalf("expected bot scientist %s, got %s", botUID, started.Game.ScientistUID)
+	}
+	if started.Game.CauseCard == nil || started.Game.CauseCard.SelectedChoiceID == "" {
+		t.Fatalf("expected bot scientist to select cause card, got %+v", started.Game.CauseCard)
+	}
+	if started.Game.LocationCard == nil || started.Game.LocationCard.SelectedChoiceID == "" {
+		t.Fatalf("expected bot scientist to select location card, got %+v", started.Game.LocationCard)
+	}
+	if count := activeOtherHintCount(started.Game.OtherCards); count != 4 {
+		t.Fatalf("expected 4 active other hints, got %d: %+v", count, started.Game.OtherCards)
+	}
+
+	murdererUID := started.Game.MurdererUID
+	murdererSnapshot, err := app.GetSnapshot("BSCI", murdererUID)
+	if err != nil {
+		t.Fatalf("murderer snapshot: %v", err)
+	}
+	murderer := findPlayer(murdererSnapshot.Players, murdererUID)
+	if murderer == nil {
+		t.Fatalf("expected murderer in players: %+v", murdererSnapshot.Players)
+	}
+	if err := app.SelectMurdererCards("BSCI", murdererUID, murderer.ClueCards[0].ID, murderer.MeansCards[0].ID); err != nil {
+		t.Fatalf("select murderer cards: %v", err)
+	}
+
+	afterSelection, err := app.GetSnapshot("BSCI", creator)
+	if err != nil {
+		t.Fatalf("snapshot after murderer selection: %v", err)
+	}
+	var guesserUID string
+	var guessedMurdererUID string
+	for _, player := range afterSelection.Players {
+		if player.UID != murdererUID {
+			if guesserUID == "" {
+				guesserUID = player.UID
+			} else {
+				guessedMurdererUID = player.UID
+				break
+			}
+		}
+	}
+	if guesserUID == "" || guessedMurdererUID == "" {
+		t.Fatalf("expected non-murderer guesser and target: %+v", afterSelection.Players)
+	}
+	guessedPlayer := findPlayer(afterSelection.Players, guessedMurdererUID)
+	if err := app.MakeGuess("BSCI", guesserUID, guessedMurdererUID, guessedPlayer.ClueCards[0].ID, guessedPlayer.MeansCards[0].ID); err != nil {
+		t.Fatalf("make wrong guess: %v", err)
+	}
+
+	afterGuess, err := app.GetSnapshot("BSCI", creator)
+	if err != nil {
+		t.Fatalf("snapshot after guess: %v", err)
+	}
+	if count := activeOtherHintCount(afterGuess.Game.OtherCards); count != 4 {
+		t.Fatalf("expected 4 active other hints after replacement, got %d: %+v", count, afterGuess.Game.OtherCards)
+	}
+	if count := replacedOtherHintCount(afterGuess.Game.OtherCards); count != 1 {
+		t.Fatalf("expected one replaced hint after guess, got %d: %+v", count, afterGuess.Game.OtherCards)
 	}
 }
 

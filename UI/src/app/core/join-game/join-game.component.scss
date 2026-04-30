@@ -170,8 +170,35 @@
   color: rgba(255, 255, 255, 0.72);
   font-size: 0.9rem;
 }
- 
- .start-button-container {
+
+.dev-mode-section {
+  margin-top: var(--space-8);
+  padding-top: var(--space-8);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dev-mode-checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dev-mode-checkbox input[type="checkbox"] {
+  cursor: pointer;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.dev-actions {
+  margin-top: var(--space-6);
+  display: flex;
+  gap: var(--space-4);
+}
+
+.start-button-container {
    display: flex;
    justify-content: flex-end;
 }

@@ -28,6 +28,7 @@ export interface TgParticipant {
   isCreator: boolean;
   isScientist: boolean;
   isMarkedScientist: boolean;
+  isBot?: boolean;
 }
 
 export interface TgViewer {

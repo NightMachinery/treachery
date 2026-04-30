@@ -1805,3 +1805,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: faint lamp glow, one isolated missing piece in shadow.
 - Mood/setting: quiet study-table mystery.
 - Palette/lighting/composition: cream, moss green, dusty blue, walnut shadows, warm gold light strip; slightly top-down asymmetrical arrangement.
+
+### clues/144-raincoat.png — Raincoat
+
+- Gameplay function: Clue card; makes wet rain gear read as recently worn and suspicious physical evidence.
+- Main subject: lone yellow raincoat hanging from a wall hook, damp and heavy, with a hollow dark hood.
+- Supporting cues: muddy boot print, umbrella-stand silhouette, faint water glint.
+- Mood/setting: rainy apartment entryway, secretive and forensic.
+- Palette/lighting/composition: mustard yellow with olive shadows against cool blue-gray; rainy side-window light; straight-on iconic hanging silhouette.
+
+### clues/145-rat.png — Rat
+
+- Gameplay function: Clue card; turns a furtive animal into a sign of hidden grime and overlooked traces.
+- Main subject: gray-brown rat paused low on a tiled basement floor beside a shadowed drain.
+- Supporting cues: torn paper scrap, scattered crumbs, wet floor edge.
+- Mood/setting: grim cellar or service corridor, unhygienic and ominous.
+- Palette/lighting/composition: smoky umbers and slate grays with sickly green accent; narrow overhead utility light; low diagonal close-up.
+
+### clues/146-receipt.png — Receipt
+
+- Gameplay function: Clue card; frames a paper purchase record as decisive evidence without readable text.
+- Main subject: curled thermal-paper receipt with torn end and dark fingerprint-like smudge.
+- Supporting cues: red wax-pencil circle, faint coffee ring, dark counter surface.
+- Mood/setting: café counter or evidence table, quiet and accusatory.
+- Palette/lighting/composition: warm ivory against espresso browns and cool violet shadows; desk-lamp spotlight; slight top-down diagonal.
+
+### clues/147-red-wine.png — Red wine
+
+- Gameplay function: Clue card; makes a spilled drink feel decadent, intimate, and incriminating.
+- Main subject: tipped crystal wineglass spilling a deep crimson pool across pale cloth.
+- Supporting cues: tiny glass shard, lipstick mark on rim, formal dining-table suggestion.
+- Mood/setting: luxurious dining scene, tense and quietly violent.
+- Palette/lighting/composition: burgundy and garnet over cream linen with charcoal shadows; candle-side light; close diagonal spill composition.
+
+### clues/148-riddle.png — Riddle
+
+- Gameplay function: Clue card; communicates a mysterious puzzle message without relying on readable text.
+- Main subject: folded cream note with abstract cryptic marks and a sharp triangular crease.
+- Supporting cues: chess-knight shadow, magnifying-glass rim, small brass key.
+- Mood/setting: dark study desk, cerebral and uncanny.
+- Palette/lighting/composition: ink black, antique cream, muted teal, brass accent; green-shaded desk-lamp light; top-down iconic note.
+
+### clues/149-ring.png — Ring
+
+- Gameplay function: Clue card; turns intimate jewelry into a ceremonial piece of evidence.
+- Main subject: single gold ring resting in a circle of light on dark velvet.
+- Supporting cues: tiny red thread, faint dust outline, soft jewelry-box folds.
+- Mood/setting: intimate evidence tray or jewelry box, suspicious and hushed.
+- Palette/lighting/composition: burnished gold against midnight blue and plum; warm pinpoint spotlight; quiet centered close-up.
+
+### clues/150-rose.png — Rose
+
+- Gameplay function: Clue card; makes a romantic flower read as fragile, mournful, and implicated.
+- Main subject: one deep red long-stemmed rose on pale stone, with bruised petal and thorn droplet.
+- Supporting cues: fallen petals, faint water stain, misty night background.
+- Mood/setting: balcony or memorial-like sill, seductive and ominous.
+- Palette/lighting/composition: crimson and wine reds with cool moonlit grays; blue rim light; diagonal medium close-up.
+
+### clues/151-rubber-stamp.png — Rubber stamp
+
+- Gameplay function: Clue card; suggests official procedure, approval, or records as suspicious evidence.
+- Main subject: heavy wooden-handled rubber stamp with dark base and red ink stains.
+- Supporting cues: red ink pad, closed file folder, abstract non-readable ink impression.
+- Mood/setting: sparse office or records counter, institutional and ominous.
+- Palette/lighting/composition: walnut browns, charcoal rubber, stark red ink, beige papers; hard window light; top-down angled stamp.
+
+### clues/152-sack.png — Sack
+
+- Gameplay function: Clue card; presents a tied sack as a hidden-object clue with unknown contents.
+- Main subject: rough burlap sack slumped upright, cinched with cord and heavy ominous bulge.
+- Supporting cues: spilled pale grains or powder, frayed cord end, dark storage crates.
+- Mood/setting: storage room or dockside corner, gritty and secretive.
+- Palette/lighting/composition: burlap tans and ochres against blue-black shadows; cool warehouse side light; centered frontal close-up.
+
+### clues/153-safety-pin.png — Safety pin
+
+- Gameplay function: Clue card; turns a tiny ordinary fastener into sharp forensic evidence.
+- Main subject: oversized open metal safety pin on dark cloth, needle point exposed.
+- Supporting cues: torn navy fabric, loose thread, pale fiber caught on the point.
+- Mood/setting: intimate textile surface, tense and investigative.
+- Palette/lighting/composition: cool steel over deep indigo with lavender shadows; raking side light; macro diagonal oval composition.

@@ -2205,3 +2205,59 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: dim locker-room/service corridor, blurred locker edge, coat hook, scuffed floor.
 - Mood/setting: institutional, secretive, and tense.
 - Palette/lighting/composition: desaturated navy/forest-green fabric, gray-beige walls, muted brass and cool highlights; overhead fluorescent key; straight-on iconic medium close-up.
+
+### clues/194-usb-flash-drive.png — USB flash drive
+
+- Gameplay function: Clue card; makes a small digital storage device read as hidden evidence.
+- Main subject: compact black-and-silver USB flash drive with exposed metal connector, scuffed plastic, and clear rectangular silhouette.
+- Supporting cues: investigator desk, faint paper rectangle, fingerprint-powder smudge, soft cable curve.
+- Mood/setting: quiet, forensic, modern, and secretive.
+- Palette/lighting/composition: graphite neutrals, blue-gray shadows, warm amber metal glint; narrow upper-left side light; slight top-down diagonal close-up.
+
+### clues/195-vegetables.png — Vegetables
+
+- Gameplay function: Clue card; turns ordinary groceries into suspicious domestic evidence.
+- Main subject: compact mound of recognizable vegetables with cabbage, carrots, eggplant, and torn leafy green.
+- Supporting cues: worn kitchen prep surface, soil smear, cut stem, shadowed tile shapes.
+- Mood/setting: mundane, domestic, and subtly uneasy.
+- Palette/lighting/composition: muted greens, dusty orange, eggplant violet, creamy whites, cool gray-browns; diffuse window light; quiet frontal still life.
+
+### clues/196-video-camera.png — Video camera
+
+- Gameplay function: Clue card; suggests recorded evidence and surveillance.
+- Main subject: compact black video camera with lens forward, flip-out screen, scuffed body, and small red indicator dot.
+- Supporting cues: dim hallway or surveillance-room atmosphere, loose AV cable, reflected light rectangle, doorframe shadow.
+- Mood/setting: tense, observational, and secretive.
+- Palette/lighting/composition: charcoal, teal-gray, desaturated violet, small red accent; cool overhead strip light; low three-quarter close-up.
+
+### clues/197-violin.png — Violin
+
+- Gameplay function: Clue card; presents a refined musical object as fragile suspicious evidence.
+- Main subject: polished wooden violin with f-holes, bridge, strings, bow, worn varnish, and one subtly loosened string.
+- Supporting cues: dark velvet case or parquet floor, rosin dust, unreadable concert-program corner, soft latch shape.
+- Mood/setting: elegant, intimate, melancholy, and ominous.
+- Palette/lighting/composition: amber-brown varnish, deep plum, charcoal, muted umber, ivory highlights; theatrical upper-left spotlight; graceful top-down diagonal.
+
+### clues/198-wallet.png — Wallet
+
+- Gameplay function: Clue card; makes a personal item imply identity, loss, or planted evidence.
+- Main subject: folded brown leather wallet partly open with scuffed corners, stitching, and card-slot edges.
+- Supporting cues: rain-dark pavement or entryway floor, small coins, water ring, blurred blank card corner.
+- Mood/setting: intimate, urban, and uneasy.
+- Palette/lighting/composition: warm leather browns, tarnished brass, cool blue-gray pavement; soft streetlight glow; slight top-down close-up.
+
+### clues/199-watch.png — Watch
+
+- Gameplay function: Clue card; points to timing and a crucial moment.
+- Main subject: classic analog wristwatch with round face, metal bezel, dark leather strap, cracked glass, and bent strap.
+- Supporting cues: shadowy table surface, dust outline, glass shard, circular lamp reflection.
+- Mood/setting: precise, forensic, and ominous.
+- Palette/lighting/composition: slate, pewter, smoky blue, black leather, champagne-gold highlights; narrow upper-right spotlight; iconic slight top-down close-up.
+
+### clues/200-wig.png — Wig
+
+- Gameplay function: Clue card; signals disguise and performed identity.
+- Main subject: synthetic shoulder-length wig on a simple mannequin head, slightly askew with bangs and visible elastic edge.
+- Supporting cues: dim dressing-room vanity, soft mirror glow, loose hairpins, powdery makeup smudge.
+- Mood/setting: uncanny, theatrical, and secretive.
+- Palette/lighting/composition: chestnut-black hair, rose-beige mannequin tones, smoky mauve shadows, blue-gray mirror accent; soft upper-left vanity light; straight-on medium close-up.

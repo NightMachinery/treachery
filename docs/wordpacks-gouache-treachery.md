@@ -569,3 +569,19 @@ Generated and validated one batch of ten clues-card images with ImageMagick `ide
 | `assets/gouache-treachery/clues/193-uniform.png` | 1049x1499 | 0.699800 |
 
 All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/194-unknown-substance.png`.
+
+### 2026-04-30 checkpoint 29
+
+Generated and validated the final pending clues-card images for `gouache-treachery` with ImageMagick `identify` using `PE/image-gouache-V1.1-template.md`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/clues/194-usb-flash-drive.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/195-vegetables.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/196-video-camera.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/197-violin.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/198-wallet.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/199-watch.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/200-wig.png` | 1049x1499 | 0.699800 |
+
+All seven are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. This completes the current expected `gouache-treachery` asset manifest.

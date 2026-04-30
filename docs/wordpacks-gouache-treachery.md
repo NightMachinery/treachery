@@ -491,4 +491,4 @@ Generated and validated one batch of ten clues-card images with ImageMagick `ide
 | `assets/gouache-treachery/clues/152-sack.png` | 1049x1499 | 0.699800 |
 | `assets/gouache-treachery/clues/153-safety-pin.png` | 1050x1498 | 0.700935 |
 
-All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/154-scarf.png`.
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/154-sand.png`.

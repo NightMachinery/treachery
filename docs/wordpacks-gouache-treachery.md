@@ -511,3 +511,22 @@ Generated and validated one batch of ten clues-card images with ImageMagick `ide
 | `assets/gouache-treachery/clues/163-speaker.png` | 1049x1499 | 0.699800 |
 
 All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/164-specimen.png`.
+
+### 2026-04-30 checkpoint 26
+
+Generated and validated one batch of ten clues-card images with ImageMagick `identify` using `PE/image-gouache-V1.1-template.md`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/clues/164-specimen.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/165-spider.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/166-spinning-top.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/167-sponge.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/168-spring.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/169-steamed-buns.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/170-stockings.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/171-stuffed-toy.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/172-suit.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/173-sunglasses.png` | 1049x1499 | 0.699800 |
+
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/174-syringe.png`.

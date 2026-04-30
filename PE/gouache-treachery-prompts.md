@@ -1965,3 +1965,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: loose audio cable coil, faint phone-shaped reflection.
 - Mood/setting: dim apartment shelf or interrogation-room table, tense and technological.
 - Palette/lighting/composition: charcoal and graphite against muted teal and walnut with blue indicator accent; narrow rim light; iconic low-angle close-up.
+
+### clues/164-specimen.png — Specimen
+
+- Gameplay function: Clue card; makes preserved forensic material read as controlled laboratory evidence.
+- Main subject: sealed cylindrical glass specimen jar with amber preservative fluid and a suspended organic sample silhouette.
+- Supporting cues: blurred blank paper tag, metal tray edge, small fluid bubbles.
+- Mood/setting: sparse forensic counter, sterile and museum-quiet.
+- Palette/lighting/composition: cool surgical blue-gray and porcelain neutrals with warm amber fluid; narrow side key with rim highlight; straight-on iconic close-up.
+
+### clues/165-spider.png — Spider
+
+- Gameplay function: Clue card; turns a tiny creature into an ominous trace with instant silhouette recognition.
+- Main subject: dark long-legged spider spread against a pale wall or tile surface.
+- Supporting cues: faint web strand, dust motes, soft corner shadow.
+- Mood/setting: quiet apartment corner or storeroom, uncanny domestic tension.
+- Palette/lighting/composition: charcoal and umber against plaster cream with lavender-gray shadows and cold blue highlight; raking side light; low close-up star silhouette.
+
+### clues/166-spinning-top.png — Spinning top
+
+- Gameplay function: Clue card; suggests disturbed play or a misplaced toy as suspicious evidence.
+- Main subject: vintage painted wooden spinning top tilted in mid-wobble with metal tip.
+- Supporting cues: circular scuff mark, blurred chair-leg shadow, tiny paint chip.
+- Mood/setting: dim domestic room, elegant and uneasy.
+- Palette/lighting/composition: honey wood with muted crimson and cream bands against walnut and blue-gray shadows; narrow lamplight; low diagonal close-up.
+
+### clues/167-sponge.png — Sponge
+
+- Gameplay function: Clue card; makes a cleanup object read as incriminating trace evidence.
+- Main subject: damp rectangular yellow sponge with porous texture and reddish-brown stain.
+- Supporting cues: cloudy water trail, small soap-bubble cluster, blurred drain curve.
+- Mood/setting: cool sink ledge or tiled counter, sterile domestic unease.
+- Palette/lighting/composition: mustard yellow and rust against porcelain blue-gray, pale aqua, and ivory; diffuse window light; diagonal top-down close-up.
+
+### clues/168-spring.png — Spring
+
+- Gameplay function: Clue card; points to broken machinery or mechanical tampering through a readable part.
+- Main subject: partly stretched steel compression spring with repeated coil silhouette.
+- Supporting cues: tiny screw, faint grease smear, broken plastic casing edge.
+- Mood/setting: dark workbench or machinery shelf, tense and forensic.
+- Palette/lighting/composition: gunmetal, charcoal, muted teal, rust-brown, and cool white highlights; hard workshop spotlight; diagonal three-quarter close-up.
+
+### clues/169-steamed-buns.png — Steamed buns
+
+- Gameplay function: Clue card; turns warm restaurant food into a suspicious domestic or public trace.
+- Main subject: round bamboo steamer filled with plump white steamed buns.
+- Supporting cues: steam wisp, chili oil smear, dark chopstick silhouette.
+- Mood/setting: late-night Hong Kong kitchen or restaurant counter, cozy but uneasy.
+- Palette/lighting/composition: creamy whites and bamboo ochres against green-black and smoky umber with red-orange accent; warm overhead light; slight top-down centered close-up.
+
+### clues/170-stockings.png — Stockings
+
+- Gameplay function: Clue card; presents intimate clothing as elegant, ambiguous evidence.
+- Main subject: sheer dark stockings loosely tangled, with one stretched leg, rolled cuff, and seam line.
+- Supporting cues: fabric run, powdery footprint mark, blurred vanity-light glow.
+- Mood/setting: bedroom floor or dressing-room chair, private and uneasy.
+- Palette/lighting/composition: smoky black and charcoal against rose-beige, mauve, and pearl-gray accents; soft side light; top-down diagonal S-curve.
+
+### clues/171-stuffed-toy.png — Stuffed toy
+
+- Gameplay function: Clue card; makes a sentimental object feel unsettling and evidentiary.
+- Main subject: old plush teddy bear slumped upright with button eye, worn seams, rounded ears, and flattened paws.
+- Supporting cues: loose thread, patch repair, dust outline.
+- Mood/setting: dim bedroom corner or evidence table, tender unease.
+- Palette/lighting/composition: faded caramel and dusty tan against blue-gray shadows and muted plum with amber highlight; soft window rim; quiet frontal close-up.
+
+### clues/172-suit.png — Suit
+
+- Gameplay function: Clue card; suggests identity, disguise, status, or a suspect’s presence through formal clothing.
+- Main subject: dark tailored suit jacket hanging on a wooden chair with crisp lapels, shirt collar, and askew tie.
+- Supporting cues: cufflink glint, pocket-square fold, soft city-window glow.
+- Mood/setting: dim hotel room or executive office, refined and suspicious.
+- Palette/lighting/composition: navy-black wool, ivory shirt, walnut, smoky teal, and gold accent; cool window side light with warm bounce; frontal three-quarter medium close-up.
+
+### clues/173-sunglasses.png — Sunglasses
+
+- Gameplay function: Clue card; conveys concealment, style, and witness ambiguity through a personal accessory.
+- Main subject: dark broad-lensed sunglasses folded open on a tabletop.
+- Supporting cues: fingerprint smudge, city-light reflections, window-frame shadow.
+- Mood/setting: neon-tinted café table or car dashboard, urban night tension.
+- Palette/lighting/composition: charcoal, indigo, muted teal, amber, and violet shadows; narrow neon side light; low diagonal close-up.

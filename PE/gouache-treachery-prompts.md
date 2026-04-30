@@ -2125,3 +2125,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: blurred lab bench planes, reflected highlight, soft rack-opening shadow.
 - Mood/setting: sterile lab bench, scientific and ominous.
 - Palette/lighting/composition: cool whites and slate blues with acid-green accent and muted gray metal; backlight plus rim light; straight-on close-up.
+
+### clues/184-tie.png — Tie
+
+- Gameplay function: Clue card; turns formal clothing into a suspicious personal trace.
+- Main subject: loosened silk necktie with a partly undone knot, twisted loop, wrinkles, and tiny dark stain.
+- Supporting cues: private dressing-room or office surface, blurred shirt collar edge, brass drawer pull.
+- Mood/setting: polished intimate interior, abandoned in haste and uneasy.
+- Palette/lighting/composition: deep wine and midnight-blue silk, taupe neutrals, violet shadows, ivory highlight; narrow desk-lamp side key; slight top-down diagonal close-up.
+
+### clues/185-timber.png — Timber
+
+- Gameplay function: Clue card; makes construction material read as heavy physical evidence.
+- Main subject: splintered wooden beam with cut end, growth rings, torn fibers, nail marks, and pale fracture.
+- Supporting cues: dusty renovation/back-alley storage setting, sawdust scatter, blurred concrete edge.
+- Mood/setting: gritty, weighty, and forensic.
+- Palette/lighting/composition: raw ochre and burnt sienna wood against blue-gray concrete, pale sapwood accent; hard raking side light; low three-quarter diagonal close-up.
+
+### clues/186-tissue.png — Tissue
+
+- Gameplay function: Clue card; turns a fragile disposable paper item into intimate trace evidence.
+- Main subject: crumpled white tissue with translucent folds, faint lipstick smear, and dampened corner.
+- Supporting cues: dark bedside table or bathroom counter, moisture ring, blurred tile reflection.
+- Mood/setting: private, delicate, and quietly unsettling.
+- Palette/lighting/composition: chalky whites, pale blue-gray shadows, deep aubergine/charcoal, rose-red accent; diffuse upper-left window light; centered close-up.
+
+### clues/187-tool-box.png — Tool box
+
+- Gameplay function: Clue card; presents ordinary implements as a compact suspicious kit.
+- Main subject: battered open metal tool box with chipped red enamel and simplified pliers, wrench, and screwdriver silhouettes.
+- Supporting cues: dim garage or maintenance room, oil stains, workbench edge, loose screw.
+- Mood/setting: practical, gritty, and quietly threatening.
+- Palette/lighting/composition: worn crimson, graphite metal, umber shadows, muted teal background, pale steel highlights; overhead shop light with warm side glint; three-quarter close-up.
+
+### clues/188-toothpicks.png — Toothpicks
+
+- Gameplay function: Clue card; makes tiny sharp disposable objects read as precise evidence.
+- Main subject: spilled fan of bamboo toothpicks emerging from a plain paper sleeve.
+- Supporting cues: dark restaurant table or bar counter, soy-sauce ring, crumb, blurred reflections.
+- Mood/setting: nocturnal, quiet, and subtly menacing.
+- Palette/lighting/composition: pale bamboo and warm beige against ink-blue and burnt umber shadows; narrow pendant light; extreme top-down diagonal close-up.
+
+### clues/189-toy.png — Toy
+
+- Gameplay function: Clue card; uses an innocent object to imply an interrupted domestic scene.
+- Main subject: vintage wind-up toy animal in scuffed painted tin with side key and chipped eye.
+- Supporting cues: dim apartment floor, doorway shadow, dust trail, floorboard seam.
+- Mood/setting: tender, uncanny, and unsettling.
+- Palette/lighting/composition: muted candy red and faded turquoise against smoky grays and brown floor tones; low doorway side light; quiet frontal three-quarter close-up.
+
+### clues/190-toy-blocks.png — Toy blocks
+
+- Gameplay function: Clue card; turns orderly childhood blocks into suspicious domestic evidence.
+- Main subject: short stack and scatter of wooden toy blocks with abstract painted shapes, chipped corners, and worn edges.
+- Supporting cues: quiet nursery/apartment floor, faint rug edge, dust, blurred baseboard.
+- Mood/setting: innocent but uncanny.
+- Palette/lighting/composition: aged brick red, faded yellow, dusty blue, warm gray-brown floor, lavender shadows; soft window light; slight top-down off-center close-up.
+
+### clues/191-tweezers.png — Tweezers
+
+- Gameplay function: Clue card; presents a precise metal tool as forensic evidence.
+- Main subject: stainless steel tweezers nearly closed around a tiny dark fiber.
+- Supporting cues: clean evidence tray or lab bench, folded gauze square, blurred magnifier rim.
+- Mood/setting: sterile, exacting, and ominous.
+- Palette/lighting/composition: cool steel grays, porcelain whites, pale blue shadows, dark fiber accent; diffuse lab light and rim highlight; minimal top-down close-up.
+
+### clues/192-umbrella.png — Umbrella
+
+- Gameplay function: Clue card; makes a rain object read as evidence from a hurried night.
+- Main subject: folded dark umbrella with curved handle, wet ribs, droplets, wrap strap, and torn seam.
+- Supporting cues: dim entryway or wet pavement edge, small puddle reflection, blurred threshold.
+- Mood/setting: rainy, nocturnal, and abandoned.
+- Palette/lighting/composition: black-green fabric, slate-blue shadows, wet charcoal, amber handle accent; cool streetlight rim and puddle glow; tall diagonal close-up.
+
+### clues/193-uniform.png — Uniform
+
+- Gameplay function: Clue card; turns official clothing into an identity clue.
+- Main subject: neatly hung uniform jacket with structured shoulders, collar, blank badge shape, rumpled sleeve, and one missing button.
+- Supporting cues: dim locker-room/service corridor, blurred locker edge, coat hook, scuffed floor.
+- Mood/setting: institutional, secretive, and tense.
+- Palette/lighting/composition: desaturated navy/forest-green fabric, gray-beige walls, muted brass and cool highlights; overhead fluorescent key; straight-on iconic medium close-up.

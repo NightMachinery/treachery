@@ -548,4 +548,24 @@ Generated and validated one batch of ten clues-card images with ImageMagick `ide
 | `assets/gouache-treachery/clues/182-telephone.png` | 1049x1499 | 0.699800 |
 | `assets/gouache-treachery/clues/183-test-tube.png` | 1049x1499 | 0.699800 |
 
-All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/184-tissue.png`.
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/184-tie.png`.
+
+
+### 2026-04-30 checkpoint 28
+
+Generated and validated one batch of ten clues-card images with ImageMagick `identify` using `PE/image-gouache-V1.1-template.md`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/clues/184-tie.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/185-timber.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/186-tissue.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/187-tool-box.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/188-toothpicks.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/189-toy.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/190-toy-blocks.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/191-tweezers.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/192-umbrella.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/193-uniform.png` | 1049x1499 | 0.699800 |
+
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/194-unknown-substance.png`.

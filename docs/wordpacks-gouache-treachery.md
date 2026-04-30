@@ -529,4 +529,23 @@ Generated and validated one batch of ten clues-card images with ImageMagick `ide
 | `assets/gouache-treachery/clues/172-suit.png` | 1049x1499 | 0.699800 |
 | `assets/gouache-treachery/clues/173-sunglasses.png` | 1049x1499 | 0.699800 |
 
-All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/174-syringe.png`.
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/174-surgical-mask.png`.
+
+### 2026-04-30 checkpoint 27
+
+Generated and validated one batch of ten clues-card images with ImageMagick `identify` using `PE/image-gouache-V1.1-template.md`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/clues/174-surgical-mask.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/175-surveillance-camera.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/176-switch.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/177-syringe.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/178-table-lamp.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/179-take-out.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/180-tattoo.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/181-tea-leaves.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/182-telephone.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/183-test-tube.png` | 1049x1499 | 0.699800 |
+
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/184-tissue.png`.

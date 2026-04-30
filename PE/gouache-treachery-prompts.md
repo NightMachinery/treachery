@@ -2045,3 +2045,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: fingerprint smudge, city-light reflections, window-frame shadow.
 - Mood/setting: neon-tinted café table or car dashboard, urban night tension.
 - Palette/lighting/composition: charcoal, indigo, muted teal, amber, and violet shadows; narrow neon side light; low diagonal close-up.
+
+### clues/174-surgical-mask.png — Surgical mask
+
+- Gameplay function: Clue card; turns disposable medical protection into suspicious trace evidence.
+- Main subject: pale pleated surgical mask with slack elastic loops and a small rust-red stain.
+- Supporting cues: abstract clinic corridor tiles, stainless glint, blurred evidence-marker shape.
+- Mood/setting: sterile late-night clinic atmosphere, clinical and ominous.
+- Palette/lighting/composition: icy blue-green shadows, chalky whites, gray neutrals, rust accent; overhead fluorescent light; slight top-down close-up.
+
+### clues/175-surveillance-camera.png — Surveillance camera
+
+- Gameplay function: Clue card; suggests recorded evidence and being watched.
+- Main subject: dome-style security camera with dark glass lens, off-white housing, and tiny red recording light.
+- Supporting cues: concrete hallway planes, faint cable line, reflected lens glint.
+- Mood/setting: institutional urban corridor or parking-garage corner, suspicious and tense.
+- Palette/lighting/composition: concrete grays, greenish shadow, amber spill, red accent; side light and rim glow; low-angle iconic view.
+
+### clues/176-switch.png — Switch
+
+- Gameplay function: Clue card; makes a small environmental control read as a decisive altered detail.
+- Main subject: old ivory toggle switch halfway flipped, worn screws, and a faint dirty fingerprint.
+- Supporting cues: cracked wall paint, diagonal cast shadow, tiny electric-blue glimmer.
+- Mood/setting: shabby domestic wall, suspenseful and charged.
+- Palette/lighting/composition: nicotine ivory, dusty taupe, violet-gray shadows, cool blue accent; flashlight side key; straight-on close-up.
+
+### clues/177-syringe.png — Syringe
+
+- Gameplay function: Clue card; presents a medical instrument as dangerous forensic evidence.
+- Main subject: glass syringe with fine needle, tiny liquid bead, and faint amber dose in the barrel.
+- Supporting cues: sterile metal tray, folded gauze square, soft shadow.
+- Mood/setting: clinical tray environment, intimate and threatening.
+- Palette/lighting/composition: cool silvers and blue whites with honey-amber liquid; surgical top-left light; diagonal slight top-down still life.
+
+### clues/178-table-lamp.png — Table lamp
+
+- Gameplay function: Clue card; uses a domestic light source to imply interrupted nighttime activity.
+- Main subject: vintage table lamp with tilted fabric shade glowing from within.
+- Supporting cues: dark bedside tabletop, dust ring, small pull chain.
+- Mood/setting: private bedroom or bedside scene, nocturnal and uneasy.
+- Palette/lighting/composition: ochre lamp glow against plum-brown and blue-black shadows with brass accent; internal lamp key; medium close-up.
+
+### clues/179-take-out.png — Take out
+
+- Gameplay function: Clue card; turns ordinary food packaging into evidence of presence and timing.
+- Main subject: open paper take-out carton with chopsticks, simplified noodles, and sauce stains.
+- Supporting cues: napkin, unbranded sauce packet shape, cool window shadow.
+- Mood/setting: late-night apartment table, everyday but interrupted.
+- Palette/lighting/composition: warm ochres and paper whites against midnight blue shadows and red-brown sauce; oblique cool light; slight top-down still life.
+
+### clues/180-tattoo.png — Tattoo
+
+- Gameplay function: Clue card; suggests identity and recognition through a body marking.
+- Main subject: close-cropped forearm bearing a dark serpent-and-dagger tattoo with no letters.
+- Supporting cues: shadowy bar/back-room atmosphere, sleeve cuff, soft red reflection.
+- Mood/setting: secretive personal space, incriminating and intimate.
+- Palette/lighting/composition: warm skin midtones, deep ink blue-black, burgundy and olive shadows; moody side light; diagonal close-up crop.
+
+### clues/181-tea-leaves.png — Tea leaves
+
+- Gameplay function: Clue card; turns a delicate domestic remnant into an uncanny clue.
+- Main subject: tilted porcelain teacup and saucer with dark wet tea leaves spilled in a crescent.
+- Supporting cues: polished tabletop, tea ring, faint steam remnant.
+- Mood/setting: elegant domestic tabletop, quiet and uncanny.
+- Palette/lighting/composition: porcelain cream, deep umber, smoky jade, tiny gold highlight; diffuse window light; top-down close-up.
+
+### clues/182-telephone.png — Telephone
+
+- Gameplay function: Clue card; implies urgent or interrupted communication.
+- Main subject: old corded telephone receiver off the hook with coiled cord and base behind it.
+- Supporting cues: dim office desk, pool of light, vague paper stack without readable writing.
+- Mood/setting: noir office surface, unresolved and urgent.
+- Palette/lighting/composition: dark charcoal phone, tobacco browns, desaturated teal shadows, ivory highlights; hard desk-lamp key; three-quarter diagonal close-up.
+
+### clues/183-test-tube.png — Test tube
+
+- Gameplay function: Clue card; makes laboratory evidence read as suspicious analysis material.
+- Main subject: upright glass test tube in a simple rack slot, half-filled with greenish fluid and bubbles.
+- Supporting cues: blurred lab bench planes, reflected highlight, soft rack-opening shadow.
+- Mood/setting: sterile lab bench, scientific and ominous.
+- Palette/lighting/composition: cool whites and slate blues with acid-green accent and muted gray metal; backlight plus rim light; straight-on close-up.

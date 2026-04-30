@@ -1,6 +1,8 @@
 .card {
   width: var(--tg-card-width);
-  aspect-ratio: var(--tg-card-aspect-ratio, 7 / 10);
+  display: flex;
+  flex-direction: column;
+  height: auto;
   border-radius: 0;
   margin: 0;
   border: 1px solid rgba(226, 232, 240, 0.13);
@@ -47,15 +49,24 @@
       inset 0 0 0 1px rgba(255, 255, 255, 0.045);
   }
 
-  .main-img {
-    position: absolute;
-    inset: 0;
-    height: 100%;
+  .image-container {
+    position: relative;
     width: 100%;
+    aspect-ratio: 7 / 10;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .main-img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     object-position: center;
     filter: grayscale(0.08) saturate(0.92) contrast(1.15) brightness(0.9);
   }
+}
+
+.card.image-card {
 }
 
 .card.subdued {
@@ -72,13 +83,11 @@
 .card-name {
   --tg-card-name-scale: 1;
   --tg-card-name-base-size: 0.86rem;
-  position: absolute;
+  position: relative;
   z-index: 2;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  min-height: 2rem;
-  max-height: 2.72rem;
+  width: 100%;
+  height: 2.5rem;
+  flex-shrink: 0;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -96,19 +105,13 @@
   unicode-bidi: plaintext;
   letter-spacing: -0.035em;
   color: #f8fafc;
-  text-shadow:
-    0 1px 0 rgba(0, 0, 0, 0.92),
-    0 2px 7px rgba(0, 0, 0, 0.86),
-    0 0 14px rgba(0, 0, 0, 0.72);
-  background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.055), transparent 18%, transparent 82%, rgba(255, 255, 255, 0.035)),
-    linear-gradient(180deg, rgba(12, 14, 20, 0.7), rgba(2, 3, 7, 0.58));
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  background: linear-gradient(180deg, rgba(12, 14, 20, 1), rgba(2, 3, 7, 1));
   border-top: 1px solid rgba(255, 255, 255, 0.12);
   border-right: 0;
   border-bottom: 0;
   border-left: 0;
   border-radius: 0;
-  backdrop-filter: blur(6px) saturate(0.9);
   box-shadow:
     0 -12px 24px rgba(0, 0, 0, 0.28),
     inset 0 1px 0 rgba(255, 255, 255, 0.045);
@@ -140,9 +143,7 @@
 
 .card.selected .card-name {
   border-top-color: rgba(255, 255, 255, 0.2);
-  background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.07), transparent 18%, transparent 82%, rgba(255, 255, 255, 0.04)),
-    linear-gradient(180deg, rgba(15, 17, 24, 0.78), rgba(2, 3, 7, 0.68));
+  background: linear-gradient(180deg, rgba(15, 17, 24, 1), rgba(2, 3, 7, 1));
 }
 
 .not-selected {
@@ -167,6 +168,7 @@
 
 .text-only {
   width: 100%;
+  aspect-ratio: var(--tg-card-aspect-ratio, 7 / 10);
   min-width: 0;
   min-height: 0;
   background:
@@ -187,7 +189,6 @@
   .card-name {
     --tg-card-name-base-size: 0.98rem;
     position: static;
-    width: 100%;
     max-height: 100%;
     padding: 0.5rem 0.48rem;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(0, 0, 0, 0.1));

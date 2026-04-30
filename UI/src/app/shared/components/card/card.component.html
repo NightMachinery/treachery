@@ -16,7 +16,9 @@
   </ng-container>
 
   <ng-template #imageMode>
-    <img class="main-img" [src]="card.imgUrl" [alt]="card.name" loading="lazy" (error)="onImageError($event)" />
+    <div class="image-container">
+      <img class="main-img" [src]="card.imgUrl" [alt]="card.name" loading="lazy" (error)="onImageError($event)" />
+    </div>
     <div #cardName class="card-name" [class.card-name--compressed]="labelCompressed" dir="auto">{{ card.name }}</div>
   </ng-template>
 </div>

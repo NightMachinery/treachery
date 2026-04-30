@@ -59,4 +59,18 @@ describe('JoinedPlayerListItemComponent', () => {
     expect(avatar.name).toBe('Quiet Watcher');
     expect(fixture.nativeElement.textContent).toContain('Observer');
   });
+  it('labels a marked scientist as Scientist in the lobby', () => {
+    component.participant = {
+      uid: 'player-1',
+      name: 'Marked Player',
+      role: 'player',
+      isCreator: false,
+      isScientist: false,
+      isMarkedScientist: true,
+    } as TgParticipant;
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('Scientist');
+    expect(fixture.nativeElement.textContent).not.toContain('marked');
+  });
 });

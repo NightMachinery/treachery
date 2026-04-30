@@ -152,6 +152,14 @@
               />
               <span>Random Clue and Means Selection for Murderer</span>
             </label>
+            <label class="checkbox-row wide">
+              <input
+                type="checkbox"
+                [(ngModel)]="settings.showAllRolesToScientist"
+                (ngModelChange)="handleShowAllRolesToScientistChange()"
+              />
+              <span>Show all roles to forensic scientist</span>
+            </label>
             <ng-template #forcedTextOnlyRow>
               <label class="checkbox-row wide is-disabled">
                 <input type="checkbox" [checked]="true" disabled />

@@ -11,8 +11,8 @@
 
     <span class="badges">
       <span class="badge creator" *ngIf="participant.isCreator">mod</span>
-      <span class="badge scientist" *ngIf="participant.isScientist">scientist</span>
-      <span class="badge marked" *ngIf="participant.isMarkedScientist && !participant.isScientist">marked</span>
+      <span class="badge scientist" *ngIf="participant.isScientist">Scientist</span>
+      <span class="badge marked" *ngIf="participant.isMarkedScientist && !participant.isScientist">Scientist</span>
       <span class="badge bot" *ngIf="participant.isBot">bot</span>
     </span>
   </div>

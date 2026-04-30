@@ -16,7 +16,7 @@ A web app for a board game based on Deception: Murder in Hong Kong
 
 ![1](screenshots/forensic/1.png)
 
-3. **Set up the lobby**: The creator is a normal player and moderator. Before the game starts, the creator can toggle any participant between **player** and **observer**, toggle-mark one player as the forensic scientist, configure how many **means** and **evidence/clue** cards each suspect receives, choose whether means/clues should render as **text-only** cards without images, and optionally add **accomplices** and **witnesses**. Evidence can follow the means count automatically, or be set separately. Witnesses and accomplices default to `0`.
+3. **Set up the lobby**: The creator is a normal player and moderator. Before the game starts, the creator can toggle any participant between **player** and **observer**, toggle-mark one player as the forensic scientist, configure how many **means** and **evidence/clue** cards each suspect receives, choose whether means/clues should render as **text-only** cards without images, choose whether the forensic scientist sees all hidden roles during active play, and optionally add **accomplices** and **witnesses**. Evidence can follow the means count automatically, or be set separately. Witnesses and accomplices default to `0`.
 
 ![1](screenshots/forensic/2.png)
 
@@ -44,7 +44,7 @@ A web app for a board game based on Deception: Murder in Hong Kong
 
 ![1](screenshots/investigator/0.png)
 
-2. **Lobby**: You can see every room participant in the lobby, including observers. Players can use chat in the lobby. The creator can switch participants between player and observer, mark one player as the forensic scientist, choose card counts, and configure optional accomplices and witnesses before the game starts. The lobby still needs at least 4 players before the game can start. After the game starts, the chosen forensic scientist is either the marked player or a random player if nobody was marked.
+2. **Lobby**: You can see every room participant in the lobby, including observers. Players can use chat in the lobby. The creator can switch participants between player and observer, mark one player as the forensic scientist, choose card counts, choose whether the forensic scientist sees all hidden roles during active play, and configure optional accomplices and witnesses before the game starts. The lobby still needs at least 4 players before the game can start. After the game starts, the chosen forensic scientist is either the marked player or a random player if nobody was marked.
 
 ![1](screenshots/investigator/1.png)
 

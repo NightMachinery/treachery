@@ -85,6 +85,10 @@ Lobby settings auto-save after a short debounce; the start button stays disabled
 - Everyone in the room sees the same sticky timer banner on game screens, including mobile.
 - When the timer expires, it stays visible at `0:00` until the creator restarts or clears it, with a visual expiry cue and a best-effort sound cue in supported browsers.
 
+## Lobby visibility settings
+
+- **Show all roles to forensic scientist** is enabled by default. When enabled, the forensic scientist sees the active role reveal during the game; when disabled, roles stay hidden from the scientist until the finished-game reveal.
+
 ## Role assignment
 
 When the creator starts the game:
@@ -103,7 +107,7 @@ When the creator starts the game:
 - bot murderer: if murderer card selection is not randomized by room settings, picks random murder cards automatically after a short delay and notifies connected clients
 - accomplice: knows the full murderer team, including the other accomplices, and sees the murder cards once selected
 - witness: knows the murderer team identities
-- forensic scientist: knows the murderer and the selected murder cards through the existing forensic private view, with hint cards localized from the selected HintPack language
+- forensic scientist: knows the murderer and the selected murder cards through the existing forensic private view, with hint cards localized from the selected HintPack language; by default, the lobby setting **Show all roles to forensic scientist** also reveals every suspect's hidden role to the scientist during active play
 - bot forensic scientist: immediately reveals random cause, location, and four other hints, then replaces one active other hint with a random unused hint after each wrong guess until no unused hints remain
 
 ## Witness-selection resolution

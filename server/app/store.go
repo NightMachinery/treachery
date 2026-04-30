@@ -132,6 +132,7 @@ func (a *App) migrate() error {
 			link_clue_count_to_means INTEGER NOT NULL DEFAULT 1,
 			means_clues_text_only INTEGER NOT NULL DEFAULT 0,
 			random_murderer_card_selection INTEGER NOT NULL DEFAULT 0,
+			show_all_roles_to_scientist INTEGER NOT NULL DEFAULT 1,
 			crime_pack_id TEXT NOT NULL DEFAULT 'treachery',
 			crime_pack_language TEXT NOT NULL DEFAULT 'fa',
 			crime_pack_asset_set_id TEXT NOT NULL DEFAULT 'gouache-treachery',
@@ -236,6 +237,7 @@ func (a *App) migrate() error {
 		`ALTER TABLE games ADD COLUMN link_clue_count_to_means INTEGER NOT NULL DEFAULT 1;`,
 		`ALTER TABLE games ADD COLUMN means_clues_text_only INTEGER NOT NULL DEFAULT 0;`,
 		`ALTER TABLE games ADD COLUMN random_murderer_card_selection INTEGER NOT NULL DEFAULT 0;`,
+		`ALTER TABLE games ADD COLUMN show_all_roles_to_scientist INTEGER NOT NULL DEFAULT 1;`,
 		`ALTER TABLE games ADD COLUMN crime_pack_id TEXT NOT NULL DEFAULT 'treachery';`,
 		`ALTER TABLE games ADD COLUMN crime_pack_language TEXT NOT NULL DEFAULT 'fa';`,
 		`ALTER TABLE games ADD COLUMN crime_pack_asset_set_id TEXT NOT NULL DEFAULT 'gouache-treachery';`,
@@ -329,6 +331,7 @@ type GameSettingsInput struct {
 	LinkClueCountToMeans        bool   `json:"linkClueCountToMeans"`
 	MeansCluesTextOnly          bool   `json:"meansCluesTextOnly"`
 	RandomMurdererCardSelection bool   `json:"randomMurdererCardSelection"`
+	ShowAllRolesToScientist     bool   `json:"showAllRolesToScientist"`
 	CrimePackID                 string `json:"crimePackId"`
 	CrimePackLanguage           string `json:"crimePackLanguage"`
 	CrimePackAssetSetID         string `json:"crimePackAssetSetId"`
@@ -407,6 +410,7 @@ func (a *App) applyGameSettings(game *Game, settings GameSettingsInput) error {
 	game.HintPackLanguage = hintLang
 	game.MeansCluesTextOnly = settings.MeansCluesTextOnly || !crimePack.hasAnyImages()
 	game.RandomMurdererCardSelection = settings.RandomMurdererCardSelection
+	game.ShowAllRolesToScientist = settings.ShowAllRolesToScientist
 	game.AccompliceCount = settings.AccompliceCount
 	game.WitnessCount = settings.WitnessCount
 	game.WitnessesToFind = settings.WitnessesToFind
@@ -844,7 +848,7 @@ func (a *App) ResolveRoomAuthToken(gameID, token string) (string, error) {
 }
 
 func (a *App) ListGames() ([]Game, error) {
-	rows, err := a.db.Query(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished, means_cards_per_player, clue_cards_per_player, link_clue_count_to_means, means_clues_text_only, random_murderer_card_selection, crime_pack_id, crime_pack_language, crime_pack_asset_set_id, hint_pack_id, hint_pack_language, accomplice_count, witness_count, witnesses_to_find, pending_witness_selection, winner, finished_reason, result_message, room_timer_duration_seconds, room_timer_expires_at, room_timer_paused_remaining_seconds, room_timer_run_id FROM games ORDER BY created_timestamp DESC`)
+	rows, err := a.db.Query(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished, means_cards_per_player, clue_cards_per_player, link_clue_count_to_means, means_clues_text_only, random_murderer_card_selection, show_all_roles_to_scientist, crime_pack_id, crime_pack_language, crime_pack_asset_set_id, hint_pack_id, hint_pack_language, accomplice_count, witness_count, witnesses_to_find, pending_witness_selection, winner, finished_reason, result_message, room_timer_duration_seconds, room_timer_expires_at, room_timer_paused_remaining_seconds, room_timer_run_id FROM games ORDER BY created_timestamp DESC`)
 	if err != nil {
 		return nil, err
 	}
@@ -964,7 +968,7 @@ func (a *App) GetSnapshot(gameID, viewerUID string) (*GameSnapshot, error) {
 		}
 	}
 
-	if game.Finished {
+	if game.Finished || (viewer.IsScientist && game.ShowAllRolesToScientist) {
 		snapshot.RoleReveal = buildRoleReveal(participants, playerRoles, game.ScientistUID)
 	}
 
@@ -1937,7 +1941,7 @@ func (a *App) checkAndEndGameTx(tx *sql.Tx, game *Game) error {
 }
 
 func (a *App) getGame(gameID string) (*Game, error) {
-	row := a.db.QueryRow(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished, means_cards_per_player, clue_cards_per_player, link_clue_count_to_means, means_clues_text_only, random_murderer_card_selection, crime_pack_id, crime_pack_language, crime_pack_asset_set_id, hint_pack_id, hint_pack_language, accomplice_count, witness_count, witnesses_to_find, pending_witness_selection, winner, finished_reason, result_message, room_timer_duration_seconds, room_timer_expires_at, room_timer_paused_remaining_seconds, room_timer_run_id FROM games WHERE game_id = ?`, gameID)
+	row := a.db.QueryRow(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished, means_cards_per_player, clue_cards_per_player, link_clue_count_to_means, means_clues_text_only, random_murderer_card_selection, show_all_roles_to_scientist, crime_pack_id, crime_pack_language, crime_pack_asset_set_id, hint_pack_id, hint_pack_language, accomplice_count, witness_count, witnesses_to_find, pending_witness_selection, winner, finished_reason, result_message, room_timer_duration_seconds, room_timer_expires_at, room_timer_paused_remaining_seconds, room_timer_run_id FROM games WHERE game_id = ?`, gameID)
 	game, err := a.scanGame(row)
 	if err != nil {
 		return nil, err
@@ -1946,7 +1950,7 @@ func (a *App) getGame(gameID string) (*Game, error) {
 }
 
 func (a *App) getGameTx(tx *sql.Tx, gameID string) (*Game, error) {
-	row := tx.QueryRow(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished, means_cards_per_player, clue_cards_per_player, link_clue_count_to_means, means_clues_text_only, random_murderer_card_selection, crime_pack_id, crime_pack_language, crime_pack_asset_set_id, hint_pack_id, hint_pack_language, accomplice_count, witness_count, witnesses_to_find, pending_witness_selection, winner, finished_reason, result_message, room_timer_duration_seconds, room_timer_expires_at, room_timer_paused_remaining_seconds, room_timer_run_id FROM games WHERE game_id = ?`, gameID)
+	row := tx.QueryRow(`SELECT game_id, creator_uid, created_timestamp, started_on, murderer_cards_selected, murderer_uid, murderer_clue_card_name, murderer_means_card_name, scientist_uid, marked_scientist_uid, cause_card_json, location_card_json, other_cards_json, finished, means_cards_per_player, clue_cards_per_player, link_clue_count_to_means, means_clues_text_only, random_murderer_card_selection, show_all_roles_to_scientist, crime_pack_id, crime_pack_language, crime_pack_asset_set_id, hint_pack_id, hint_pack_language, accomplice_count, witness_count, witnesses_to_find, pending_witness_selection, winner, finished_reason, result_message, room_timer_duration_seconds, room_timer_expires_at, room_timer_paused_remaining_seconds, room_timer_run_id FROM games WHERE game_id = ?`, gameID)
 	game, err := a.scanGame(row)
 	if err != nil {
 		return nil, err
@@ -1971,7 +1975,7 @@ func (a *App) scanGame(scanner rowScanner) (*Game, error) {
 		murdererCardsSelected, finished                                     int
 		meansCardsPerPlayer, clueCardsPerPlayer                             int
 		linkClueCountToMeans, meansCluesTextOnly                            int
-		randomMurdererCardSelection                                         int
+		randomMurdererCardSelection, showAllRolesToScientist                int
 		accompliceCount, witnessCount, witnessesToFind                      int
 		pendingWitnessSelection                                             int
 		roomTimerDurationSeconds, roomTimerPausedRemainingSeconds           int
@@ -1997,6 +2001,7 @@ func (a *App) scanGame(scanner rowScanner) (*Game, error) {
 		&linkClueCountToMeans,
 		&meansCluesTextOnly,
 		&randomMurdererCardSelection,
+		&showAllRolesToScientist,
 		&crimePackID,
 		&crimePackLanguage,
 		&crimePackAssetSetID,
@@ -2040,6 +2045,7 @@ func (a *App) scanGame(scanner rowScanner) (*Game, error) {
 		LinkClueCountToMeans:        linkClueCountToMeans == 1,
 		MeansCluesTextOnly:          meansCluesTextOnly == 1,
 		RandomMurdererCardSelection: randomMurdererCardSelection == 1,
+		ShowAllRolesToScientist:     showAllRolesToScientist == 1,
 		CrimePackID:                 crimePackID.String,
 		CrimePackLanguage:           crimePackLanguage.String,
 		CrimePackAssetSetID:         crimePackAssetSetID.String,
@@ -2455,7 +2461,7 @@ func (a *App) saveGameTx(tx *sql.Tx, game *Game) error {
 		game.RoomTimerRunID = roomTimerRunID
 		roomTimerExpiresAt = nullableString(game.RoomTimer.ExpiresAt)
 	}
-	_, err = tx.Exec(`UPDATE games SET started_on = ?, murderer_cards_selected = ?, murderer_uid = ?, murderer_clue_card_name = ?, murderer_means_card_name = ?, scientist_uid = ?, marked_scientist_uid = ?, cause_card_json = ?, location_card_json = ?, other_cards_json = ?, finished = ?, means_cards_per_player = ?, clue_cards_per_player = ?, link_clue_count_to_means = ?, means_clues_text_only = ?, random_murderer_card_selection = ?, crime_pack_id = ?, crime_pack_language = ?, crime_pack_asset_set_id = ?, hint_pack_id = ?, hint_pack_language = ?, accomplice_count = ?, witness_count = ?, witnesses_to_find = ?, pending_witness_selection = ?, winner = ?, finished_reason = ?, result_message = ?, room_timer_duration_seconds = ?, room_timer_expires_at = ?, room_timer_paused_remaining_seconds = ?, room_timer_run_id = ? WHERE game_id = ?`,
+	_, err = tx.Exec(`UPDATE games SET started_on = ?, murderer_cards_selected = ?, murderer_uid = ?, murderer_clue_card_name = ?, murderer_means_card_name = ?, scientist_uid = ?, marked_scientist_uid = ?, cause_card_json = ?, location_card_json = ?, other_cards_json = ?, finished = ?, means_cards_per_player = ?, clue_cards_per_player = ?, link_clue_count_to_means = ?, means_clues_text_only = ?, random_murderer_card_selection = ?, show_all_roles_to_scientist = ?, crime_pack_id = ?, crime_pack_language = ?, crime_pack_asset_set_id = ?, hint_pack_id = ?, hint_pack_language = ?, accomplice_count = ?, witness_count = ?, witnesses_to_find = ?, pending_witness_selection = ?, winner = ?, finished_reason = ?, result_message = ?, room_timer_duration_seconds = ?, room_timer_expires_at = ?, room_timer_paused_remaining_seconds = ?, room_timer_run_id = ? WHERE game_id = ?`,
 		nullableString(game.StartedOn),
 		boolToInt(game.MurdererCardsSelected),
 		nullableString(game.MurdererUID),
@@ -2472,6 +2478,7 @@ func (a *App) saveGameTx(tx *sql.Tx, game *Game) error {
 		boolToInt(game.LinkClueCountToMeans),
 		boolToInt(game.MeansCluesTextOnly),
 		boolToInt(game.RandomMurdererCardSelection),
+		boolToInt(game.ShowAllRolesToScientist),
 		game.CrimePackID,
 		game.CrimePackLanguage,
 		game.CrimePackAssetSetID,

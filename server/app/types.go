@@ -135,6 +135,7 @@ type Game struct {
 	LinkClueCountToMeans        bool           `json:"linkClueCountToMeans"`
 	MeansCluesTextOnly          bool           `json:"meansCluesTextOnly"`
 	RandomMurdererCardSelection bool           `json:"randomMurdererCardSelection"`
+	ShowAllRolesToScientist     bool           `json:"showAllRolesToScientist"`
 	CrimePackID                 string         `json:"crimePackId"`
 	CrimePackLanguage           string         `json:"crimePackLanguage"`
 	CrimePackAssetSetID         string         `json:"crimePackAssetSetId,omitempty"`

@@ -126,6 +126,140 @@ func TestCreateGameUsesPackDefaults(t *testing.T) {
 	}
 }
 
+func TestShowAllRolesToScientistDefaultsEnabled(t *testing.T) {
+	app := newTestApp(t)
+	defer app.Close()
+
+	setProfile(t, app, "creator", "Creator")
+	if err := app.CreateGame("creator", "SDEF"); err != nil {
+		t.Fatalf("create game: %v", err)
+	}
+	snapshot, err := app.GetSnapshot("SDEF", "creator")
+	if err != nil {
+		t.Fatalf("snapshot: %v", err)
+	}
+	if !snapshot.Game.ShowAllRolesToScientist {
+		t.Fatalf("expected show-all-roles-to-scientist to default enabled, got %+v", snapshot.Game)
+	}
+}
+
+func TestScientistRoleRevealSettingControlsActiveSnapshot(t *testing.T) {
+	app := newTestApp(t)
+	defer app.Close()
+
+	setProfile(t, app, "creator", "Creator")
+	if err := app.CreateGame("creator", "SROL"); err != nil {
+		t.Fatalf("create game: %v", err)
+	}
+	joinPlayers(t, app, "SROL", "p1", "p2", "p3", "p4")
+	if err := app.UpdateGameSettings("SROL", "creator", GameSettingsInput{
+		MeansCardsPerPlayer:     4,
+		ClueCardsPerPlayer:      4,
+		LinkClueCountToMeans:    true,
+		ShowAllRolesToScientist: true,
+	}); err != nil {
+		t.Fatalf("update settings: %v", err)
+	}
+	if err := app.StartGame("SROL", "creator"); err != nil {
+		t.Fatalf("start game: %v", err)
+	}
+	creatorSnapshot, err := app.GetSnapshot("SROL", "creator")
+	if err != nil {
+		t.Fatalf("creator snapshot: %v", err)
+	}
+	scientistSnapshot, err := app.GetSnapshot("SROL", creatorSnapshot.Game.ScientistUID)
+	if err != nil {
+		t.Fatalf("scientist snapshot: %v", err)
+	}
+	if len(scientistSnapshot.RoleReveal) != len(scientistSnapshot.Participants) {
+		t.Fatalf("expected active scientist role reveal for every participant, got reveal=%+v participants=%+v", scientistSnapshot.RoleReveal, scientistSnapshot.Participants)
+	}
+
+	setProfile(t, app, "creator2", "Creator 2")
+	if err := app.CreateGame("creator2", "SNOR"); err != nil {
+		t.Fatalf("create second game: %v", err)
+	}
+	joinPlayers(t, app, "SNOR", "q1", "q2", "q3", "q4")
+	if err := app.UpdateGameSettings("SNOR", "creator2", GameSettingsInput{
+		MeansCardsPerPlayer:     4,
+		ClueCardsPerPlayer:      4,
+		LinkClueCountToMeans:    true,
+		ShowAllRolesToScientist: false,
+	}); err != nil {
+		t.Fatalf("update second settings: %v", err)
+	}
+	if err := app.StartGame("SNOR", "creator2"); err != nil {
+		t.Fatalf("start second game: %v", err)
+	}
+	secondCreatorSnapshot, err := app.GetSnapshot("SNOR", "creator2")
+	if err != nil {
+		t.Fatalf("second creator snapshot: %v", err)
+	}
+	secondScientistSnapshot, err := app.GetSnapshot("SNOR", secondCreatorSnapshot.Game.ScientistUID)
+	if err != nil {
+		t.Fatalf("second scientist snapshot: %v", err)
+	}
+	if len(secondScientistSnapshot.RoleReveal) != 0 {
+		t.Fatalf("expected active scientist role reveal hidden when setting is disabled, got %+v", secondScientistSnapshot.RoleReveal)
+	}
+}
+
+func TestFinishedRoleRevealIgnoresScientistVisibilitySetting(t *testing.T) {
+	app := newTestApp(t)
+	defer app.Close()
+
+	setProfile(t, app, "creator", "Creator")
+	if err := app.CreateGame("creator", "SFIN"); err != nil {
+		t.Fatalf("create game: %v", err)
+	}
+	joinPlayers(t, app, "SFIN", "p1", "p2", "p3", "p4")
+	if err := app.UpdateGameSettings("SFIN", "creator", GameSettingsInput{
+		MeansCardsPerPlayer:     4,
+		ClueCardsPerPlayer:      4,
+		LinkClueCountToMeans:    true,
+		ShowAllRolesToScientist: false,
+	}); err != nil {
+		t.Fatalf("update settings: %v", err)
+	}
+	if err := app.StartGame("SFIN", "creator"); err != nil {
+		t.Fatalf("start game: %v", err)
+	}
+	creatorSnapshot, err := app.GetSnapshot("SFIN", "creator")
+	if err != nil {
+		t.Fatalf("creator snapshot: %v", err)
+	}
+	scientistSnapshot, err := app.GetSnapshot("SFIN", creatorSnapshot.Game.ScientistUID)
+	if err != nil {
+		t.Fatalf("scientist snapshot: %v", err)
+	}
+	murderer := scientistSnapshot.ForensicPrivateData.Murderer
+	clue := murderer.ClueCards[0].Name
+	means := murderer.MeansCards[0].Name
+	if err := app.SelectMurdererCards("SFIN", murderer.UID, clue, means); err != nil {
+		t.Fatalf("select murderer cards: %v", err)
+	}
+	guesser := "creator"
+	if guesser == murderer.UID || guesser == creatorSnapshot.Game.ScientistUID {
+		guesser = "p1"
+	}
+	if guesser == murderer.UID || guesser == creatorSnapshot.Game.ScientistUID {
+		guesser = "p2"
+	}
+	if err := app.MakeGuess("SFIN", guesser, murderer.UID, clue, means); err != nil {
+		t.Fatalf("make guess: %v", err)
+	}
+	finishedSnapshot, err := app.GetSnapshot("SFIN", "creator")
+	if err != nil {
+		t.Fatalf("finished snapshot: %v", err)
+	}
+	if !finishedSnapshot.Game.Finished {
+		t.Fatalf("expected finished game")
+	}
+	if len(finishedSnapshot.RoleReveal) != len(finishedSnapshot.Participants) {
+		t.Fatalf("expected finished role reveal for every participant, got reveal=%+v participants=%+v", finishedSnapshot.RoleReveal, finishedSnapshot.Participants)
+	}
+}
+
 func TestStartGameBuildsSnapshotWithScientist(t *testing.T) {
 	app := newTestApp(t)
 	defer app.Close()

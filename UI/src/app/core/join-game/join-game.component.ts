@@ -148,12 +148,12 @@ export class JoinGameComponent implements OnInit, OnDestroy {
     }
     const playerCount = (snapshot.participants || []).filter((p) => p.role === 'player').length;
     const count = Math.max(0, 4 - playerCount);
-    
+
     if (count <= 0) {
       this.snack.success('Already have enough players to start.');
       return;
     }
-    
+
     this.addingBots = true;
     try {
       await this.gameApi.addBots(count);
@@ -203,6 +203,10 @@ export class JoinGameComponent implements OnInit, OnDestroy {
   }
 
   handleRandomMurdererCardSelectionChange() {
+    this.markSettingsChanged();
+  }
+
+  handleShowAllRolesToScientistChange() {
     this.markSettingsChanged();
   }
 
@@ -421,6 +425,7 @@ export class JoinGameComponent implements OnInit, OnDestroy {
       linkClueCountToMeans: true,
       meansCluesTextOnly: false,
       randomMurdererCardSelection: false,
+      showAllRolesToScientist: true,
       crimePackId: 'treachery',
       crimePackLanguage: 'fa',
       crimePackAssetSetId: 'gouache-treachery',
@@ -439,6 +444,7 @@ export class JoinGameComponent implements OnInit, OnDestroy {
       linkClueCountToMeans: game.linkClueCountToMeans,
       meansCluesTextOnly: game.meansCluesTextOnly,
       randomMurdererCardSelection: game.randomMurdererCardSelection,
+      showAllRolesToScientist: game.showAllRolesToScientist,
       crimePackId: game.crimePackId,
       crimePackLanguage: game.crimePackLanguage,
       crimePackAssetSetId: game.crimePackAssetSetId,

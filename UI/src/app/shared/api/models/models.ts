@@ -70,7 +70,7 @@ export interface TgPlayer {
 export enum TgMessageType {
   CHAT = 'chat',
   GUESS = 'guess',
-  FORENSIC = 'forensic'
+  FORENSIC = 'forensic',
 }
 
 export interface TgMessage {
@@ -111,6 +111,7 @@ export interface TgGame {
   linkClueCountToMeans: boolean;
   meansCluesTextOnly: boolean;
   randomMurdererCardSelection: boolean;
+  showAllRolesToScientist: boolean;
   crimePackId: string;
   crimePackLanguage: string;
   crimePackAssetSetId: string;
@@ -283,6 +284,7 @@ export interface TgGameSettingsInput {
   linkClueCountToMeans: boolean;
   meansCluesTextOnly: boolean;
   randomMurdererCardSelection: boolean;
+  showAllRolesToScientist: boolean;
   crimePackId: string;
   crimePackLanguage: string;
   crimePackAssetSetId: string;

@@ -8,7 +8,7 @@ import { AuthService } from './../../shared/api/auth/auth.service';
 import { GameApiService } from '../../shared/api/game/game-api.service';
 import { ForensicApiService } from './../../shared/api/forensic/forensic-api.service';
 import { SnackBarService } from './../../shared/api/snack-bar/snack-bar.service';
-import { TgCard, TgForensicCard, TgForensicPrivateData, TgGame } from './../../shared/api/models/models';
+import { TgCard, TgForensicCard, TgForensicPrivateData, TgGame, TgGuess, TgParticipant, TgPlayer } from './../../shared/api/models/models';
 import { copyTextToClipboard } from '../../shared/utils/clipboard';
 
 @Component({
@@ -203,6 +203,26 @@ export class ForensicComponent implements OnInit, OnDestroy {
       return 'Off';
     }
     return `${game.witnessesToFind}/${game.witnessCount} to find`;
+  }
+
+  sortedGuesses(guesses: TgGuess[]) {
+    return [...(guesses || [])].sort((a, b) => {
+      const aTime = a.createdTimestamp ? Date.parse(a.createdTimestamp) : 0;
+      const bTime = b.createdTimestamp ? Date.parse(b.createdTimestamp) : 0;
+      return bTime - aTime;
+    });
+  }
+
+  participantName(uid: string, participantsDict: Map<string, TgParticipant>) {
+    return participantsDict?.get(uid)?.name || 'Someone';
+  }
+
+  playerName(uid: string, playersDict: Map<string, TgPlayer>) {
+    return playersDict?.get(uid)?.name || 'Unknown suspect';
+  }
+
+  trackByGuess(index: number, guess: TgGuess) {
+    return `${guess.guessedByUid}-${guess.murdererUid}-${guess.meansCardId}-${guess.clueCardId}-${guess.createdTimestamp || index}`;
   }
 
   endGame() {

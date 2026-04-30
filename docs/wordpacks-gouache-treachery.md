@@ -492,3 +492,22 @@ Generated and validated one batch of ten clues-card images with ImageMagick `ide
 | `assets/gouache-treachery/clues/153-safety-pin.png` | 1050x1498 | 0.700935 |
 
 All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/154-sand.png`.
+
+### 2026-04-30 checkpoint 25
+
+Generated and validated one batch of ten clues-card images with ImageMagick `identify` using `PE/image-gouache-V1.1-template.md`:
+
+| Path | Dimensions | Ratio |
+| --- | ---: | ---: |
+| `assets/gouache-treachery/clues/154-sand.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/155-sawdust.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/156-seasoning.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/157-signature.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/158-skull.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/159-snacks.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/160-soap.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/161-sock.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/162-soft-drink.png` | 1049x1499 | 0.699800 |
+| `assets/gouache-treachery/clues/163-speaker.png` | 1049x1499 | 0.699800 |
+
+All ten are within the accepted few-pixel 7:10 tolerance. Prompt briefs are recorded in `PE/gouache-treachery-prompts.md`. The next pending asset is `assets/gouache-treachery/clues/164-specimen.png`.

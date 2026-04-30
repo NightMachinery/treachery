@@ -1885,3 +1885,83 @@ Prompts are handcrafted from `PE/image-gouache-1-template.md`. Common constraint
 - Supporting cues: torn navy fabric, loose thread, pale fiber caught on the point.
 - Mood/setting: intimate textile surface, tense and investigative.
 - Palette/lighting/composition: cool steel over deep indigo with lavender shadows; raking side light; macro diagonal oval composition.
+
+### clues/154-sand.png — Sand
+
+- Gameplay function: Clue card; makes a small trace of sand read as suspicious physical evidence.
+- Main subject: cone-shaped spill of fine beige sand with scattered grains and dark flecks.
+- Supporting cues: faint shoe-tip shadow, torn paper scrap partly buried.
+- Mood/setting: elegant urban interior surface, ominous and forensic.
+- Palette/lighting/composition: bone and ochre against cool slate-blue shadows; low raking side light; slight top-down close-up.
+
+### clues/155-sawdust.png — Sawdust
+
+- Gameplay function: Clue card; points to workshop activity or forced entry through fresh wood debris.
+- Main subject: curled pile of fresh sawdust shavings and fibrous powder.
+- Supporting cues: blurred chisel gouge mark, fine scratch lines.
+- Mood/setting: dark worn workbench or floorboard, tense and investigative.
+- Palette/lighting/composition: honey tan and raw umber against green-gray and charcoal; narrow workshop side light; asymmetrical crescent close-up.
+
+### clues/156-seasoning.png — Seasoning
+
+- Gameplay function: Clue card; turns a kitchen spill into colorful, pungent evidence.
+- Main subject: overturned porcelain spice bowl spilling coarse mixed seasoning.
+- Supporting cues: oily smear, distant blurred knife-handle silhouette.
+- Mood/setting: cool kitchen counter, polished domestic unease.
+- Palette/lighting/composition: cream porcelain and gray stone with paprika, herb green, black pepper, and salt accents; diffuse window light; diagonal top-down spill.
+
+### clues/157-signature.png — Signature
+
+- Gameplay function: Clue card; frames a document mark as decisive forged or incriminating evidence without readable text.
+- Main subject: large sweeping dark-ink cursive signature-like marks on cream paper.
+- Supporting cues: fountain pen corner, wax seal fragment, soft document shadows.
+- Mood/setting: dim study desk, intimate and deceptive.
+- Palette/lighting/composition: ivory, sepia, blue-black ink, burgundy wax accent; focused desk-lamp glow; straight-on overhead graphic close-up.
+
+### clues/158-skull.png — Skull
+
+- Gameplay function: Clue card; presents a stark forensic object with grave visual clarity.
+- Main subject: aged ivory skull in three-quarter view with hollow sockets and cracked cheekbone.
+- Supporting cues: blurred evidence-marker shape, dusty bone fragments.
+- Mood/setting: sparse evidence-room or excavation darkness, solemn and ominous.
+- Palette/lighting/composition: ivory and smoky umber with violet-gray shadows and teal accent; rim light; iconic close-up portrait.
+
+### clues/159-snacks.png — Snacks
+
+- Gameplay function: Clue card; turns everyday food debris into suspicious trace evidence.
+- Main subject: open paper snack tray or torn packet spilling crackers, chips, and crumbs.
+- Supporting cues: red sauce smear, disposable cup silhouette.
+- Mood/setting: dim cinema armrest or late-night apartment table, mundane and uneasy.
+- Palette/lighting/composition: golden ochre snacks against plum-brown and navy; warm overhead light; diagonal crumb cascade.
+
+### clues/160-soap.png — Soap
+
+- Gameplay function: Clue card; makes a clean bathroom object feel sterile and incriminating.
+- Main subject: pale rounded bar of soap with suds and fingerprint-like indentation.
+- Supporting cues: foam trail, faint reddish-brown water droplet.
+- Mood/setting: ceramic sink ledge or tile surface, clinical and ominous.
+- Palette/lighting/composition: milky cream and pale aqua against porcelain blue-gray; diffuse window light; centered top-down close-up.
+
+### clues/161-sock.png — Sock
+
+- Gameplay function: Clue card; presents an intimate clothing trace as overlooked evidence.
+- Main subject: one rumpled dark knit sock with worn heel, ribbed cuff, and toe curve.
+- Supporting cues: faint wet footprint mark, loose threads.
+- Mood/setting: bedroom floor or laundry-room tile, intimate and uneasy.
+- Palette/lighting/composition: charcoal navy against beige-gray floor with lavender shadows; soft window rim; diagonal top-down close-up.
+
+### clues/162-soft-drink.png — Soft drink
+
+- Gameplay function: Clue card; turns a casual drink spill into modern trace evidence.
+- Main subject: clear plastic cup of dark fizzy soda with ice, bent straw, and glossy spill.
+- Supporting cues: condensation droplets, torn straw wrapper.
+- Mood/setting: convenience-store counter or public ledge, modern and uneasy.
+- Palette/lighting/composition: cola brown, ice whites, cyan-gray, red straw accent; fluorescent rim light; slight low-angle spill composition.
+
+### clues/163-speaker.png — Speaker
+
+- Gameplay function: Clue card; suggests recorded sound, hidden messages, or technological evidence.
+- Main subject: compact black speaker with prominent circular grille and subtle controls.
+- Supporting cues: loose audio cable coil, faint phone-shaped reflection.
+- Mood/setting: dim apartment shelf or interrogation-room table, tense and technological.
+- Palette/lighting/composition: charcoal and graphite against muted teal and walnut with blue indicator accent; narrow rim light; iconic low-angle close-up.

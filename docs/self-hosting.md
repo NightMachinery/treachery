@@ -4,7 +4,7 @@ This repo now self-hosts without Firebase or Docker.
 
 ## What runs
 
-- **Frontend toolchain**: Angular 20 on Node 24 LTS with pnpm.
+- **Frontend toolchain**: Angular 20 on Node 24 LTS with pnpm, using the Angular application builder/esbuild and Vite-backed dev server.
 - **Caddy** terminates HTTP / self-signed HTTPS for `treachery.pinky.lilf.ir`.
 - **One Go server** runs in tmux and serves:
   - the built Angular SPA
@@ -52,7 +52,7 @@ If omitted, the default is `https://treachery.pinky.lilf.ir`.
    nvm use 24
    ```
 4. Runs `pnpm install --frozen-lockfile --prefer-offline` in `UI/`.
-5. Builds the Angular app.
+5. Builds the Angular app with the Angular application builder/esbuild into `UI/dist/deceptiongame`.
 6. Runs `go test ./server/...`, builds the Go server binary, and installs `treachery-assets` with `go install`.
 7. Updates the managed block in `~/Caddyfile`.
 8. Validates and reloads Caddy.
@@ -73,7 +73,7 @@ Same as `setup`, but meant for redeploying the latest local code changes. It als
 
 - Stops both the production and development tmux sessions first.
 - Rebuilds the Go server, then starts it in tmux for `/api/*`.
-- Starts Angular dev server in a second tmux session for live-reloading UI work.
+- Starts Angular CLI dev server in a second tmux session for live-reloading UI work; with the application builder this is Vite-backed.
 - Rewrites / reloads the managed Caddy block so the public host proxies `/api/*` to the Go server and all other requests to Angular dev server.
 - Requires `UI/node_modules` to already exist.
 

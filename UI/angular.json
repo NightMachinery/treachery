@@ -19,11 +19,13 @@
       "prefix": "tg",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/deceptiongame",
+            "outputPath": {
+              "base": "dist/deceptiongame",
+              "browser": ""
+            },
             "index": "src/index.html",
-            "main": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
@@ -40,7 +42,8 @@
             "scripts": [],
             "allowedCommonJsDependencies": [
               "color-hash"
-            ]
+            ],
+            "browser": "src/main.ts"
           },
           "configurations": {
             "production": {

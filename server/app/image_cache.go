@@ -121,14 +121,32 @@ func (c *assetImageCache) All() []assetImage {
 }
 
 func (c *assetImageCache) EnsureAll(ctx context.Context) error {
-	for _, img := range c.All() {
+	return ensureAssetImages(ctx, c.All(), nil)
+}
+
+func ensureAssetImages(ctx context.Context, images []assetImage, progress AssetPackCacheProgressFunc) error {
+	total := len(images)
+	for i, img := range images {
 		select {
 		case <-ctx.Done():
 			return ctx.Err()
 		default:
 		}
+		event := AssetPackCacheProgress{Status: "ensuring", Index: i + 1, Total: total, SourcePath: img.SourcePath, CachePath: img.CachePath, ImageID: img.ID}
+		if progress != nil {
+			progress(event)
+		}
 		if err := ensureTreacheryAVIFCache(img); err != nil {
+			if progress != nil {
+				event.Status = "error"
+				event.Err = err
+				progress(event)
+			}
 			return err
+		}
+		if progress != nil {
+			event.Status = "ready"
+			progress(event)
 		}
 	}
 	return nil

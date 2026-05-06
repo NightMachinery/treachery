@@ -20,6 +20,30 @@ type AssetPackCacheResult struct {
 	Images      []assetImage
 }
 
+// AssetPackCacheOptions configures prewarming an asset pack image cache.
+type AssetPackCacheOptions struct {
+	WordpacksDir  string
+	CacheDir      string
+	AssetPackName string
+	Progress      AssetPackCacheProgressFunc
+}
+
+// AssetPackCacheProgressFunc receives best-effort status updates while the cache is
+// being prepared. Callbacks run synchronously, so implementations should return
+// quickly.
+type AssetPackCacheProgressFunc func(AssetPackCacheProgress)
+
+// AssetPackCacheProgress describes one cache prewarm progress event.
+type AssetPackCacheProgress struct {
+	Status     string
+	Index      int
+	Total      int
+	SourcePath string
+	CachePath  string
+	ImageID    string
+	Err        error
+}
+
 type AssetPackInfo struct {
 	CrimePackID         string
 	CrimePackName       string
@@ -100,7 +124,11 @@ func ListAssetPacks(wordpacksDir string) ([]AssetPackInfo, error) {
 }
 
 func CompleteAssetPackCache(ctx context.Context, wordpacksDir, cacheDir, assetPackName string) (*AssetPackCacheResult, error) {
-	packDir, packID, setMeta, err := findCrimeAssetPack(wordpacksDir, assetPackName)
+	return CompleteAssetPackCacheWithOptions(ctx, AssetPackCacheOptions{WordpacksDir: wordpacksDir, CacheDir: cacheDir, AssetPackName: assetPackName})
+}
+
+func CompleteAssetPackCacheWithOptions(ctx context.Context, opts AssetPackCacheOptions) (*AssetPackCacheResult, error) {
+	packDir, packID, setMeta, err := findCrimeAssetPack(opts.WordpacksDir, opts.AssetPackName)
 	if err != nil {
 		return nil, err
 	}
@@ -108,8 +136,12 @@ func CompleteAssetPackCache(ctx context.Context, wordpacksDir, cacheDir, assetPa
 	if err != nil {
 		return nil, err
 	}
-	cache := newAssetImageCache(cacheDir)
-	assetDir := filepath.Join(packDir, "assets", assetPackName)
+	cache := newAssetImageCache(opts.CacheDir)
+	assetDir := filepath.Join(packDir, "assets", opts.AssetPackName)
+	if opts.Progress != nil {
+		opts.Progress(AssetPackCacheProgress{Status: "scanning", SourcePath: assetDir})
+	}
+	registered := 0
 	if err := walkImageFiles(assetDir, func(path string) error {
 		if !supportedCacheImagePath(path) {
 			if filepath.Ext(path) == "" {
@@ -121,17 +153,27 @@ func CompleteAssetPackCache(ctx context.Context, wordpacksDir, cacheDir, assetPa
 				return nil
 			}
 		}
-		_, err := cache.Register(path, geometry)
-		return err
+		cacheURL, err := cache.Register(path, geometry)
+		if err != nil {
+			return err
+		}
+		registered++
+		if opts.Progress != nil {
+			opts.Progress(AssetPackCacheProgress{Status: "registered", Index: registered, SourcePath: path, ImageID: strings.TrimPrefix(cacheURL, "/api/assets/images/")})
+		}
+		return nil
 	}); err != nil {
-		return nil, err
-	}
-	if err := cache.EnsureAll(ctx); err != nil {
 		return nil, err
 	}
 	images := cache.All()
 	sort.Slice(images, func(i, j int) bool { return images[i].SourcePath < images[j].SourcePath })
-	return &AssetPackCacheResult{CrimePackID: packID, AssetPackID: assetPackName, ImageCount: len(images), CacheDir: cache.cacheDir, Geometry: geometry, Images: images}, nil
+	if opts.Progress != nil {
+		opts.Progress(AssetPackCacheProgress{Status: "discovered", Total: len(images)})
+	}
+	if err := ensureAssetImages(ctx, images, opts.Progress); err != nil {
+		return nil, err
+	}
+	return &AssetPackCacheResult{CrimePackID: packID, AssetPackID: opts.AssetPackName, ImageCount: len(images), CacheDir: cache.cacheDir, Geometry: geometry, Images: images}, nil
 }
 
 func countAssetImages(assetDir string, info *AssetPackInfo) error {
@@ -199,7 +241,7 @@ func MigrateAssetPack(ctx context.Context, opts MigrateAssetPackOptions) (*Asset
 	if err := createGitMirrorBackup(repoDir); err != nil {
 		return nil, err
 	}
-	result, err := CompleteAssetPackCache(ctx, opts.WordpacksDir, opts.CacheDir, opts.AssetPackName)
+	result, err := CompleteAssetPackCacheWithOptions(ctx, AssetPackCacheOptions{WordpacksDir: opts.WordpacksDir, CacheDir: opts.CacheDir, AssetPackName: opts.AssetPackName})
 	if err != nil {
 		return nil, err
 	}

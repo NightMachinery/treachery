@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"time"
 
 	"treachery/server/app"
 )
@@ -38,11 +39,36 @@ func cacheCmd(args []string) {
 	if fs.NArg() != 1 {
 		log.Fatalf("Usage: treachery-assets cache <asset-pack-name>")
 	}
-	result, err := app.CompleteAssetPackCache(context.Background(), *wordpacksDir, *cacheDir, fs.Arg(0))
+	fmt.Fprintf(os.Stderr, "Preparing AVIF cache for asset pack %q...\n", fs.Arg(0))
+	start := time.Now()
+	result, err := app.CompleteAssetPackCacheWithOptions(context.Background(), app.AssetPackCacheOptions{
+		WordpacksDir:  *wordpacksDir,
+		CacheDir:      *cacheDir,
+		AssetPackName: fs.Arg(0),
+		Progress:      printCacheProgress,
+	})
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Fprintf(os.Stderr, "Finished preparing AVIF cache in %s.\n", time.Since(start).Round(time.Second))
 	printCacheResult("Cache complete", result)
+}
+
+func printCacheProgress(progress app.AssetPackCacheProgress) {
+	switch progress.Status {
+	case "scanning":
+		fmt.Fprintf(os.Stderr, "Scanning image files under %s...\n", progress.SourcePath)
+	case "registered":
+		fmt.Fprintf(os.Stderr, "[%d] Registered %s\n", progress.Index, progress.SourcePath)
+	case "discovered":
+		fmt.Fprintf(os.Stderr, "Discovered %d cacheable image(s).\n", progress.Total)
+	case "ensuring":
+		fmt.Fprintf(os.Stderr, "[%d/%d] Ensuring %s -> %s\n", progress.Index, progress.Total, progress.SourcePath, progress.CachePath)
+	case "ready":
+		fmt.Fprintf(os.Stderr, "[%d/%d] Ready %s\n", progress.Index, progress.Total, progress.CachePath)
+	case "error":
+		fmt.Fprintf(os.Stderr, "[%d/%d] Error while caching %s: %v\n", progress.Index, progress.Total, progress.SourcePath, progress.Err)
+	}
 }
 
 func listCmd(args []string) {

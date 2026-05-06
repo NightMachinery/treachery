@@ -31,9 +31,10 @@ const (
 )
 
 type Config struct {
-	DistDir      string
-	DataDir      string
-	WordpacksDir string
+	DistDir       string
+	DataDir       string
+	WordpacksDir  string
+	ImageCacheDir string
 }
 
 type App struct {
@@ -43,6 +44,7 @@ type App struct {
 	crimePacks      map[string]*crimePack
 	hintPacks       map[string]*hintPack
 	wordpackCatalog *WordpackCatalog
+	imageCache      *assetImageCache
 	hub             *Hub
 	rand            *mathrand.Rand
 	timeNow         func() time.Time
@@ -69,7 +71,11 @@ func New(cfg Config) (*App, error) {
 		return nil, err
 	}
 
-	crimePacks, hintPacks, catalog, err := loadWordpacks(cfg.WordpacksDir)
+	var imageCache *assetImageCache
+	if strings.TrimSpace(cfg.ImageCacheDir) != "" {
+		imageCache = newAssetImageCache(cfg.ImageCacheDir)
+	}
+	crimePacks, hintPacks, catalog, err := loadWordpacks(cfg.WordpacksDir, imageCache)
 	if err != nil {
 		_ = db.Close()
 		return nil, err
@@ -82,6 +88,7 @@ func New(cfg Config) (*App, error) {
 		crimePacks:      crimePacks,
 		hintPacks:       hintPacks,
 		wordpackCatalog: catalog,
+		imageCache:      imageCache,
 		hub:             NewHub(),
 		rand:            mathrand.New(mathrand.NewSource(time.Now().UnixNano())),
 		timeNow:         time.Now,

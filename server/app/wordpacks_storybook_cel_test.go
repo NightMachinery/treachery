@@ -59,6 +59,9 @@ func TestStorybookCelAssetSetAppearsInCatalog(t *testing.T) {
 	if !gouache.HasAnyImages {
 		t.Fatalf("expected gouache-treachery to report images")
 	}
+	if gouache.AspectRatio != "7:10" || gouache.Width != 1050 || gouache.Height != 1500 {
+		t.Fatalf("unexpected gouache geometry: %+v", gouache)
+	}
 
 	storybook := findAssetSetByID(t, pack.AssetSets, "storybook-cel")
 	if storybook.Name != "Storybook Cel" {
@@ -66,6 +69,13 @@ func TestStorybookCelAssetSetAppearsInCatalog(t *testing.T) {
 	}
 	if !storybook.HasAnyImages {
 		t.Fatalf("expected storybook-cel to report images")
+	}
+	if storybook.AspectRatio != "7:10" || storybook.Width != 1050 || storybook.Height != 1500 {
+		t.Fatalf("unexpected storybook geometry: %+v", storybook)
+	}
+	legacy := findAssetSetByID(t, pack.AssetSets, "treachery")
+	if legacy.AspectRatio != "1:1" || legacy.Width != 1050 || legacy.Height != 1050 {
+		t.Fatalf("unexpected legacy geometry: %+v", legacy)
 	}
 }
 

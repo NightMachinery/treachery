@@ -23,6 +23,7 @@ func (a *App) Handler() http.Handler {
 	mux.HandleFunc("GET /api/wordpacks/crime/{packId}", a.handleCrimePackResource)
 	mux.HandleFunc("GET /api/wordpacks/hint/{packId}", a.handleHintPackResource)
 	mux.HandleFunc("GET /wordpacks/", a.handleWordpackAsset)
+	mux.HandleFunc("GET /api/assets/images/{imageId}", a.handleCachedAssetImage)
 	mux.HandleFunc("GET /api/games", a.handleListGames)
 	mux.HandleFunc("POST /api/games", a.handleCreateGame)
 	mux.HandleFunc("GET /api/games/{gameId}/snapshot", a.handleGameSnapshot)
@@ -141,6 +142,12 @@ func (a *App) handleHintPackResource(w http.ResponseWriter, r *http.Request) {
 
 func (a *App) handleWordpackAsset(w http.ResponseWriter, r *http.Request) {
 	a.serveWordpackAsset(w, r)
+}
+
+func (a *App) handleCachedAssetImage(w http.ResponseWriter, r *http.Request) {
+	if a.imageCache == nil || !a.imageCache.ServeHTTP(w, r, strings.TrimSpace(r.PathValue("imageId"))) {
+		http.NotFound(w, r)
+	}
 }
 
 func (a *App) handleListGames(w http.ResponseWriter, r *http.Request) {

@@ -28,6 +28,9 @@ type PackAssetSetOption struct {
 	ID           string `json:"id"`
 	Name         string `json:"name"`
 	HasAnyImages bool   `json:"hasAnyImages"`
+	AspectRatio  string `json:"aspectRatio"`
+	Width        int    `json:"width"`
+	Height       int    `json:"height"`
 }
 
 type CrimePackCatalogEntry struct {
@@ -75,13 +78,39 @@ type HintPackResource struct {
 }
 
 type crimePackMeta struct {
-	ID                string            `json:"id"`
-	Name              string            `json:"name"`
-	DefaultLanguage   string            `json:"defaultLanguage"`
-	DefaultAssetSetID string            `json:"defaultAssetSetId"`
-	FallbackAssetSet  string            `json:"fallbackAssetSetId"`
-	Languages         map[string]string `json:"languages"`
-	AssetSets         map[string]string `json:"assetSets"`
+	ID                string                       `json:"id"`
+	Name              string                       `json:"name"`
+	DefaultLanguage   string                       `json:"defaultLanguage"`
+	DefaultAssetSetID string                       `json:"defaultAssetSetId"`
+	FallbackAssetSet  string                       `json:"fallbackAssetSetId"`
+	Languages         map[string]string            `json:"languages"`
+	AssetSets         map[string]crimeAssetSetMeta `json:"assetSets"`
+}
+
+type crimeAssetSetMeta struct {
+	Name        string `json:"name"`
+	AspectRatio string `json:"aspectRatio"`
+	Width       int    `json:"width"`
+}
+
+func (m *crimeAssetSetMeta) UnmarshalJSON(data []byte) error {
+	var name string
+	if err := json.Unmarshal(data, &name); err == nil {
+		m.Name = name
+		return nil
+	}
+	var raw struct {
+		Name        string `json:"name"`
+		AspectRatio string `json:"aspectRatio"`
+		Width       int    `json:"width"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	m.Name = raw.Name
+	m.AspectRatio = raw.AspectRatio
+	m.Width = raw.Width
+	return nil
 }
 
 type hintPackMeta struct {
@@ -112,6 +141,7 @@ type crimePack struct {
 type crimeAssetSet struct {
 	id           string
 	name         string
+	geometry     assetGeometry
 	means        map[string]string
 	clues        map[string]string
 	meansDefault string
@@ -152,14 +182,14 @@ type hintChoiceDefinition struct {
 	Label string `json:"label"`
 }
 
-func loadWordpacks(rootDir string) (map[string]*crimePack, map[string]*hintPack, *WordpackCatalog, error) {
+func loadWordpacks(rootDir string, imageCache *assetImageCache) (map[string]*crimePack, map[string]*hintPack, *WordpackCatalog, error) {
 	rootDir = strings.TrimSpace(rootDir)
 	if rootDir == "" {
 		return nil, nil, nil, fmt.Errorf("wordpacks dir is required")
 	}
 	crimeRoot := filepath.Join(rootDir, "crime")
 	hintRoot := filepath.Join(rootDir, "hint")
-	crimePacks, err := loadCrimePacks(crimeRoot)
+	crimePacks, err := loadCrimePacks(crimeRoot, imageCache)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -182,7 +212,7 @@ func loadWordpacks(rootDir string) (map[string]*crimePack, map[string]*hintPack,
 	return crimePacks, hintPacks, catalog, nil
 }
 
-func loadCrimePacks(rootDir string) (map[string]*crimePack, error) {
+func loadCrimePacks(rootDir string, imageCache *assetImageCache) (map[string]*crimePack, error) {
 	entries, err := os.ReadDir(rootDir)
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
@@ -196,7 +226,7 @@ func loadCrimePacks(rootDir string) (map[string]*crimePack, error) {
 			continue
 		}
 		packDir := filepath.Join(rootDir, entry.Name())
-		pack, err := loadCrimePack(packDir)
+		pack, err := loadCrimePack(packDir, imageCache)
 		if err != nil {
 			return nil, fmt.Errorf("load crime pack %s: %w", entry.Name(), err)
 		}
@@ -205,7 +235,7 @@ func loadCrimePacks(rootDir string) (map[string]*crimePack, error) {
 	return packs, nil
 }
 
-func loadCrimePack(dir string) (*crimePack, error) {
+func loadCrimePack(dir string, imageCache *assetImageCache) (*crimePack, error) {
 	metaPath, err := findExistingFile(filepath.Join(dir, "pack"), []string{".json5", ".json"})
 	if err != nil {
 		return nil, err
@@ -234,6 +264,10 @@ func loadCrimePack(dir string) (*crimePack, error) {
 	if err != nil {
 		return nil, fmt.Errorf("load clue ids: %w", err)
 	}
+	assetSetNames := map[string]string{}
+	for id, setMeta := range meta.AssetSets {
+		assetSetNames[id] = setMeta.Name
+	}
 	pack := &crimePack{
 		id:                meta.ID,
 		name:              meta.Name,
@@ -242,7 +276,7 @@ func loadCrimePack(dir string) (*crimePack, error) {
 		defaultAssetSetID: meta.DefaultAssetSetID,
 		fallbackAssetSet:  meta.FallbackAssetSet,
 		languages:         meta.Languages,
-		assetSetNames:     meta.AssetSets,
+		assetSetNames:     assetSetNames,
 		meansIDs:          meansIDs,
 		clueIDs:           clueIDs,
 		meansLabels:       map[string]map[string]string{},
@@ -288,8 +322,8 @@ func loadCrimePack(dir string) (*crimePack, error) {
 			break
 		}
 	}
-	for assetSetID, name := range meta.AssetSets {
-		set, err := loadCrimeAssetSet(dir, assetSetID, name)
+	for assetSetID, setMeta := range meta.AssetSets {
+		set, err := loadCrimeAssetSet(dir, assetSetID, setMeta, imageCache)
 		if err != nil {
 			return nil, fmt.Errorf("load asset set %s: %w", assetSetID, err)
 		}
@@ -308,25 +342,34 @@ func loadCrimePack(dir string) (*crimePack, error) {
 	return pack, nil
 }
 
-func loadCrimeAssetSet(packDir, assetSetID, name string) (*crimeAssetSet, error) {
+func loadCrimeAssetSet(packDir, assetSetID string, meta crimeAssetSetMeta, imageCache *assetImageCache) (*crimeAssetSet, error) {
+	geometry, err := geometryFromAspectAndWidth(meta.AspectRatio, meta.Width)
+	if err != nil {
+		return nil, err
+	}
+	name := meta.Name
+	if name == "" {
+		name = assetSetID
+	}
 	set := &crimeAssetSet{
-		id:    assetSetID,
-		name:  name,
-		means: map[string]string{},
-		clues: map[string]string{},
+		id:       assetSetID,
+		name:     name,
+		geometry: geometry,
+		means:    map[string]string{},
+		clues:    map[string]string{},
 	}
 	meansDir := filepath.Join(packDir, "assets", assetSetID, "means")
-	if err := loadAssetDir(meansDir, filepath.ToSlash(filepath.Join("/wordpacks", "crime", filepath.Base(packDir), "assets", assetSetID, "means")), set.means, &set.meansDefault); err != nil {
+	if err := loadAssetDir(meansDir, filepath.ToSlash(filepath.Join("/wordpacks", "crime", filepath.Base(packDir), "assets", assetSetID, "means")), set.means, &set.meansDefault, imageCache, geometry); err != nil {
 		return nil, err
 	}
 	cluesDir := filepath.Join(packDir, "assets", assetSetID, "clues")
-	if err := loadAssetDir(cluesDir, filepath.ToSlash(filepath.Join("/wordpacks", "crime", filepath.Base(packDir), "assets", assetSetID, "clues")), set.clues, &set.cluesDefault); err != nil {
+	if err := loadAssetDir(cluesDir, filepath.ToSlash(filepath.Join("/wordpacks", "crime", filepath.Base(packDir), "assets", assetSetID, "clues")), set.clues, &set.cluesDefault, imageCache, geometry); err != nil {
 		return nil, err
 	}
 	return set, nil
 }
 
-func loadAssetDir(dir, urlBase string, cards map[string]string, defaultURL *string) error {
+func loadAssetDir(dir, urlBase string, cards map[string]string, defaultURL *string, imageCache *assetImageCache, geometry assetGeometry) error {
 	entries, err := os.ReadDir(dir)
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
@@ -341,6 +384,13 @@ func loadAssetDir(dir, urlBase string, cards map[string]string, defaultURL *stri
 		name := entry.Name()
 		stem := strings.TrimSuffix(name, filepath.Ext(name))
 		url := filepath.ToSlash(filepath.Join(urlBase, name))
+		if imageCache != nil && supportedCacheImagePath(filepath.Join(dir, name)) {
+			registeredURL, err := imageCache.Register(filepath.Join(dir, name), geometry)
+			if err != nil {
+				return err
+			}
+			url = registeredURL
+		}
 		if stem == "default" {
 			*defaultURL = url
 			continue
@@ -743,7 +793,7 @@ func (p *hintPack) languageOptions() []PackLanguageOption {
 func (p *crimePack) assetSetOptions() []PackAssetSetOption {
 	options := make([]PackAssetSetOption, 0, len(p.assetSets))
 	for id, set := range p.assetSets {
-		options = append(options, PackAssetSetOption{ID: id, Name: set.name, HasAnyImages: set.hasAnyImages()})
+		options = append(options, PackAssetSetOption{ID: id, Name: set.name, HasAnyImages: set.hasAnyImages(), AspectRatio: set.geometry.AspectRatio, Width: set.geometry.Width, Height: set.geometry.Height})
 	}
 	sort.Slice(options, func(i, j int) bool { return options[i].ID < options[j].ID })
 	return options
@@ -817,6 +867,11 @@ func (p *crimePack) mustLanguage(lang string) string {
 
 func (p *crimePack) resolveCard(deck, lang, assetSetID string, card Card, forceTextOnly bool) Card {
 	resolved := card
+	if set := p.assetSets[assetSetID]; set != nil {
+		resolved.AspectRatio = set.geometry.AspectRatio
+		resolved.Width = set.geometry.Width
+		resolved.Height = set.geometry.Height
+	}
 	resolved.ID = p.normalizeCardID(deck, card)
 	labels := p.mustLabels(deck, lang)
 	if label, ok := labels[resolved.ID]; ok {

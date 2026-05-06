@@ -53,7 +53,7 @@ If omitted, the default is `https://treachery.pinky.lilf.ir`.
    ```
 4. Runs `pnpm install --frozen-lockfile --prefer-offline` in `UI/`.
 5. Builds the Angular app.
-6. Runs `go test ./server/...` and builds the Go server binary.
+6. Runs `go test ./server/...`, builds the Go server binary, and installs `treachery-assets` with `go install`.
 7. Updates the managed block in `~/Caddyfile`.
 8. Validates and reloads Caddy.
 9. Starts the Go server in tmux.
@@ -87,6 +87,7 @@ Same as `setup`, but meant for redeploying the latest local code changes. It als
 - config: `.self_host/config.env`
 - binary: `.self_host/bin/treachery-server`
 - data: `.self_host/data/treachery.sqlite`
+- image cache: `~/.cache/treachery/images` by default
 - wordpacks: `./wordpacks`
 - tmux sessions: `treachery-self-host` and `treachery-self-host-ui`
 - Caddy block markers:
@@ -137,4 +138,5 @@ Then verify in a browser:
   tmux attach -t treachery-self-host
   ```
 - If you changed frontend dependencies, rerun `./self_host.zsh redeploy` instead of `start`.
+- AVIF card caching needs `identify`, `convert`, and `avifenc`; asset migration history cleanup also needs `git-filter-repo`.
 - Angular unit tests still use Karma + ChromeHeadless. On a minimal VPS, install Chromium/Chrome or set `CHROME_BIN` to a compatible browser binary before running `pnpm test -- --watch=false --browsers=ChromeHeadless`.

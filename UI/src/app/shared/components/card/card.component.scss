@@ -52,7 +52,7 @@
   .image-container {
     position: relative;
     width: 100%;
-    aspect-ratio: 7 / 10;
+    aspect-ratio: var(--tg-card-aspect-ratio, 7 / 10);
     overflow: hidden;
     flex-shrink: 0;
   }

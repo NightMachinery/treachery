@@ -7,6 +7,7 @@
     (textOnlyMode$ | async) || shouldShowTextOnly ? 'text-only' : 'image-card',
   ]"
   class="card"
+  [ngStyle]="cardAspectRatioStyle"
   [class.mat-elevation-z2]="true"
 >
   <ng-container *ngIf="(textOnlyMode$ | async) || shouldShowTextOnly; else imageMode">

@@ -9,12 +9,15 @@ type ForensicCardResource struct {
 }
 
 type Card struct {
-	ID        string   `json:"id,omitempty"`
-	ImgURL    string   `json:"imgUrl,omitempty"`
-	AltImgURL string   `json:"altImgUrl,omitempty"`
-	Name      string   `json:"name"`
-	HasImage  bool     `json:"hasImage,omitempty"`
-	GuessedBy []string `json:"guessedBy,omitempty"`
+	ID          string   `json:"id,omitempty"`
+	ImgURL      string   `json:"imgUrl,omitempty"`
+	AltImgURL   string   `json:"altImgUrl,omitempty"`
+	Name        string   `json:"name"`
+	HasImage    bool     `json:"hasImage,omitempty"`
+	AspectRatio string   `json:"aspectRatio,omitempty"`
+	Width       int      `json:"width,omitempty"`
+	Height      int      `json:"height,omitempty"`
+	GuessedBy   []string `json:"guessedBy,omitempty"`
 }
 
 type ForensicCard struct {

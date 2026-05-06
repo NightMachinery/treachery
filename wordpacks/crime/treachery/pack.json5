@@ -9,8 +9,8 @@
     fa: "فارسی",
   },
   assetSets: {
-    "gouache-treachery": "Gouache Treachery",
-    "storybook-cel": "Storybook Cel",
-    treachery: "Treachery",
+    "gouache-treachery": { name: "Gouache Treachery", aspectRatio: "7:10", width: 1050 },
+    "storybook-cel": { name: "Storybook Cel", aspectRatio: "7:10", width: 1050 },
+    treachery: { name: "Treachery", aspectRatio: "1:1", width: 1050 },
   },
 }

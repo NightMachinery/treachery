@@ -23,6 +23,7 @@ BINARY_PATH="$SELF_HOST_DIR/bin/treachery-server"
 DATA_DIR="$SELF_HOST_DIR/data"
 DIST_DIR="$ROOT_DIR/UI/dist/deceptiongame"
 WORDPACKS_DIR="$ROOT_DIR/wordpacks"
+IMAGE_CACHE_DIR="${IMAGE_CACHE_DIR:-$HOME/.cache/treachery/images}"
 
 PUBLIC_URL=""
 PUBLIC_HOST=""
@@ -98,6 +99,7 @@ BINARY_PATH=$BINARY_PATH
 DATA_DIR=$DATA_DIR
 DIST_DIR=$DIST_DIR
 WORDPACKS_DIR=$WORDPACKS_DIR
+IMAGE_CACHE_DIR=$IMAGE_CACHE_DIR
 CONFIG
   say "Wrote $CONFIG_FILE"
 }
@@ -117,6 +119,7 @@ load_config() {
   DATA_DIR="${DATA_DIR:-$SELF_HOST_DIR/data}"
   DIST_DIR="${DIST_DIR:-$ROOT_DIR/UI/dist/deceptiongame}"
   WORDPACKS_DIR="${WORDPACKS_DIR:-$ROOT_DIR/wordpacks}"
+  IMAGE_CACHE_DIR="${IMAGE_CACHE_DIR:-$HOME/.cache/treachery/images}"
 }
 
 ensure_tools() {
@@ -182,6 +185,8 @@ build_server() {
   go test ./server/...
   say "Building Go server"
   go build -o "$BINARY_PATH" ./server/cmd/treachery-server
+  say "Installing treachery-assets via go install"
+  go install ./server/cmd/treachery-assets
 }
 
 write_caddy_block() {
@@ -300,7 +305,7 @@ start_app_session() {
   while IFS= read -r env_assignment; do
     [[ -n "$env_assignment" ]] && env_assignments+=("$env_assignment")
   done < <(proxy_env_assignments)
-  tmuxnew_with_env "$SESSION_APP" "zsh -lc 'cd ${(q)ROOT_DIR}; ${(q)BINARY_PATH} -addr ${(q)APP_ADDR} -dist-dir ${(q)DIST_DIR} -data-dir ${(q)DATA_DIR} -wordpacks-dir ${(q)WORDPACKS_DIR}'" "${env_assignments[@]}"
+  tmuxnew_with_env "$SESSION_APP" "zsh -lc 'cd ${(q)ROOT_DIR}; ${(q)BINARY_PATH} -addr ${(q)APP_ADDR} -dist-dir ${(q)DIST_DIR} -data-dir ${(q)DATA_DIR} -wordpacks-dir ${(q)WORDPACKS_DIR} -image-cache-dir ${(q)IMAGE_CACHE_DIR}'" "${env_assignments[@]}"
   say "Started tmux session $SESSION_APP"
 }
 

@@ -15,6 +15,9 @@ export interface TgCard {
   hasImage: boolean;
   imgUrl: string;
   name: string;
+  aspectRatio?: string;
+  width?: number;
+  height?: number;
 }
 
 export type TgParticipantRole = 'player' | 'observer';
@@ -207,6 +210,9 @@ export interface TgPackAssetSetOption {
   id: string;
   name: string;
   hasAnyImages: boolean;
+  aspectRatio: string;
+  width: number;
+  height: number;
 }
 
 export interface TgCrimePackCatalogEntry {

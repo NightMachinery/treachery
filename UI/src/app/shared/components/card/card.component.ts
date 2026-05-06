@@ -67,6 +67,10 @@ export class CardComponent implements AfterViewInit, AfterViewChecked, OnChanges
     return !this.card?.hasImage;
   }
 
+  get cardAspectRatioStyle() {
+    return this.card?.aspectRatio ? { '--tg-card-aspect-ratio': this.card.aspectRatio.replace(':', ' / ') } : null;
+  }
+
   onImageError(event: Event) {
     const img = event.target as HTMLImageElement;
     if (!img || !this.card) {

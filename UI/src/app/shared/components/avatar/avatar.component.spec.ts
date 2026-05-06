@@ -16,10 +16,10 @@ describe('AvatarComponent', () => {
         {
           provide: AvatarService,
           useValue: {
-            getAvatar: getAvatarSpy
-          }
-        }
-      ]
+            getAvatar: getAvatarSpy,
+          },
+        },
+      ],
     }).compileComponents();
   }));
 
@@ -47,9 +47,9 @@ describe('AvatarComponent', () => {
   it('shows the fallback icon while the generated avatar is still loading', () => {
     let resolveAvatar!: (value: string) => void;
     getAvatarSpy.and.returnValue(
-      new Promise<string>(resolve => {
+      new Promise<string>((resolve) => {
         resolveAvatar = resolve;
-      })
+      }),
     );
 
     fixture.detectChanges();

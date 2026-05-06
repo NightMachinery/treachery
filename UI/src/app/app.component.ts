@@ -6,12 +6,15 @@ import { AvatarService } from './shared/api/avatar/avatar.service';
   selector: 'app-root',
   standalone: false,
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
   title = 'deceptiongame';
 
-  constructor(public authService: AuthService, public avatar: AvatarService) {}
+  constructor(
+    public authService: AuthService,
+    public avatar: AvatarService,
+  ) {}
 
   ngOnInit() {
     this.authService.anonymousLogin();

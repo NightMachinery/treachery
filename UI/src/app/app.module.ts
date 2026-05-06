@@ -85,7 +85,7 @@ import { AuthTokenInterceptor } from './shared/api/auth/auth-token.interceptor';
     ModeratorWitnessControlsComponent,
     PrivateRolePanelComponent,
     RoleRevealComponent,
-    RoomTimerComponent
+    RoomTimerComponent,
   ],
   imports: [
     BrowserModule,
@@ -104,13 +104,13 @@ import { AuthTokenInterceptor } from './shared/api/auth/auth-token.interceptor';
     MatDialogModule,
     MatCardModule,
     MatProgressBarModule,
-    MatSnackBarModule
+    MatSnackBarModule,
   ],
   providers: [
     GameApiService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true },
-    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

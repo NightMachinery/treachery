@@ -19,11 +19,11 @@ describe('JoinedPlayersListComponent', () => {
             game$: new BehaviorSubject(null),
             participants$: new BehaviorSubject([]),
             setParticipantRole: jasmine.createSpy('setParticipantRole'),
-            toggleScientist: jasmine.createSpy('toggleScientist')
-          }
-        }
+            toggleScientist: jasmine.createSpy('toggleScientist'),
+          },
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 

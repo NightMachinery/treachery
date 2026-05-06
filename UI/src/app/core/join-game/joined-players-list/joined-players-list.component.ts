@@ -6,7 +6,7 @@ import { TgParticipant } from '../../../shared/api/models/models';
   selector: 'app-joined-players-list',
   standalone: false,
   templateUrl: './joined-players-list.component.html',
-  styleUrls: ['./joined-players-list.component.scss']
+  styleUrls: ['./joined-players-list.component.scss'],
 })
 export class JoinedPlayersListComponent implements OnInit {
   @Input() showModControls = false;

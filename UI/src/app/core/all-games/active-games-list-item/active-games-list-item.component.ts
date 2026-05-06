@@ -6,9 +6,9 @@ import { Component, OnInit, Input } from '@angular/core';
   selector: 'app-active-games-list-item',
   standalone: false,
   templateUrl: './active-games-list-item.component.html',
-  styleUrls: ['./active-games-list-item.component.scss']
+  styleUrls: ['./active-games-list-item.component.scss'],
 })
 export class ActiveGamesListItemComponent {
   @Input() game: TgGame;
-  constructor() { }
+  constructor() {}
 }

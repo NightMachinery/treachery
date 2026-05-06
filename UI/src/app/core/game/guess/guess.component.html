@@ -34,7 +34,9 @@
 
         <div class="button-container">
           <button mat-stroked-button type="button" (click)="cancelGuess()">Cancel</button>
-          <button mat-raised-button color="accent" (click)="makeGuess()" [disabled]="!guess?.meansCardId || !guess?.clueCardId">Make guess</button>
+          <button mat-raised-button color="accent" (click)="makeGuess()" [disabled]="!guess?.meansCardId || !guess?.clueCardId">
+            Make guess
+          </button>
         </div>
       </ng-container>
     </ng-container>

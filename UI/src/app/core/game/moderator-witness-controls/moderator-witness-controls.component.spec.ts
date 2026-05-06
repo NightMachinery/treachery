@@ -5,7 +5,14 @@ import { By } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 import { CardApiService } from '../../../shared/api/card/card-api.service';
 import { GameApiService } from '../../../shared/api/game/game-api.service';
-import { TgCrimePackCatalogEntry, TgGame, TgHintPackCatalogEntry, TgModeratorPrivateData, TgViewer, TgWordpackCatalog } from '../../../shared/api/models/models';
+import {
+  TgCrimePackCatalogEntry,
+  TgGame,
+  TgHintPackCatalogEntry,
+  TgModeratorPrivateData,
+  TgViewer,
+  TgWordpackCatalog,
+} from '../../../shared/api/models/models';
 
 import { ModeratorWitnessControlsComponent } from './moderator-witness-controls.component';
 
@@ -29,12 +36,12 @@ describe('ModeratorWitnessControlsComponent', () => {
     hasAnyImages: true,
     languages: [
       { id: 'en', name: 'English' },
-      { id: 'fa', name: 'فارسی' }
+      { id: 'fa', name: 'فارسی' },
     ],
     assetSets: [
       { id: 'treachery', name: 'Treachery', hasAnyImages: true },
-      { id: 'sketch', name: 'Sketch', hasAnyImages: true }
-    ]
+      { id: 'sketch', name: 'Sketch', hasAnyImages: true },
+    ],
   } as TgCrimePackCatalogEntry;
 
   const hintPack = {
@@ -46,50 +53,48 @@ describe('ModeratorWitnessControlsComponent', () => {
     otherCount: 24,
     languages: [
       { id: 'en', name: 'English' },
-      { id: 'fa', name: 'فارسی' }
-    ]
+      { id: 'fa', name: 'فارسی' },
+    ],
   } as TgHintPackCatalogEntry;
 
-  beforeEach(
-    waitForAsync(() => {
-      gameApi = Object.assign(jasmine.createSpyObj<GameApiService>('GameApiService', ['showWitnessSelectionPrompt', 'updateRoomMods']), {
-        game$: new BehaviorSubject<TgGame>({
-          pendingWitnessSelection: true,
-          startedOn: '2026-04-20T00:00:00Z',
-          meansCluesTextOnly: false,
-          crimePackId: crimePack.id,
-          crimePackLanguage: 'en',
-          crimePackAssetSetId: 'treachery',
-          hintPackId: hintPack.id,
-          hintPackLanguage: 'en'
-        } as TgGame),
-        viewer$: new BehaviorSubject<TgViewer>({ isCreator: true } as TgViewer),
-        moderatorPrivateData$: new BehaviorSubject<TgModeratorPrivateData>({
-          witnessPromptCandidates: [
-            { uid: 'creator', name: 'Creator' },
-            { uid: 'p1', name: 'Player 1' }
-          ]
-        })
-      });
-      gameApi.showWitnessSelectionPrompt.and.returnValue(Promise.resolve());
-      gameApi.updateRoomMods.and.returnValue(Promise.resolve());
-      cardApi = {
-        catalog$: new BehaviorSubject<TgWordpackCatalog>({
-          crimePacks: [crimePack],
-          hintPacks: [hintPack]
-        })
-      };
+  beforeEach(waitForAsync(() => {
+    gameApi = Object.assign(jasmine.createSpyObj<GameApiService>('GameApiService', ['showWitnessSelectionPrompt', 'updateRoomMods']), {
+      game$: new BehaviorSubject<TgGame>({
+        pendingWitnessSelection: true,
+        startedOn: '2026-04-20T00:00:00Z',
+        meansCluesTextOnly: false,
+        crimePackId: crimePack.id,
+        crimePackLanguage: 'en',
+        crimePackAssetSetId: 'treachery',
+        hintPackId: hintPack.id,
+        hintPackLanguage: 'en',
+      } as TgGame),
+      viewer$: new BehaviorSubject<TgViewer>({ isCreator: true } as TgViewer),
+      moderatorPrivateData$: new BehaviorSubject<TgModeratorPrivateData>({
+        witnessPromptCandidates: [
+          { uid: 'creator', name: 'Creator' },
+          { uid: 'p1', name: 'Player 1' },
+        ],
+      }),
+    });
+    gameApi.showWitnessSelectionPrompt.and.returnValue(Promise.resolve());
+    gameApi.updateRoomMods.and.returnValue(Promise.resolve());
+    cardApi = {
+      catalog$: new BehaviorSubject<TgWordpackCatalog>({
+        crimePacks: [crimePack],
+        hintPacks: [hintPack],
+      }),
+    };
 
-      TestBed.configureTestingModule({
-        imports: [CommonModule, FormsModule],
-        declarations: [ModeratorWitnessControlsComponent],
-        providers: [
-          { provide: GameApiService, useValue: gameApi },
-          { provide: CardApiService, useValue: cardApi }
-        ]
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      imports: [CommonModule, FormsModule],
+      declarations: [ModeratorWitnessControlsComponent],
+      providers: [
+        { provide: GameApiService, useValue: gameApi },
+        { provide: CardApiService, useValue: cardApi },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ModeratorWitnessControlsComponent);

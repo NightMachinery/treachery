@@ -19,20 +19,20 @@
   gap: var(--space-12);
 }
 
- .game-hero {
-   display: flex;
-   align-items: center;
-   justify-content: space-between;
-   gap: var(--space-12);
-   padding: var(--space-16) var(--space-12);
- }
- 
- .hero-copy {
-   min-width: 0;
-   padding: 0 var(--space-4);
- 
-   h2 {
-     margin: var(--space-2) 0 0;
+.game-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12);
+  padding: var(--space-16) var(--space-12);
+}
+
+.hero-copy {
+  min-width: 0;
+  padding: 0 var(--space-4);
+
+  h2 {
+    margin: var(--space-2) 0 0;
     font-size: clamp(1.6rem, 3vw, 2.4rem);
   }
 
@@ -95,19 +95,19 @@
   font-weight: var(--tg-info-weight);
 }
 
- .section-head {
-   display: flex;
-   align-items: flex-end;
-   justify-content: space-between;
-   gap: var(--space-6);
-   margin-bottom: var(--space-8);
-   padding: 0 var(--space-2);
- 
-   h3 {
-     margin: var(--space-2) 0 0;
-     font-size: 1.25rem;
-   }
- 
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
+  padding: 0 var(--space-2);
+
+  h3 {
+    margin: var(--space-2) 0 0;
+    font-size: 1.25rem;
+  }
+
   p {
     margin: 0;
     max-width: 30rem;
@@ -116,16 +116,16 @@
 
 .section-head.compact {
   align-items: center;
- }
- 
- .forensic-board,
- .suspects-panel,
- .hand-panel,
- .history-panel,
- .result-panel {
-   padding: var(--space-16) var(--space-12);
- }
- 
+}
+
+.forensic-board,
+.suspects-panel,
+.hand-panel,
+.history-panel,
+.result-panel {
+  padding: var(--space-16) var(--space-12);
+}
+
 .forensic-card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(13.25rem, 1fr));
@@ -133,9 +133,9 @@
   padding: 0 var(--space-2);
   align-items: start;
 }
- 
+
 .guess-section {
-   display: block;
+  display: block;
 }
 
 .murderer-card-selection-actions {
@@ -143,7 +143,6 @@
   justify-content: center;
   margin-top: var(--space-6);
 }
-
 
 .result-hero-banner {
   display: grid;
@@ -350,18 +349,18 @@ app-chat {
   }
 }
 
- @media only screen and (max-width: 72rem) {
-   .game-layout {
-     padding: var(--space-8);
-   }
- 
-   .game-hero,
-   .section-head {
-     flex-direction: column;
-     align-items: stretch;
-   }
- 
-   .hero-copy {
+@media only screen and (max-width: 72rem) {
+  .game-layout {
+    padding: var(--space-8);
+  }
+
+  .game-hero,
+  .section-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-copy {
     text-align: center;
   }
 
@@ -371,24 +370,24 @@ app-chat {
     max-width: none;
     align-self: center;
   }
- }
- 
- @media only screen and (max-width: 40rem) {
-   .game-layout {
-     gap: var(--space-8);
-     padding: var(--space-8);
-   }
- 
-   .game-hero,
-   .forensic-board,
-   .suspects-panel,
-   .hand-panel,
-   .history-panel,
-   .result-panel {
-     padding: var(--space-12) var(--space-8);
-   }
- 
-   .forensic-card-grid {
+}
+
+@media only screen and (max-width: 40rem) {
+  .game-layout {
+    gap: var(--space-8);
+    padding: var(--space-8);
+  }
+
+  .game-hero,
+  .forensic-board,
+  .suspects-panel,
+  .hand-panel,
+  .history-panel,
+  .result-panel {
+    padding: var(--space-12) var(--space-8);
+  }
+
+  .forensic-card-grid {
     grid-template-columns: 1fr;
   }
 
@@ -401,7 +400,6 @@ app-chat {
     width: 100%;
   }
 }
-
 
 @media only screen and (max-width: 60rem) {
   .result-hero-banner {

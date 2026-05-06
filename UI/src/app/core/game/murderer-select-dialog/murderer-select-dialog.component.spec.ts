@@ -8,7 +8,7 @@ describe('MurdererSelectDialogComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [MurdererSelectDialogComponent]
+      declarations: [MurdererSelectDialogComponent],
     }).compileComponents();
   }));
 

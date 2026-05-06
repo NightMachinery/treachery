@@ -1005,293 +1005,111 @@
     "causeCards": [
       {
         "cardName": "Cause of Death",
-        "choices": [
-          "Suffocation",
-          "Severe Injury",
-          "Loss of Blood",
-          "Illness/ Disease",
-          "Poisoning",
-          "Accident"
-        ]
+        "choices": ["Suffocation", "Severe Injury", "Loss of Blood", "Illness/ Disease", "Poisoning", "Accident"]
       }
     ],
     "locationCards": [
       {
         "cardName": "Locations",
-        "choices": [
-          "Living Room",
-          "Bedroom",
-          "Storeroom",
-          "Bathroom",
-          "Kitchen",
-          "Balcony"
-        ]
+        "choices": ["Living Room", "Bedroom", "Storeroom", "Bathroom", "Kitchen", "Balcony"]
       },
       {
         "cardName": "Locations",
-        "choices": [
-          "Vacation Home",
-          "Park",
-          "Supermarket",
-          "School",
-          "Woods",
-          "Bank"
-        ]
+        "choices": ["Vacation Home", "Park", "Supermarket", "School", "Woods", "Bank"]
       },
       {
         "cardName": "Locations",
-        "choices": [
-          "Pub",
-          "Bookstore",
-          "Restaurant",
-          "Hotel",
-          "Hospital",
-          "Building Site"
-        ]
+        "choices": ["Pub", "Bookstore", "Restaurant", "Hotel", "Hospital", "Building Site"]
       },
       {
         "cardName": "Locations",
-        "choices": [
-          "Playground",
-          "Classroom",
-          "Dormitory",
-          "Cafeteria",
-          "Elevator",
-          "Toilet"
-        ]
+        "choices": ["Playground", "Classroom", "Dormitory", "Cafeteria", "Elevator", "Toilet"]
       }
     ],
     "otherCards": [
       {
         "cardName": "Motive of Crime",
-        "choices": [
-          "Hatred",
-          "Power",
-          "Money",
-          "Love",
-          "Jealousy",
-          "Justice"
-        ]
+        "choices": ["Hatred", "Power", "Money", "Love", "Jealousy", "Justice"]
       },
       {
         "cardName": "Weather",
-        "choices": [
-          "Sunny",
-          "Stormy",
-          "Dry",
-          "Humid",
-          "Cold",
-          "Hot"
-        ]
+        "choices": ["Sunny", "Stormy", "Dry", "Humid", "Cold", "Hot"]
       },
       {
         "cardName": "Hint on Corpse",
-        "choices": [
-          "Head",
-          "Chest",
-          "Hand",
-          "Leg",
-          "Partial",
-          "All-over"
-        ]
+        "choices": ["Head", "Chest", "Hand", "Leg", "Partial", "All-over"]
       },
       {
         "cardName": "General Impression",
-        "choices": [
-          "Common",
-          "Creative",
-          "Fishy",
-          "Cruel",
-          "Horrible",
-          "Suspenseful"
-        ]
+        "choices": ["Common", "Creative", "Fishy", "Cruel", "Horrible", "Suspenseful"]
       },
       {
         "cardName": "Corpse Condition",
-        "choices": [
-          "Still Warm",
-          "Stiff",
-          "Decayed",
-          "Incomplete",
-          "Intact",
-          "Twisted"
-        ]
+        "choices": ["Still Warm", "Stiff", "Decayed", "Incomplete", "Intact", "Twisted"]
       },
       {
         "cardName": "Victim's Identity",
-        "choices": [
-          "Child",
-          "Young Adult",
-          "Middle-Aged",
-          "Senior",
-          "Male",
-          "Female"
-        ]
+        "choices": ["Child", "Young Adult", "Middle-Aged", "Senior", "Male", "Female"]
       },
       {
         "cardName": "Murderer's Personality",
-        "choices": [
-          "Arrogant",
-          "Despicable",
-          "Furious",
-          "Greedy",
-          "Forceful",
-          "Perverted"
-        ]
+        "choices": ["Arrogant", "Despicable", "Furious", "Greedy", "Forceful", "Perverted"]
       },
       {
         "cardName": "State of The Scene",
-        "choices": [
-          "Bits and Pieces",
-          "Ashes",
-          "Water Stain",
-          "Cracked",
-          "Disorderly",
-          "Tidy"
-        ]
+        "choices": ["Bits and Pieces", "Ashes", "Water Stain", "Cracked", "Disorderly", "Tidy"]
       },
       {
         "cardName": "Victim's Build",
-        "choices": [
-          "Large",
-          "Thin",
-          "Tall",
-          "Short",
-          "Disfigured",
-          "Fit"
-        ]
+        "choices": ["Large", "Thin", "Tall", "Short", "Disfigured", "Fit"]
       },
       {
         "cardName": "Victim's Clothes",
-        "choices": [
-          "Neat",
-          "Untidy",
-          "Elegant",
-          "Shabby",
-          "Bizarre",
-          "Naked"
-        ]
+        "choices": ["Neat", "Untidy", "Elegant", "Shabby", "Bizarre", "Naked"]
       },
       {
         "cardName": "Evidence Left Behind",
-        "choices": [
-          "Natural",
-          "Artistic",
-          "Written",
-          "Synthetic",
-          "Personal",
-          "Unrelated"
-        ]
+        "choices": ["Natural", "Artistic", "Written", "Synthetic", "Personal", "Unrelated"]
       },
       {
         "cardName": "Victim's Expression",
-        "choices": [
-          "Peaceful",
-          "Struggling",
-          "Frightened",
-          "In Pain",
-          "Blank",
-          "Angry"
-        ]
+        "choices": ["Peaceful", "Struggling", "Frightened", "In Pain", "Blank", "Angry"]
       },
       {
         "cardName": "Time of Death",
-        "choices": [
-          "Dawn",
-          "Morning",
-          "Noon",
-          "Afternoon",
-          "Evening",
-          "Midnight"
-        ]
+        "choices": ["Dawn", "Morning", "Noon", "Afternoon", "Evening", "Midnight"]
       },
       {
         "cardName": "Duration of Crime",
-        "choices": [
-          "Instanteous",
-          "Brief",
-          "Gradual",
-          "Prolonged",
-          "Few Days",
-          "Unclear"
-        ]
+        "choices": ["Instanteous", "Brief", "Gradual", "Prolonged", "Few Days", "Unclear"]
       },
       {
         "cardName": "Trace at the Scene",
-        "choices": [
-          "Fingerprint",
-          "Footprint",
-          "Bruise",
-          "Blood Stain",
-          "Body Fluid",
-          "Scar"
-        ]
+        "choices": ["Fingerprint", "Footprint", "Bruise", "Blood Stain", "Body Fluid", "Scar"]
       },
       {
         "cardName": "Noticed by Bystander",
-        "choices": [
-          "Sudden sound",
-          "Prolonged sound",
-          "Smell",
-          "Visual",
-          "Action",
-          "Nothing"
-        ]
+        "choices": ["Sudden sound", "Prolonged sound", "Smell", "Visual", "Action", "Nothing"]
       },
       {
         "cardName": "Social Relationship",
-        "choices": [
-          "Relatives",
-          "Friends",
-          "Colleagues",
-          "Employer/ Employee",
-          "Lovers",
-          "Strangers"
-        ]
+        "choices": ["Relatives", "Friends", "Colleagues", "Employer/ Employee", "Lovers", "Strangers"]
       },
       {
         "cardName": "Victim's Occupation",
-        "choices": [
-          "Boss",
-          "Professional",
-          "Worker",
-          "Student",
-          "Unemployed",
-          "Retired"
-        ]
+        "choices": ["Boss", "Professional", "Worker", "Student", "Unemployed", "Retired"]
       },
       {
         "cardName": "In Progress",
-        "choices": [
-          "Entertainment",
-          "Relaxation",
-          "Assembly",
-          "Trading",
-          "Visit",
-          "Dining"
-        ]
+        "choices": ["Entertainment", "Relaxation", "Assembly", "Trading", "Visit", "Dining"]
       },
       {
         "cardName": "Sudden Incident",
-        "choices": [
-          "Power Failure",
-          "Fire",
-          "Conflict",
-          "Loss of Valuables",
-          "Scream",
-          "Nothing"
-        ]
+        "choices": ["Power Failure", "Fire", "Conflict", "Loss of Valuables", "Scream", "Nothing"]
       },
       {
         "cardName": "Day of Crime",
-        "choices": [
-          "Weekday",
-          "Weekend",
-          "Spring",
-          "Summer",
-          "Autumn",
-          "Winter"
-        ]
+        "choices": ["Weekday", "Weekend", "Spring", "Summer", "Autumn", "Winter"]
       }
     ]
   },

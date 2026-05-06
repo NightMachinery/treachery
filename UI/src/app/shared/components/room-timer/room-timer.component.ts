@@ -12,7 +12,7 @@ type RoomTimerStatus = 'idle' | 'running' | 'paused' | 'expired';
   selector: 'app-room-timer',
   standalone: false,
   templateUrl: './room-timer.component.html',
-  styleUrls: ['./room-timer.component.scss']
+  styleUrls: ['./room-timer.component.scss'],
 })
 export class RoomTimerComponent implements OnInit, OnDestroy {
   durationSeconds = DEFAULT_ROOM_TIMER_SECONDS;
@@ -26,13 +26,16 @@ export class RoomTimerComponent implements OnInit, OnDestroy {
   private ticker: any = null;
   private serverOffsetMs = 0;
 
-  constructor(public gameApi: GameApiService, private snack: SnackBarService) {}
+  constructor(
+    public gameApi: GameApiService,
+    private snack: SnackBarService,
+  ) {}
 
   ngOnInit(): void {
     this.subscription.add(
-      this.gameApi.snapshot$.subscribe(snapshot => {
+      this.gameApi.snapshot$.subscribe((snapshot) => {
         this.syncFromSnapshot(snapshot);
-      })
+      }),
     );
     this.startTicker();
   }
@@ -62,7 +65,10 @@ export class RoomTimerComponent implements OnInit, OnDestroy {
   }
 
   get timeLabel(): string {
-    const totalSeconds = Math.max(0, this.status === 'paused' && this.roomTimer ? this.roomTimer.pausedRemainingSeconds || 0 : this.remainingSeconds);
+    const totalSeconds = Math.max(
+      0,
+      this.status === 'paused' && this.roomTimer ? this.roomTimer.pausedRemainingSeconds || 0 : this.remainingSeconds,
+    );
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;

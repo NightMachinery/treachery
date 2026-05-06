@@ -7,14 +7,17 @@ import { GameApiService } from './../../api/game/game-api.service';
   selector: 'app-chat',
   standalone: false,
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss']
+  styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent implements OnInit {
   @Input() disableChat = false;
   @ViewChild('messages') messagesEl: ElementRef;
   message: string;
 
-  constructor(public chatApi: ChatApiService, public gameApi: GameApiService) {}
+  constructor(
+    public chatApi: ChatApiService,
+    public gameApi: GameApiService,
+  ) {}
 
   mine(message: TgMessage, viewerUid: string) {
     return !!viewerUid && message.playerUid === viewerUid;

@@ -8,9 +8,8 @@ describe('MurdererInfoComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ MurdererInfoComponent ]
-    })
-    .compileComponents();
+      declarations: [MurdererInfoComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

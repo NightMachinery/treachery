@@ -19,15 +19,15 @@ describe('AppComponent', () => {
           provide: AuthService,
           useValue: {
             anonymousLogin: jasmine.createSpy('anonymousLogin'),
-            user$: new BehaviorSubject(null)
-          }
+            user$: new BehaviorSubject(null),
+          },
         },
         {
           provide: AvatarService,
-          useValue: {}
-        }
+          useValue: {},
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 

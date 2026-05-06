@@ -10,40 +10,43 @@ import { TgMurdererInfo } from './../../../shared/api/models/models';
   selector: 'tg-murderer-info',
   standalone: false,
   templateUrl: './murderer-info.component.html',
-  styleUrls: ['./murderer-info.component.scss']
+  styleUrls: ['./murderer-info.component.scss'],
 })
 export class MurdererInfoComponent implements OnInit {
   murderer$: Observable<TgMurdererInfo>;
 
-  constructor(public forensicApi: ForensicApiService, public gameApi: GameApiService) {
+  constructor(
+    public forensicApi: ForensicApiService,
+    public gameApi: GameApiService,
+  ) {
     this.murderer$ = forensicApi.forensicPrivateData$.pipe(
-      switchMap(forensicPrivateData => {
+      switchMap((forensicPrivateData) => {
         if (forensicPrivateData && forensicPrivateData.murderer) {
           return of({
             murderer: forensicPrivateData.murderer,
             clueCard: findClueCard(forensicPrivateData.murderer, forensicPrivateData.murdererClueCardId),
-            meansCard: findMeansCard(forensicPrivateData.murderer, forensicPrivateData.murdererMeansCardId)
+            meansCard: findMeansCard(forensicPrivateData.murderer, forensicPrivateData.murdererMeansCardId),
           });
         }
 
         return this.gameApi.game$.pipe(
-          switchMap(game => {
+          switchMap((game) => {
             if (game && game.murdererUid) {
               return this.gameApi.players$.pipe(
-                map(players => {
-                  const murderer = players.find(p => p.uid === game.murdererUid);
+                map((players) => {
+                  const murderer = players.find((p) => p.uid === game.murdererUid);
                   return {
                     murderer,
                     clueCard: findClueCard(murderer, game.murdererClueCardId),
-                    meansCard: findMeansCard(murderer, game.murdererMeansCardId)
+                    meansCard: findMeansCard(murderer, game.murdererMeansCardId),
                   };
-                })
+                }),
               );
             }
             return of(null);
-          })
+          }),
         );
-      })
+      }),
     );
   }
 

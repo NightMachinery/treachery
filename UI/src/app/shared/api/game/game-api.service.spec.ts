@@ -21,17 +21,17 @@ describe('GameApiService', () => {
           useValue: {
             user$: new BehaviorSubject(null),
             user: null,
-            getStoredToken: () => ''
-          }
+            getStoredToken: () => '',
+          },
         },
         {
           provide: SnackBarService,
           useValue: {
-            error: jasmine.createSpy('error')
-          }
-        }
-      ]
-    })
+            error: jasmine.createSpy('error'),
+          },
+        },
+      ],
+    }),
   );
 
   it('should be created', () => {

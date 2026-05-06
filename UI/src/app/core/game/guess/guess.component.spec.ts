@@ -26,37 +26,35 @@ describe('GuessComponent', () => {
     guessed: false,
     meansCards: [
       { id: 'rope', name: 'Rope', imgUrl: 'rope.jpg', altImgUrl: 'rope-fallback.jpg', hasImage: true, guessedBy: [] },
-      { id: 'knife', name: 'Knife', imgUrl: 'knife.jpg', altImgUrl: 'knife-fallback.jpg', hasImage: true, guessedBy: [] }
+      { id: 'knife', name: 'Knife', imgUrl: 'knife.jpg', altImgUrl: 'knife-fallback.jpg', hasImage: true, guessedBy: [] },
     ],
     clueCards: [
       { id: 'shoes', name: 'Shoes', imgUrl: 'shoes.jpg', altImgUrl: 'shoes-fallback.jpg', hasImage: true, guessedBy: [] },
-      { id: 'watch', name: 'Watch', imgUrl: 'watch.jpg', altImgUrl: 'watch-fallback.jpg', hasImage: true, guessedBy: [] }
-    ]
+      { id: 'watch', name: 'Watch', imgUrl: 'watch.jpg', altImgUrl: 'watch-fallback.jpg', hasImage: true, guessedBy: [] },
+    ],
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      gameApi = Object.assign(jasmine.createSpyObj<GameApiService>('GameApiService', ['makeGuess']), {
-        guesses$: new BehaviorSubject<TgGuess[]>([]),
-        players$: new BehaviorSubject<TgPlayer[]>([murderer]),
-        playersDict$: new BehaviorSubject<Map<string, TgPlayer>>(new Map([[murderer.uid, murderer]])),
-        viewer$: new BehaviorSubject<TgViewer>({ uid: 'investigator' } as TgViewer)
-      });
-      gameApi.makeGuess.and.returnValue(Promise.resolve());
-      snack = jasmine.createSpyObj<SnackBarService>('SnackBarService', ['error']);
-      chatApi = jasmine.createSpyObj<ChatApiService>('ChatApiService', ['sendMessage']);
+  beforeEach(waitForAsync(() => {
+    gameApi = Object.assign(jasmine.createSpyObj<GameApiService>('GameApiService', ['makeGuess']), {
+      guesses$: new BehaviorSubject<TgGuess[]>([]),
+      players$: new BehaviorSubject<TgPlayer[]>([murderer]),
+      playersDict$: new BehaviorSubject<Map<string, TgPlayer>>(new Map([[murderer.uid, murderer]])),
+      viewer$: new BehaviorSubject<TgViewer>({ uid: 'investigator' } as TgViewer),
+    });
+    gameApi.makeGuess.and.returnValue(Promise.resolve());
+    snack = jasmine.createSpyObj<SnackBarService>('SnackBarService', ['error']);
+    chatApi = jasmine.createSpyObj<ChatApiService>('ChatApiService', ['sendMessage']);
 
-      TestBed.configureTestingModule({
-        declarations: [GuessComponent],
-        providers: [
-          { provide: GameApiService, useValue: gameApi },
-          { provide: SnackBarService, useValue: snack },
-          { provide: ChatApiService, useValue: chatApi }
-        ],
-        schemas: [NO_ERRORS_SCHEMA]
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      declarations: [GuessComponent],
+      providers: [
+        { provide: GameApiService, useValue: gameApi },
+        { provide: SnackBarService, useValue: snack },
+        { provide: ChatApiService, useValue: chatApi },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(GuessComponent);
@@ -66,7 +64,7 @@ describe('GuessComponent', () => {
       meansCardId: 'knife',
       meansCardName: 'Knife',
       clueCardId: 'shoes',
-      clueCardName: 'Shoes'
+      clueCardName: 'Shoes',
     };
     fixture.detectChanges();
   });
@@ -84,8 +82,8 @@ describe('GuessComponent', () => {
         meansCardName: 'Knife',
         clueCardId: 'shoes',
         clueCardName: 'Shoes',
-        correct: false
-      }
+        correct: false,
+      },
     ]);
 
     component.makeGuess();

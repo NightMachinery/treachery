@@ -12,14 +12,14 @@ export interface TgDisplayNameDialogData {
   selector: 'tg-display-name-dialog',
   standalone: false,
   templateUrl: './display-name-dialog.component.html',
-  styleUrls: ['./display-name-dialog.component.scss']
+  styleUrls: ['./display-name-dialog.component.scss'],
 })
 export class DisplayNameDialogComponent {
   displayName = '';
 
   constructor(
     private dialogRef: MatDialogRef<DisplayNameDialogComponent, string | null>,
-    @Inject(MAT_DIALOG_DATA) public data: TgDisplayNameDialogData
+    @Inject(MAT_DIALOG_DATA) public data: TgDisplayNameDialogData,
   ) {
     this.displayName = data?.initialValue || '';
   }

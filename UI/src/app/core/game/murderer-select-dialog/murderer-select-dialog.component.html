@@ -1,12 +1,14 @@
 <div class="floating-prompt">
   <tg-prompt-panel title="You are the murderer" [(minimized)]="minimized">
     <p>Select a clue card and a means card from your deck.</p>
-    <ng-container *ngIf="(gameApi.playerPrivateData$ | async) as privateData">
+    <ng-container *ngIf="gameApi.playerPrivateData$ | async as privateData">
       <div class="team-list" *ngIf="privateData.knownMurdererTeam?.length > 1">
         <div class="subtitle">Your team</div>
         <div class="team-member" *ngFor="let member of privateData.knownMurdererTeam">
           <tg-avatar [uid]="member.uid" [name]="member.name" [diameter]="36"></tg-avatar>
-          <div>{{ member.name }} <span class="role-label">{{ member.role }}</span></div>
+          <div>
+            {{ member.name }} <span class="role-label">{{ member.role }}</span>
+          </div>
         </div>
       </div>
     </ng-container>

@@ -66,7 +66,7 @@ function buildAvatarConfig(uid?: string, displayName?: string): NiceAvatarProps 
     eyebrowsStyle: pick(seed, 'eyebrows-style', EYEBROW_STYLES),
     glassesStyle: pick(seed, 'glasses-style', GLASSES_STYLES),
     facialHairStyle: pick(seed, 'facial-hair-style', FACIAL_HAIR_STYLES),
-    earRing: pick(seed, 'earring-style', EARRING_STYLES)
+    earRing: pick(seed, 'earring-style', EARRING_STYLES),
   };
 }
 

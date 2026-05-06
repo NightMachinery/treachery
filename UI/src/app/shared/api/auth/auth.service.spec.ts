@@ -9,7 +9,7 @@ describe('AuthService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), { provide: MatDialog, useValue: { open: jasmine.createSpy('open') } }]
+      providers: [provideHttpClient(), { provide: MatDialog, useValue: { open: jasmine.createSpy('open') } }],
     });
     service = TestBed.inject(AuthService);
   });

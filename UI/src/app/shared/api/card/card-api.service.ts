@@ -2,40 +2,39 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { combineLatest, firstValueFrom, Observable, of } from 'rxjs';
 import { catchError, shareReplay, switchMap } from 'rxjs/operators';
-import {
-  TgCrimePackResource,
-  TgCurrentPackResources,
-  TgForensicCard,
-  TgHintPackResource,
-  TgWordpackCatalog
-} from './../models/models';
+import { TgCrimePackResource, TgCurrentPackResources, TgForensicCard, TgHintPackResource, TgWordpackCatalog } from './../models/models';
 import { GameApiService } from '../game/game-api.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CardApiService {
   public catalog$: Observable<TgWordpackCatalog>;
   public cards$: Observable<TgCurrentPackResources>;
 
-  constructor(private http: HttpClient, private gameApi: GameApiService) {
+  constructor(
+    private http: HttpClient,
+    private gameApi: GameApiService,
+  ) {
     this.catalog$ = this.http.get<TgWordpackCatalog>('/api/wordpacks/catalog').pipe(shareReplay(1));
     this.cards$ = this.gameApi.game$.pipe(
-      switchMap(game => {
+      switchMap((game) => {
         if (!game) {
           return of(null);
         }
         return combineLatest([
           this.http.get<TgCrimePackResource>(
             `/api/wordpacks/crime/${encodeURIComponent(game.crimePackId)}?language=${encodeURIComponent(game.crimePackLanguage || '')}&assetSetId=${encodeURIComponent(
-              game.crimePackAssetSetId || ''
-            )}`
+              game.crimePackAssetSetId || '',
+            )}`,
           ),
-          this.http.get<TgHintPackResource>(`/api/wordpacks/hint/${encodeURIComponent(game.hintPackId)}?language=${encodeURIComponent(game.hintPackLanguage || '')}`)
+          this.http.get<TgHintPackResource>(
+            `/api/wordpacks/hint/${encodeURIComponent(game.hintPackId)}?language=${encodeURIComponent(game.hintPackLanguage || '')}`,
+          ),
         ]);
       }),
       catchError(() => of(null)),
-      switchMap(resources => {
+      switchMap((resources) => {
         if (!resources) {
           return of(null);
         }
@@ -45,10 +44,10 @@ export class CardApiService {
           hintPack,
           clueCards: crimePack.clueCards,
           meansCards: crimePack.meansCards,
-          forensicCards: hintPack.forensicCards
+          forensicCards: hintPack.forensicCards,
         } as TgCurrentPackResources);
       }),
-      shareReplay(1)
+      shareReplay(1),
     );
   }
 
@@ -62,11 +61,11 @@ export class CardApiService {
 
   async getCauseCard(cardId: string, selectedChoiceId: string): Promise<TgForensicCard> {
     const cards = await this.getCardsSnapshot();
-    const base = cards?.forensicCards?.causeCards?.find(card => card.cardId === cardId);
+    const base = cards?.forensicCards?.causeCards?.find((card) => card.cardId === cardId);
     return {
       ...base,
       selectedChoiceId,
-      selectedChoice: base?.choices?.[base.choiceIds?.indexOf(selectedChoiceId)] || ''
+      selectedChoice: base?.choices?.[base.choiceIds?.indexOf(selectedChoiceId)] || '',
     } as TgForensicCard;
   }
 }

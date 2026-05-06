@@ -1,11 +1,6 @@
 <ng-container *ngIf="visible">
   <div class="floating-prompt">
-    <tg-prompt-panel
-      title="Choose the witness"
-      [dismissible]="prompt.dismissible"
-      [(minimized)]="minimized"
-      (dismissed)="dismiss()"
-    >
+    <tg-prompt-panel title="Choose the witness" [dismissible]="prompt.dismissible" [(minimized)]="minimized" (dismissed)="dismiss()">
       <p>
         Select {{ prompt.requiredSelections }} player{{ prompt.requiredSelections === 1 ? '' : 's' }} that you believe are witness{{
           prompt.requiredSelections === 1 ? '' : 'es'

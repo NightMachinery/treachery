@@ -7,7 +7,7 @@ import { ConfirmActionDialogComponent } from '../confirm-action-dialog/confirm-a
   selector: 'tg-confirmation-button',
   standalone: false,
   templateUrl: './confirmation-button.component.html',
-  styleUrls: ['./confirmation-button.component.scss']
+  styleUrls: ['./confirmation-button.component.scss'],
 })
 export class ConfirmationButtonComponent {
   @Input() mode: 'inline' | 'dialog' = 'inline';
@@ -40,8 +40,8 @@ export class ConfirmationButtonComponent {
           message: this.confirmMessage,
           confirmLabel: this.confirmButtonLabel,
           cancelLabel: this.cancelButtonLabel,
-          variant: this.variant
-        }
+          variant: this.variant,
+        },
       });
       const confirmed = await firstValueFrom(dialogRef.afterClosed());
       if (confirmed) {

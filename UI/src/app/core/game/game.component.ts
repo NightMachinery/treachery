@@ -13,7 +13,7 @@ import { copyTextToClipboard } from '../../shared/utils/clipboard';
   selector: 'app-game',
   standalone: false,
   templateUrl: './game.component.html',
-  styleUrls: ['./game.component.scss']
+  styleUrls: ['./game.component.scss'],
 })
 export class GameComponent implements OnInit, OnDestroy {
   guess: TgPartialGuess = {} as TgPartialGuess;
@@ -29,7 +29,7 @@ export class GameComponent implements OnInit, OnDestroy {
     private router: Router,
     public chatApi: ChatApiService,
     public forensicApi: ForensicApiService,
-    private snack: SnackBarService
+    private snack: SnackBarService,
   ) {}
 
   ngOnInit() {
@@ -44,25 +44,25 @@ export class GameComponent implements OnInit, OnDestroy {
         }
         await this.gameApi.refreshSnapshot();
         this.loading = false;
-      })
+      }),
     );
 
     this.subscription.add(
-      this.route.queryParams.subscribe(params => {
+      this.route.queryParams.subscribe((params) => {
         const roomAuth = params.roomAuth || null;
         if (this.gameApi.gameId$.value) {
           this.gameApi.setGameContext(this.gameApi.gameId$.value, roomAuth);
         }
-      })
+      }),
     );
 
     this.subscription.add(
-      this.gameApi.snapshot$.subscribe(snapshot => {
+      this.gameApi.snapshot$.subscribe((snapshot) => {
         if (!snapshot || !snapshot.game) {
           return;
         }
-        this.syncRoute(snapshot).catch(error => console.warn('Failed to sync game route', error));
-      })
+        this.syncRoute(snapshot).catch((error) => console.warn('Failed to sync game route', error));
+      }),
     );
   }
 

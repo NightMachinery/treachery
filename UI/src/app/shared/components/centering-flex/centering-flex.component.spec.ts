@@ -8,9 +8,8 @@ describe('CenteringFlexComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CenteringFlexComponent ]
-    })
-    .compileComponents();
+      declarations: [CenteringFlexComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

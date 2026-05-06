@@ -19,19 +19,19 @@ describe('ChatComponent', () => {
           useValue: {
             collapsed: true,
             messages$: new BehaviorSubject([]),
-            toggleCollapse: jasmine.createSpy('toggleCollapse')
-          }
+            toggleCollapse: jasmine.createSpy('toggleCollapse'),
+          },
         },
         {
           provide: GameApiService,
           useValue: {
             participantsDict$: new BehaviorSubject(new Map()),
             game$: new BehaviorSubject(null),
-            viewer$: new BehaviorSubject(null)
-          }
-        }
+            viewer$: new BehaviorSubject(null),
+          },
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 

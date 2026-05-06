@@ -10,7 +10,7 @@ describe('ForensicCardComponent', () => {
       choiceIds: ['living-room', 'bedroom'],
       selectedChoiceId: '',
       selectedChoice: '',
-      replaced: false
+      replaced: false,
     };
     return component;
   }

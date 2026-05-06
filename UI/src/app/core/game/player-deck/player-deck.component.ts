@@ -5,7 +5,7 @@ import { TgCard, TgPlayer } from '../../../shared/api/models/models';
   selector: 'app-player-deck',
   standalone: false,
   templateUrl: './player-deck.component.html',
-  styleUrls: ['./player-deck.component.scss']
+  styleUrls: ['./player-deck.component.scss'],
 })
 export class PlayerDeckComponent implements OnInit {
   @Input() player: TgPlayer;

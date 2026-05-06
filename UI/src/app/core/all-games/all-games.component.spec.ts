@@ -17,22 +17,22 @@ describe('AllGamesComponent', () => {
       providers: [
         {
           provide: ForensicApiService,
-          useValue: {}
+          useValue: {},
         },
         {
           provide: GameApiService,
           useValue: {
-            activeGames$: new BehaviorSubject([])
-          }
+            activeGames$: new BehaviorSubject([]),
+          },
         },
         {
           provide: Router,
           useValue: {
-            navigateByUrl: jasmine.createSpy('navigateByUrl')
-          }
-        }
+            navigateByUrl: jasmine.createSpy('navigateByUrl'),
+          },
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 

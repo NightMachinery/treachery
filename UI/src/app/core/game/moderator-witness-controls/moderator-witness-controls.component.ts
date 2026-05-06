@@ -7,14 +7,14 @@ import { TgCrimePackCatalogEntry, TgGame, TgHintPackCatalogEntry, TgWordpackCata
   selector: 'app-moderator-witness-controls',
   standalone: false,
   templateUrl: './moderator-witness-controls.component.html',
-  styleUrls: ['./moderator-witness-controls.component.scss']
+  styleUrls: ['./moderator-witness-controls.component.scss'],
 })
 export class ModeratorWitnessControlsComponent {
   roomModsBusy = false;
 
   constructor(
     public gameApi: GameApiService,
-    public cardApi: CardApiService
+    public cardApi: CardApiService,
   ) {}
 
   async showPrompt(targetUid: string) {
@@ -70,11 +70,11 @@ export class ModeratorWitnessControlsComponent {
   }
 
   getCrimePack(catalog: TgWordpackCatalog, game: TgGame): TgCrimePackCatalogEntry | null {
-    return catalog?.crimePacks?.find(pack => pack.id === game?.crimePackId) || null;
+    return catalog?.crimePacks?.find((pack) => pack.id === game?.crimePackId) || null;
   }
 
   getHintPack(catalog: TgWordpackCatalog, game: TgGame): TgHintPackCatalogEntry | null {
-    return catalog?.hintPacks?.find(pack => pack.id === game?.hintPackId) || null;
+    return catalog?.hintPacks?.find((pack) => pack.id === game?.hintPackId) || null;
   }
 
   showCrimeAssetSelector(crimePack: TgCrimePackCatalogEntry | null): boolean {

@@ -6,7 +6,7 @@ import { AvatarService } from './../../../shared/api/avatar/avatar.service';
   selector: 'app-joined-player-list-item',
   standalone: false,
   templateUrl: './joined-player-list-item.component.html',
-  styleUrls: ['./joined-player-list-item.component.scss']
+  styleUrls: ['./joined-player-list-item.component.scss'],
 })
 export class JoinedPlayerListItemComponent implements OnInit {
   @Input() participant: TgParticipant;

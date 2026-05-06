@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-ripple-mat-card',
   standalone: false,
   templateUrl: './ripple-mat-card.component.html',
-  styleUrls: ['./ripple-mat-card.component.scss']
+  styleUrls: ['./ripple-mat-card.component.scss'],
 })
 export class RippleMatCardComponent implements OnInit {
   constructor() {}

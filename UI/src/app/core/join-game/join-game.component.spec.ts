@@ -8,7 +8,7 @@ describe('JoinGameComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [JoinGameComponent]
+      declarations: [JoinGameComponent],
     }).compileComponents();
   }));
 

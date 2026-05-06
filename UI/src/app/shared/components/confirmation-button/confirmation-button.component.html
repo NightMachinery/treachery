@@ -1,10 +1,4 @@
-<button
-  (click)="handleClick($event)"
-  mat-raised-button
-  [color]="buttonColor"
-  class="trigger-button"
-  [class.danger]="variant === 'danger'"
->
+<button (click)="handleClick($event)" mat-raised-button [color]="buttonColor" class="trigger-button" [class.danger]="variant === 'danger'">
   <ng-container *ngIf="!clicked || mode === 'dialog'; else confirmInline"><ng-content></ng-content></ng-container>
   <ng-template #confirmInline>Are you sure?</ng-template>
 </button>

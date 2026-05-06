@@ -19,8 +19,8 @@ describe('NavbarComponent', () => {
           useValue: {
             user$: new BehaviorSubject(null),
             displayName$: new BehaviorSubject('Player'),
-            promptForDisplayName: jasmine.createSpy('promptForDisplayName').and.resolveTo(false)
-          }
+            promptForDisplayName: jasmine.createSpy('promptForDisplayName').and.resolveTo(false),
+          },
         },
         {
           provide: GameApiService,
@@ -29,11 +29,11 @@ describe('NavbarComponent', () => {
             game$: new BehaviorSubject(null),
             gameId$: new BehaviorSubject(null),
             roomAuth$: new BehaviorSubject(null),
-            refreshSnapshot: jasmine.createSpy('refreshSnapshot')
-          }
-        }
+            refreshSnapshot: jasmine.createSpy('refreshSnapshot'),
+          },
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 

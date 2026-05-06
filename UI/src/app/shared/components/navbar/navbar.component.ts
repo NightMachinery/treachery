@@ -8,19 +8,22 @@ import { GameApiService } from '../../api/game/game-api.service';
   selector: 'tg-navbar',
   standalone: false,
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
   identity$: Observable<{ uid: string; name: string }>;
 
-  constructor(public authService: AuthService, public gameApi: GameApiService) {
+  constructor(
+    public authService: AuthService,
+    public gameApi: GameApiService,
+  ) {
     this.identity$ = combineLatest([this.authService.user$, this.authService.displayName$, this.gameApi.viewer$, this.gameApi.game$]).pipe(
       map(([user, displayName, viewer, game]) => {
         if (game && viewer && viewer.uid) {
           return { uid: viewer.uid, name: viewer.name || displayName || 'Anonymous' };
         }
         return { uid: user ? user.uid : '', name: displayName || 'Set name' };
-      })
+      }),
     );
   }
 

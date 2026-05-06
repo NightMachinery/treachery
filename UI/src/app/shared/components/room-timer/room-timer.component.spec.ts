@@ -13,10 +13,10 @@ describe('RoomTimerComponent', () => {
       pauseRoomTimer: jasmine.createSpy('pauseRoomTimer').and.returnValue(Promise.resolve()),
       resumeRoomTimer: jasmine.createSpy('resumeRoomTimer').and.returnValue(Promise.resolve()),
       resetRoomTimer: jasmine.createSpy('resetRoomTimer').and.returnValue(Promise.resolve()),
-      clearRoomTimer: jasmine.createSpy('clearRoomTimer').and.returnValue(Promise.resolve())
+      clearRoomTimer: jasmine.createSpy('clearRoomTimer').and.returnValue(Promise.resolve()),
     };
     const snack = {
-      error: jasmine.createSpy('error')
+      error: jasmine.createSpy('error'),
     };
     const component = new RoomTimerComponent(gameApi as any, snack as any);
     spyOn<any>(component, 'startTicker').and.callFake(() => undefined);
@@ -38,9 +38,9 @@ describe('RoomTimerComponent', () => {
           durationSeconds: 40,
           expiresAt: new Date(now + 10000).toISOString(),
           pausedRemainingSeconds: 0,
-          runId: 1
-        }
-      }
+          runId: 1,
+        },
+      },
     });
 
     expect(component.status).toBe('running');
@@ -73,9 +73,9 @@ describe('RoomTimerComponent', () => {
           durationSeconds: 40,
           expiresAt: new Date(now - 1000).toISOString(),
           pausedRemainingSeconds: 0,
-          runId: 7
-        }
-      }
+          runId: 7,
+        },
+      },
     };
 
     snapshot$.next(expiredSnapshot);

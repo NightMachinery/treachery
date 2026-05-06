@@ -8,19 +8,21 @@ import { findClueCard, findMeansCard } from '../../../shared/utils/find';
   selector: 'app-private-role-panel',
   standalone: false,
   templateUrl: './private-role-panel.component.html',
-  styleUrls: ['./private-role-panel.component.scss']
+  styleUrls: ['./private-role-panel.component.scss'],
 })
 export class PrivateRolePanelComponent {
   vm$ = combineLatest([this.gameApi.playerPrivateData$, this.gameApi.players$]).pipe(
     map(([privateData, players]) => {
-      const murderer = players.find(player => player.uid === (privateData.knownMurdererTeam || []).find(member => member.role === 'murderer')?.uid);
+      const murderer = players.find(
+        (player) => player.uid === (privateData.knownMurdererTeam || []).find((member) => member.role === 'murderer')?.uid,
+      );
       return {
         privateData,
         murderer,
         murdererClueCard: murderer ? findClueCard(murderer, privateData.knownMurdererClueCardName) : null,
-        murdererMeansCard: murderer ? findMeansCard(murderer, privateData.knownMurdererMeansCardName) : null
+        murdererMeansCard: murderer ? findMeansCard(murderer, privateData.knownMurdererMeansCardName) : null,
       };
-    })
+    }),
   );
 
   constructor(public gameApi: GameApiService) {}

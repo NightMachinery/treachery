@@ -6,7 +6,7 @@ import { TgPlayer } from '../../../shared/api/models/models';
   selector: 'app-murderer-select-dialog',
   standalone: false,
   templateUrl: './murderer-select-dialog.component.html',
-  styleUrls: ['./murderer-select-dialog.component.scss']
+  styleUrls: ['./murderer-select-dialog.component.scss'],
 })
 export class MurdererSelectDialogComponent {
   @Input() player: TgPlayer;

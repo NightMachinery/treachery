@@ -12,10 +12,10 @@ describe('SnackBarService', () => {
         {
           provide: MatSnackBar,
           useValue: {
-            open: jasmine.createSpy('open')
-          }
-        }
-      ]
+            open: jasmine.createSpy('open'),
+          },
+        },
+      ],
     });
     service = TestBed.inject(SnackBarService);
   });

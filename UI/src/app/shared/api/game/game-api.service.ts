@@ -18,12 +18,12 @@ import {
   TgParticipant,
   TgRoomTimer,
   TgRoleRevealEntry,
-  TgViewer
+  TgViewer,
 } from '../models/models';
 import { SnackBarService } from '../snack-bar/snack-bar.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GameApiService {
   public snapshot$: Observable<TgGameSnapshot>;
@@ -48,92 +48,101 @@ export class GameApiService {
   private readonly snapshotSubject = new BehaviorSubject<TgGameSnapshot>(null);
   private eventSource: EventSource;
 
-  constructor(private http: HttpClient, private auth: AuthService, private router: Router, private snack: SnackBarService) {
+  constructor(
+    private http: HttpClient,
+    private auth: AuthService,
+    private router: Router,
+    private snack: SnackBarService,
+  ) {
     this.gameId$ = new BehaviorSubject<string>(null);
     this.roomAuth$ = new BehaviorSubject<string>(null);
     this.snapshot$ = this.snapshotSubject.asObservable().pipe(shareReplay(1));
 
     this.game$ = this.snapshot$.pipe(
-      map(snapshot => (snapshot ? snapshot.game : null)),
-      shareReplay(1)
+      map((snapshot) => (snapshot ? snapshot.game : null)),
+      shareReplay(1),
     );
     this.participants$ = this.snapshot$.pipe(
-      map(snapshot => (snapshot ? snapshot.participants : [])),
-      shareReplay(1)
+      map((snapshot) => (snapshot ? snapshot.participants : [])),
+      shareReplay(1),
     );
     this.players$ = this.snapshot$.pipe(
-      map(snapshot => (snapshot ? snapshot.players : [])),
-      shareReplay(1)
+      map((snapshot) => (snapshot ? snapshot.players : [])),
+      shareReplay(1),
     );
     this.viewer$ = this.snapshot$.pipe(
-      map(snapshot => (snapshot ? snapshot.viewer : null)),
-      shareReplay(1)
+      map((snapshot) => (snapshot ? snapshot.viewer : null)),
+      shareReplay(1),
     );
     this.me$ = this.snapshot$.pipe(
-      map(snapshot => {
+      map((snapshot) => {
         if (!snapshot || !snapshot.viewer) {
           return null;
         }
-        return snapshot.players.find(player => player.uid === snapshot.viewer.uid) || null;
+        return snapshot.players.find((player) => player.uid === snapshot.viewer.uid) || null;
       }),
-      shareReplay(1)
+      shareReplay(1),
     );
     this.guesses$ = this.snapshot$.pipe(
-      map(snapshot => (snapshot ? snapshot.guesses : [])),
-      shareReplay(1)
+      map((snapshot) => (snapshot ? snapshot.guesses : [])),
+      shareReplay(1),
     );
     this.playerPrivateData$ = this.snapshot$.pipe(
-      map(snapshot => (snapshot ? snapshot.playerPrivateData || ({} as TgPlayerPrivateData) : ({} as TgPlayerPrivateData))),
-      shareReplay(1)
+      map((snapshot) => (snapshot ? snapshot.playerPrivateData || ({} as TgPlayerPrivateData) : ({} as TgPlayerPrivateData))),
+      shareReplay(1),
     );
     this.moderatorPrivateData$ = this.snapshot$.pipe(
-      map(snapshot => (snapshot ? snapshot.moderatorPrivateData || ({ witnessPromptCandidates: [] } as TgModeratorPrivateData) : ({ witnessPromptCandidates: [] } as TgModeratorPrivateData))),
-      shareReplay(1)
+      map((snapshot) =>
+        snapshot
+          ? snapshot.moderatorPrivateData || ({ witnessPromptCandidates: [] } as TgModeratorPrivateData)
+          : ({ witnessPromptCandidates: [] } as TgModeratorPrivateData),
+      ),
+      shareReplay(1),
     );
     this.roleReveal$ = this.snapshot$.pipe(
-      map(snapshot => (snapshot ? snapshot.roleReveal || [] : [])),
-      shareReplay(1)
+      map((snapshot) => (snapshot ? snapshot.roleReveal || [] : [])),
+      shareReplay(1),
     );
     this.roomTimer$ = this.game$.pipe(
-      map(game => (game ? game.roomTimer || null : null)),
-      shareReplay(1)
+      map((game) => (game ? game.roomTimer || null : null)),
+      shareReplay(1),
     );
     this.participantsDict$ = this.participants$.pipe(
-      map(participants => {
+      map((participants) => {
         const result = new Map<string, TgParticipant>();
-        participants.forEach(participant => result.set(participant.uid, participant));
+        participants.forEach((participant) => result.set(participant.uid, participant));
         return result;
       }),
-      shareReplay(1)
+      shareReplay(1),
     );
     this.playersDict$ = this.players$.pipe(
-      map(players => {
+      map((players) => {
         const result = new Map<string, TgPlayer>();
-        players.forEach(player => result.set(player.uid, player));
+        players.forEach((player) => result.set(player.uid, player));
         return result;
       }),
-      shareReplay(1)
+      shareReplay(1),
     );
     this.joinLink$ = this.gameId$.pipe(
-      map(value => (value ? `${window.location.origin}/join/${value}` : `${window.location.origin}`)),
-      shareReplay(1)
+      map((value) => (value ? `${window.location.origin}/join/${value}` : `${window.location.origin}`)),
+      shareReplay(1),
     );
     this.migrateLink$ = this.gameId$.pipe(
-      map(value => {
+      map((value) => {
         const roomAuth = this.roomAuth$.value;
         if (!value || !roomAuth) {
           return '';
         }
         return `${window.location.origin}/join/${value}?roomAuth=${encodeURIComponent(roomAuth)}`;
       }),
-      shareReplay(1)
+      shareReplay(1),
     );
     this.activeGames$ = timer(0, 5000).pipe(
       switchMap(() => this.http.get<TgGame[]>('/api/games').pipe(catchError(() => of([])))),
-      shareReplay(1)
+      shareReplay(1),
     );
 
-    this.auth.user$.subscribe(user => {
+    this.auth.user$.subscribe((user) => {
       if (user && this.gameId$.value) {
         this.connectEvents();
         this.refreshSnapshotInBackground();
@@ -192,7 +201,7 @@ export class GameApiService {
   async joinGame(gameId: string, role: 'player' | 'observer' = 'player') {
     this.setGameContext(gameId, this.roomAuth$.value);
     const response = await firstValueFrom(
-      this.http.post<{ success: boolean }>(`/api/games/${gameId.toUpperCase()}/join`, { role }, this.getRoomRequestOptions())
+      this.http.post<{ success: boolean }>(`/api/games/${gameId.toUpperCase()}/join`, { role }, this.getRoomRequestOptions()),
     );
     if (response.success) {
       await this.refreshSnapshot();
@@ -202,7 +211,7 @@ export class GameApiService {
   async setParticipantRole(uid: string, role: 'player' | 'observer') {
     const gameId = this.gameId$.value;
     const response = await firstValueFrom(
-      this.http.post<{ success: boolean }>(`/api/games/${gameId}/participants/${uid}/role`, { role }, this.getRoomRequestOptions())
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/participants/${uid}/role`, { role }, this.getRoomRequestOptions()),
     );
     if (response.success) {
       await this.refreshSnapshot();
@@ -212,7 +221,7 @@ export class GameApiService {
   async toggleScientist(uid: string) {
     const gameId = this.gameId$.value;
     const response = await firstValueFrom(
-      this.http.post<{ success: boolean }>(`/api/games/${gameId}/scientist/toggle`, { uid }, this.getRoomRequestOptions())
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/scientist/toggle`, { uid }, this.getRoomRequestOptions()),
     );
     if (response.success) {
       await this.refreshSnapshot();
@@ -222,7 +231,7 @@ export class GameApiService {
   async addBots(count?: number) {
     const gameId = this.gameId$.value;
     const response = await firstValueFrom(
-      this.http.post<{ success: boolean; botsAdded: number }>(`/api/games/${gameId}/bots/add`, { count }, this.getRoomRequestOptions())
+      this.http.post<{ success: boolean; botsAdded: number }>(`/api/games/${gameId}/bots/add`, { count }, this.getRoomRequestOptions()),
     );
     if (response.success) {
       await this.refreshSnapshot();
@@ -232,7 +241,7 @@ export class GameApiService {
   async updateGameSettings(settings: TgGameSettingsInput) {
     const gameId = this.gameId$.value;
     const response = await firstValueFrom(
-      this.http.post<{ success: boolean }>(`/api/games/${gameId}/settings`, settings, this.getRoomRequestOptions())
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/settings`, settings, this.getRoomRequestOptions()),
     );
     if (response.success) {
       await this.refreshSnapshot();
@@ -242,7 +251,7 @@ export class GameApiService {
   async updateRoomMods(roomMods: TgGameRoomModsInput) {
     const gameId = this.gameId$.value;
     const response = await firstValueFrom(
-      this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-mods`, roomMods, this.getRoomRequestOptions())
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-mods`, roomMods, this.getRoomRequestOptions()),
     );
     if (response.success) {
       await this.refreshSnapshot();
@@ -252,7 +261,7 @@ export class GameApiService {
   async createMigrateLink() {
     const gameId = this.gameId$.value;
     const response = await firstValueFrom(
-      this.http.post<{ success: boolean; token: string }>(`/api/games/${gameId}/migrate-device`, {}, this.getRoomRequestOptions())
+      this.http.post<{ success: boolean; token: string }>(`/api/games/${gameId}/migrate-device`, {}, this.getRoomRequestOptions()),
     );
     if (!response.success || !response.token) {
       return '';
@@ -264,7 +273,11 @@ export class GameApiService {
   async selectMurdererCards(clueCardId: string, meansCardId: string) {
     const gameId = this.gameId$.value;
     const response = await firstValueFrom(
-      this.http.post<{ success: boolean }>(`/api/games/${gameId}/murderer-selection`, { clueCardId, meansCardId }, this.getRoomRequestOptions())
+      this.http.post<{ success: boolean }>(
+        `/api/games/${gameId}/murderer-selection`,
+        { clueCardId, meansCardId },
+        this.getRoomRequestOptions(),
+      ),
     );
     if (response.success) {
       await this.refreshSnapshot();
@@ -274,7 +287,7 @@ export class GameApiService {
   async startRoomTimer(seconds?: number) {
     const gameId = this.gameId$.value;
     const response = await firstValueFrom(
-      this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/start`, { seconds }, this.getRoomRequestOptions())
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/start`, { seconds }, this.getRoomRequestOptions()),
     );
     if (response.success) {
       await this.refreshSnapshot();
@@ -283,7 +296,9 @@ export class GameApiService {
 
   async pauseRoomTimer() {
     const gameId = this.gameId$.value;
-    const response = await firstValueFrom(this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/pause`, {}, this.getRoomRequestOptions()));
+    const response = await firstValueFrom(
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/pause`, {}, this.getRoomRequestOptions()),
+    );
     if (response.success) {
       await this.refreshSnapshot();
     }
@@ -291,7 +306,9 @@ export class GameApiService {
 
   async resumeRoomTimer() {
     const gameId = this.gameId$.value;
-    const response = await firstValueFrom(this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/resume`, {}, this.getRoomRequestOptions()));
+    const response = await firstValueFrom(
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/resume`, {}, this.getRoomRequestOptions()),
+    );
     if (response.success) {
       await this.refreshSnapshot();
     }
@@ -299,7 +316,9 @@ export class GameApiService {
 
   async resetRoomTimer() {
     const gameId = this.gameId$.value;
-    const response = await firstValueFrom(this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/reset`, {}, this.getRoomRequestOptions()));
+    const response = await firstValueFrom(
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/reset`, {}, this.getRoomRequestOptions()),
+    );
     if (response.success) {
       await this.refreshSnapshot();
     }
@@ -307,7 +326,9 @@ export class GameApiService {
 
   async clearRoomTimer() {
     const gameId = this.gameId$.value;
-    const response = await firstValueFrom(this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/clear`, {}, this.getRoomRequestOptions()));
+    const response = await firstValueFrom(
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/room-timer/clear`, {}, this.getRoomRequestOptions()),
+    );
     if (response.success) {
       await this.refreshSnapshot();
     }
@@ -316,7 +337,7 @@ export class GameApiService {
   async showWitnessSelectionPrompt(targetUid: string) {
     const gameId = this.gameId$.value;
     const response = await firstValueFrom(
-      this.http.post<{ success: boolean }>(`/api/games/${gameId}/witness-selection/show`, { targetUid }, this.getRoomRequestOptions())
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/witness-selection/show`, { targetUid }, this.getRoomRequestOptions()),
     );
     if (response.success) {
       await this.refreshSnapshot();
@@ -326,7 +347,7 @@ export class GameApiService {
   async submitWitnessSelection(selectedUids: string[]) {
     const gameId = this.gameId$.value;
     const response = await firstValueFrom(
-      this.http.post<{ success: boolean }>(`/api/games/${gameId}/witness-selection`, { selectedUids }, this.getRoomRequestOptions())
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/witness-selection`, { selectedUids }, this.getRoomRequestOptions()),
     );
     if (response.success) {
       await this.refreshSnapshot();
@@ -336,7 +357,7 @@ export class GameApiService {
   async dismissWitnessSelectionPrompt() {
     const gameId = this.gameId$.value;
     const response = await firstValueFrom(
-      this.http.post<{ success: boolean }>(`/api/games/${gameId}/witness-selection/dismiss`, {}, this.getRoomRequestOptions())
+      this.http.post<{ success: boolean }>(`/api/games/${gameId}/witness-selection/dismiss`, {}, this.getRoomRequestOptions()),
     );
     if (response.success) {
       await this.refreshSnapshot();
@@ -346,11 +367,15 @@ export class GameApiService {
   async makeGuess(guess: TgPartialGuess) {
     const gameId = this.gameId$.value;
     const response = await firstValueFrom(
-      this.http.post<{ success: boolean }>(`/api/games/${gameId}/guess`, {
-        murdererUid: guess.murdererUid,
-        clueCardId: guess.clueCardId,
-        meansCardId: guess.meansCardId
-      }, this.getRoomRequestOptions())
+      this.http.post<{ success: boolean }>(
+        `/api/games/${gameId}/guess`,
+        {
+          murdererUid: guess.murdererUid,
+          clueCardId: guess.clueCardId,
+          meansCardId: guess.meansCardId,
+        },
+        this.getRoomRequestOptions(),
+      ),
     );
     if (response.success) {
       await this.refreshSnapshot();
@@ -378,7 +403,7 @@ export class GameApiService {
   }
 
   countSelectedOtherCards(game: TgGame): number {
-    return game.otherCards.filter(card => card.selectedChoiceId).length;
+    return game.otherCards.filter((card) => card.selectedChoiceId).length;
   }
 
   async selectNextForensicOtherCard(card: TgForensicCard, replaceCardId?: string) {
@@ -392,11 +417,11 @@ export class GameApiService {
   }
 
   findPlayer(players: TgPlayer[], uid: string): TgPlayer {
-    return players.find(player => player.uid === uid);
+    return players.find((player) => player.uid === uid);
   }
 
   findParticipant(participants: TgParticipant[], uid: string): TgParticipant {
-    return participants.find(participant => participant.uid === uid);
+    return participants.find((participant) => participant.uid === uid);
   }
 
   async gameExists(gameId: string): Promise<boolean> {
@@ -428,7 +453,7 @@ export class GameApiService {
   }
 
   private refreshSnapshotInBackground() {
-    this.refreshSnapshot().catch(error => {
+    this.refreshSnapshot().catch((error) => {
       console.warn('Failed to refresh game snapshot in background.', error);
     });
   }

@@ -8,7 +8,7 @@ import { SnackBarService } from '../../../shared/api/snack-bar/snack-bar.service
   selector: 'app-witness-selection-prompt',
   standalone: false,
   templateUrl: './witness-selection-prompt.component.html',
-  styleUrls: ['./witness-selection-prompt.component.scss']
+  styleUrls: ['./witness-selection-prompt.component.scss'],
 })
 export class WitnessSelectionPromptComponent implements OnInit, OnDestroy {
   prompt: TgWitnessSelectionPromptState;
@@ -18,23 +18,26 @@ export class WitnessSelectionPromptComponent implements OnInit, OnDestroy {
   selectedUids: string[] = [];
   private subscription = new Subscription();
 
-  constructor(public gameApi: GameApiService, private snack: SnackBarService) {}
+  constructor(
+    public gameApi: GameApiService,
+    private snack: SnackBarService,
+  ) {}
 
   ngOnInit() {
     this.subscription.add(
-      this.gameApi.playerPrivateData$.subscribe(privateData => {
+      this.gameApi.playerPrivateData$.subscribe((privateData) => {
         this.privateData = privateData;
         this.prompt = privateData ? privateData.activeWitnessSelectionPrompt : null;
         if (!this.prompt) {
           this.selectedUids = [];
           this.minimized = false;
         }
-      })
+      }),
     );
     this.subscription.add(
-      this.gameApi.players$.subscribe(players => {
+      this.gameApi.players$.subscribe((players) => {
         this.players = players || [];
-      })
+      }),
     );
   }
 
@@ -48,12 +51,12 @@ export class WitnessSelectionPromptComponent implements OnInit, OnDestroy {
 
   get candidates() {
     const murdererTeam = new Set((this.privateData?.knownMurdererTeam || []).map((player: TgKnownRolePlayer) => player.uid));
-    return this.players.filter(player => !murdererTeam.has(player.uid));
+    return this.players.filter((player) => !murdererTeam.has(player.uid));
   }
 
   toggleSelected(uid: string) {
     if (this.selectedUids.includes(uid)) {
-      this.selectedUids = this.selectedUids.filter(selectedUid => selectedUid !== uid);
+      this.selectedUids = this.selectedUids.filter((selectedUid) => selectedUid !== uid);
       return;
     }
     if (this.selectedUids.length >= this.prompt.requiredSelections) {

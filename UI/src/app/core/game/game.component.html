@@ -43,7 +43,11 @@
 
       <ng-container *ngIf="game.finished; else activeGame">
         <section class="result-panel surface-panel--soft">
-          <div class="result-hero-banner" [class.investigator-win]="game.winner === 'investigatorTeam'" [class.murderer-win]="game.winner === 'murdererTeam'">
+          <div
+            class="result-hero-banner"
+            [class.investigator-win]="game.winner === 'investigatorTeam'"
+            [class.murderer-win]="game.winner === 'murdererTeam'"
+          >
             <div class="result-copy">
               <p class="eyebrow">Final result</p>
               <h3>{{ getResultHeadline(game) }}</h3>
@@ -122,7 +126,9 @@
       <ng-template #activeGame>
         <div class="status-stack" *ngIf="game.pendingWitnessSelection">
           <tg-info>
-            A correct guess was made. The murderer team is now choosing {{ game.witnessesToFind }} witness{{ game.witnessesToFind === 1 ? '' : 'es' }}.
+            A correct guess was made. The murderer team is now choosing {{ game.witnessesToFind }} witness{{
+              game.witnessesToFind === 1 ? '' : 'es'
+            }}.
           </tg-info>
         </div>
 
@@ -174,7 +180,9 @@
                 <ng-container *ngIf="game.murdererCardsSelected">
                   <tg-info *ngIf="!game.causeCard; else causeSelected">Forensic Scientist is selecting the clue card...</tg-info>
                   <ng-template #causeSelected>
-                    <tg-info *ngIf="!game.locationCard; else locationSelected">Forensic Scientist is selecting the location card...</tg-info>
+                    <tg-info *ngIf="!game.locationCard; else locationSelected"
+                      >Forensic Scientist is selecting the location card...</tg-info
+                    >
                   </ng-template>
                   <ng-template #locationSelected>
                     <tg-info>Forensic Scientist is selecting other cards...</tg-info>
@@ -240,7 +248,13 @@
                   (selectedMeansChange)="handleMurdererMeansChange($event)"
                 ></app-player-deck>
                 <div class="murderer-card-selection-actions" *ngIf="privateData.isMurderer && !game.murdererCardsSelected">
-                  <button mat-raised-button color="accent" type="button" (click)="submitMurdererCards()" [disabled]="!murdererSelectedClue || !murdererSelectedMeans">
+                  <button
+                    mat-raised-button
+                    color="accent"
+                    type="button"
+                    (click)="submitMurdererCards()"
+                    [disabled]="!murdererSelectedClue || !murdererSelectedMeans"
+                  >
                     Submit selected cards
                   </button>
                 </div>

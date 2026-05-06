@@ -6,16 +6,19 @@ import { GameApiService } from '../game/game-api.service';
 import { TgMessage } from '../models/models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ChatApiService {
   messages$: Observable<TgMessage[]>;
   collapsed = true;
 
-  constructor(private http: HttpClient, private gameApi: GameApiService) {
+  constructor(
+    private http: HttpClient,
+    private gameApi: GameApiService,
+  ) {
     this.messages$ = this.gameApi.snapshot$.pipe(
-      map(snapshot => (snapshot ? snapshot.messages : [])),
-      shareReplay(1)
+      map((snapshot) => (snapshot ? snapshot.messages : [])),
+      shareReplay(1),
     );
   }
 

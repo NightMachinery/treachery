@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { buildAvatarSeed, renderAvatarDataUri } from './avatar-generator';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AvatarService {
   private readonly avatarCache = new Map<string, Promise<string>>();

@@ -5,7 +5,7 @@ import { copyTextToClipboard } from '../utils/clipboard';
   selector: 'tg-copy-link',
   standalone: false,
   templateUrl: './copy-link.component.html',
-  styleUrls: ['./copy-link.component.scss']
+  styleUrls: ['./copy-link.component.scss'],
 })
 export class CopyLinkComponent implements OnInit {
   @Input() text: string;

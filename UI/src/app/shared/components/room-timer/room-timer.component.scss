@@ -82,7 +82,9 @@
   gap: var(--space-2);
   justify-items: center;
   transform-origin: left center;
-  transition: transform 280ms ease, opacity 220ms ease;
+  transition:
+    transform 280ms ease,
+    opacity 220ms ease;
 }
 
 .time {

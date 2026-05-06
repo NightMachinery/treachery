@@ -10,7 +10,7 @@ const SESSION_STORAGE_KEY = 'treachery.session.token';
 const DISPLAY_NAME_STORAGE_KEY = 'treachery.session.displayName';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   public user$: Observable<TgAuthUser>;
@@ -19,10 +19,13 @@ export class AuthService {
   private readonly userSubject = new BehaviorSubject<TgAuthUser>(null);
   private readonly displayNameSubject = new BehaviorSubject<string>(localStorage.getItem(DISPLAY_NAME_STORAGE_KEY) || '');
 
-  constructor(private http: HttpClient, private dialog: MatDialog) {
+  constructor(
+    private http: HttpClient,
+    private dialog: MatDialog,
+  ) {
     this.user$ = this.userSubject.asObservable();
     this.displayName$ = this.displayNameSubject.asObservable().pipe(distinctUntilChanged());
-    this.user$.subscribe(value => {
+    this.user$.subscribe((value) => {
       this.user = value;
       if (!value) {
         return;
@@ -42,12 +45,12 @@ export class AuthService {
 
   anonymousLogin() {
     this.http.post<TgAuthUser>('/api/session', {}).subscribe({
-      next: user => {
+      next: (user) => {
         this.userSubject.next(user);
       },
-      error: error => {
+      error: (error) => {
         console.error('Failed to establish anonymous session', error);
-      }
+      },
     });
   }
 
@@ -81,10 +84,10 @@ export class AuthService {
             initialValue: current || '',
             title: current ? 'Update your display name' : 'Choose a display name',
             helperText: 'Pick the name that appears to everyone else in the room.',
-            submitLabel: current ? 'Save changes' : 'Save name'
-          }
+            submitLabel: current ? 'Save changes' : 'Save name',
+          },
         })
-        .afterClosed()
+        .afterClosed(),
     );
     const trimmed = (result || '').trim();
     if (!trimmed) {

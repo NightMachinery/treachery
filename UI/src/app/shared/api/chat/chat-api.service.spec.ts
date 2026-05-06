@@ -18,10 +18,10 @@ describe('ChatApiService', () => {
             gameId$: new BehaviorSubject(null),
             roomAuth$: new BehaviorSubject(null),
             snapshot$: new BehaviorSubject(null),
-            refreshSnapshot: jasmine.createSpy('refreshSnapshot')
-          }
-        }
-      ]
+            refreshSnapshot: jasmine.createSpy('refreshSnapshot'),
+          },
+        },
+      ],
     });
     service = TestBed.inject(ChatApiService);
   });

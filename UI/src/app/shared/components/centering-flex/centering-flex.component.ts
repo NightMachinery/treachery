@@ -4,13 +4,10 @@ import { Component, OnInit } from '@angular/core';
   selector: 'tg-centering-flex',
   standalone: false,
   templateUrl: './centering-flex.component.html',
-  styleUrls: ['./centering-flex.component.scss']
+  styleUrls: ['./centering-flex.component.scss'],
 })
 export class CenteringFlexComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

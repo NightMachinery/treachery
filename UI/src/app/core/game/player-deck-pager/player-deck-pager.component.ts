@@ -7,7 +7,7 @@ import { TgPartialGuess, TgPlayer, TgViewer } from '../../../shared/api/models/m
   selector: 'app-player-deck-pager',
   standalone: false,
   templateUrl: './player-deck-pager.component.html',
-  styleUrls: ['./player-deck-pager.component.scss']
+  styleUrls: ['./player-deck-pager.component.scss'],
 })
 export class PlayerDeckPagerComponent implements OnInit, OnChanges {
   players$: Observable<TgPlayer[]>;
@@ -34,14 +34,14 @@ export class PlayerDeckPagerComponent implements OnInit, OnChanges {
   }
 
   handleClueChange(player: TgPlayer) {
-    if (!player.meansCards.some(card => card.id === this.selectedMeans)) {
+    if (!player.meansCards.some((card) => card.id === this.selectedMeans)) {
       this.selectedMeans = null;
     }
     this.syncGuess(player);
   }
 
   handleMeansChange(player: TgPlayer) {
-    if (!player.clueCards.some(card => card.id === this.selectedClue)) {
+    if (!player.clueCards.some((card) => card.id === this.selectedClue)) {
       this.selectedClue = null;
     }
     this.syncGuess(player);
@@ -57,12 +57,12 @@ export class PlayerDeckPagerComponent implements OnInit, OnChanges {
     this.guess.murdererUid = player.uid;
     this.guess.meansCardId = this.selectedMeans;
     this.guess.clueCardId = this.selectedClue;
-    this.guess.meansCardName = player.meansCards.find(card => card.id === this.selectedMeans)?.name || '';
-    this.guess.clueCardName = player.clueCards.find(card => card.id === this.selectedClue)?.name || '';
+    this.guess.meansCardName = player.meansCards.find((card) => card.id === this.selectedMeans)?.name || '';
+    this.guess.clueCardName = player.clueCards.find((card) => card.id === this.selectedClue)?.name || '';
   }
 
   otherPlayers(players: TgPlayer[], viewer: TgViewer) {
-    return players ? players.filter(player => !viewer || player.uid !== viewer.uid) : [];
+    return players ? players.filter((player) => !viewer || player.uid !== viewer.uid) : [];
   }
 
   trackByPlayerUid(index: number, player: TgPlayer) {

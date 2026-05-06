@@ -8,16 +8,16 @@ describe('ForensicApiService', () => {
     spyOn(util, 'randomReadableId').and.returnValue('abcd');
 
     const http = {
-      post: jasmine.createSpy('post').and.returnValue(of({ success: true, gameId: 'WXYZ' }))
+      post: jasmine.createSpy('post').and.returnValue(of({ success: true, gameId: 'WXYZ' })),
     };
     const gameApi = {
       snapshot$: of(null),
       game$: of(null),
       setGameContext: jasmine.createSpy('setGameContext'),
-      navigateTo: jasmine.createSpy('navigateTo').and.resolveTo(true)
+      navigateTo: jasmine.createSpy('navigateTo').and.resolveTo(true),
     };
     const authService = {
-      ensureDisplayName: jasmine.createSpy('ensureDisplayName').and.resolveTo(true)
+      ensureDisplayName: jasmine.createSpy('ensureDisplayName').and.resolveTo(true),
     };
 
     const service = new ForensicApiService(http as any, authService as any, gameApi as any, {} as any);

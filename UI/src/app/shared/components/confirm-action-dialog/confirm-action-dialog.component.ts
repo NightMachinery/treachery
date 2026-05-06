@@ -13,12 +13,12 @@ export interface TgConfirmDialogData {
   selector: 'tg-confirm-action-dialog',
   standalone: false,
   templateUrl: './confirm-action-dialog.component.html',
-  styleUrls: ['./confirm-action-dialog.component.scss']
+  styleUrls: ['./confirm-action-dialog.component.scss'],
 })
 export class ConfirmActionDialogComponent {
   constructor(
     private dialogRef: MatDialogRef<ConfirmActionDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: TgConfirmDialogData
+    @Inject(MAT_DIALOG_DATA) public data: TgConfirmDialogData,
   ) {}
 
   cancel() {

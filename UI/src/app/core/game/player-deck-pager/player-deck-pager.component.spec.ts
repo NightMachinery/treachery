@@ -8,7 +8,7 @@ describe('PlayerDeckPagerComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [PlayerDeckPagerComponent]
+      declarations: [PlayerDeckPagerComponent],
     }).compileComponents();
   }));
 

@@ -5,7 +5,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   selector: 'app-forensic-card',
   standalone: false,
   templateUrl: './forensic-card.component.html',
-  styleUrls: ['./forensic-card.component.scss']
+  styleUrls: ['./forensic-card.component.scss'],
 })
 export class ForensicCardComponent implements OnInit {
   @Input() forensicCard: TgForensicCard;

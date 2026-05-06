@@ -17,19 +17,19 @@ describe('TestComponent', () => {
         {
           provide: MatDialog,
           useValue: {
-            open: jasmine.createSpy('open')
-          }
+            open: jasmine.createSpy('open'),
+          },
         },
         {
           provide: GameApiService,
-          useValue: {}
+          useValue: {},
         },
         {
           provide: PlayerApiService,
-          useValue: {}
-        }
+          useValue: {},
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 

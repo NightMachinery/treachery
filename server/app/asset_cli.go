@@ -20,6 +20,85 @@ type AssetPackCacheResult struct {
 	Images      []assetImage
 }
 
+type AssetPackInfo struct {
+	CrimePackID         string
+	CrimePackName       string
+	AssetPackID         string
+	AssetPackName       string
+	DefaultAssetPackID  string
+	FallbackAssetPackID string
+	ImageCount          int
+	AssetDir            string
+	AssetDirExists      bool
+	Geometry            assetGeometry
+	CategoryCounts      map[string]int
+}
+
+func ListAssetPacks(wordpacksDir string) ([]AssetPackInfo, error) {
+	wordpacksDir = strings.TrimSpace(wordpacksDir)
+	if wordpacksDir == "" {
+		wordpacksDir = "wordpacks"
+	}
+	crimeRoot := filepath.Join(wordpacksDir, "crime")
+	entries, err := os.ReadDir(crimeRoot)
+	if err != nil {
+		return nil, err
+	}
+	infos := []AssetPackInfo{}
+	for _, entry := range entries {
+		if !entry.IsDir() {
+			continue
+		}
+		packDir := filepath.Join(crimeRoot, entry.Name())
+		metaPath, err := findExistingFile(filepath.Join(packDir, "pack"), []string{".json5", ".json"})
+		if err != nil {
+			continue
+		}
+		var meta crimePackMeta
+		if err := decodeJSON5File(metaPath, &meta); err != nil {
+			return nil, err
+		}
+		if meta.ID == "" {
+			meta.ID = entry.Name()
+		}
+		if meta.Name == "" {
+			meta.Name = meta.ID
+		}
+		for assetPackID, setMeta := range meta.AssetSets {
+			if setMeta.Name == "" {
+				setMeta.Name = assetPackID
+			}
+			geometry, err := geometryFromAspectAndWidth(setMeta.AspectRatio, setMeta.Width)
+			if err != nil {
+				return nil, fmt.Errorf("asset pack %s/%s geometry: %w", meta.ID, assetPackID, err)
+			}
+			assetDir := filepath.Join(packDir, "assets", assetPackID)
+			info := AssetPackInfo{
+				CrimePackID:         meta.ID,
+				CrimePackName:       meta.Name,
+				AssetPackID:         assetPackID,
+				AssetPackName:       setMeta.Name,
+				DefaultAssetPackID:  meta.DefaultAssetSetID,
+				FallbackAssetPackID: meta.FallbackAssetSet,
+				AssetDir:            assetDir,
+				Geometry:            geometry,
+				CategoryCounts:      map[string]int{},
+			}
+			if err := countAssetImages(assetDir, &info); err != nil {
+				return nil, fmt.Errorf("count asset pack %s/%s images: %w", meta.ID, assetPackID, err)
+			}
+			infos = append(infos, info)
+		}
+	}
+	sort.Slice(infos, func(i, j int) bool {
+		if infos[i].CrimePackID != infos[j].CrimePackID {
+			return infos[i].CrimePackID < infos[j].CrimePackID
+		}
+		return infos[i].AssetPackID < infos[j].AssetPackID
+	})
+	return infos, nil
+}
+
 func CompleteAssetPackCache(ctx context.Context, wordpacksDir, cacheDir, assetPackName string) (*AssetPackCacheResult, error) {
 	packDir, packID, setMeta, err := findCrimeAssetPack(wordpacksDir, assetPackName)
 	if err != nil {
@@ -53,6 +132,48 @@ func CompleteAssetPackCache(ctx context.Context, wordpacksDir, cacheDir, assetPa
 	images := cache.All()
 	sort.Slice(images, func(i, j int) bool { return images[i].SourcePath < images[j].SourcePath })
 	return &AssetPackCacheResult{CrimePackID: packID, AssetPackID: assetPackName, ImageCount: len(images), CacheDir: cache.cacheDir, Geometry: geometry, Images: images}, nil
+}
+
+func countAssetImages(assetDir string, info *AssetPackInfo) error {
+	stat, err := os.Stat(assetDir)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return nil
+		}
+		return err
+	}
+	if !stat.IsDir() {
+		return nil
+	}
+	info.AssetDirExists = true
+	return walkImageFiles(assetDir, func(path string) error {
+		if !isCountableAssetImage(path) {
+			return nil
+		}
+		info.ImageCount++
+		rel, err := filepath.Rel(assetDir, path)
+		if err != nil {
+			return nil
+		}
+		rel = filepath.ToSlash(rel)
+		category := strings.Split(rel, "/")[0]
+		if category == "." || category == "" || !strings.Contains(rel, "/") {
+			category = "(root)"
+		}
+		info.CategoryCounts[category]++
+		return nil
+	})
+}
+
+func isCountableAssetImage(path string) bool {
+	if supportedCacheImagePath(path) {
+		return true
+	}
+	if filepath.Ext(path) != "" {
+		return false
+	}
+	ok, err := sniffSupportedImage(path)
+	return err == nil && ok
 }
 
 type MigrateAssetPackOptions struct {

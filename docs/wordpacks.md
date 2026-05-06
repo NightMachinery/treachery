@@ -124,4 +124,6 @@ assetSets: {
 
 When the self-hosted server is started by `self_host.zsh`, card image assets are exposed through a safe cached-image endpoint and normalized to AVIF under `~/.cache/treachery/images` by default. The encoder uses ImageMagick `convert`, ImageMagick `identify`, and `avifenc`; source AVIF files with the exact configured output dimensions are symlinked into the cache instead of re-encoded.
 
-Use `treachery-assets cache <asset-pack-name>` to prewarm the cache. Use `treachery-assets migrate <asset-pack-name> [--no-clean-git-history]` to replace a pack's committed assets with AVIF files after creating a mirror backup in `~/tmp/backups/`.
+Use `treachery-assets list` (or `treachery-assets ls`) to inspect available CrimePack asset packs before caching or migration. The listing includes the parent CrimePack, asset pack name and ID, output geometry, image count, first-level category counts, asset directory, and default/fallback roles.
+
+Use `treachery-assets cache <asset-pack-name>` to prewarm the cache. The command now prints a verbose completion report with the selected CrimePack, asset pack, cache directory, geometry, total image count, and every source image's cache path and content ID. Use `treachery-assets migrate <asset-pack-name> [--no-clean-git-history]` to replace a pack's committed assets with AVIF files after creating a mirror backup in `~/tmp/backups/`; the migration command prints the same verbose image report after the migration completes.
